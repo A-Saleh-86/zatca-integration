@@ -1,0 +1,97 @@
+<?php
+include_once dirname(dirname(__FILE__)) . '/zatca.php';
+?>
+<div class="container">
+        
+    <div class=" mx-auto mt-3">
+        <a href="<?php echo admin_url('admin.php?page=zatca-devices&action=view'); ?>" class="btn my-plugin-button">
+        <span class="dashicons dashicons-undo"></span>
+        </a>
+    </div>
+
+    <div class="col-xl-9 mx-auto mt-0">
+        <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Add New Device', 'zatca') ?></h5>
+    </div>
+
+    <form class="form-horizontal main-form mt-1" id="device-form__form">
+
+
+        <!--  Device No field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Device No.:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="device-no" 
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('Device No.', 'zatca') ?>"
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Device No field -->
+
+        <!--  deviceCSID field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Device CSID:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="device-csid" 
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('Device CSID', 'zatca') ?>"
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  deviceCSID field -->
+
+        <!--  CsID_ExpiryDate field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('CsID_Expiry Date:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="datetime-local"
+                        name="csid-ex-date" 
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('CsID_Expiry Date', 'zatca') ?>"
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  CsID_ExpiryDate field -->
+
+        <!--  tokenData field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Token Data:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="token-data" 
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('Token Data', 'zatca') ?>"
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  tokenData field -->
+
+        <!-- Submit Btn -->
+        <div class="mb-3 row">
+            <div class="d-grid gap-2 col-8 md-flex justify-content-md-end">
+                <input type="submit" value="<?php echo _e('Insert New Device', 'zatca') ?>" class="my-plugin-button" />
+            </div>
+        </div>
+        <!-- / Submit Btn -->
+        
+    </form>
+        
+</div>

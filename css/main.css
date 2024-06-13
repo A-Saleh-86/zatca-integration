@@ -1,0 +1,167 @@
+/* Basic */
+a{
+    text-decoration: none;
+}
+/* / Basic */
+
+/* Notification */
+
+.lobibox-notify-wrapper.top {
+    top: 39px !important;
+}
+/* /Notification */
+
+/* Start Remove Wordpress Footer */
+#wpfooter {
+    display: none;
+}
+/* End Remove Wordpress Footer */
+
+
+/* DaashIcon */
+.dashicons{
+    font-size: 20px !important;
+    height: 20px !important;
+}
+
+
+/* /DaashIcon */
+
+/* Change Background On Choose TD In Customers Search Modal */
+.selected {
+    background-color: rgb(139, 133, 133); 
+  }
+/* / Change Background On Choose TD In Customers Search Modal */
+
+
+
+/* Start DashIcon Size*/
+.dashicons {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+/* End DashIcon Size*/
+
+
+
+/* Start Disabled TD In Customers Search Modal */
+.disabled-td {
+    color: #999; 
+    pointer-events: none; 
+    background-color: #f4f4f4; 
+    opacity: 0.6; 
+}
+/* End Disabled TD In Customers Search Modal */
+
+
+/* Start Data Tables Details */
+    /*  Create Border */
+    #ah {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #ah th, #ah td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #ah th {
+        background-color: #f2f2f2;
+    }
+
+
+
+
+    /* View Filter in left of Name */
+    span.dt-column-order, 
+    table.dataTable thead>tr>th.dt-ordering-asc span.dt-column-order, 
+    table.dataTable thead>tr>th.dt-ordering-desc span.dt-column-order, 
+    table.dataTable thead>tr>td.dt-orderable-asc span.dt-column-order, 
+    table.dataTable thead>tr>td.dt-orderable-desc span.dt-column-order, 
+    table.dataTable thead>tr>td.dt-ordering-asc span.dt-column-order, 
+    table.dataTable thead>tr>td.dt-ordering-desc span.dt-column-order{
+        position: static !important; 
+    }
+
+    .dt-length select, label[for="dt-search-0"], label[for="dt-length-0"]{
+        display: none !important;
+    }
+
+    .dt-info{
+        display: none !important;
+    }
+    /* .dt-paging {
+        display: none !important;
+    } */
+
+    /* Disable the relative position [ show other in resbonsive ]*/
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control {
+        position: static !important; 
+    }
+    /* Disable the relative position [ show other in resbonsive - arabic ]*/
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before{
+        position: static !important; 
+        margin-right: -33px !important;
+    }
+
+    /* Disable the relative position [ show other in resbonsive - in small size ] */
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
+        position: static !important;
+        margin-left: -31px !important;
+    }
+/* End Data Tables Details */
+
+
+/* Start Default admin color scheme */
+body {
+    background-color: #f1f1f1;
+}
+
+/* Dark color scheme */
+body.wp-core-ui.colors-dark {
+    background-color: #222;
+    color: #fff;
+}
+
+/* Blue color scheme */
+body.wp-core-ui.colors-blue {
+    background-color: #e6f7ff;
+}
+
+/* Default button styles */
+.my-plugin-button {
+    background-color: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+     display: inline-flex; /* Ensure the anchor behaves as an inline-block and supports flexbox */
+    align-items: center; /* Vertically center the contents */
+    justify-content: center; /* Horizontally center the contents */
+    text-decoration: none; 
+}
+
+/* Dark color scheme button styles */
+body.wp-core-ui.colors-dark .my-plugin-button {
+    background-color: #444 !important;
+}
+
+/* Blue color scheme button styles */
+body.wp-core-ui.colors-blue .my-plugin-button {
+    background-color: #0073aa;
+}
+
+/* End Default admin color scheme */
+
+
+/* Start Documents */
+
+/* Start Insert Page */
+.checkbox-spacer {
+    margin-left: 1rem; /* Adjust margin as needed */
+  }
+/* End Insert Page */
+
+/* End Documents */
