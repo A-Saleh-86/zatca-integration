@@ -184,7 +184,7 @@
                             if((int)$zatcaSuccessResponse === 2 || (int)$zatcaSuccessResponse === 3){?>
                                
                                 <!--  view warning Btn -->
-                                <button type="button" class="my-plugin-button btn-sm me-1" data-bs-toggle="modal" data-bs-target="#warning" data-document-no="<?php echo $result->documentNo; ?> ">
+                                <button type="button" class="my-plugin-button btn-sm me-1" data-bs-toggle="modal" data-bs-target="#warning" data-bs-backdrop="false" data-document-no="<?php echo $result->documentNo; ?> ">
                                     <span class="dashicons dashicons-welcome-comments"></span>
                                 </button>
                                 <!-- / view warning Btn -->
@@ -204,7 +204,7 @@
                 ?>
                 <!-- view warning Modal -->
                 <div class="modal fade" id="warning" tabindex="-1" aria-labelledby="warningLabel" aria-hidden="true">
-                    <div class="modal-dialog" >
+                    <div class="modal-dialog modal-dialog-centered modal-lg" >
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="viewWarningLabel">Warning Message </h5>

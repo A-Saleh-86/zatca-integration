@@ -271,7 +271,7 @@ jQuery(document).ready(function($){
                 alert(response.msg);
 
                 // $('#try-res').html(response.data);
-                //window.location.reload();
+                window.location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error: ', textStatus, errorThrown);

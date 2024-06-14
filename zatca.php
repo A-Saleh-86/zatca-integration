@@ -1970,6 +1970,11 @@ function insert_form_documents(){
                         }
     
                     }
+
+                    // Log the invoice insertion
+                    $user_login = wp_get_current_user()->user_login;
+                    $user_id = wp_get_current_user()->ID;
+                    log_invoice_insertion($user_login, $user_id);
     
                 }
             }
@@ -3198,7 +3203,7 @@ function send_request_to_zatca_clear(){
 
                     "zatcaResponseDate" => $response_date,
                     "zatcaSuccessResponse" => 3,
-                    "zatcaErrorResponse" => $validationResults
+                    "zatcaErrorResponse" => $errorMessage
                 ];
                 $where = array('documentNo' => $doc_no);
     
@@ -3235,6 +3240,10 @@ function send_request_to_zatca_clear(){
 
         }
 
+        // Log the send to zatca:
+        $user_login = wp_get_current_user()->user_login;
+        $user_id = wp_get_current_user()->ID;
+        log_send_to_zatca($user_login, $user_id);
 
         $send_response = [
 
@@ -3311,6 +3320,11 @@ function get_xml_from_response() {
         wp_send_json_error(['message' => 'File does not exist after creation']);
     }
 
+    // Log the download xml:
+    $user_login = wp_get_current_user()->user_login;
+    $user_id = wp_get_current_user()->ID;
+    log_download_doc_xml($user_login, $user_id);
+
     $send_response = [
         'xml' => $xml->asXML(),
         'file_created' => 'File created at: ',
@@ -3319,3 +3333,77 @@ function get_xml_from_response() {
 
     wp_send_json_success($send_response);
 }
+
+
+// Function of zatca Log:
+function log_user_action($user_login, $user_id, $operationType) {
+    
+    global $wpdb;
+
+    // get Mac Address:
+    $os_type = php_uname('s'); // Get the operating system type
+
+    if (stripos($os_type, 'Windows') !== false) {
+        // For Windows
+        $mac = exec('getmac');
+        $mac = strtok($mac, ' '); // Get the first part of the result
+    } else {
+        // For Linux
+        $mac = exec("ip link | awk '/ether/ {print $2}' | head -n 1");
+    }
+    
+    
+    $table_name = 'zatcalog';
+    $timestamp = current_time('mysql');
+    $ip_address = $_SERVER['REMOTE_ADDR'];
+
+    
+    // If Localhost change to localhost ip:
+    if ($ip_address === '::1' || $ip_address === '::ffff:127.0.0.1') {
+        $ip_address = '127.0.0.1';
+    }
+
+    // Validation on Data If all not empty isSuccess will be true:
+    if(!empty($user_login) && !empty($user_id) && !empty($timestamp) && !empty($ip_address) && !empty($mac) && !empty($operationType)){
+
+        $isSuccess = true;
+
+    }else{
+
+        $isSuccess = false;
+    }
+
+    $wpdb->insert(
+        $table_name,
+        array(
+            'login_personName' => $user_login,
+            'login_personNo' =>$user_id,
+            'dateG' => $timestamp,
+            'IP' => $ip_address,
+            'macAddress' => $mac,
+            'isSuccess' => $isSuccess,
+            'operationType' => $operationType
+        )
+    );
+}
+
+// Funtions to track the login data:
+function log_user_login($user_login, $user) {
+    log_user_action($user_login, $user->ID, 1); // 1 = login
+}
+
+// Funtions to track the Insert New Document data:
+function log_invoice_insertion($user_login, $user_id) {
+    log_user_action($user_login, $user_id, 2); // 2 = insert invoice
+}
+
+// Funtions to track the send to zatca data:
+function log_send_to_zatca($user_login, $user_id) {
+    log_user_action($user_login, $user_id, 3); // 3 = send to zatca
+}
+// Funtions to track the send to zatca data:
+function log_download_doc_xml($user_login, $user_id) {
+    log_user_action($user_login, $user_id, 4); // 4 = download xml
+}
+
+add_action('wp_login', 'log_user_login', 10, 2);

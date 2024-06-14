@@ -4,6 +4,13 @@ a{
 }
 /* / Basic */
 
+#warning {
+    z-index: 1050; /* or a higher value */
+}
+.modal-content {
+    touch-action: none; /* Prevent default touch actions */
+}
+
 /* Notification */
 
 .lobibox-notify-wrapper.top {
