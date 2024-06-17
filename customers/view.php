@@ -11,7 +11,7 @@
         </a>
     </div>
     <!-- / Add Btn -->
-    <table id="ah" class="display" width="100%">
+    <table id="example" class="table table-striped" width="100%">
 
         <thead>
             <tr>

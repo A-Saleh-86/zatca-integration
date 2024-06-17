@@ -1,8 +1,3 @@
-<!-- table Of View -->
-<?php
-
-?>
-
 
 <div class="container" >
     <div class="col-xl-12 mx-auto mt-3">
@@ -17,7 +12,7 @@
     <!-- / Add Btn -->
 
 
-    <table id="ah" class="display" width="100%">
+    <table id="example" class="table table-striped" width="100%">
         <thead>
             <tr>
                 <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Device No', 'zatca') ?></th>

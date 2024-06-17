@@ -242,8 +242,10 @@ function load_assets(){
     
 
     
-    wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . '/js/datatables.min.js', array(), false, true);
     wp_enqueue_script( 'elect2', plugin_dir_url(__FILE__) . '/js/select.js', array('datatables-js') );
+    wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . '/js/datatables.min.js', array(), false, true);
+    wp_enqueue_script('moment-js', plugin_dir_url(__FILE__) . '/js/moment.js', array(), false, true);
+    wp_enqueue_script('datatable-datetime-js', plugin_dir_url(__FILE__) . '/js/datatable-datetime.js', array(), false, true);
     // wp_deregister_script('jquery');
     wp_enqueue_script('jquery');
     // wp_register_script('jquery', includes_url('/js/jquery/jquery.js'), false, '', true);
