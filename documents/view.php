@@ -5,7 +5,12 @@
 
     <!-- Add Btn -->
     <div class="col-xl-12 mx-auto mt-3">
-        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=insert')  ?>" class="my-plugin-button btn add-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Create new Document">
+        <a 
+            href="<?php echo admin_url('admin.php?page=zatca-documents&action=insert')  ?>" 
+            class="my-plugin-button btn add-btn" 
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            title="<?php echo _e('Create New Document', 'zatca') ?>">
             <span class="dashicons dashicons-insert"></span>
         </a>
     </div>
@@ -108,7 +113,12 @@
                                 if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse == 0){?>
 
                                     <!-- Edit Btn -->
-                                    <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$result->documentNo.'')  ?>" class="my-plugin-button  me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Document">
+                                    <a 
+                                        href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$result->documentNo.'')  ?>" 
+                                        class="my-plugin-button  me-1" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        title="<?php echo _e('Edit Document', 'zatca') ?>">
                                         <span class="dashicons dashicons-edit"></span>
                                     </a>
                                     <!-- / Edit Btn -->
@@ -142,7 +152,7 @@
                                             data-doc-no = "<?php echo $result->documentNo ?>" 
                                             data-bs-toggle="tooltip" 
                                             data-bs-placement="top" 
-                                            title="Send To Zatca">
+                                            title="<?php echo _e('Send To Zatca', 'zatca') ?>">
                                             <span class="dashicons dashicons-cloud-upload"></span>
                                         </a>
                                         <!-- / Send To Zatca Btn [ clear() ] -->
@@ -158,7 +168,7 @@
                                             data-doc-no = "<?php echo $result->documentNo ?>" 
                                             data-bs-toggle="tooltip" 
                                             data-bs-placement="top" 
-                                            title="Send To Zatca">
+                                            title="<?php echo _e('Send To Zatca', 'zatca') ?>">
                                             <span class="dashicons dashicons-cloud-upload"></span>
                                         </a>
                                         <!-- / Send To Zatca Btn  [ report() ] -->
@@ -177,7 +187,7 @@
                                         id="download-xml" data-doc-no = "<?php echo $result->documentNo ?>" 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
-                                        title="Download XML">
+                                        title="<?php echo _e('Download XML', 'zatca') ?>">
                                         <span class="dashicons dashicons-external"></span>
                                     </button>
                                     <!-- / Download XML Btn --> 
@@ -196,7 +206,7 @@
                                         data-doc-no = "<?php echo $result->documentNo ?>" 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
-                                        title="Reissue">
+                                        title="<?php echo _e('Reissue', 'zatca') ?>">
                                         <span class="dashicons dashicons-controls-repeat"></span>
                                     </a>
                                     <!-- / Reissue-->
@@ -217,7 +227,7 @@
                                         data-document-no="<?php echo $result->documentNo; ?>" 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
-                                        title="View Warning MSG">
+                                        title="<?php echo _e('View Warning MSG', 'zatca') ?>">
                                         <span class="dashicons dashicons-welcome-comments"></span>
                                     </button>
                                     <!-- / view warning Btn -->

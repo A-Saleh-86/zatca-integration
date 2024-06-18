@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-06-18T19:30:32+00:00\n"
+"POT-Creation-Date: 2024-06-18T19:41:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -335,7 +335,7 @@ msgstr "محافظة بالعربية"
 msgid "Country"
 msgstr "البلد"
 
-#: customers/view.php:35 devices/view.php:28 documents/view.php:37
+#: customers/view.php:35 devices/view.php:28 documents/view.php:42
 msgid "Action"
 msgstr "الاعدادات"
 
@@ -465,6 +465,7 @@ msgid "Delete Device"
 msgstr "اضافه جهاز جديد"
 
 #: documents/edit-document.php:36 documents/edit-document.php:567
+#: documents/view.php:121
 #, fuzzy
 msgid "Edit Document"
 msgstr "اضافه جهاز جديد"
@@ -582,7 +583,7 @@ msgid "Notes:"
 msgstr "ملاحظات"
 
 #: documents/edit-document.php:557 documents/insert.php:529
-#: documents/view.php:36
+#: documents/view.php:41
 msgid "Notes"
 msgstr "ملاحظات"
 
@@ -596,7 +597,7 @@ msgstr "اضافه فاتورة جديد"
 msgid "Woo Invoice No"
 msgstr "رقم فاتورة النظام"
 
-#: documents/insert.php:204 documents/view.php:21
+#: documents/insert.php:204 documents/view.php:26
 #, fuzzy
 msgid "Delivery Date"
 msgstr "تاريخ الانتهاء"
@@ -605,28 +606,28 @@ msgstr "تاريخ الانتهاء"
 msgid "Max Delivery Date"
 msgstr "اقصي تاريخ للتوصيل"
 
-#: documents/insert.php:255 documents/view.php:24
+#: documents/insert.php:255 documents/view.php:29
 msgid "Payed"
 msgstr "المدفوع"
 
-#: documents/insert.php:273 documents/view.php:25
+#: documents/insert.php:273 documents/view.php:30
 msgid "Discount"
 msgstr "اجمالي الخصم"
 
-#: documents/insert.php:325 documents/view.php:26
+#: documents/insert.php:325 documents/view.php:31
 #, fuzzy
 msgid "Invoice Net"
 msgstr "نوع الفواتير المدعومة"
 
-#: documents/insert.php:343 documents/view.php:27
+#: documents/insert.php:343 documents/view.php:32
 msgid "Subnet Total plus tax"
 msgstr "الاجمالي بالضريبه"
 
-#: documents/insert.php:361 documents/view.php:28
+#: documents/insert.php:361 documents/view.php:33
 msgid "Discount Percentage"
 msgstr "نسبه مئويه الخصم"
 
-#: documents/insert.php:379 documents/view.php:29
+#: documents/insert.php:379 documents/view.php:34
 msgid "Discount Total"
 msgstr "اجمالي الخصم"
 
@@ -638,46 +639,67 @@ msgstr "سبب الاعفاء"
 msgid "Documents"
 msgstr "الفواتير"
 
-#: documents/view.php:19
+#: documents/view.php:13
+#, fuzzy
+msgid "Create New Document"
+msgstr "اضافه فاتورة جديد"
+
+#: documents/view.php:24
 #, fuzzy
 msgid "Invoice No"
 msgstr "رقم الفاتورة "
 
-#: documents/view.php:20
+#: documents/view.php:25
 #, fuzzy
 msgid "WooCommerce Invoice No"
 msgstr "رقم فاتورة النظام"
 
-#: documents/view.php:22
+#: documents/view.php:27
 msgid "Maximum Delivery Date"
 msgstr "اقصي تاريخ للتوصيل"
 
-#: documents/view.php:23
+#: documents/view.php:28
 #, fuzzy
 msgid "Invoice Type"
 msgstr "نوع الفواتير المدعومة"
 
-#: documents/view.php:30
+#: documents/view.php:35
 #, fuzzy
 msgid "VAT Category Code"
 msgstr "فئة الضريبة الرئيسية"
 
-#: documents/view.php:31
+#: documents/view.php:36
 #, fuzzy
 msgid "VAT Category SubType Code"
 msgstr "فئة الضريبة الفرعية"
 
-#: documents/view.php:33
+#: documents/view.php:38
 msgid "isNominal"
 msgstr "هل عينه؟"
 
-#: documents/view.php:34
+#: documents/view.php:39
 msgid "isExports"
 msgstr "هل صادرات؟"
 
-#: documents/view.php:35
+#: documents/view.php:40
 msgid "isSummary"
 msgstr "هل ملخص فترة"
+
+#: documents/view.php:155 documents/view.php:171
+msgid "Send To Zatca"
+msgstr "ارسال الي زاتكا"
+
+#: documents/view.php:190
+msgid "Download XML"
+msgstr "تحميل المستند"
+
+#: documents/view.php:209
+msgid "Reissue"
+msgstr "اعاده ارسال"
+
+#: documents/view.php:230
+msgid "View Warning MSG"
+msgstr "اظهار رسالة الخطأ"
 
 #: log/view.php:5 option.php:60 option.php:61
 msgid "Logs"
