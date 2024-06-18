@@ -44,13 +44,16 @@ Updated:
 <!-- install wpcli -->
 
 <!-- Download -->
-wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O ~/bin/wp
+
 
 <!-- Get Info -->
 php wp-cli.phar --info
 
 <!-- provide executable permission to wpcli file -->
-chmod +x /usr/bin/wpcli
+<!-- chmod +x /usr/bin/wpcli -->
+chmod +x wp-cli.phar
+
 
 <!-- Move Download to Directory -->
 sudo mv wp-cli.phar /usr/bin/wpcli
@@ -79,7 +82,9 @@ wp i18n make-mo languages/ar.po languages => mo
 
 <!-- Add New String to po file -->
 <!-- Create new POT file -->
+
 wp i18n make-pot . 'new_string.pot'
+<!-- wp i18n make-pot . new_string.pot --debug -->
 
 <!-- Merge New POT With Old PO File -->
 msgmerge -U languages/zatca-ar.po new_string.pot

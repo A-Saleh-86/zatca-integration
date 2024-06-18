@@ -95,61 +95,6 @@ a{
 }
 
 
-    /*  Create Border */
-    #ah {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    #ah th, #ah td {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-
-    #ah th {
-        background-color: #f2f2f2;
-    }
-
-
-
-
-    /* View Filter in left of Name */
-    /* span.dt-column-order, 
-    table.dataTable thead>tr>th.dt-ordering-asc span.dt-column-order, 
-    table.dataTable thead>tr>th.dt-ordering-desc span.dt-column-order, 
-    table.dataTable thead>tr>td.dt-orderable-asc span.dt-column-order, 
-    table.dataTable thead>tr>td.dt-orderable-desc span.dt-column-order, 
-    table.dataTable thead>tr>td.dt-ordering-asc span.dt-column-order, 
-    table.dataTable thead>tr>td.dt-ordering-desc span.dt-column-order{
-        position: static !important; 
-    } */
-
-    /* .dt-length select, label[for="dt-search-0"], label[for="dt-length-0"]{
-        display: none !important;
-    } */
-
-    /* .dt-info{
-        display: none !important;
-    } */
-    /* .dt-paging {
-        display: none !important;
-    } */
-
-    /* Disable the relative position [ show other in resbonsive ]*/
-    /* table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control {
-        position: static !important; 
-    } */
-    /* Disable the relative position [ show other in resbonsive - arabic ]*/
-    /* table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before{
-        position: static !important; 
-        margin-right: -33px !important;
-    } */
-
-    /* Disable the relative position [ show other in resbonsive - in small size ] */
-    /* table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
-        position: static !important;
-        margin-left: -31px !important;
-    } */
 /* End Data Tables Details */
 
 
@@ -289,4 +234,60 @@ body.wp-core-ui.colors-blue .my-plugin-button {
         font-size: 1rem;
     }
 }
+
+
+/* localization */
+
+/* General Grid Alignment */
+.grid-align {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+/* RTL Support */
+body[dir="rtl"] .grid-align {
+    grid-template-columns: 1fr auto;
+}
+
+body[dir="rtl"] .form-group label {
+    text-align: right;
+    margin-right: 10px;
+}
+
+body[dir="rtl"] .input-group {
+    direction: rtl;
+}
+
+body[dir="rtl"] .form-check {
+    flex-direction: row-reverse;
+}
+
+body[dir="rtl"] .input-group .form-control {
+    direction: ltr;
+}
+
+/* body[dir="rtl"] .form-check-label {
+    text-align: right;
+    margin-right: 10px;
+    margin-left: 0;
+} */
+
+body[dir="rtl"] .form-check-label {
+    text-align: right;
+    margin-right: 10px;
+    margin-left: -2px; /* Add a small negative margin here */
+}
+
+body[dir="rtl"] .form-check-input {
+    margin-right: 0 !important;
+    margin-left: 10px;
+}
+
+
+
+/* / localization */
+
+
 /* / Log Page */

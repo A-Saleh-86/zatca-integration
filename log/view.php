@@ -9,11 +9,11 @@
     <!-- Filter Inputs -->
     <div class="d-flex flex-column mb-3">
         <div class="row justify-content-start align-items-end">
-            
-        <!-- From Date -->
+
+            <!-- From Date -->
             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                <div class="form-group d-flex align-items-center">  
-                    <label for="min"><?php echo _e('From Date:', 'zatca')?></label>
+                <div class="form-group grid-align">  
+                    <label for="min"><?php echo _e('From-Date:', 'zatca')?></label>
                     <div class="input-group">  
                         <input type="text" id="min" name="min" class="form-control">
                         <button type="button" class="btn btn-secondary btn-sm" id="reset">
@@ -26,8 +26,8 @@
 
             <!-- To Date -->
             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                <div class="form-group d-flex align-items-center">  
-                    <label for="max"><?php echo _e('To Date:', 'zatca')?></label>
+                <div class="form-group grid-align">  
+                    <label for="max"><?php echo __('To-Date', 'zatca')?></label>
                     <div class="input-group">  
                         <input type="text" id="max" name="max" class="form-control">
                         <button type="button" class="btn btn-secondary btn-sm" id="reset-max">
@@ -40,8 +40,8 @@
 
             <!-- Username -->
             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                <div class="form-group d-flex align-items-center">  
-                    <label for="username"><?php echo _e('User Name:', 'zatca')?></label>
+                <div class="form-group grid-align">  
+                    <label for="username"><?php echo _e('user name', 'zatca')?></label>
                     <select class="form-select select2 p-2" name="username" id="username">
                         <option value="">...</option>
                         <?php
@@ -74,6 +74,7 @@
         </div>
     </div>
     <!-- / Filter Inputs -->
+
     
     
 
@@ -85,8 +86,8 @@
                 <tr>
                     <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Log No', 'zatca') ?></th>
                     <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Date Time', 'zatca') ?></th>
-                    <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('User Name', 'zatca') ?></th>
-                    <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('MAC Address', 'zatca') ?></th>
+                    <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('user name', 'zatca') ?></th>
+                    <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('mac', 'zatca') ?></th>
                     <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('IP', 'zatca') ?></th>
                     <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Is Success', 'zatca') ?></th>
                     <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Operation', 'zatca') ?></th>
@@ -154,8 +155,3 @@
     <!-- / Table Of View -->
 
 </div>
-
-<?php
-
-
-?>
