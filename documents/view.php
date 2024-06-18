@@ -5,7 +5,7 @@
 
     <!-- Add Btn -->
     <div class="col-xl-12 mx-auto mt-3">
-        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=insert')  ?>" class="my-plugin-button btn add-btn">
+        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=insert')  ?>" class="my-plugin-button btn add-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Create new Document">
             <span class="dashicons dashicons-insert"></span>
         </a>
     </div>
@@ -87,15 +87,12 @@
                             <!-- <td style="font-size: 0.8rem;"><?php //echo mb_substr($result->zatca_TaxExemptionReason, 0, 29, "UTF-8");  ?></td> -->
 
                             <td style="font-size: 0.8rem;">
-                                <?php //echo $result->zatcaInvoiceTransactionCode_isNominal ?>
                                 <?php echo (isset($result->zatcaInvoiceTransactionCode_isNominal) && $result->zatcaInvoiceTransactionCode_isNominal==0) ? 'Yes' : 'No'; ?>
                             </td>
                             <td style="font-size: 0.8rem;">
-                                <?php //echo $result->zatcaInvoiceTransactionCode_isExports ?>
                                 <?php echo (isset($result->zatcaInvoiceTransactionCode_isExports) && $result->zatcaInvoiceTransactionCode_isExports==0) ? 'Yes' : 'No'; ?>
                             </td>
                             <td style="font-size: 0.8rem;">
-                                <?php //echo $result->zatcaInvoiceTransactionCode_isSummary ?>
                                 <?php echo (isset($result->zatcaInvoiceTransactionCode_isSummary) && $result->zatcaInvoiceTransactionCode_isSummary==0) ? 'Yes' : 'No'; ?>
                             </td>
                             <td style="font-size: 0.8rem;">Notes</td>
@@ -111,7 +108,7 @@
                                 if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse == 0){?>
 
                                     <!-- Edit Btn -->
-                                    <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$result->documentNo.'')  ?>" class="my-plugin-button  me-1">
+                                    <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$result->documentNo.'')  ?>" class="my-plugin-button  me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Document">
                                         <span class="dashicons dashicons-edit"></span>
                                     </a>
                                     <!-- / Edit Btn -->
@@ -138,7 +135,14 @@
                                     if($zatcaInvoiceType == 1){?>
 
                                         <!-- Send To Zatca Btn [ clear() ] -->
-                                        <a href="#" class="my-plugin-button btn-sm me-1" id="send-zatca-clear" data-doc-no = "<?php echo $result->documentNo ?>" >
+                                        <a 
+                                            href="#" 
+                                            class="my-plugin-button btn-sm me-1" 
+                                            id="send-zatca-clear" 
+                                            data-doc-no = "<?php echo $result->documentNo ?>" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="Send To Zatca">
                                             <span class="dashicons dashicons-cloud-upload"></span>
                                         </a>
                                         <!-- / Send To Zatca Btn [ clear() ] -->
@@ -147,7 +151,14 @@
                                     }else{ //if B2C will redirect to Report(): ?>
 
                                         <!-- Send To Zatca Btn [ report() ] -->
-                                        <a href="#" class="my-plugin-button btn-sm me-1" id="send-zatca-report" data-doc-no = "<?php echo $result->documentNo ?>" >
+                                        <a 
+                                            href="#" 
+                                            class="my-plugin-button btn-sm me-1" 
+                                            id="send-zatca-report" 
+                                            data-doc-no = "<?php echo $result->documentNo ?>" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="Send To Zatca">
                                             <span class="dashicons dashicons-cloud-upload"></span>
                                         </a>
                                         <!-- / Send To Zatca Btn  [ report() ] -->
@@ -160,7 +171,13 @@
                                 if((int)$zatcaSuccessResponse == 1 || (int)$zatcaSuccessResponse == 2){?>
 
                                     <!--  Download XML Btn -->
-                                    <button type="button" class="my-plugin-button btn-sm me-1" id="download-xml" data-doc-no = "<?php echo $result->documentNo ?>">
+                                    <button 
+                                        type="button" 
+                                        class="my-plugin-button btn-sm me-1" 
+                                        id="download-xml" data-doc-no = "<?php echo $result->documentNo ?>" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        title="Download XML">
                                         <span class="dashicons dashicons-external"></span>
                                     </button>
                                     <!-- / Download XML Btn --> 
@@ -172,7 +189,14 @@
                                 if($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 3){?>
                                     
                                     <!-- Reissue -->
-                                    <a href="#" class="my-plugin-button btn-sm me-1" id="send-zatca-reissue" data-doc-no = "<?php echo $result->documentNo ?>" >
+                                    <a 
+                                        href="#" 
+                                        class="my-plugin-button btn-sm me-1" 
+                                        id="send-zatca-reissue" 
+                                        data-doc-no = "<?php echo $result->documentNo ?>" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        title="Reissue">
                                         <span class="dashicons dashicons-controls-repeat"></span>
                                     </a>
                                     <!-- / Reissue-->
@@ -184,7 +208,16 @@
                                 if((int)$zatcaSuccessResponse === 2 || (int)$zatcaSuccessResponse === 3){?>
                                 
                                     <!--  view warning Btn -->
-                                    <button type="button" class="my-plugin-button btn-sm me-1" data-bs-toggle="modal" data-bs-target="#warning" data-bs-backdrop="false" data-document-no="<?php echo $result->documentNo; ?> ">
+                                    <button 
+                                        type="button" 
+                                        class="my-plugin-button btn-sm me-1" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#warning" 
+                                        data-bs-backdrop="false" 
+                                        data-document-no="<?php echo $result->documentNo; ?>" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        title="View Warning MSG">
                                         <span class="dashicons dashicons-welcome-comments"></span>
                                     </button>
                                     <!-- / view warning Btn -->

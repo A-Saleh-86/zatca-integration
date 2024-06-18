@@ -75,10 +75,6 @@
     </div>
     <!-- / Filter Inputs -->
 
-    
-    
-
-
     <!-- Table Of View -->
     <div class="table-responsive">
         <table id="example" class="table table-striped " style="width:100%">

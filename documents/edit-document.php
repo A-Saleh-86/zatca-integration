@@ -20,20 +20,26 @@ if (!empty($results)) {
 
     <!-- Back Btn -->
     <div class=" mx-auto mt-3">
-        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=view'); ?>" class="btn my-plugin-button">
+        <a 
+            href="<?php echo admin_url('admin.php?page=zatca-documents&action=view'); ?>" 
+            class="btn my-plugin-button" 
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            title="<?php echo _e('Back', 'zatca') ?>">
             <span class="dashicons dashicons-undo"></span>
         </a>
     </div>
+    <!-- / Back Btn -->
 
+    <!-- Header -->
     <div class="col-xl-9 mx-auto mt-3">
         <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Edit Document', 'zatca')?></h5>
     </div>
+    <!-- / Header -->
 
     <!-- Form Of Inputes -->
     <form class="form-horizontal main-form mt-1" id="edit-document__form">
         
-
-
         <!--  documentNo field -->
         <div class="mb-3 row col-mid-6">
             <label class="col-sm-2 col-form-label"><?php echo _e('Invoice No:', 'zatca') ?></label>
@@ -72,7 +78,14 @@ if (!empty($results)) {
                     <div class="mx-1"></div>
 
                     <!-- Search Btn -->
-                    <button type='button' class='btn my-plugin-button me-1' data-bs-toggle='modal' data-bs-target='#exampleModal-search-invoices'>
+                    <button 
+                        type='button' 
+                        class='btn my-plugin-button me-1' 
+                        data-bs-toggle='modal' 
+                        data-bs-target='#exampleModal-search-invoices' 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="<?php echo _e('Search Invoices', 'zatca') ?>">
                         <span class="dashicons dashicons-search"></span>
                     </button>
                     <!-- / Search Btn -->
@@ -88,7 +101,7 @@ if (!empty($results)) {
                                 
                                 <div class="container ">
                                     
-                                    <table id="ah" class="display" width="100%">
+                                    <table id="example" class="table table-striped" width="100%">
                                         <thead>
                                             <tr>
                                                 <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Order No', 'zatca') ?></th>
@@ -122,13 +135,15 @@ if (!empty($results)) {
                                 <button type='button' class='my-plugin-button' data-bs-dismiss='modal'>
                                     <span class="dashicons dashicons-no"></span>
                                 </button>
+
                                 <!-- Copy btn -->
                                 <button class="my-plugin-button me-1" type="button" id='search-invoices-data' >
                                     <span class="dashicons dashicons-saved"></span>
                                 </button> 
                                 <!-- / Copy Btn -->
+
                             </div>
-                            </div>
+                        </div>
                         </div>
                     </div>
                     <!-- / Invoices Modal -->
@@ -137,30 +152,35 @@ if (!empty($results)) {
                     <div class='modal fade' id='customer-modal' tabindex='-1' aria-labelledby='customer-modal' aria-hidden='true'>
                         <div class='modal-dialog'>
                             <div class='modal-content' >
-                            <div class='modal-header'>
-                                <h5 class='modal-title'><?php echo _e('Customer Not Exist', 'zatca') ?></h5>
-                            </div>
-                            <div class='modal-body'>
-                                
-                                <div class="container ">
+                                <div class='modal-header'>
+                                    <h5 class='modal-title'><?php echo _e('Customer Not Exist', 'zatca') ?></h5>
+                                </div>
+                                <div class='modal-body'>
                                     
-                                   <?php echo _e('This Customer Not Exist In Zatca Customers.Insert Now?', 'zatca') ?>
-                                
-                                </div> 
-                            </div>
-                            <div class='modal-footer'>
-                                <button type='button' class='my-plugin-button' data-bs-dismiss='modal'>
-                                    <span class="dashicons dashicons-no"></span>
-                                </button>
-                                
-                                <!-- insert Customer btn -->
-                                <!-- <a href="<?php //echo admin_url('admin.php?page=zatca-customers&action=insert&status=document-insert-customer')  ?>"> -->
-                                    <button class="my-plugin-button me-1" type="button"  id="document-add-customer">
+                                    <div class="container ">
+                                        
+                                    <?php echo _e('This Customer Not Exist In Zatca Customers.Insert Now?', 'zatca') ?>
+                                    
+                                    </div> 
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' class='my-plugin-button' data-bs-dismiss='modal'>
+                                        <span class="dashicons dashicons-no"></span>
+                                    </button>
+                                    
+                                    <!-- insert Customer btn -->
+                                    <button 
+                                        class="my-plugin-button me-1" 
+                                        type="button"  
+                                        id="document-add-customer" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        title="<?php echo _e('Insert New Customer', 'zatca') ?>">
                                         <span class="dashicons dashicons-saved"></span>
                                     </button> 
-                                <!-- </a> -->
-                                <!-- / insert customer Btn -->
-                            </div>
+                                    <!-- / insert customer Btn -->
+                                     
+                                </div>
                             </div>
                         </div>
                     </div>

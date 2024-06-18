@@ -6,14 +6,22 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
 
     <!-- Back Btn -->
     <div class=" mx-auto mt-3">
-        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=view'); ?>" class="btn my-plugin-button">
+        <a 
+            href="<?php echo admin_url('admin.php?page=zatca-documents&action=view'); ?>" 
+            class="btn my-plugin-button" 
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            title="<?php echo _e('Back', 'zatca') ?>">
             <span class="dashicons dashicons-undo"></span>
         </a>
     </div>
+    <!-- Back Btn -->
 
+    <!-- Header -->
     <div class="col-xl-9 mx-auto mt-3">
         <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Insert New Document', 'zatca')?></h5>
     </div>
+    <!-- / Header -->
 
     <!-- Form Of Inputes -->
     <form class="form-horizontal main-form mt-1" id="insert-document__form">
@@ -73,7 +81,14 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                     <div class="mx-1"></div>
 
                     <!-- Search Btn -->
-                    <button type='button' class='btn my-plugin-button me-1' data-bs-toggle='modal' data-bs-target='#exampleModal-search-invoices'>
+                    <button 
+                        type='button' 
+                        class='btn my-plugin-button me-1' 
+                        data-bs-toggle='modal' 
+                        data-bs-target='#exampleModal-search-invoices' 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="<?php echo _e('Search Invoices', 'zatca') ?>">
                         <span class="dashicons dashicons-search"></span>
                     </button>
                     <!-- / Search Btn -->
@@ -82,53 +97,53 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                     <div class='modal fade' id='exampleModal-search-invoices' tabindex='-1' aria-labelledby='exampleModalLabel-search-invoices' aria-hidden='true'>
                         <div class='modal-dialog modal-lg'>
                             <div class='modal-content' >
-                            <div class='modal-header'>
-                                <h5 class='modal-title'><?php echo _e('Invoices', 'zatca') ?></h5>
-                            </div>
-                            <div class='modal-body'>
-                                
-                                <div class="container ">
+                                <div class='modal-header'>
+                                    <h5 class='modal-title'><?php echo _e('Invoices', 'zatca') ?></h5>
+                                </div>
+                                <div class='modal-body'>
                                     
-                                    <table id="ah" class="display" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Order No', 'zatca') ?></th>
-                                                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Email', 'zatca') ?></th>
-                                            </tr>
-                                        </thead>
-                                    
-                                        <tbody>
-                                            <?php
-                                            global $wpdb;
-                                            
-                                            // Get Data from Order table:
-                                            $table_order = $wpdb->prefix . 'wc_orders';
-                                            $orders = $wpdb->get_results("SELECT * FROM $table_order");
-                                               
-                                                foreach ($orders as $order) {?>
-                                                    <tr data-order-id="<?php echo $order->id;?>" data-customer-id="<?php echo $order->customer_id ?>">
-                                                        <td><?php echo $order->id ?></td>
-                                                        <td><?php echo $order->billing_email ?></td>
-                                                    </tr>
-                                                    <?php
-                                                }
+                                    <div class="container ">
+                                        
+                                        <table id="example" class="table table-striped" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Order No', 'zatca') ?></th>
+                                                    <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Email', 'zatca') ?></th>
+                                                </tr>
+                                            </thead>
+                                        
+                                            <tbody>
+                                                <?php
+                                                global $wpdb;
                                                 
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                
-                                </div> 
-                            </div>
-                            <div class='modal-footer'>
-                                <button type='button' class='my-plugin-button' data-bs-dismiss='modal'>
-                                    <span class="dashicons dashicons-no"></span>
-                                </button>
-                                <!-- Copy btn -->
-                                <button class="my-plugin-button me-1" type="button" id='search-invoices-data' >
-                                    <span class="dashicons dashicons-saved"></span>
-                                </button> 
-                                <!-- / Copy Btn -->
-                            </div>
+                                                // Get Data from Order table:
+                                                $table_order = $wpdb->prefix . 'wc_orders';
+                                                $orders = $wpdb->get_results("SELECT * FROM $table_order");
+                                                
+                                                    foreach ($orders as $order) {?>
+                                                        <tr data-order-id="<?php echo $order->id;?>" data-customer-id="<?php echo $order->customer_id ?>">
+                                                            <td><?php echo $order->id ?></td>
+                                                            <td><?php echo $order->billing_email ?></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                    
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    
+                                    </div> 
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' class='my-plugin-button' data-bs-dismiss='modal'>
+                                        <span class="dashicons dashicons-no"></span>
+                                    </button>
+                                    <!-- Copy btn -->
+                                    <button class="my-plugin-button me-1" type="button" id='search-invoices-data' >
+                                        <span class="dashicons dashicons-saved"></span>
+                                    </button> 
+                                    <!-- / Copy Btn -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -155,11 +170,15 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                                 </button>
                                 
                                 <!-- insert Customer btn -->
-                                <!-- <a href="<?php //echo admin_url('admin.php?page=zatca-customers&action=insert&status=document-insert-customer')  ?>"> -->
-                                    <button class="my-plugin-button me-1" type="button"  id="document-add-customer">
+                                 <button 
+                                    class="my-plugin-button me-1" 
+                                    type="button"  
+                                    id="document-add-customer"
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    title="<?php echo _e('Insert New Customer', 'zatca') ?>">
                                         <span class="dashicons dashicons-saved"></span>
                                     </button> 
-                                <!-- </a> -->
                                 <!-- / insert customer Btn -->
                             </div>
                             </div>

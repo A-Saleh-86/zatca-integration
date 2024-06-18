@@ -38,13 +38,21 @@ if (!empty($results)) {
                                 <option value="ZATCA V2" <?php if($result->zatcaStage  == 'ZATCA V2'){ echo 'selected';}?> >ZATCA V2</option>
                                 <option value="No ZATCA" <?php if($result->zatcaStage  == 'No ZATCA'){ echo 'selected';}?> >No ZATCA</option>
                             </select>
-                            <div>
-                                
-                            </div>
+                            
                             <div class="mx-1"></div>
-                            <button class="my-plugin-button me-1" type="button" id='copy-company-data'>
+
+                            <!-- Get Seller Data Btn -->
+                            <button 
+                                class="my-plugin-button me-1" 
+                                type="button" 
+                                id='copy-company-data'
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="top" 
+                                title="<?php echo _e('Get Seller Data', 'zatca') ?>">
                                 <span class="dashicons dashicons-update"></span>
                             </button>
+                            <!-- / Get Seller Data form -->
+
                         </div>
                     </div>
                 </div>

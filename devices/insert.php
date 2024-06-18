@@ -2,17 +2,27 @@
 include_once dirname(dirname(__FILE__)) . '/zatca.php';
 ?>
 <div class="container">
-        
+    
+    <!-- Back Btn -->
     <div class=" mx-auto mt-3">
-        <a href="<?php echo admin_url('admin.php?page=zatca-devices&action=view'); ?>" class="btn my-plugin-button">
-        <span class="dashicons dashicons-undo"></span>
+        <a 
+            href="<?php echo admin_url('admin.php?page=zatca-devices&action=view'); ?>" 
+            class="btn my-plugin-button"
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            title="<?php echo _e('Back', 'zatca') ?>">
+            <span class="dashicons dashicons-undo"></span>
         </a>
     </div>
+    <!-- / Back Btn -->
 
+    <!-- Header -->
     <div class="col-xl-9 mx-auto mt-0">
         <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Add New Device', 'zatca') ?></h5>
     </div>
+    <!-- / Header -->
 
+    <!-- Input Form -->
     <form class="form-horizontal main-form mt-1" id="device-form__form">
 
 
@@ -93,5 +103,6 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         <!-- / Submit Btn -->
         
     </form>
-        
+    <!-- / Input Form -->
+     
 </div>

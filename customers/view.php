@@ -6,11 +6,17 @@
     
     <!-- Add Btn -->
     <div class="col-xl-12 mx-auto mt-3">
-        <a href="<?php echo admin_url('admin.php?page=zatca-customers&action=insert')  ?>" class="my-plugin-button btn add-btn">
+        <a 
+            href="<?php echo admin_url('admin.php?page=zatca-customers&action=insert')  ?>" 
+            class="my-plugin-button btn add-btn"
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            title="<?php echo _e('Insert New Customer', 'zatca') ?>">
             <span class="dashicons dashicons-insert"></span>
         </a>
     </div>
     <!-- / Add Btn -->
+
     <table id="example" class="table table-striped" width="100%">
 
         <thead>
@@ -74,20 +80,37 @@
                             ?>
                             </td>
                         <td style="font-size: 0.8rem;" class="d-flex align-items-center ">
+
                             <!-- Edit Btn -->
-                            <a href="<?php echo admin_url('admin.php?page=zatca-customers&action=edit-customer&id='.$result->ID.'')  ?>" class="my-plugin-button btn-sm me-1">
-                            <span class="dashicons dashicons-edit"></span>
+                            <a 
+                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=edit-customer&id='.$result->ID.'')  ?>" 
+                                class="my-plugin-button btn-sm me-1"
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="top" 
+                                title="<?php echo _e('Edit Customer', 'zatca') ?>">
+                                <span class="dashicons dashicons-edit"></span>
                             </a>
                             <!-- / Edit Btn -->
     
                             <!-- Delete Btn -->
-                            <a href="<?php echo admin_url('admin.php?page=zatca-customers&action=delete&id='.$result->ID.'')  ?>" id="delete" class="my-plugin-button btn-sm me-1 confirm">
-                            <span class="dashicons dashicons-trash"></span>
+                            <a 
+                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=delete&id='.$result->ID.'')  ?>" 
+                                id="delete" class="my-plugin-button btn-sm me-1 confirm"
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="top" 
+                                title="<?php echo _e('Delete Customer', 'zatca') ?>">
+                                <span class="dashicons dashicons-trash"></span>
                             </a>
                             <!-- /Delete Btn -->
 
                             <!-- View Btn -->
-                            <button type='button' class='btn my-plugin-button btn-sm ' data-bs-toggle='modal' data-bs-target='#exampleModal-<?php echo $result->ID ?>'>
+                            <button 
+                                type='button' 
+                                class='btn my-plugin-button btn-sm ' data-bs-toggle='modal' 
+                                data-bs-target='#exampleModal-<?php echo $result->ID ?>'
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="top" 
+                                title="<?php echo _e('View Data', 'zatca') ?>">
                                 <span class="dashicons dashicons-welcome-view-site"></span>
                             </button>
                             <!-- / View Btn -->
@@ -141,8 +164,6 @@
                             </div>
                             <!-- / View Modal -->
 
-                            
-                            
                         </td>
     
                     </tr>

@@ -8,15 +8,24 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         
         <!-- Back Btn -->
         <div class=" mx-auto mt-3">
-            <a href="<?php echo admin_url('admin.php?page=zatca-customers&action=view'); ?>" class="btn my-plugin-button">
-            <span class="dashicons dashicons-undo"></span>
+            <a 
+                href="<?php echo admin_url('admin.php?page=zatca-customers&action=view'); ?>" 
+                class="btn my-plugin-button"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top" 
+                title="<?php echo _e('Back', 'zatca') ?>">
+                <span class="dashicons dashicons-undo"></span>
             </a>
         </div>
+        <!-- / Back Btn -->
 
+        <!-- Header -->
         <div class="col-xl-9 mx-auto mt-3">
             <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Add New Customer', 'zatca')?></h5>
         </div>
+        <!-- / Header -->
 
+        <!-- Input Form -->
         <form class="form-horizontal main-form mt-1" id="contact-form__form">
             
             <!-- Hidden input -->
@@ -41,7 +50,14 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         <div class="mx-1"></div>
 
                         <!-- Search Btn -->
-                        <button type='button' class='btn my-plugin-button me-1' data-bs-toggle='modal' data-bs-target='#exampleModal-search-customers'>
+                        <button 
+                            type='button' 
+                            class='btn my-plugin-button me-1' 
+                            data-bs-toggle='modal' 
+                            data-bs-target='#exampleModal-search-customers'
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            title="<?php echo _e('Search Invoices', 'zatca') ?>">
                             <span class="dashicons dashicons-search"></span>
                         </button>
                         <!-- / Search Btn -->
@@ -57,7 +73,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                                     
                                     <div class="container ">
                                         
-                                        <table id="ah" class="display" width="100%">
+                                        <table id="example" class="table table-striped" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Name', 'zatca') ?></th>
@@ -68,8 +84,9 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                                             </thead>
                                         
                                             <tbody>
-                                                    <?php
-                                                    global $wpdb;
+                                                <?php
+                                                global $wpdb;
+
                                                 $table_usermeta = $wpdb->prefix . 'usermeta';
                                                 $meta_key_capabilities = $wpdb->prefix .'capabilities'; 
                                                 $meta_value_customer = '%customer%';
@@ -109,8 +126,8 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                                                         }
                                                     }
                                                     
-                                                    ?>
-                                                </tbody>
+                                                ?>
+                                            </tbody>
                                         </table>
                                     </div> 
                                 </div>
@@ -118,11 +135,20 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                                     <button type='button' class='my-plugin-button' data-bs-dismiss='modal'>
                                         <span class="dashicons dashicons-no"></span>
                                     </button>
+
                                     <!-- Copy btn -->
-                                    <button class="my-plugin-button me-1" type="button" id='search-customer-data' data-bs-dismiss='modal'>
+                                    <button 
+                                        class="my-plugin-button me-1" 
+                                        type="button" 
+                                        id='search-customer-data' 
+                                        data-bs-dismiss='modal'
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        title="<?php echo _e('Search Customer data', 'zatca') ?>">
                                         <span class="dashicons dashicons-saved"></span>
                                     </button> 
                                     <!-- / Copy Btn -->
+
                                 </div>
                                 </div>
                             </div>
@@ -467,6 +493,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <!-- / Submit Btn -->
             
         </form>
-            
+        <!-- / Input Form -->
+
     </div>
 

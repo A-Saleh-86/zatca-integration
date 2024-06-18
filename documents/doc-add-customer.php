@@ -8,15 +8,24 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         
     <!-- Back Btn -->
     <div class=" mx-auto mt-3">
-        <a href="<?php echo admin_url('admin.php?page=zatca-customers&action=view'); ?>" class="btn my-plugin-button">
+        <a 
+            href="<?php echo admin_url('admin.php?page=zatca-customers&action=view'); ?>" 
+            class="btn my-plugin-button"
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            title="<?php echo _e('Back', 'zatca') ?>">
         <span class="dashicons dashicons-undo"></span>
         </a>
     </div>
+    <!-- / Back Btn -->
 
+    <!-- Header -->
     <div class="col-xl-9 mx-auto mt-3">
         <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Add New Customer', 'zatca')?></h5>
     </div>
+    <!-- / Header -->
 
+    <!-- Input form -->
     <form class="form-horizontal main-form mt-1" id="contact-form__form">
         
         <!-- Hidden input -->
@@ -374,5 +383,6 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         <!-- / Submit Btn -->
         
     </form>
-            
+    <!-- / Input Form -->
+     
 </div>

@@ -14,19 +14,30 @@ $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE 
 
 // Check if there are results
 if (!empty($results)) {
-    foreach ($results as $result) {
+    foreach ($results as $result) {?>
 
-        ?>
         <div class="container">
 
+            <!-- Back Btn -->
             <div class=" mx-auto mt-3">
-                <a href="<?php echo admin_url('admin.php?page=zatca-devices&action=view'); ?>" class="btn btn-secondary ">
+                <a 
+                    href="<?php echo admin_url('admin.php?page=zatca-devices&action=view'); ?>" 
+                    class="btn btn-secondary "
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="top" 
+                    title="<?php echo _e('Back', 'zatca') ?>">
                     <span class="dashicons dashicons-undo"></span>
                 </a>
             </div>
+            <!-- / Back Btn -->
+
+            <!-- Header -->
             <div class="col-xl-9 mx-auto mt-0">
                 <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Edit Device Details', 'zatca') ?></h5>
             </div>
+            <!-- / Header -->
+
+            <!-- Input Form -->
             <form class="form-horizontal main-form mt-1" id="edit-form-device__form">
 
                 <!-- Hidden input for Vendor Id -->
@@ -97,7 +108,6 @@ if (!empty($results)) {
                 </div>
                 <!-- /  tokenData field -->
 
-
                 <!-- Submit Btn -->
                 <div class="mb-3 row">
                     <div class="d-grid gap-2 col-8 md-flex justify-content-md-end">
@@ -107,6 +117,8 @@ if (!empty($results)) {
                 <!-- / Submit Btn -->
 
             </form>
+            <!-- / input Form -->
+
         </div>
         <?php
     }
