@@ -3408,4 +3408,6 @@ function log_download_doc_xml($user_login, $user_id) {
     log_user_action($user_login, $user_id, 4); // 4 = download xml
 }
 
+
+
 add_action('wp_login', 'log_user_login', 10, 2);

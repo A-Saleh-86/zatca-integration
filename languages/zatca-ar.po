@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-06-18T19:41:27+00:00\n"
+"POT-Creation-Date: 2024-06-18T20:00:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -465,7 +465,6 @@ msgid "Delete Device"
 msgstr "اضافه جهاز جديد"
 
 #: documents/edit-document.php:36 documents/edit-document.php:567
-#: documents/view.php:121
 #, fuzzy
 msgid "Edit Document"
 msgstr "اضافه جهاز جديد"
@@ -641,7 +640,7 @@ msgstr "الفواتير"
 
 #: documents/view.php:13
 #, fuzzy
-msgid "Create New Document"
+msgid "Create-New-Document"
 msgstr "اضافه فاتورة جديد"
 
 #: documents/view.php:24
@@ -684,6 +683,11 @@ msgstr "هل صادرات؟"
 #: documents/view.php:40
 msgid "isSummary"
 msgstr "هل ملخص فترة"
+
+#: documents/view.php:121
+#, fuzzy
+msgid "Edit-Document"
+msgstr "اضافه جهاز جديد"
 
 #: documents/view.php:155 documents/view.php:171
 msgid "Send To Zatca"
@@ -745,13 +749,30 @@ msgstr "عمليه ناجحه"
 msgid "Operation"
 msgstr "العمليه"
 
-#: option.php:11 option.php:12 option.php:73
+#: option.php:11 option.php:12 option.php:82
 msgid "ZATCA"
 msgstr "زاتكا"
 
-#: option.php:74
+#: option.php:69 option.php:70 users/view.php:5
+msgid "Users"
+msgstr "المستخدمين"
+
+#: option.php:83
 msgid "Operations"
 msgstr "العمليات"
+
+#: users/view.php:13
+#, fuzzy
+msgid "User No"
+msgstr "رقم الطلب"
+
+#: users/view.php:14
+msgid "Name Arabic"
+msgstr "الاسم العربي"
+
+#: users/view.php:15
+msgid "Name English"
+msgstr "الاسم الانجليزي"
 
 #~ msgid "Client / VendorNo"
 #~ msgstr "رقم العميل"

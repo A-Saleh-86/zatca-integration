@@ -63,6 +63,15 @@ function my_custom_menu() {
         'zatca-logs', // Menu slug
         'zatca_logs_page' // Callback function to display content
     );
+
+    add_submenu_page(
+        'zatca', // Parent menu slug
+        __( 'Users', 'zatca' ), // Page title
+        __( 'Users', 'zatca' ), // Menu title
+        'manage_options', // Capability required to access menu
+        'zatca-users', // Menu slug
+        'zatca_users_page' // Callback function to display content
+    );
 }
 
 // Callback functions to display content for each page
@@ -163,6 +172,35 @@ function zatca_documents_page() {
          case 'delete':
              include 'documents/delete.php';
              break;
+         default:
+             // Handle invalid actions (optional)
+             break;
+     }
+}
+function zatca_users_page() {
+   
+     // Content for the Documents page
+     $action = isset($_GET['action']) ? sanitize_text_field($_GET['action']) : 'view'; // Default action to 'view'
+
+
+
+     // Include specific content based on action
+     switch ($action) {
+         case 'view':
+             include 'users/view.php';
+             break;
+        //  case 'doc-add-customer':
+        //      include 'documents/doc-add-customer.php';
+        //      break;
+        //  case 'edit-document':
+        //      include 'documents/edit-document.php';
+        //      break;
+        //  case 'insert':
+        //      include 'documents/insert.php';
+        //      break;
+        //  case 'delete':
+        //      include 'documents/delete.php';
+        //      break;
          default:
              // Handle invalid actions (optional)
              break;
