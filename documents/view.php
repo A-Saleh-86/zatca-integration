@@ -297,7 +297,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" >
                     <div class="modal-content">
                         <div class="modal-header" style="background-color: #f1e9e9;">
-                            <h5 class="modal-title text-center fw-bold mx-3 mb-2" id="viewRequestLabel">Request data </h5>
+                            <h5 class="modal-title text-center fw-bold mx-3 mb-2" id="viewRequestLabel"><?php echo _e('Request Data', 'zatca') ?> </h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

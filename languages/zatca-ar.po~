@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-06-19T23:52:56+00:00\n"
+"POT-Creation-Date: 2024-06-18T20:00:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,6 +69,7 @@ msgid "VAT ID:"
 msgstr "الرقم الضريبي"
 
 #: company/view.php:171
+#, fuzzy
 msgid "Name:"
 msgstr "الاسم"
 
@@ -150,8 +151,9 @@ msgid "Client / VendorNo:"
 msgstr "رقم العميل"
 
 #: customers/edit-customer.php:68
+#, fuzzy
 msgid "Search Customer"
-msgstr "البحث في العملاء"
+msgstr "العملاء"
 
 #: customers/edit-customer.php:78 customers/insert.php:70 customers/view.php:4
 #: option.php:32 option.php:33
@@ -176,8 +178,9 @@ msgid "Address"
 msgstr "العنوان"
 
 #: customers/edit-customer.php:152
+#, fuzzy
 msgid "Search Customer Data"
-msgstr "البحث في بيانات العميل"
+msgstr "تعديل بيانات العميل"
 
 #: customers/edit-customer.php:170 customers/insert.php:165
 #: documents/doc-add-customer.php:56
@@ -214,12 +217,14 @@ msgstr "رقم العميل"
 
 #: customers/insert.php:60 documents/edit-document.php:88
 #: documents/insert.php:91
+#, fuzzy
 msgid "Search Invoices"
-msgstr "البحث في الفواتير"
+msgstr "نوع الفواتير المدعومة"
 
 #: customers/insert.php:147
+#, fuzzy
 msgid "Search Customer data"
-msgstr "البحث في بيانات العميل"
+msgstr "تعديل بيانات العميل"
 
 #: customers/insert.php:173 documents/doc-add-customer.php:65
 msgid "Client Name - AR"
@@ -335,16 +340,19 @@ msgid "Action"
 msgstr "الاعدادات"
 
 #: customers/view.php:90
+#, fuzzy
 msgid "Edit Customer"
 msgstr "تعديل بيانات العميل"
 
 #: customers/view.php:101
+#, fuzzy
 msgid "Delete Customer"
-msgstr "حذف عميل "
+msgstr "اضافه عميل جديد"
 
 #: customers/view.php:113
+#, fuzzy
 msgid "View Data"
-msgstr "اظهار البانات "
+msgstr "كلمة السر"
 
 #: customers/view.php:123
 msgid "Items"
@@ -447,42 +455,50 @@ msgid "tokenData"
 msgstr "كلمة السر"
 
 #: devices/view.php:58
+#, fuzzy
 msgid "Edit Device"
 msgstr "تعديل بيانات الجهاز"
 
 #: devices/view.php:70
+#, fuzzy
 msgid "Delete Device"
-msgstr "حذف جهاز "
+msgstr "اضافه جهاز جديد"
 
 #: documents/edit-document.php:36 documents/edit-document.php:567
+#, fuzzy
 msgid "Edit Document"
-msgstr "تعديل بيانات الفاتوره"
+msgstr "اضافه جهاز جديد"
 
 #: documents/edit-document.php:45 documents/insert.php:49
+#, fuzzy
 msgid "Invoice No:"
 msgstr "رقم الفاتورة"
 
 #: documents/edit-document.php:65 documents/insert.php:69
+#, fuzzy
 msgid "Woo Invoice No:"
 msgstr "رقم فاتورة النظام"
 
 #: documents/edit-document.php:98 documents/insert.php:101
+#, fuzzy
 msgid "Invoices"
-msgstr " الفواتير "
+msgstr "نوع الفواتير المدعومة"
 
 #: documents/edit-document.php:107 documents/insert.php:110
 msgid "Order No"
 msgstr "رقم الطلب"
 
 #: documents/edit-document.php:156 documents/insert.php:157
+#, fuzzy
 msgid "Customer Not Exist"
-msgstr "العميل غير مسجل"
+msgstr "العملاء"
 
 #: documents/edit-document.php:162 documents/insert.php:163
 msgid "This Customer Not Exist In Zatca Customers.Insert Now?"
 msgstr "هذا العميل غير مسجل في جدول العملاء..هل تريد التسجيل الان؟"
 
 #: documents/edit-document.php:196 documents/insert.php:196
+#, fuzzy
 msgid "Delivery Date:"
 msgstr "تاريخ الانتهاء"
 
@@ -491,8 +507,9 @@ msgid "Max Delivery Date:"
 msgstr "اقصي تاريخ للتوصيل"
 
 #: documents/edit-document.php:230 documents/insert.php:230
+#, fuzzy
 msgid "Invoices Type :"
-msgstr "نوع الفاتورة"
+msgstr "نوع الفواتير المدعومة"
 
 #: documents/edit-document.php:244 documents/insert.php:246
 msgid "Payed:"
@@ -515,8 +532,9 @@ msgid "Tax Total"
 msgstr "اجمالي الضريبه"
 
 #: documents/edit-document.php:314 documents/insert.php:316
+#, fuzzy
 msgid "Invoice Net:"
-msgstr "الصافي"
+msgstr "رقم الجهاز"
 
 #: documents/edit-document.php:332 documents/insert.php:334
 msgid "Subnet Total plus tax:"
@@ -539,6 +557,7 @@ msgid "Left Amount"
 msgstr "المبلغ المتبقي"
 
 #: documents/edit-document.php:440 documents/insert.php:442
+#, fuzzy
 msgid "VAT Category SubType Code:"
 msgstr "فئة الضريبة الفرعية"
 
@@ -568,16 +587,19 @@ msgid "Notes"
 msgstr "ملاحظات"
 
 #: documents/insert.php:22 documents/insert.php:539
+#, fuzzy
 msgid "Insert New Document"
 msgstr "اضافه فاتورة جديد"
 
 #: documents/insert.php:78
+#, fuzzy
 msgid "Woo Invoice No"
 msgstr "رقم فاتورة النظام"
 
 #: documents/insert.php:204 documents/view.php:26
+#, fuzzy
 msgid "Delivery Date"
-msgstr "تاريخ التوصيل"
+msgstr "تاريخ الانتهاء"
 
 #: documents/insert.php:221
 msgid "Max Delivery Date"
@@ -592,8 +614,9 @@ msgid "Discount"
 msgstr "اجمالي الخصم"
 
 #: documents/insert.php:325 documents/view.php:31
+#, fuzzy
 msgid "Invoice Net"
-msgstr "الصافي"
+msgstr "نوع الفواتير المدعومة"
 
 #: documents/insert.php:343 documents/view.php:32
 msgid "Subnet Total plus tax"
@@ -616,14 +639,17 @@ msgid "Documents"
 msgstr "الفواتير"
 
 #: documents/view.php:13
-msgid "Add New Document"
+#, fuzzy
+msgid "Create-New-Document"
 msgstr "اضافه فاتورة جديد"
 
 #: documents/view.php:24
+#, fuzzy
 msgid "Invoice No"
 msgstr "رقم الفاتورة "
 
 #: documents/view.php:25
+#, fuzzy
 msgid "WooCommerce Invoice No"
 msgstr "رقم فاتورة النظام"
 
@@ -632,14 +658,17 @@ msgid "Maximum Delivery Date"
 msgstr "اقصي تاريخ للتوصيل"
 
 #: documents/view.php:28
+#, fuzzy
 msgid "Invoice Type"
-msgstr "نوع الفاتورة "
+msgstr "نوع الفواتير المدعومة"
 
 #: documents/view.php:35
+#, fuzzy
 msgid "VAT Category Code"
 msgstr "فئة الضريبة الرئيسية"
 
 #: documents/view.php:36
+#, fuzzy
 msgid "VAT Category SubType Code"
 msgstr "فئة الضريبة الفرعية"
 
@@ -655,33 +684,26 @@ msgstr "هل صادرات؟"
 msgid "isSummary"
 msgstr "هل ملخص فترة"
 
-#: documents/view.php:129
+#: documents/view.php:121
+#, fuzzy
 msgid "Edit-Document"
-msgstr "تعديل بيانات الفاتورة"
+msgstr "اضافه جهاز جديد"
 
-#: documents/view.php:144
-msgid "View Request Data"
-msgstr "اظهار بيانات الطلب"
-
-#: documents/view.php:179 documents/view.php:195
+#: documents/view.php:155 documents/view.php:171
 msgid "Send To Zatca"
 msgstr "ارسال الي زاتكا"
 
-#: documents/view.php:214
+#: documents/view.php:190
 msgid "Download XML"
 msgstr "تحميل المستند"
 
-#: documents/view.php:233
+#: documents/view.php:209
 msgid "Reissue"
 msgstr "اعاده ارسال"
 
-#: documents/view.php:254
+#: documents/view.php:230
 msgid "View Warning MSG"
 msgstr "اظهار رسالة الخطأ"
-
-#: documents/view.php:300
-msgid "Request Data"
-msgstr "بيانات الطلب"
 
 #: log/view.php:5 option.php:60 option.php:61
 msgid "Logs"
@@ -740,8 +762,9 @@ msgid "Operations"
 msgstr "العمليات"
 
 #: users/view.php:13
+#, fuzzy
 msgid "User No"
-msgstr "رقم المستخدم"
+msgstr "رقم الطلب"
 
 #: users/view.php:14
 msgid "Name Arabic"
@@ -751,9 +774,9 @@ msgstr "الاسم العربي"
 msgid "Name English"
 msgstr "الاسم الانجليزي"
 
-
-#~ msgid "Create-New-Document"
-#~ msgstr "اضافه فاتورة جديد"
-
 #~ msgid "Client / VendorNo"
 #~ msgstr "رقم العميل"
+
+#, fuzzy
+#~ msgid "Add New Document"
+#~ msgstr "اضافه جهاز جديد"
