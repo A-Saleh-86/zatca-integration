@@ -258,6 +258,11 @@ function load_assets(){
         'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
         'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),) 
     );
+    wp_enqueue_script('users-js',  plugin_dir_url(__FILE__) . '/js/users.js', array(), false, true);
+    wp_localize_script( 'users-js', 'myUser', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-users&action=view'),) 
+    );
 
 }
 
@@ -3409,5 +3414,179 @@ function log_download_doc_xml($user_login, $user_id) {
 }
 
 
-
+// Action Of Login - zatcaLogs:
 add_action('wp_login', 'log_user_login', 10, 2);
+
+// Action to get admin data - zatcaUsers:
+add_action('wp_ajax_get_user_admin_data', 'admin_user_zatcaUsers');
+
+// Action to insert users data - zatcaUsers:
+add_action('wp_ajax_insert_user', 'insert_user_zatcaUsers');
+
+// Action to Edit Users data - zatcaUsers:
+add_action('wp_ajax_edit_user', 'edit_user_zatcaUsers');
+
+// Function to get admin data from database - zatcaUsers
+function admin_user_zatcaUsers(){
+
+    if(isset($_REQUEST)){
+
+        global $wpdb;
+
+        // AJax Data:
+        $userId = $_REQUEST['user_id'];
+
+
+		$table_usermeta = $wpdb->prefix . 'usermeta';
+
+        
+        $first_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'first_name' and user_id = $userId"));
+        $last_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'last_name' and user_id = $userId"));
+
+        // Return the fetched data
+
+        $response = array(
+            'first_name' => $first_name,
+            'last_name'  => $last_name
+        );
+
+        // Return the array as JSON
+        wp_send_json($response);
+       
+    }
+
+    die();
+}
+
+// function to insert user data to database - zatcaUsers:
+function insert_user_zatcaUsers(){
+
+    if(isset($_REQUEST)){
+
+        global $wpdb;
+
+        // AJax Data:
+        $data = $_REQUEST['insert_user_data'];
+
+        // Parse Data:
+        parse_str($data, $form_array);
+
+
+        // Variables of data:
+        $personNo = $form_array['person-no'];
+        $arabicName = $form_array['arabic-name'];
+        $englishName = $form_array['english-name'];
+        $isRemind = $form_array['is-remind'];
+        $remindInterval = $form_array['remindInterval'];
+
+        // check if is remind checked:
+        if($isRemind != null){
+          
+            $isRemind = 1;
+
+        }else{
+
+            $isRemind = 0;
+        }
+
+        // Validation on if user already exist or not:
+        $check = $wpdb->get_var($wpdb->prepare("SELECT personNo FROM zatcauser WHERE personNo = $personNo "));
+
+        if($check != null){
+
+            $msg = 'denied';
+
+        }else{
+
+            // Insert User to database:
+            $insert_user = $wpdb->insert(
+                'zatcauser',
+                [
+                    'personNo'  => $personNo,
+                    'aName' =>$arabicName,
+                    'eName' =>$englishName,
+                    'ZATCA_B2C_NotIssuedDocuments_isRemind'=>$isRemind,
+                    'ZATCA_B2C_NotIssuedDocumentsReminderInterval'=>$remindInterval
+      
+                ]
+            );
+
+            $msg = 'passed';
+        }
+        
+
+        // Validation of zatcauser:
+        if ($insert_user === false) {
+
+            // Check For Error:
+            error_log('documentunit Error: ' . $wpdb->last_error);
+            echo "Error Inserting docunit: " . $wpdb->last_error;
+        }
+
+        echo $msg;
+       
+    }
+
+    die();
+
+}
+
+// function to insert user data to database - zatcaUsers:
+function edit_user_zatcaUsers(){
+
+    if(isset($_REQUEST)){
+
+        global $wpdb;
+
+        // AJax Data:
+        $data = $_REQUEST['edit_user_data'];
+
+        // Parse Data:
+        parse_str($data, $form_array);
+
+        // Variables of data:
+        $personNo = $form_array['personNo'];
+        $arabicName = $form_array['arabic-name'];
+        $englishName = $form_array['english-name'];
+        $isRemind = $form_array['is-remind'];
+        $remindInterval = $form_array['remindInterval'];
+        
+
+        // check if is remind checked:
+        if($isRemind != null){
+          
+            $isRemind = 1;
+
+        }else{
+
+            $isRemind = 0;
+        }
+
+
+        $table_name = 'zatcauser';
+        $data = array(
+
+            'aName' =>$arabicName,
+            'eName' =>$englishName,
+            'ZATCA_B2C_NotIssuedDocuments_isRemind'=>$isRemind,
+            'ZATCA_B2C_NotIssuedDocumentsReminderInterval'=>$remindInterval
+            
+        );
+        $where = array('personNo' => $personNo);
+        $update_result = $wpdb->update($table_name, $data, $where);
+    
+
+        if ($update_result === false) {
+            // There was an error Updating data
+            $error_message = $wpdb->last_error;
+            echo "Error inserting data: $error_message";
+        } else {
+
+            echo 'Data Updated';
+        }
+       
+    }
+
+    die();
+
+}

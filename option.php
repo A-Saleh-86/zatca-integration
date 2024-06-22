@@ -177,6 +177,7 @@ function zatca_documents_page() {
              break;
      }
 }
+
 function zatca_users_page() {
    
      // Content for the Documents page
@@ -189,18 +190,15 @@ function zatca_users_page() {
          case 'view':
              include 'users/view.php';
              break;
-        //  case 'doc-add-customer':
-        //      include 'documents/doc-add-customer.php';
-        //      break;
-        //  case 'edit-document':
-        //      include 'documents/edit-document.php';
-        //      break;
-        //  case 'insert':
-        //      include 'documents/insert.php';
-        //      break;
-        //  case 'delete':
-        //      include 'documents/delete.php';
-        //      break;
+         case 'edit-user':
+             include 'users/edit-user.php';
+             break;
+         case 'insert':
+             include 'users/insert.php';
+             break;
+         case 'delete':
+             include 'users/delete.php';
+             break;
          default:
              // Handle invalid actions (optional)
              break;

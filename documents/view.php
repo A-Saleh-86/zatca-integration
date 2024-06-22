@@ -327,7 +327,7 @@
                                         <?php if (is_array($val)):?>
                                             <?php displayArray($val);?>
                                         <?php else:?>
-                                            <input type="text" class="form-control" id="data" value="<?php echo $val?>">
+                                            <input type="text" class="form-control" id="data" value="<?php echo $val?>" disabled>
                                         <?php endif;?>
                                     </div>
                                     <?php

@@ -168,80 +168,101 @@ body.wp-core-ui.colors-blue .my-plugin-button {
 
 /* Log Page */
 
-.form-check-label {
+.custom-log .form-check-label {
     display: flex;
     align-items: center;
     height: 100%;
-}
-
-.form-group {
+  }
+  
+  .custom-log .form-group {
     display: flex;
     align-items: center;
     gap: 10px; /* Adjust the gap between label and input as needed */
-}
-
-.input-group {
+  }
+  
+  .custom-log .input-group {
     display: flex;
     align-items: center;
     flex: 1;
-}
-
-
-
-.form-check-input {
+  }
+  
+  .custom-log .form-check-input {
     margin-left: 0.5em;
-}
-
-.btn-group-sm>.btn, .btn-sm {
-
+  }
+  
+  .custom-log .btn-group-sm>.btn, .custom-log .btn-sm {
     font-size: 1rem;
-}
-
-
-
-.form-group label {
+  }
+  
+  .custom-log .form-group label {
     flex: 0 0 30%; /* Adjust the percentage as needed for the label width */
     max-width: 30%;
     margin-bottom: 0;
     white-space: nowrap;
     width: 100%;
-}
-
-
-.form-control {
+  }
+  
+  .custom-log .form-control {
     width: 100%;
-}
-
-.btn {
+  }
+  
+  .custom-log .btn {
     margin-left: 5px; /* Add margin to separate the button from the input */
-    
+  }
+  
+  /* Media query for smaller screens (optional) */
+  @media (max-width: 767.98px) {
+    .custom-log .form-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .custom-log .form-group label {
+      flex: none;
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 5px;
+    }
+  
+    .custom-log .input-group {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+  
+    .custom-log .btn {
+      margin-left: 0 !important;
+      margin-top: 5px !important;
+      font-size: 1rem !important;
+    }
+  }
+  .custom-log .btn {
+    margin-left: 5px !important; /* Adjust margin as needed */
+  }
+
+  .custom-log .input-group .btn {
+    /* Existing styles */
+    display: inline-block !important;  
+    margin-left: auto !important;  
+  }
+
+  .custom-log .form-group .input-group {
+    /* Existing styles */
+    flex-wrap: wrap;  /* Allow elements to wrap within the input group */
+  }
+  .custom-log .input-group {
+    display: flex;
+    align-items: center;
 }
 
-@media (max-width: 767.98px) {
-    .form-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .form-group label {
-        flex: none;
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 5px;
-    }
-
-    .input-group {
-        width: 100%;
-    }
-
-    .btn {
-        margin-left: 0;
-        margin-top: 5px;
-        font-size: 1rem;
-    }
+.custom-log .input-group .form-control {
+    flex: 1;
 }
 
-
+.custom-log .reset-btn {
+    margin-left: 8px;
+}
 /* localization */
 
 /* General Grid Alignment */
@@ -274,11 +295,6 @@ body[dir="rtl"] .input-group .form-control {
     direction: ltr;
 }
 
-/* body[dir="rtl"] .form-check-label {
-    text-align: right;
-    margin-right: 10px;
-    margin-left: 0;
-} */
 
 body[dir="rtl"] .form-check-label {
     text-align: right;
@@ -297,3 +313,23 @@ body[dir="rtl"] .form-check-input {
 
 
 /* / Log Page */
+
+
+/* Users Page */
+.custom-user .label-style {
+    font-size: 85%;
+    font-weight: 900;
+    line-height: 1;
+    
+  }
+
+.custom-user .col-form-label {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.custom-user .form-check-input{
+
+    margin: 18px;
+}
+/* / Users Page */

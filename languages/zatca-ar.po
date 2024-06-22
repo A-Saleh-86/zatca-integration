@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-06-19T23:52:56+00:00\n"
+"POT-Creation-Date: 2024-06-22T17:16:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,7 +200,7 @@ msgstr "تعديل بيانات العميل"
 
 #: customers/insert.php:16 devices/edit-device.php:28 devices/insert.php:13
 #: documents/doc-add-customer.php:16 documents/edit-document.php:28
-#: documents/insert.php:14
+#: documents/insert.php:14 users/edit-user.php:28 users/insert.php:13
 msgid "Back"
 msgstr "العودة للخلف"
 
@@ -683,47 +683,47 @@ msgstr "اظهار رسالة الخطأ"
 msgid "Request Data"
 msgstr "بيانات الطلب"
 
-#: log/view.php:5 option.php:60 option.php:61
+#: log/view.php:8 option.php:60 option.php:61
 msgid "Logs"
 msgstr "السجلات"
 
-#: log/view.php:16
+#: log/view.php:19
 msgid "From-Date:"
 msgstr "من تاريخ"
 
-#: log/view.php:30
+#: log/view.php:33
 msgid "To-Date"
 msgstr "حتي تاريخ"
 
-#: log/view.php:44 log/view.php:85
+#: log/view.php:47 log/view.php:88
 msgid "user name"
 msgstr "اسم المستخدم"
 
-#: log/view.php:68
+#: log/view.php:71
 msgid "Failed"
 msgstr "عمليه فاشله"
 
-#: log/view.php:83
+#: log/view.php:86
 msgid "Log No"
 msgstr "رقم السجل"
 
-#: log/view.php:84
+#: log/view.php:87
 msgid "Date Time"
 msgstr "الوقت و التاريخ"
 
-#: log/view.php:86
+#: log/view.php:89
 msgid "mac"
 msgstr "عنوان الماك"
 
-#: log/view.php:87
+#: log/view.php:90
 msgid "IP"
 msgstr "عنوان الانترنت"
 
-#: log/view.php:88
+#: log/view.php:91
 msgid "Is Success"
 msgstr "عمليه ناجحه"
 
-#: log/view.php:89
+#: log/view.php:92
 msgid "Operation"
 msgstr "العمليه"
 
@@ -731,7 +731,7 @@ msgstr "العمليه"
 msgid "ZATCA"
 msgstr "زاتكا"
 
-#: option.php:69 option.php:70 users/view.php:5
+#: option.php:69 option.php:70 users/view.php:6
 msgid "Users"
 msgstr "المستخدمين"
 
@@ -739,18 +739,89 @@ msgstr "المستخدمين"
 msgid "Operations"
 msgstr "العمليات"
 
-#: users/view.php:13
+#: users/edit-user.php:36
+msgid "Edit User Details"
+msgstr "تعديل بيانات المستخدم"
+
+#: users/edit-user.php:55
+msgid "Nick Name:"
+msgstr "اسم المستخدم"
+
+#: users/edit-user.php:71 users/insert.php:59
+msgid "Arabic name:"
+msgstr "الاسم بالعربيه"
+
+#: users/edit-user.php:89 users/insert.php:77
+msgid "English Name :"
+msgstr "الاسم بالانجليزية"
+
+#: users/edit-user.php:108 users/insert.php:96
+msgid "ZATCA_B2C_NotIssuedDocuments_isRemind :"
+msgstr "التنبيه بفواتير B2C المتاخرة"
+
+#: users/edit-user.php:130 users/insert.php:115
+msgid "ZATCA_B2C_NotIssuedDocuments_RemindInterval :"
+msgstr ""
+
+#: users/edit-user.php:153
+msgid "Update User Details"
+msgstr "تعديل بيانات المستخدم"
+
+#: users/insert.php:21
+msgid "Add New User"
+msgstr "اضافه مستخدم جديد"
+
+#: users/insert.php:31
+msgid "Person No:"
+msgstr "رقم المستخدم"
+
+#: users/insert.php:68
+msgid "Arabic name"
+msgstr "الاسم بالعربيه "
+
+#: users/insert.php:86
+msgid "English Name"
+msgstr "الاسم بالانجليزية"
+
+#: users/insert.php:125
+msgid "RemindInterval"
+msgstr ""
+
+#: users/insert.php:137 users/view.php:17
+msgid "Insert New User"
+msgstr "اضافه مستخدم جديد"
+
+#: users/view.php:27
 msgid "User No"
 msgstr "رقم المستخدم"
 
-#: users/view.php:14
+#: users/view.php:28
 msgid "Name Arabic"
 msgstr "الاسم العربي"
 
-#: users/view.php:15
+#: users/view.php:29
 msgid "Name English"
 msgstr "الاسم الانجليزي"
 
+#: users/view.php:30
+msgid "Remind with Late B2C Invoices"
+msgstr "التنبيه بفواتير B2C المتاخرة"
+
+#: users/view.php:31
+msgid "Remind with B2C before ZATCA grace period"
+msgstr ""
+
+#: users/view.php:32
+msgid "Actions"
+msgstr "الاعدادات"
+
+#: users/view.php:67
+msgid "Edit User"
+msgstr "تعديل بيانات المستخدم"
+
+#: users/view.php:79
+msgid "Delete User"
+msgstr "حذف المستخدم "
 
 #~ msgid "Create-New-Document"
 #~ msgstr "اضافه فاتورة جديد"
