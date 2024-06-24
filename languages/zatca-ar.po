@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-06-22T17:16:40+00:00\n"
+"POT-Creation-Date: 2024-06-24T15:51:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,12 +24,12 @@ msgstr "زاتكا"
 
 #. Description of the plugin
 #: zatca.php
-msgid "B2B Sell Invoice"
-msgstr ""
+msgid "Zatca Integration"
+msgstr "التكامل مع زاتكا"
 
 #. Author of the plugin
 #: zatca.php
-msgid "Ahmed Saleh"
+msgid "Appy Innovate"
 msgstr ""
 
 #: company/view.php:22 option.php:41 option.php:42
@@ -330,7 +330,7 @@ msgstr "محافظة بالعربية"
 msgid "Country"
 msgstr "البلد"
 
-#: customers/view.php:35 devices/view.php:28 documents/view.php:42
+#: customers/view.php:35 devices/view.php:29 documents/view.php:42
 msgid "Action"
 msgstr "الاعدادات"
 
@@ -378,47 +378,43 @@ msgstr "محافظة بالانجليزية"
 msgid "Close"
 msgstr "اغلاق"
 
-#: devices/edit-device.php:36
+#: devices/edit-device.php:36 devices/edit-device.php:140
 msgid "Edit Device Details"
 msgstr "تعديل بيانات الجهاز"
 
-#: devices/edit-device.php:49 devices/insert.php:31
+#: devices/edit-device.php:49
 msgid "Device No.:"
 msgstr "رقم الجهاز"
 
-#: devices/edit-device.php:65 devices/insert.php:48
-msgid "Device CSID:"
-msgstr "التوقيع الإلكتروني"
+#: devices/edit-device.php:66 devices/insert.php:30
+msgid "Cryptographic Stamp ID:"
+msgstr "التوقيع الالكتروني"
 
-#: devices/edit-device.php:81 devices/insert.php:65
-msgid "CsID_Expiry Date:"
+#: devices/edit-device.php:83 devices/insert.php:47
+msgid "Expiry Date:"
 msgstr "تاريخ الانتهاء"
 
-#: devices/edit-device.php:97 devices/insert.php:82
+#: devices/edit-device.php:100 devices/insert.php:64
 msgid "Token Data:"
 msgstr "كلمة السر"
 
-#: devices/edit-device.php:114
-msgid "Update Device Details"
-msgstr "تعديل بيانات الجهاز"
+#: devices/edit-device.php:118 devices/insert.php:82
+msgid "Device Status :"
+msgstr "حاله الجهاز"
 
 #: devices/insert.php:21
 msgid "Add New Device"
 msgstr "اضافه جهاز جديد"
 
-#: devices/insert.php:39
-msgid "Device No."
-msgstr "رقم الجهاز"
+#: devices/insert.php:38 devices/view.php:25
+msgid "Cryptographic Stamp ID"
+msgstr "التوقيع الالكتروني"
 
-#: devices/insert.php:56
-msgid "Device CSID"
-msgstr "التوقيع الإلكتروني"
-
-#: devices/insert.php:73
-msgid "CsID_Expiry Date"
+#: devices/insert.php:55 devices/view.php:26
+msgid "Expiry Date"
 msgstr "تاريخ الانتهاء"
 
-#: devices/insert.php:90
+#: devices/insert.php:72 devices/view.php:27
 msgid "Token Data"
 msgstr "كلمة السر"
 
@@ -434,23 +430,15 @@ msgstr "الاجهزة"
 msgid "Device No"
 msgstr "رقم الجهاز"
 
-#: devices/view.php:25
-msgid "DeviceCSID"
-msgstr "التوقيع الإلكتروني"
+#: devices/view.php:28
+msgid "Device Status"
+msgstr "حاله الجهاز"
 
-#: devices/view.php:26
-msgid "CsID_ExpiryDate"
-msgstr "تاريخ الانتهاء"
-
-#: devices/view.php:27
-msgid "tokenData"
-msgstr "كلمة السر"
-
-#: devices/view.php:58
+#: devices/view.php:64
 msgid "Edit Device"
 msgstr "تعديل بيانات الجهاز"
 
-#: devices/view.php:70
+#: devices/view.php:76
 msgid "Delete Device"
 msgstr "حذف جهاز "
 
@@ -822,6 +810,24 @@ msgstr "تعديل بيانات المستخدم"
 #: users/view.php:79
 msgid "Delete User"
 msgstr "حذف المستخدم "
+
+#~ msgid "Update Device Details"
+#~ msgstr "تعديل بيانات الجهاز"
+
+#~ msgid "Device No."
+#~ msgstr "رقم الجهاز"
+
+#~ msgid "Device CSID"
+#~ msgstr "التوقيع الإلكتروني"
+
+#~ msgid "DeviceCSID"
+#~ msgstr "التوقيع الإلكتروني"
+
+#~ msgid "CsID_ExpiryDate"
+#~ msgstr "تاريخ الانتهاء"
+
+#~ msgid "tokenData"
+#~ msgstr "كلمة السر"
 
 #~ msgid "Create-New-Document"
 #~ msgstr "اضافه فاتورة جديد"

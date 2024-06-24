@@ -22,9 +22,10 @@
         <thead>
             <tr>
                 <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Device No', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('DeviceCSID', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('CsID_ExpiryDate', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('tokenData', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Cryptographic Stamp ID', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Expiry Date', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Token Data', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Device Status', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Action', 'zatca') ?></th>
             </tr>
         </thead>
@@ -46,12 +47,17 @@
                         <td class="text-center"><?php echo $result->deviceCSID ?></td>
                         <td class="text-center"><?php echo $result->CsID_ExpiryDate ?></td>
                         <td class="text-center"><?php echo $result->tokenData ?></td>
+                        <td class="text-center">
+                            <?php 
+                            echo (isset($result->deviceStatus) && $result->deviceStatus==0) ? 'Yes' : 'No'; 
+                            ?>
+                        </td>
                         
                         <td class=" text-center">
 
                             <!-- Edit Btn -->
                             <a 
-                                href="<?php echo admin_url('admin.php?page=zatca-devices&action=edit-device&id='.$result->ID.'')  ?>" 
+                                href="<?php echo admin_url('admin.php?page=zatca-devices&action=edit-device&deviceNo='.$result->deviceNo.'')  ?>" 
                                 class="my-plugin-button btn-sm me-1"
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
@@ -62,7 +68,7 @@
     
                             <!-- Delete Btn -->
                             <a 
-                                href="<?php echo admin_url('admin.php?page=zatca-devices&action=delete&id='.$result->ID.'')  ?>" 
+                                href="<?php echo admin_url('admin.php?page=zatca-devices&action=delete&deviceNo='.$result->deviceNo.'')  ?>" 
                                 id="delete" 
                                 class="my-plugin-button btn-sm me-1 confirm"
                                 data-bs-toggle="tooltip" 
@@ -80,6 +86,5 @@
             ?>
         </tbody>
     </table>
-
 </div>
 

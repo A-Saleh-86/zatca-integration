@@ -23,29 +23,11 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
     <!-- / Header -->
 
     <!-- Input Form -->
-    <form class="form-horizontal main-form mt-1" id="device-form__form">
-
-
-        <!--  Device No field -->
-        <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Device No.:', 'zatca') ?></label>
-            <div class="col-sm-6 col-md-5">
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="device-no" 
-                        class="form-control" 
-                        autocomplete="off"
-                        placeholder="<?php echo _e('Device No.', 'zatca') ?>"
-                    />
-                </div>
-            </div>
-        </div>
-        <!-- /  Device No field -->
+    <form class="form-horizontal main-form mt-1" id="device_insert_form">
 
         <!--  deviceCSID field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Device CSID:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label"><?php echo _e('Cryptographic Stamp ID:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
@@ -53,7 +35,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         name="device-csid" 
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('Device CSID', 'zatca') ?>"
+                        placeholder="<?php echo _e('Cryptographic Stamp ID', 'zatca') ?>"
                     />
                 </div>
             </div>
@@ -62,7 +44,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
 
         <!--  CsID_ExpiryDate field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('CsID_Expiry Date:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label"><?php echo _e('Expiry Date:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
@@ -70,7 +52,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         name="csid-ex-date" 
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('CsID_Expiry Date', 'zatca') ?>"
+                        placeholder="<?php echo _e('Expiry Date', 'zatca') ?>"
                     />
                 </div>
             </div>
@@ -93,6 +75,24 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             </div>
         </div>
         <!-- /  tokenData field -->
+
+        <!-- Device Status field -->
+        <div class="mb-3 row col-md-6">
+            <label class="col-sm-4 col-form-label text-wrap label-style" >
+                <?php echo _e('Device Status :', 'zatca') ?>
+            </label>
+            <div class="col-sm-8 col-md-8">
+                <div class="form-group">
+                    <input
+                        class="form-check-input form-check-input-sm"
+                        type="checkbox"
+                        name="deviceStatus"
+                        class="form-control"
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- / Device Status field -->
 
         <!-- Submit Btn -->
         <div class="mb-3 row">

@@ -1,10 +1,10 @@
 <?php
 /*
 *plugin name:zatca
-*description:B2B Sell Invoice
-*author:Ahmed Saleh
+*description:Zatca Integration
+*author:Appy Innovate
 *Author url:
-*version:8.0
+*version:8.1
 *test domain:zatca
 *text domain:zatca
 *domain path:/languages
@@ -34,15 +34,9 @@ add_action('wp_enqueue_scripts',  'load_assets');
 // Action Of Sending Inserted Data as AJax Data - customers:
 add_action('admin_enqueue_scripts', 'inserted_data_ajax');
 
-// Action Of Sending Inserted Data as AJax Data - devices:
-add_action('admin_enqueue_scripts', 'inserted_data_ajax_device');
-
 
 // Action Of Sending Inserted Data as AJax Data - customers:
 add_action('admin_enqueue_scripts', 'edit_data_ajax');
-
-// Action Of Sending Inserted Data as AJax Data - devices:
-add_action('admin_enqueue_scripts', 'edit_data_ajax_device');
 
 // Action Of Sending Inserted Data as AJax Data - Company:
 add_action('admin_enqueue_scripts', 'edit_data_ajax_company');
@@ -64,7 +58,7 @@ add_action('admin_enqueue_scripts', 'document_data_ajax');
 add_action('wp_ajax_insert', 'insert_form');
 
 // ajax action - insert - devices:
-add_action('wp_ajax_insert-device', 'insert_form_devices');
+add_action('wp_ajax_insert_device', 'insert_form_devices');
 
 // ajax action - insert - documents:
 add_action('wp_ajax_insert-documents', 'insert_form_documents');
@@ -73,7 +67,7 @@ add_action('wp_ajax_insert-documents', 'insert_form_documents');
 add_action('wp_ajax_edit', 'edit_form_customer');
 
 // ajax action - edit - devices:
-add_action('wp_ajax_edit-device', 'edit_form_device');
+add_action('wp_ajax_edit_device', 'edit_form_device');
 
 // ajax action - edit - company:
 add_action('wp_ajax_edit-company', 'edit_form_company');
@@ -262,6 +256,11 @@ function load_assets(){
     wp_localize_script( 'users-js', 'myUser', array( 
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-users&action=view'),) 
+    );
+    wp_enqueue_script('device-js',  plugin_dir_url(__FILE__) . '/js/device.js', array(), false, true);
+    wp_localize_script( 'device-js', 'myDevice', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-devices&action=view'),) 
     );
 
 }
@@ -918,42 +917,6 @@ function edit_form_customer(){
 }
 
 
-
-// Send Inserted Data as AJax - Devices:
-function inserted_data_ajax_device() {
-
-    // Enqueue jQuery
-    wp_enqueue_script('jquery');
-
-    // Output your script
-    wp_add_inline_script('jquery', '
-        jQuery(document).ready(function($) {
-            $("#device-form__form").submit(function(event){
-                event.preventDefault();
-                var formData = $(this).serialize();
-                
-                $.ajax({
-                    url: "' . admin_url('admin-ajax.php') . '", // Echo the admin URL
-                    method: "POST", // Specify the method
-                    data: {
-                        "action": "insert-device",
-                        "insert_form_ajax_devices": formData
-                    },
-                    success: function(data){
-                        //console.log(data);
-                        window.location.href = "' . admin_url('admin.php?page=zatca-devices&action=view') . '";
-                        
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-        });
-    ');
-}
-
-
 // AJax Insert_Data to DB - Devices:
 function insert_form_devices(){
 
@@ -962,7 +925,7 @@ function insert_form_devices(){
         global $wpdb;
 
         // AJax Data:
-        $vals = $_REQUEST['insert_form_ajax_devices'];
+        $vals = $_REQUEST['insert_form_ajax_data'];
 
         // Parse Data:
         parse_str($vals, $form_array);
@@ -972,16 +935,16 @@ function insert_form_devices(){
         $device_Csid = $form_array['device-csid'];
         $csid_Ex_Date = $form_array['csid-ex-date'];
         $token_Data = $form_array['token-data'];
-
+        $deviceStatus = $form_array['deviceStatus'];
 
 
         $insert_result = $wpdb->insert(
             'zatcadevice',
             [
-                'deviceNo'            => $device_No,
                 'deviceCSID'            => $device_Csid,
                 'CsID_ExpiryDate'       => $csid_Ex_Date,
-                'tokenData'             => $token_Data
+                'tokenData'             => $token_Data,
+                'deviceStatus'             => $deviceStatus
             ]
         );
 
@@ -991,7 +954,7 @@ function insert_form_devices(){
             echo "Error inserting data: $error_message";
         } else {
 
-            echo 'Data Inserted';
+            echo 'New Device Inserted';
         }
 
     }
@@ -999,44 +962,9 @@ function insert_form_devices(){
     die();
 }
 
-// Send Edit Data as AJax - devices:
-function edit_data_ajax_device(){
-
-    
-    
-    // Enqueue jQuery
-    wp_enqueue_script('jquery');
-
-        // Output your script
-        wp_add_inline_script('jquery', '
-        jQuery(document).ready(function($) {
-            $("#edit-form-device__form").submit(function(event){
-                event.preventDefault();
-                var formData = $(this).serialize();
-                
-                $.ajax({
-                    url: "' . admin_url('admin-ajax.php') . '", // Echo the admin URL
-                    method: "POST", // Specify the method
-                    data: {
-                        "action": "edit-device",
-                        "edit_form_ajax_device": formData
-                    },
-                    success: function(data){
-                        // console.log(data);
-                        window.location.href = "' . admin_url('admin.php?page=zatca-devices&action=view') . '";
-                        
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-        });
-    ');
-}
 
 
-// AJax Edit in DB - devices:
+// AJax Edit_data in DB - devices:
 function edit_form_device(){
 
     if(isset($_REQUEST)){
@@ -1044,37 +972,89 @@ function edit_form_device(){
         global $wpdb;
 
         // AJax Data:
-        $vals = $_REQUEST['edit_form_ajax_device'];
+        $vals = $_REQUEST['edit_form_ajax_data'];
 
         // Parse Data:
         parse_str($vals, $form_array);
 
         // Variables of data:
-        $id = $form_array['id'];
+        $device_No_id = $form_array['device_no_id'];
         $device_No = $form_array['device-no'];
         $device_Csid = $form_array['device-csid'];
         $csid_Ex_Date = $form_array['csid-ex-date'];
         $token_Data = $form_array['token-data'];
+        $deviceStatus = $form_array['deviceStatus'];
 
-        $table_name = 'zatcadevice';
-        $data = array(
-            'deviceNo'            => $device_No,
-            'deviceCSID'            => $device_Csid,
-            'CsID_ExpiryDate'       => $csid_Ex_Date,
-            'tokenData'             => $token_Data,
-        );
-        $where = array('ID' => $id);
-        $update_result = $wpdb->update($table_name, $data, $where);
+        // Validation on deviceNo If Used in zatcadocument:
+        $zatcaDocDeviceNo = $wpdb->get_var($wpdb->prepare("SELECT deviceNo FROM zatcadocument WHERE deviceNo = $device_No_id"));
+
+        if($zatcaDocDeviceNo != NULL){
+
+            
+            $deviceData = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceNo = $device_No_id");
+            foreach($deviceData as $data){
+
+                // Convert DateTime Format to Validate:
+                $dbDate = new DateTime($data->CsID_ExpiryDate);
+                $formDate = new DateTime($csid_Ex_Date);
+                $dbFinalDate = $dbDate->format('Y-m-d');
+                $formFinalDate = $formDate->format('Y-m-d');
+
+               if( //Check If edit in Device No.: || Cryptographic Stamp ID || Expiry Date: || Token Data STOP EDIT:
+                    $data->deviceNo != $device_No || 
+                    $data->deviceCSID != $device_Csid ||
+                    $dbFinalDate != $formFinalDate ||
+                    $data->tokenData != $token_Data )
+                {
+
+                    echo 'Sorry Cant Edit..Please Contact Your System Admin';
+                    
+               }else{ // Update Device Status Only:
+
+                    $table_name = 'zatcadevice';
+                    $data = array(
+
+                        'deviceStatus' => $deviceStatus
+                    );
+                    $where = array('deviceNo' => $device_No_id);
+                    $update_result = $wpdb->update($table_name, $data, $where);
+                
+            
+                    if ($update_result === false) {
+                        // There was an error inserting data
+                        $error_message = $wpdb->last_error;
+                        echo "Error inserting data: $error_message";
+                    } else {
+            
+                        echo 'Device Status Updated';
+                    }
+               }
+
+            }
+        }else{ // Update Device Data if Not Used in zatcadocument:
+
+            $table_name = 'zatcadevice';
+            $data = array(
+                'deviceNo'      => $device_No,
+                'deviceCSID'    => $device_Csid,
+                'CsID_ExpiryDate'=> $csid_Ex_Date,
+                'tokenData'     => $token_Data,
+                'deviceStatus'  => $deviceStatus
+            );
+            $where = array('deviceNo' => $device_No_id);
+            $update_result = $wpdb->update($table_name, $data, $where);
+        
     
-
-        if ($update_result === false) {
-            // There was an error inserting data
-            $error_message = $wpdb->last_error;
-            echo "Error inserting data: $error_message";
-        } else {
-
-            echo 'Data Updated';
+            if ($update_result === false) {
+                // There was an error inserting data
+                $error_message = $wpdb->last_error;
+                echo "Error inserting data: $error_message";
+            } else {
+    
+                echo 'Data Updated';
+            }
         }
+        
        
     }
 

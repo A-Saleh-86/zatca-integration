@@ -1,6 +1,6 @@
 <?php
 
-$id = $_GET['id'];
+$deviceNo = $_GET['deviceNo'];
 
 global $wpdb;
 
@@ -9,8 +9,8 @@ global $wpdb;
 // Table Name:
 $table_name = 'zatcadevice';
 
-// Prepare the query with a condition on the DeviceId column using the %d placeholder
-$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE ID = %d", $id ) );
+// Prepare the query with a condition on the deviceNo: 
+$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE deviceNo = $deviceNo" ) );
 
 // Check if there are results
 if (!empty($results)) {
@@ -22,7 +22,7 @@ if (!empty($results)) {
             <div class=" mx-auto mt-3">
                 <a 
                     href="<?php echo admin_url('admin.php?page=zatca-devices&action=view'); ?>" 
-                    class="btn btn-secondary "
+                    class="btn my-plugin-button"
                     data-bs-toggle="tooltip" 
                     data-bs-placement="top" 
                     title="<?php echo _e('Back', 'zatca') ?>">
@@ -38,12 +38,12 @@ if (!empty($results)) {
             <!-- / Header -->
 
             <!-- Input Form -->
-            <form class="form-horizontal main-form mt-1" id="edit-form-device__form">
+            <form class="form-horizontal main-form mt-1" id="device_edit_form">
 
-                <!-- Hidden input for Vendor Id -->
-                <input type="hidden" name="id" value="<?php echo $result->ID   ?>">
-                <!-- / Hidden input for Vendor Id -->
-
+                <!-- Hidden Device No. -->
+                <input type="hidden" name="device_no_id" value="<?php echo $result->deviceNo ?>">
+                <!-- / Hidden Device No. -->
+                
                 <!--  Device No field -->
                 <div class="mb-3 row col-mid-6">
                     <label class="col-sm-2 col-form-label"><?php echo _e('Device No.:', 'zatca') ?></label>
@@ -54,6 +54,7 @@ if (!empty($results)) {
                                 name="device-no" 
                                 class="form-control"
                                 value="<?php echo $result->deviceNo ?>"
+                                
                             />
                         </div>
                     </div>
@@ -62,13 +63,14 @@ if (!empty($results)) {
                 
                 <!--  deviceCSID field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Device CSID:', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Cryptographic Stamp ID:', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
                                 type="text"
                                 name="device-csid" 
-                                class="form-control"
+                                class="form-control" 
+                                autocomplete="off"
                                 value="<?php echo $result->deviceCSID ?>"
                             />
                         </div>
@@ -78,13 +80,14 @@ if (!empty($results)) {
 
                 <!--  CsID_ExpiryDate field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('CsID_Expiry Date:', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Expiry Date:', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
                                 type="datetime-local"
                                 name="csid-ex-date" 
-                                class="form-control"
+                                class="form-control" 
+                                autocomplete="off"
                                 value="<?php echo $result->CsID_ExpiryDate ?>"
                             />
                         </div>
@@ -100,7 +103,8 @@ if (!empty($results)) {
                             <input 
                                 type="text"
                                 name="token-data" 
-                                class="form-control"
+                                class="form-control" 
+                                autocomplete="off"
                                 value="<?php echo $result->tokenData ?>"
                             />
                         </div>
@@ -108,10 +112,32 @@ if (!empty($results)) {
                 </div>
                 <!-- /  tokenData field -->
 
+                <!-- Device Status field -->
+                <div class="mb-3 row col-md-6">
+                    <label class="col-sm-4 col-form-label text-wrap label-style" >
+                        <?php echo _e('Device Status :', 'zatca') ?>
+                    </label>
+                    <div class="col-sm-8 col-md-8">
+                        <div class="form-group">
+                            <input
+                                class="form-check-input form-check-input-sm"
+                                type="checkbox"
+                                name="deviceStatus"
+                                class="form-control"
+                                value="<?php echo $result->deviceStatus ?>"
+                                <?php
+                                echo (isset($result->deviceStatus) && $result->deviceStatus==0) ? 'checked' : ''; 
+                                ?>
+                            />
+                        </div>
+                    </div>
+                </div>
+                <!-- / Device Status field -->
+
                 <!-- Submit Btn -->
                 <div class="mb-3 row">
                     <div class="d-grid gap-2 col-8 md-flex justify-content-md-end">
-                        <input type="submit" value="<?php echo _e('Update Device Details', 'zatca') ?>" class="btn btn-primary " />
+                        <input type="submit" value="<?php echo _e('Edit Device Details', 'zatca') ?>" class="my-plugin-button" />
                     </div>
                 </div>
                 <!-- / Submit Btn -->
