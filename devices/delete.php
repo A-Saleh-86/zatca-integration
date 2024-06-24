@@ -1,6 +1,6 @@
 <?php
 
-$id = $_GET['id'];
+$deviceNo = $_GET['deviceNo'];
 
 
 global $wpdb;
@@ -10,7 +10,7 @@ $table_name = 'zatcadevice';
 
 // Define the condition to identify the row(s) to delete
 $where = array(
-    'ID' => $id // Change column_name and value_to_match accordingly
+    'deviceNo' => $deviceNo 
 );
 
 
