@@ -63,7 +63,7 @@ function updateInput() {
         success: function(data) {
 
             // Get VATCategoryCodeSubTypeNo aName and Put In exemption Reason:
-            exemptionReasonInput.value = data.vatCatName;
+            // exemptionReasonInput.value = data.vatCatName;
         },
         error: function(xhr, status, error) {
             console.error('Error fetching data:', error);

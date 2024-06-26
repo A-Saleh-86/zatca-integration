@@ -38,9 +38,6 @@ add_action('admin_enqueue_scripts', 'inserted_data_ajax');
 // Action Of Sending Inserted Data as AJax Data - customers:
 add_action('admin_enqueue_scripts', 'edit_data_ajax');
 
-// Action Of Sending Inserted Data as AJax Data - Company:
-add_action('admin_enqueue_scripts', 'edit_data_ajax_company');
-
 // Action Of Sending customer Id as AJax Data [ Insert Page]:
 add_action('admin_enqueue_scripts', 'customer_data_ajax');
 
@@ -48,8 +45,6 @@ add_action('admin_enqueue_scripts', 'customer_data_ajax');
 // Action Of Sending customer Id as AJax Data [ Edit page]:
 add_action('admin_enqueue_scripts', 'customer_edit_data_ajax');
 
-// Action Of Sending Vat Cat Code Id as AJax Data:
-add_action('admin_enqueue_scripts', 'company_data_ajax');
 
 // Action Of Sending woo order data in AJax [ Document ]:
 add_action('admin_enqueue_scripts', 'document_data_ajax');
@@ -70,7 +65,7 @@ add_action('wp_ajax_edit', 'edit_form_customer');
 add_action('wp_ajax_edit_device', 'edit_form_device');
 
 // ajax action - edit - company:
-add_action('wp_ajax_edit-company', 'edit_form_company');
+add_action('wp_ajax_submit_company', 'submit_form_company');
 
 // ajax action - edit - document:
 add_action('wp_ajax_edit-document', 'document_edit_form');
@@ -83,7 +78,7 @@ add_action('wp_ajax_customer', 'customer_form');
 add_action('wp_ajax_customer_edit', 'customer_edit_form');
 
 // Action to get Data from db with ajax data - [ view ] company:
-add_action('wp_ajax_company', 'company_form');
+add_action('wp_ajax_company', 'company_vat_cat_code_form');
 
 // Action to get Data from db with ajax data - [ view ] company:
 add_action('wp_ajax_woo-company-data', 'woo_company');
@@ -120,6 +115,19 @@ add_action('admin_head', 'my_plugin_button_styles');
 // Action Of Text Domain:
 add_action( 'init', 'my_plugin_load_textdomain' );
 
+// Action Of Login - zatcaLogs:
+add_action('wp_login', 'log_user_login', 10, 2);
+
+// Action to get admin data - zatcaUsers:
+add_action('wp_ajax_get_user_admin_data', 'admin_user_zatcaUsers');
+
+// Action to insert users data - zatcaUsers:
+add_action('wp_ajax_insert_user', 'insert_user_zatcaUsers');
+
+// Action to Edit Users data - zatcaUsers:
+add_action('wp_ajax_edit_user', 'edit_user_zatcaUsers');
+
+
 // Function to run Text Domain:
 function my_plugin_load_textdomain() {
     load_plugin_textdomain( 'zatca', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -128,37 +136,26 @@ function my_plugin_load_textdomain() {
 }
 
 
-// function my_plugin_load_my_own_textdomain( $mofile, $domain ) {
-// 	if ( 'zatca' === $domain && false !== strpos( $mofile, WP_LANG_DIR . '/plugins/' ) ) {
-// 		$locale = apply_filters( 'plugin_locale', determine_locale(), $domain );
-// 		$mofile = WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) . '/languages/' . $domain . '-' . $locale . '.mo';
-// 	}
-// 	return $mofile;
-// }
-// add_filter( 'load_textdomain_mofile', 'my_plugin_load_my_own_textdomain', 10, 2 );
-
-
-
 // Define the function to create the table
-// function create_custom_table() {
-//     global $wpdb;
-//     $table_name = $wpdb->prefix . 'plugin_table'; // Replace 'your_table_name' with your table name
+function create_custom_table() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'oooo'; // Replace 'your_table_name' with your table name
 
-//     // SQL query to create the table
-//     $sql = "CREATE TABLE IF NOT EXISTS $table_name (
-//         id INT AUTO_INCREMENT PRIMARY KEY,
-//         column1 VARCHAR(255),
-//         column2 INT
+    // SQL query to create the table
+    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        column1 VARCHAR(255),
+        column2 INT
         
-//     ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+    ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
 
-//     // Execute the query
-//     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-//     dbDelta( $sql );
-// }
+    // Execute the query
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    dbDelta( $sql );
+}
 
-// // Hook the function to plugin activation
-// register_activation_hook( __FILE__, 'create_custom_table' );
+// Add Action in startup to check for table in database:
+// add_action('admin_menu', 'create_custom_table');
 
 
 // Admin Panel Schema:
@@ -240,9 +237,7 @@ function load_assets(){
     wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . '/js/datatables.min.js', array(), false, true);
     wp_enqueue_script('moment-js', plugin_dir_url(__FILE__) . '/js/moment.js', array(), false, true);
     wp_enqueue_script('datatable-datetime-js', plugin_dir_url(__FILE__) . '/js/datatable-datetime.js', array(), false, true);
-    // wp_deregister_script('jquery');
     wp_enqueue_script('jquery');
-    // wp_register_script('jquery', includes_url('/js/jquery/jquery.js'), false, '', true);
     wp_enqueue_script('bootstap-js', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array(), false, true);
     wp_enqueue_script('fontawsome-js', plugin_dir_url(__FILE__) . '/js/fontawesome.min.js', array(), false, true);
     wp_enqueue_script('main-js',  plugin_dir_url(__FILE__) . '/js/main.js', array(), false, true);
@@ -261,6 +256,11 @@ function load_assets(){
     wp_localize_script( 'device-js', 'myDevice', array( 
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-devices&action=view'),) 
+    );
+    wp_enqueue_script('company-js',  plugin_dir_url(__FILE__) . '/js/company.js', array(), false, true);
+    wp_localize_script( 'company-js', 'myCompany', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-company&action=view'),) 
     );
 
 }
@@ -962,11 +962,9 @@ function insert_form_devices(){
     die();
 }
 
-
-
 // AJax Edit_data in DB - devices:
 function edit_form_device(){
-
+    
     if(isset($_REQUEST)){
 
         global $wpdb;
@@ -1061,110 +1059,16 @@ function edit_form_device(){
     die();
 }
 
-// Send Data as Ajax - Company:
-function company_data_ajax(){
-
-    if (isset($_GET['page']) && $_GET['page'] ==='zatca-company') {
-
-        // wp_enqueue_script('jquery');
-
-        // Output your script
-        wp_add_inline_script("jquery", "
-            jQuery(document).ready(function($) {
-
-                // Btn Of Copy Company Data:
-                const copyBtn = document.getElementById('copy-company-data');
-
-                // Company Address Input
-                const comAddressInput = document.getElementById('company-address');
-
-                // Company City Input
-                const comCityInput = document.getElementById('company-city');
-
-                // Get the vat cat code element
-                const vatCatCodeInput = document.getElementById('vat-cat-code');
-
-                // Get the vat cat code sub element
-                const vatCatCodeSubInput = document.getElementById('vat-cat-code-sub');
-
-               
-
-                (function($) {
-                    $(document).ready(function() {
-
-                        $('select#vat-cat-code').on('change', function(event) {
-                            const selectedVatCat = this.value;
-                
-
-                            // Make an AJAX request to fetch data based on selectedUserId
-                            $.ajax({
-                                url: '". admin_url('admin-ajax.php') ."',
-                                method: 'POST',
-                                data: {
-                                    'action': 'company',
-                                    'company_form_ajax': selectedVatCat
-                                },
-                                
-                                success: function(data) {
-                                    
-                                    // console.log(data);
-                                    vatCatCodeSubInput.innerHTML = data; 
-        
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Error fetching data:', error);
-                                }
-                            });
-                        });
-                    });
-                })(jQuery);
-                
-
-                // Add event listener to get Company Data From wp_options:
-                copyBtn.addEventListener('click', function() {
-
-                    // Make an AJAX request to fetch data based on selectedUserId
-                    $.ajax({
-                        url: '". admin_url('admin-ajax.php') ."',
-                        method: 'POST',
-                        data: {
-                            'action': 'woo-company-data'
-                        },
-                        
-                        success: function(data) {
-                            
-                            // console.log(data);
-
-                            comAddressInput.value = data.address;
-                            comCityInput.value = data.city;
-                         
-
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching data:', error);
-                        }
-                    });
-                });
-
-
-            });
-
-        ");
-
-    }
-
-}
-
 
 // Recived the vat cat code data and get name from database - company:
-function company_form(){
+function company_vat_cat_code_form(){
 
     if(isset($_REQUEST)){
 
         global $wpdb;
 
         // AJax Data:
-        $vals = $_REQUEST['company_form_ajax'];
+        $vals = $_REQUEST['vat_cat_code_ajax'];
 
         $subCategories = $wpdb->get_results( "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = $vals" );
         foreach($subCategories as $subCat) {?>
@@ -1182,69 +1086,16 @@ function company_form(){
     die();
 }
 
-// Send Edit Data as AJax - company:
-function edit_data_ajax_company(){
-    
-    // Enqueue jQuery
-    wp_enqueue_script('jquery');
-
-        // Output your script
-        wp_add_inline_script('jquery', '
-        jQuery(document).ready(function($) {
-            $("#edit-form-company__form").submit(function(event){
-                event.preventDefault();
-                var formData = $(this).serialize();
-                
-                var po = document.getElementById("po-company");
-                var additionalId = document.getElementById("second-id-company");
-
-                // validation on PO input:
-                if (po.value.length != 5 ) {
-                    alert("Po Must be 5 Numbers.");
-                    return;
-                }
-
-                // validation on additional Id input:
-                if (additionalId.value.trim() === "" ) {
-                    alert("Second Business Id Cant be Empty.");
-                    return;
-                }
-                // validation on additional Id input:
-                if (additionalId.value.length != 10 ) {
-                    alert("Second Business Id Must be 10 Numbers.");
-                    return;
-                }
-                
-                $.ajax({
-                    url: "' . admin_url('admin-ajax.php') . '", // Echo the admin URL
-                    method: "POST", // Specify the method
-                    data: {
-                        "action": "edit-company",
-                        "edit_form_ajax_company": formData
-                    },
-                    success: function(data){
-                        // console.log(data);
-                        window.location.href = "' . admin_url('admin.php?page=zatca-company&action=view') . '";
-                        
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-        });
-    ');
-}
-
-// AJax Edit in DB - devices:
-function edit_form_company(){
+// AJax Submit in DB - company:
+function submit_form_company(){
 
     if(isset($_REQUEST)){
 
         global $wpdb;
 
         // AJax Data:
-        $vals = $_REQUEST['edit_form_ajax_company'];
+        $status = $_REQUEST['Status'];
+        $vals = $_REQUEST['form_data_ajax_company'];
 
         // Parse Data:
         parse_str($vals, $form_array);
@@ -1271,72 +1122,122 @@ function edit_form_company(){
         $country_Sub_Name_En = $form_array['country-sub-name-en'];
         $country = $form_array['country'];
 
-        $table_name = 'zatcacompany';
+        // Get country_arb & country_eng Depend On Country Choosing:
+        $countryArab = $wpdb->get_var($wpdb->prepare("SELECT arabic_name FROM country WHERE country_id = $country"));
+        $countryEnglish = $wpdb->get_var($wpdb->prepare("SELECT english_name FROM country WHERE country_id = $country"));
+        
 
-        $data = array(
-            'zatcaStage'                        => $zatca_Stage,
-            'secondBusinessIDType'              => $second_Business_Id_Type,
-            'secondBusinessID'                  => $second_Business_Id,
-            'VATCategoryCode'                   => $vat_Cat_Code,
-            'VATCategoryCodeSubTypeNo'          => $vat_Cat_Code_Sub_No,
-            'VATID'                             => $vat_Id,
-            'aName'                             => $aName,
-            'apartmentNum'                      => $apartment_No,
-            'POBox'                             => $po_Box,
-            'POBoxAdditionalNum'                => $po_Box_Additional_No,
-            'street_Arb'                        => $street_Name_Ar,
-            'street_Eng'                        => $street_Name_En,
-            'district_Arb'                      => $district_Name_Ar,
-            'district_Eng'                      => $district_Name_En,
-            'city_Arb'                          => $city_Name_Ar,
-            'city_Eng'                          => $city_Name_En,
-            'countrySubdivision_Arb'            => $country_Sub_Name_Ar,
-            'countrySubdivision_Eng'            => $country_Sub_Name_En,
-            'countryNo'                         => $country,
-        );
+        // Check If Insert:
+        if($status == 'Insert'){
+        
+            $insert_company = $wpdb->insert(
+                'zatcacompany',
+                [
+                    'zatcaStage'                => $zatca_Stage,
+                    'secondBusinessIDType'      => $second_Business_Id_Type,
+                    'secondBusinessID'          => $second_Business_Id,
+                    'VATCategoryCode'           => $vat_Cat_Code,
+                    'VATCategoryCodeSubTypeNo'  => $vat_Cat_Code_Sub_No,
+                    'VATID'                     => $vat_Id,
+                    'aName'                     => $aName,
+                    'apartmentNum'              => $apartment_No,
+                    'POBox'                     => $po_Box,
+                    'POBoxAdditionalNum'        => $po_Box_Additional_No,
+                    'street_Arb'                => $street_Name_Ar,
+                    'street_Eng'                => $street_Name_En,
+                    'district_Arb'              => $district_Name_Ar,
+                    'district_Eng'              => $district_Name_En,
+                    'city_Arb'                  => $city_Name_Ar,
+                    'city_Eng'                  => $city_Name_En,
+                    'countrySubdivision_Arb'    => $country_Sub_Name_Ar,
+                    'countrySubdivision_Eng'    => $country_Sub_Name_En,
+                    'countryNo'                 => $country, 
+                    'country_Arb'               => $countryArab,
+                    'country_Eng'               => $countryEnglish,
+                ]
+            );
 
-        $where = array('companyNo' => $id);
+            if ($insert_company === false) {
+                // There was an error inserting data
+                $error_message = $wpdb->last_error;
+                echo "Error inserting data: $error_message";
+            } else {
 
-        $update_result = $wpdb->update($table_name, $data, $where);
-    
+                echo 'Data Updated';
+            }
 
-        if ($update_result === false) {
-            // There was an error inserting data
-            $error_message = $wpdb->last_error;
-            echo "Error inserting data: $error_message";
-        } else {
 
-            echo 'Data Updated';
+        }else{ // If Update:
+
+            $table_name = 'zatcacompany';
+
+            $data = array(
+                'zatcaStage'                        => $zatca_Stage,
+                'secondBusinessIDType'              => $second_Business_Id_Type,
+                'secondBusinessID'                  => $second_Business_Id,
+                'VATCategoryCode'                   => $vat_Cat_Code,
+                'VATCategoryCodeSubTypeNo'          => $vat_Cat_Code_Sub_No,
+                'VATID'                             => $vat_Id,
+                'aName'                             => $aName,
+                'apartmentNum'                      => $apartment_No,
+                'POBox'                             => $po_Box,
+                'POBoxAdditionalNum'                => $po_Box_Additional_No,
+                'street_Arb'                        => $street_Name_Ar,
+                'street_Eng'                        => $street_Name_En,
+                'district_Arb'                      => $district_Name_Ar,
+                'district_Eng'                      => $district_Name_En,
+                'city_Arb'                          => $city_Name_Ar,
+                'city_Eng'                          => $city_Name_En,
+                'countrySubdivision_Arb'            => $country_Sub_Name_Ar,
+                'countrySubdivision_Eng'            => $country_Sub_Name_En,
+                'countryNo'                         => $country,
+                'country_Arb'                       => $countryArab,
+                'country_Eng'                       => $countryEnglish,
+            );
+
+            $where = array('companyNo' => $id);
+
+            $update_result = $wpdb->update($table_name, $data, $where);
+        
+
+            if ($update_result === false) {
+                // There was an error inserting data
+                $error_message = $wpdb->last_error;
+                echo "Error inserting data: $error_message";
+            } else {
+
+                echo 'Data Updated';
+            }
+        
         }
-       
     }
 
     die();
 }
 
-// AJax Edit in DB - devices:
+// AJax Edit in DB - Company:
 function woo_company(){
 
-        global $wpdb;
+    global $wpdb;
 
 
-        $table_usermeta = $wpdb->prefix . 'options';
+    $table_usermeta = $wpdb->prefix . 'options';
 
-        // Get Data from wp_options For address:
-        $address = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_address'"));
+    // Get Data from wp_options For address:
+    $address = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_address'"));
 
-        // Get Data from wp_options For city:
-        $city = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_city'"));
+    // Get Data from wp_options For city:
+    $city = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_city'"));
 
-        // Return the fetched data
-        // echo $first_name . ' ' . $last_name;
-        $response = array(
-            'address'   => $address,
-            'city'      => $city
-        );
+    // Return the fetched data
 
-        // Return the array as JSON
-        wp_send_json($response);
+    $response = array(
+        'address'   => $address,
+        'city'      => $city
+    );
+
+    // Return the array as JSON
+    wp_send_json($response);
 
 
     die();
@@ -3392,19 +3293,6 @@ function log_send_to_zatca($user_login, $user_id) {
 function log_download_doc_xml($user_login, $user_id) {
     log_user_action($user_login, $user_id, 4); // 4 = download xml
 }
-
-
-// Action Of Login - zatcaLogs:
-add_action('wp_login', 'log_user_login', 10, 2);
-
-// Action to get admin data - zatcaUsers:
-add_action('wp_ajax_get_user_admin_data', 'admin_user_zatcaUsers');
-
-// Action to insert users data - zatcaUsers:
-add_action('wp_ajax_insert_user', 'insert_user_zatcaUsers');
-
-// Action to Edit Users data - zatcaUsers:
-add_action('wp_ajax_edit_user', 'edit_user_zatcaUsers');
 
 // Function to get admin data from database - zatcaUsers
 function admin_user_zatcaUsers(){
