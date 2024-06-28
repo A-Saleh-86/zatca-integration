@@ -35,29 +35,32 @@ jQuery(document).ready(function($) {
         });
     });
 
-      // Add event listener to get Company Data From wp_options:
-      copyBtn.addEventListener('click', function() {
+    // on click get Company Data From wp_options:
+    if (copyBtn) {
+        $('#copy-company-data').on('click', function() {
 
-        // Make an AJAX request to fetch data based on selectedUserId
-        $.ajax({
-            url: myCompany.ajaxUrl,
-            method: 'POST',
-            data: {
-                'action': 'woo-company-data'
-            },
-            
-            success: function(data) {
+            // Make an AJAX request to fetch data based on selectedUserId
+            $.ajax({
+                url: myCompany.ajaxUrl,
+                method: 'POST',
+                data: {
+                    'action': 'woo-company-data'
+                },
                 
-                comAddressInput.value = data.address;
-                comCityInput.value = data.city;
-                
+                success: function(data) {
+                    
+                    comAddressInput.value = data.address;
+                    comCityInput.value = data.city;
+                    
 
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-            }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
         });
-    });
+    }
+
 
     // Insert Company Details Form [ For First Time ]:
     $('#insert_form_company').submit(function(event){
@@ -68,13 +71,17 @@ jQuery(document).ready(function($) {
 
         // validation on second Bussiness Id input:
         if (secondBusIdInput.value.length != 10 ) {
-            alert("Second Business Id Must be 10 Digits.");
+            msg = "<?php echo _e('Second Business Id Must be 10 Digits.', 'zatca') ?>"
+            // alert("Second Business Id Must be 10 Digits.");
+            alert(msg);
             return;
         }
 
         // validation on PO input:
         if (po.value.length != 5 ) {
-            alert("Po Box Must be 5 Digits.");
+            msg = "<?php echo _e('Po Box Must be 5 Digits.', 'zatca') ?>"
+            alert(msg);
+            // alert("Po Box Must be 5 Digits.");
             return;
         }
 
@@ -105,13 +112,17 @@ jQuery(document).ready(function($) {
 
         // validation on second Bussiness Id input:
         if (secondBusIdInput.value.length != 10 ) {
-            alert("Second Business Id Must be 10 Digits.");
+            msg = "<?php echo _e('Second Business Id Must be 10 Digits.', 'zatca') ?>"
+            // alert("Second Business Id Must be 10 Digits.");
+            alert(msg);
             return;
         }
 
         // validation on PO input:
         if (po.value.length != 5 ) {
-            alert("Po Box Must be 5 Digits.");
+            msg = "<?php echo _e('Po Box Must be 5 Digits.', 'zatca') ?>"
+            alert(msg);
+            // alert("Po Box Must be 5 Digits.");
             return;
         }
 
@@ -126,6 +137,7 @@ jQuery(document).ready(function($) {
             success: function(data){
 
                 // console.log(data);
+                alert(data);
                 window.location.reload();
             },
             error: function(xhr, status, error) {

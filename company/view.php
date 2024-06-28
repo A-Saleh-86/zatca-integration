@@ -197,6 +197,23 @@
                 </div>
                 <!-- /  Apartment No  field -->
 
+                <!--  Postal code field -->
+                <div class="mb-3 row col-mid-6">
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Postal Code:', 'zatca') ?></label>
+                    <div class="col-sm-10 col-md-9">
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                name="postal-code"
+                                class="form-control"
+                                value="<?php echo $result->postalCode ?>"
+                                
+                            />
+                        </div>
+                    </div>
+                </div>
+                <!--  / Postal code field -->
+
                 <!--  PO Box  field -->
                 <div class="mb-3 row col-mid-6">
                     <label class="col-sm-2 col-form-label"><?php echo _e('PO Box :', 'zatca') ?></label>
@@ -578,6 +595,23 @@
             </div>
             <!-- /  Apartment No  field -->
 
+            <!--  Postal code field -->
+            <div class="mb-3 row col-mid-6">
+                <label class="col-sm-2 col-form-label"><?php echo _e('Postal Code:', 'zatca') ?></label>
+                <div class="col-sm-10 col-md-9">
+                    <div class="form-group">
+                        <input 
+                            type="text" 
+                            name="postal-code"
+                            class="form-control"
+                            placeholder="<?php echo _e('Postal Code:', 'zatca') ?>"
+                            
+                        />
+                    </div>
+                </div>
+            </div>
+            <!-- /  Postal code  field -->
+             
             <!--  PO Box  field -->
             <div class="mb-3 row col-mid-6">
                 <label class="col-sm-2 col-form-label"><?php echo _e('PO Box :', 'zatca') ?></label>
