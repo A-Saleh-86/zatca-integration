@@ -186,8 +186,8 @@ jQuery(document).ready(function($) {
     // Edit customer Form:
     $("#edit_customer_form").submit(function(event){
         event.preventDefault();
+        clientVendorNoInput.disabled = false
         var formData = $(this).serialize();
-        
         $.ajax({
             url: myCustomer.ajaxUrl,
             method: "POST",
