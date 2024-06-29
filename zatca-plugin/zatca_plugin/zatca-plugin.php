@@ -172,6 +172,63 @@ function include_zatca_view_file() {
     include(plugin_dir_path(__FILE__) . 'view.php'); // Include the view.php file
 }
 
+
+
+
+// Add tax_invoice_option checkbox in order details section
+add_action( 'woocommerce_admin_order_data_after_billing_address', 'add_tax_invoice_field_to_order_page');
+function add_tax_invoice_field_to_order_page( $order ) {
+    echo '<div class="order_data_column">';
+    woocommerce_wp_checkbox( array(
+        'id' => 'tax_invoice_option',
+        'label' => __('Request Tax Invoice'),
+        'value' => get_post_meta( $order->get_id(), 'tax_invoice_option', true ),
+    ) );
+    echo '</div>';
+    
+}
+
+add_action( 'woocommerce_process_shop_order_meta', 'save_tax_invoice_option_on_order_creation', 10, 2 );
+function save_tax_invoice_option_on_order_creation( $order_id, $post ) 
+{
+    if ( isset( $_POST['tax_invoice_option'] ) ) 
+    {
+        update_post_meta( $order_id, 'tax_invoice_option', 'yes' );
+    } 
+    else
+    {
+        update_post_meta( $order_id, 'tax_invoice_option', 'no' );
+    }
+}
+
+
+
+// Add zatca_customer_form1 after the Order Data section on the order page
+add_action( 'woocommerce_admin_order_data_after_order_details', 'add_custom_section_after_order_data' );
+
+function add_custom_section_after_order_data( $order ) {
+
+    // Add taxInvoiceOption to be used in JavaScript
+    $tax_invoice_option = get_post_meta( $order->get_id(), 'tax_invoice_option', true );
+    wp_localize_script( 'custom-script', 'custom_vars', array(
+        'taxInvoiceOption' => $tax_invoice_option
+    ) );
+
+    // Add zatca_customer_form1 for the new section here
+    echo '<div class="custom-section" style="padding-top:250px;">';
+
+    echo do_shortcode('[zatca_customer_form1]');
+
+    echo '</div>';
+}
+
+
+// Enqueue custom JavaScript file to show and hide zactaCustomer
+function enqueue_custom_js() {
+    wp_enqueue_script( 'custom-script', plugin_dir_url( __FILE__ ) . 'js/custom-script.js', array( 'jquery' ), null, true );
+}
+add_action( 'admin_enqueue_scripts', 'enqueue_custom_js' );
+
 ?>
 <script>
     function copyFormData() {
@@ -207,3 +264,4 @@ function include_zatca_view_file() {
         countryNo.style.color = 'red';
     }
 </script>
+
