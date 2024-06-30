@@ -1417,7 +1417,7 @@ function document_check_customer(){
     if(isset($_REQUEST)){
 
         // AJax Data:
-        $customerId = $_REQUEST['woo_customer_id'] ;
+        $customerId = $_REQUEST['woo_customer_id'];
 
         global $wpdb;
 
