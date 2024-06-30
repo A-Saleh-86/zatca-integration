@@ -1,6 +1,6 @@
 <?php
 
-$id = $_GET['id'];
+$clientNo = $_GET['clientno'];
 
 
 global $wpdb;
@@ -10,7 +10,7 @@ $table_name = 'zatcacustomer';
 
 // Define the condition to identify the row(s) to delete
 $where = array(
-    'ID' => $id // Change column_name and value_to_match accordingly
+    'clientVendorNo' => $clientNo // Change column_name and value_to_match accordingly
 );
 
 

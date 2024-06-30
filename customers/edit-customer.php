@@ -1,6 +1,6 @@
 <?php
 
-$id = $_GET['id'];
+$clientNo = $_GET['clientno'];
 
 global $wpdb;
 
@@ -10,7 +10,7 @@ global $wpdb;
 $table_name = 'zatcacustomer';
 
 // Prepare the query with a condition on the VendorId column using the %d placeholder
-$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE ID = %d", $id ) );
+$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE clientVendorNo = $clientNo") );
 
 // Check if there are results
 if (!empty($results)) {
@@ -20,7 +20,12 @@ if (!empty($results)) {
 
             <!-- Back Btn -->
             <div class=" mx-auto mt-3">
-                <a href="<?php echo admin_url('admin.php?page=zatca-customers&action=view'); ?>" class="btn my-plugin-button ">
+                <a 
+                    href="<?php echo admin_url('admin.php?page=zatca-customers&action=view'); ?>" 
+                    class="btn my-plugin-button "
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="top" 
+                    title="<?php echo _e('Back', 'zatca') ?>">
                     <span class="dashicons dashicons-undo"></span>
                 </a>
             </div>
@@ -33,13 +38,12 @@ if (!empty($results)) {
             <!-- / Header -->
 
             <!-- Input Form -->
-            <form class="form-horizontal main-form mt-1" id="edit-form__form">
+            <form class="form-horizontal main-form mt-1" id="edit_customer_form">
 
-                <!-- Hidden input for Vendor Id -->
-                <input type="hidden" name="id" value="<?php echo $result->ID  ?>">
-                <!-- / Hidden input for Vendor Id -->
-
-
+                <!-- Hidden input for current customer no -->
+                 <input type="hidden" name="current-client-no" value="<?php echo $result->clientVendorNo ?>">
+                <!-- /Hidden input for current customer no -->
+                 
                 <!--  clientVendorNo field -->
                 <div class="mb-3 row col-mid-6">
                     <label class="col-sm-2 col-form-label"><?php echo _e('Client / VendorNo:', 'zatca') ?></label>
@@ -65,7 +69,7 @@ if (!empty($results)) {
                                 data-bs-target='#exampleModal-search-customers'
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
-                                title="<?php echo _e('Search Customer', 'zatca') ?>">
+                                title="<?php echo _e('Copy data from the system to here', 'zatca') ?>">
                                 <span class="dashicons dashicons-search"></span>
                             </button>
                             <!-- / Search Btn -->
@@ -145,7 +149,7 @@ if (!empty($results)) {
                                             <button 
                                                 class="my-plugin-button me-1" 
                                                 type="button" 
-                                                id='search-edit-customer-data' 
+                                                id='search-customer-data' 
                                                 data-bs-dismiss='modal'
                                                 data-bs-toggle="tooltip" 
                                                 data-bs-placement="top" 
@@ -167,7 +171,7 @@ if (!empty($results)) {
 
                 <!--  Client Name Arabic field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Client Name - AR:', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Client Name ( Arabic ):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -184,7 +188,7 @@ if (!empty($results)) {
 
                 <!--  Client Name English field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Client Name - EN:', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Client Name( English ):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -285,6 +289,24 @@ if (!empty($results)) {
                     </div>
                 </div>
                 <!-- /  Apartment No  field -->
+                
+                <!--  Postal Code field -->
+                <div class="mb-3 row col-mid-6">
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Postal Code:', 'zatca') ?></label>
+                    <div class="col-sm-6 col-md-5">
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                name="postal-code"
+                                class="form-control" 
+                                autocomplete="off"
+                                placeholder="<?php echo _e('Postal Code', 'zatca') ?>"
+                                
+                            />
+                        </div>
+                    </div>
+                </div>
+                <!-- /  Postal Code field -->
 
                 <!--  PO Box  field -->
                 <div class="mb-3 row col-mid-6">
@@ -320,7 +342,7 @@ if (!empty($results)) {
 
                 <!--  Street Name - AR  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Street Name - AR :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Street Name (Arabic):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -337,7 +359,7 @@ if (!empty($results)) {
 
                 <!--  Street Name - EN  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Street Name - EN :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Street Name (English):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -354,7 +376,7 @@ if (!empty($results)) {
 
                 <!--  District Name - AR  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('District Name - AR :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('District Name (Arabic):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -370,7 +392,7 @@ if (!empty($results)) {
 
                 <!--  District Name - EN  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('District Name - EN :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('District Name (English):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -386,7 +408,7 @@ if (!empty($results)) {
 
                 <!--  City Name - AR  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('City Name - AR :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('City Name(Arabic):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -403,7 +425,7 @@ if (!empty($results)) {
 
                 <!--  City Name - EN  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('City Name - EN :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('City Name(English):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -420,7 +442,7 @@ if (!empty($results)) {
 
                 <!--  Country Subdivision - AR  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Country Subdivision - AR :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Country Subdivision (Arabic):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 
@@ -436,7 +458,7 @@ if (!empty($results)) {
 
                 <!--  Country Subdivision - EN  field -->
                 <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Country Subdivision - EN :', 'zatca') ?></label>
+                    <label class="col-sm-2 col-form-label"><?php echo _e('Country Subdivision (English):', 'zatca') ?></label>
                     <div class="col-sm-6 col-md-5">
                         <div class="form-group">
                             <input 

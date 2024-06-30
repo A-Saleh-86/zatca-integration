@@ -17,17 +17,18 @@
     </div>
     <!-- / Add Btn -->
 
+    <!-- Table Of View -->
     <table id="example" class="table table-striped" width="100%">
 
         <thead>
             <tr>
-                <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('ID', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Name-AR', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Name-EN', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Customer No', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Client Name(Ar)', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Client Name(En)', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('VAT ID', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Sec-Buss-Type', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoices Type', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Street AR', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Second Business ID Type', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('ZATCA Invoices Type', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Street Name(Ar)', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Dist-AR', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('City-AR', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Sub-AR', 'zatca') ?></th>
@@ -49,7 +50,7 @@
 
                     ?>
                     <tr>
-                        <td style="font-size: 0.8rem;"><?php echo $result->ID ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->clientVendorNo ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->aName ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->eName ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->VATID ?></td>
@@ -57,7 +58,7 @@
                             <?php 
                                 $buyers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE codeNumber =$result->secondBusinessIDType " );
                                 foreach($buyers as $buyer) {
-                                    echo $buyer->aName . ' - ' . $buyer->eName;
+                                    echo $buyer->aName;
                                 }
                             ?>
                         </td>
@@ -83,7 +84,7 @@
 
                             <!-- Edit Btn -->
                             <a 
-                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=edit-customer&id='.$result->ID.'')  ?>" 
+                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=edit-customer&clientno='.$result->clientVendorNo.'')  ?>" 
                                 class="my-plugin-button btn-sm me-1"
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
@@ -94,7 +95,7 @@
     
                             <!-- Delete Btn -->
                             <a 
-                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=delete&id='.$result->ID.'')  ?>" 
+                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=delete&clientno='.$result->clientVendorNo.'')  ?>" 
                                 id="delete" class="my-plugin-button btn-sm me-1 confirm"
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
@@ -107,7 +108,7 @@
                             <button 
                                 type='button' 
                                 class='btn my-plugin-button btn-sm ' data-bs-toggle='modal' 
-                                data-bs-target='#exampleModal-<?php echo $result->ID ?>'
+                                data-bs-target='#exampleModal-<?php echo $result->clientVendorNo ?>'
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
                                 title="<?php echo _e('View Data', 'zatca') ?>">
@@ -116,7 +117,7 @@
                             <!-- / View Btn -->
 
                             <!-- View Modal -->
-                            <div class='modal fade' id='exampleModal-<?php echo $result->ID ?>' tabindex='-1' aria-labelledby='exampleModalLabel-<?php echo $result->ID ?>' aria-hidden='true'>
+                            <div class='modal fade' id='exampleModal-<?php echo $result->clientVendorNo ?>' tabindex='-1' aria-labelledby='exampleModalLabel-<?php echo $result->clientVendorNo ?>' aria-hidden='true'>
                                 <div class='modal-dialog modal-lg'>
                                     <div class='modal-content' >
                                     <div class='modal-header'>
@@ -173,4 +174,6 @@
             ?>
         </tbody>
     </table>
+    <!-- / Table Of View -->
+
 </div>

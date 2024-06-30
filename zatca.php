@@ -25,32 +25,23 @@ include 'option.php';
 // Get Walker Class For Bootstrap:
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
+// Include the file that contains the create_custom_table function
+require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+
+// Add Action in startup to create database tables:
+add_action('admin_menu', 'create_custom_tables');
+
 // Add [CSS, JS, Bootstrap ] to admin panel:
 add_action('admin_enqueue_scripts', 'load_assets');
 
 // add assets (css, js, etc):
 add_action('wp_enqueue_scripts',  'load_assets');
 
-// Action Of Sending Inserted Data as AJax Data - customers:
-add_action('admin_enqueue_scripts', 'inserted_data_ajax');
-
-
-// Action Of Sending Inserted Data as AJax Data - customers:
-add_action('admin_enqueue_scripts', 'edit_data_ajax');
-
-// Action Of Sending customer Id as AJax Data [ Insert Page]:
-add_action('admin_enqueue_scripts', 'customer_data_ajax');
-
-
-// Action Of Sending customer Id as AJax Data [ Edit page]:
-add_action('admin_enqueue_scripts', 'customer_edit_data_ajax');
-
-
 // Action Of Sending woo order data in AJax [ Document ]:
 add_action('admin_enqueue_scripts', 'document_data_ajax');
 
 // ajax action - insert - customers:
-add_action('wp_ajax_insert', 'insert_form');
+add_action('wp_ajax_insert_customer', 'submit_customer_form');
 
 // ajax action - insert - devices:
 add_action('wp_ajax_insert_device', 'insert_form_devices');
@@ -59,7 +50,7 @@ add_action('wp_ajax_insert_device', 'insert_form_devices');
 add_action('wp_ajax_insert-documents', 'insert_form_documents');
 
 // ajax action - edit - customers:
-add_action('wp_ajax_edit', 'edit_form_customer');
+add_action('wp_ajax_edit_customer', 'edit_customer_form');
 
 // ajax action - edit - devices:
 add_action('wp_ajax_edit_device', 'edit_form_device');
@@ -72,10 +63,7 @@ add_action('wp_ajax_edit-document', 'document_edit_form');
 
 
 // Action to get name from db with ajax data - [ insert page ] customers:
-add_action('wp_ajax_customer', 'customer_form');
-
-// Action to get name from db with ajax data - [ Edit page ] customers:
-add_action('wp_ajax_customer_edit', 'customer_edit_form');
+add_action('wp_ajax_customer', 'get_customer_data_from_woo');
 
 // Action to get Data from db with ajax data - [ view ] company:
 add_action('wp_ajax_company', 'company_vat_cat_code_form');
@@ -134,29 +122,6 @@ function my_plugin_load_textdomain() {
     error_log( 'my_plugin_load_textdomain function executed' );
 
 }
-
-
-// Define the function to create the table
-function create_custom_table() {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'oooo'; // Replace 'your_table_name' with your table name
-
-    // SQL query to create the table
-    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        column1 VARCHAR(255),
-        column2 INT
-        
-    ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
-
-    // Execute the query
-    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-    dbDelta( $sql );
-}
-
-// Add Action in startup to check for table in database:
-// add_action('admin_menu', 'create_custom_table');
-
 
 // Admin Panel Schema:
 function my_plugin_enqueue_admin_styles() {
@@ -262,71 +227,24 @@ function load_assets(){
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-company&action=view'),) 
     );
+    wp_enqueue_script('customer-js',  plugin_dir_url(__FILE__) . '/js/customer.js', array(), false, true);
+    wp_localize_script( 'customer-js', 'myCustomer', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-customers&action=view'),
+        'document' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),) 
+    );
 
 }
-
-
-
-// Send Inserted Data as AJax - customers [ Insert-page]:
-function inserted_data_ajax() {
-
-    // Enqueue jQuery
-    wp_enqueue_script('jquery');
-
-    // Output your script
-    wp_add_inline_script('jquery', '
-        jQuery(document).ready(function($) {
-            $("#contact-form__form").submit(function(event){
-                event.preventDefault();
-                var formData = $(this).serialize();
-                var po = document.getElementById("po-insert-customer");
-                
-                // validation on PO input:
-                if (po.value.length != 5 ) {
-                    alert("Po Must be 5 Numbers.");
-                    return;
-                }
-
-                $.ajax({
-                    url: "' . admin_url('admin-ajax.php') . '",
-                    method: "POST", // Specify the method
-                    data: {
-                        "action": "insert",
-                        "insert_form_ajax": formData
-                    },
-                    success: function(data){
-                        // console.log(data);
-                        // alert(data);
-
-                        // Check for Which Page client come from:
-                        if(data === "customers"){ // if from customers page:
-                            
-                            window.location.href = "' . admin_url('admin.php?page=zatca-customers&action=view') . '";
-                            
-                        }else{ // if from document insert customer
-                            
-                            window.location.href = "' . admin_url('admin.php?page=zatca-documents&action=insert') . '";
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-        });
-    ');
-}
-
 
 // AJax Insert_Data to DB - customers [ Insert-page]:
-function insert_form(){
+function submit_customer_form(){
 
     if(isset($_REQUEST)){
 
         global $wpdb;
 
         // AJax Data:
-        $vals = $_REQUEST['insert_form_ajax'];
+        $vals = $_REQUEST['customer_data_ajax'];
 
         // Parse Data:
         parse_str($vals, $form_array);
@@ -344,6 +262,7 @@ function insert_form(){
         $second_Business_Id = $form_array['second-business-id'];
         $zatca_Invoice_Type = $form_array['zatca-invoice-type'];
         $apartment_No = $form_array['apartment-no'];
+        $postal_code = $form_array['postal-code'];
         $po_Box = $form_array['po-box'];
         $po_Box_Additional_No = $form_array['po-box-additional-no'];
         $street_Name_Ar = $form_array['street-name-ar'];
@@ -356,11 +275,15 @@ function insert_form(){
         $country_Sub_Name_En = $form_array['country-sub-name-en'];
         $country = $form_array['country'];
 
+        // Get country_arb & country_eng Depend On Country Choosing:
+        $countryArab = $wpdb->get_var($wpdb->prepare("SELECT arabic_name FROM country WHERE country_id = $country"));
+        $countryEnglish = $wpdb->get_var($wpdb->prepare("SELECT english_name FROM country WHERE country_id = $country"));
+                
+
 
         $insert_result = $wpdb->insert(
             'zatcacustomer',
             [
-                'Customer'             => $client_No,
                 'clientVendorNo'       => $client_No,
                 'aName'                => $client_Name_Ar,
                 'eName'                => $client_Name_En,
@@ -369,7 +292,8 @@ function insert_form(){
                 'secondBusinessID'      => $second_Business_Id,
                 'zatcaInvoiceType'      => $zatca_Invoice_Type,
                 'apartmentNum'          => $apartment_No,
-                'POBox'            => $po_Box,
+                'postalCode'            => $postal_code,
+                'POBox'                 => $po_Box,
                 'POBoxAdditionalNum'    => $po_Box_Additional_No,
                 'street_Arb'            => $street_Name_Ar,
                 'street_Eng'            => $street_Name_En,
@@ -379,7 +303,9 @@ function insert_form(){
                 'city_Eng'              => $city_Name_En,
                 'countrySubdivision_Arb'=> $country_Sub_Name_Ar,
                 'countrySubdivision_Eng'=> $country_Sub_Name_En,
-                'country_No'            => $country
+                'country_No'            => $country,
+                'country_Arb'           => $countryArab,
+                'country_Eng'           => $countryEnglish
             ]
         );
 
@@ -398,173 +324,15 @@ function insert_form(){
     die();
 }
 
-// Ajax Send btn of Copy Data - customers [ Insert-page]:
-function customer_data_ajax(){
-
-    // Check if we are on the post edit screen for your desired post type
-    if (isset($_GET['page']) && $_GET['page'] ==='zatca-customers' &&  isset($_GET['action']) && $_GET['action'] === 'insert') {
-        // Enqueue jQuery
-        // wp_enqueue_script('jquery');
-
-        // Output your script
-        wp_add_inline_script("jquery", "
-            jQuery(document).ready(function($) {
-
-
-
-                $('table').on('click', 'td', function() {
-
-                    // Remove selected from all 
-                    $('tr').removeClass('selected');
-                
-                    // Add selected to clicked row
-                    $(this).closest('tr').addClass('selected');
-                
-                });
-
-                // Btn Of Copy Customer Data:
-                const searchBtn = document.getElementById('search-customer-data');
-                
-                // Cache the table rows for better performance
-                const tableRows = $('tr');
-
-                // Get the clientVendorNo input element
-                const clientVendorNoInput = document.getElementById('client-no');
-
-                // Get the client-name-ar input element to populate with fetched data
-                const clientNameArabicInput = document.getElementById('client-name-ar');
-
-                // Get the client-name-eng input element to populate with fetched data
-                const clientNameInput = document.getElementById('client-name');
-
-                // Get the address input element to populate with fetched data
-                const addressArabicInput = document.getElementById('address-ar');
-
-                // Get the address input element to populate with fetched data
-                const addressEnglishInput = document.getElementById('address-en');
-
-                // Get the Arabic city input element to populate with fetched data
-                const cityArabicInput = document.getElementById('city-ar');
-
-                // Get the English city input element to populate with fetched data
-                const cityEnglishInput = document.getElementById('city-en');
-
-                // Add event listener to the customer select element
-                searchBtn.addEventListener('click', function() {
-
-                    const selectedRow = tableRows.filter('.selected');
-
-                    // If Client Not Choose a Customer:
-                    if (!selectedRow.length) {
-                        alert('Please select a customer first.');
-                        return;
-                    }
-            
-                    // Get the user ID from the data-user-id attribute of the selected row
-                    const selectedUserId = selectedRow.data('user-id');
-
-                    // Give VendorNo The Id:
-                    clientVendorNoInput.value = selectedUserId;
-                    clientVendorNoInput.disabled = false;
-
-                    $.ajax({
-                        url: '". admin_url('admin-ajax.php') ."',
-                        method: 'POST',
-                        data: {
-                            'action': 'customer',
-                            'customer_form_ajax': selectedUserId
-                        },
-                        
-                        success: function(data) {
-
-                            
-                            
-                            // Variables Come From Ajax:
-                            var first_name = data.first_name;
-                            var last_name = data.last_name;
-                            
-                            
-                            // change values of inputs:
-                            clientNameInput.value = first_name + ' ' + last_name;
-                            
-                            // Check For Input Language [ Arabic - English ]
-                            var address = data.address;
-                            var city = data.city;
-
-                            function containsArabic(text) {
-                                var arabicRegex = /[\u0600-\u06FF]/;
-                                return arabicRegex.test(text);
-                            }
-                    
-                            function containsEnglish(text) {
-                                var englishRegex = /^[a-zA-Z0-9\s]*$/;
-                                return englishRegex.test(text);
-                            }
-                            
-                            if (!addressArabicInput || !addressEnglishInput || !cityArabicInput || !cityEnglishInput) {
-                                console.error('Address input elements not found.');
-                                return;
-                            }
-
-                            // Empty the inputs if have data:
-                            addressArabicInput.value = '';
-                            addressEnglishInput.value = '';
-                            cityArabicInput.value = '';
-                            cityEnglishInput.value = '';
-                    
-                            if (containsArabic(address)) {
-                                
-                                // Insert New Value
-                                addressArabicInput.value = address;
-
-                            } else if (containsEnglish(address)) {
-
-                                // Insert New Value
-                                addressEnglishInput.value = address;
-
-                            } else {
-
-                                console.log('Unable to determine the language of the address.');
-                            }
-
-                            if (containsArabic(city)) {
-
-                                // Insert New Value
-                                cityArabicInput.value = city;
-
-                            } else if (containsEnglish(city)) {
-
-                                // Insert New Value
-                                cityEnglishInput.value = city;
-
-                            } else {
-
-                                console.log('Unable to determine the language of the city.');
-                            }
-    
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching data:', error);
-                        }
-                    });
-
-
-                });
-            });
-
-        ");
-    }
-}
-
 // Recived the customer data and get name from database - customers [ Insert-page]:
-function customer_form(){
+function get_customer_data_from_woo(){
 
     if(isset($_REQUEST)){
 
         global $wpdb;
 
         // AJax Data:
-        $vals = $_REQUEST['customer_form_ajax'];
+        $vals = $_REQUEST['customer_selected'];
 
 
 		$table_usermeta = $wpdb->prefix . 'usermeta';
@@ -590,269 +358,24 @@ function customer_form(){
     }
 
     die();
-}
-
-
-// Ajax Send btn of Copy Data - customers [ Edit-page]:
-function customer_edit_data_ajax(){
-
-    // Check if we are on the post edit screen for your desired post type
-    if (isset($_GET['page']) && $_GET['page'] ==='zatca-customers' && isset($_GET['action']) && $_GET['action'] === 'edit-customer') {
-
-        // Output your script
-        wp_add_inline_script("jquery", "
-            jQuery(document).ready(function($) {
-
-
-
-                $('table').on('click', 'td', function() {
-
-                    // Remove selected from all 
-                    $('tr').removeClass('selected');
-                
-                    // Add selected to clicked row
-                    $(this).closest('tr').addClass('selected');
-                
-                  });
-
-                  
-
-                // Btn Of Copy Customer Data:
-                const searchBtn = document.getElementById('search-edit-customer-data');
-
-                // Cache the table rows for better performance
-                const tableRows = $('tr');
-
-                // Get the clientVendorNo input element
-                const clientVendorNoInput = document.getElementById('client-no');
-
-                // Get the client-name-ar input element to populate with fetched data
-                const clientNameArabicInput = document.getElementById('client-name-ar');
-
-                // Get the client-name-eng input element to populate with fetched data
-                const clientNameInput = document.getElementById('client-name');
-
-                // Get the address input element to populate with fetched data
-                const addressArabicInput = document.getElementById('address-ar');
-
-                // Get the address input element to populate with fetched data
-                const addressEnglishInput = document.getElementById('address-en');
-
-                // Get the Arabic city input element to populate with fetched data
-                const cityArabicInput = document.getElementById('city-ar');
-
-                // Get the English city input element to populate with fetched data
-                const cityEnglishInput = document.getElementById('city-en');
-
-                // Po Input:
-                var po = document.getElementById('po-insert-customer');
-
-                // Add event listener to the customer select element
-                searchBtn.addEventListener('click', function() {
-
-                    const selectedRow = tableRows.filter('.selected');
-
-                    // If Client Not Choose a Customer:
-                    if (!selectedRow.length) {
-                        alert('Please select a customer first.');
-                        return;
-                    }
-            
-                    // Get the user ID from the data-user-id attribute of the selected row
-                    const selectedUserId = selectedRow.data('user-id');
-
-                    // Give VendorNo The Id:
-                    clientVendorNoInput.value = selectedUserId;
-                    clientNameArabicInput.value = '';
-                    clientVendorNoInput.disabled = false;
-
-                    
-                
-                    // validation on PO input:
-                    if (po.value.length != 5 ) {
-                        alert('Po Must be 5 Numbers.');
-                        return;
-                    }
-
-                    $.ajax({
-                        url: '". admin_url('admin-ajax.php') ."',
-                        method: 'POST',
-                        data: {
-                            'action': 'customer_edit',
-                            'customer_edit_form_ajax': selectedUserId
-                        },
-                        
-                        success: function(data) {
-
-                            
-                            
-                            // Variables Come From Ajax:
-                            var first_name = data.first_name;
-                            var last_name = data.last_name;
-                            
-                            
-                            // change values of inputs:
-                            clientNameInput.value = first_name + ' ' + last_name;
-                            
-                            // Check For Input Language [ Arabic - English ]
-                            var address = data.address;
-                            var city = data.city;
-
-                            function containsArabic(text) {
-                                var arabicRegex = /[\u0600-\u06FF]/;
-                                return arabicRegex.test(text);
-                            }
-                    
-                            function containsEnglish(text) {
-                                var englishRegex = /^[a-zA-Z0-9\s]*$/;
-                                return englishRegex.test(text);
-                            }
-                            
-                            if (!addressArabicInput || !addressEnglishInput || !cityArabicInput || !cityEnglishInput) {
-                                console.error('Address input elements not found.');
-                                return;
-                            }
-
-                            // Empty the inputs if have data:
-                            addressArabicInput.value = '';
-                            addressEnglishInput.value = '';
-                            cityArabicInput.value = '';
-                            cityEnglishInput.value = '';
-                    
-                            if (containsArabic(address)) {
-                                
-                                // Insert New Value
-                                addressArabicInput.value = address;
-
-                            } else if (containsEnglish(address)) {
-
-                                // Insert New Value
-                                addressEnglishInput.value = address;
-
-                            } else {
-
-                                console.log('Unable to determine the language of the address.');
-                            }
-
-                            if (containsArabic(city)) {
-
-                                // Insert New Value
-                                cityArabicInput.value = city;
-
-                            } else if (containsEnglish(city)) {
-
-                                // Insert New Value
-                                cityEnglishInput.value = city;
-
-                            } else {
-
-                                console.log('Unable to determine the language of the city.');
-                            }
-    
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching data:', error);
-                        }
-                    });
-
-
-                });
-            });
-
-        ");
-    }
-}
-
-// Recived the customer data and get name from database - customers [ Edit-page]:
-function customer_edit_form(){
-
-    if(isset($_REQUEST)){
-
-        global $wpdb;
-
-        // AJax Data:
-        $vals = $_REQUEST['customer_edit_form_ajax'];
-
-
-		$table_usermeta = $wpdb->prefix . 'usermeta';
-
-        
-        $first_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_first_name' and user_id = $vals"));
-        $last_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_last_name' and user_id = $vals"));
-        $address = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_address_1' and user_id = $vals"));
-        $city = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_city' and user_id = $vals"));
-
-        // Return the fetched data
-        // echo $first_name . ' ' . $last_name;
-        $response = array(
-            'first_name' => $first_name,
-            'last_name'  => $last_name,
-            'address'    => $address,
-            'city'       => $city
-        );
-
-        // Return the array as JSON
-        wp_send_json($response);
-       
-    }
-
-    die();
-}
-
-// Send Edit Data as AJax - customers [ Edit-page]:
-function edit_data_ajax(){
-    // Check if we are on the post edit screen for your desired post type
-    if (isset($_GET['page']) && $_GET['page'] ==='zatca-customers' &&  isset($_GET['action']) && $_GET['action'] === 'edit-customer') {
-
-        // Enqueue jQuery
-        // wp_enqueue_script('jquery');
-
-            // Output your script
-            wp_add_inline_script('jquery', '
-            jQuery(document).ready(function($) {
-
-                $("#edit-form__form").submit(function(event){
-                    event.preventDefault();
-                    var formData = $(this).serialize();
-                    
-                    $.ajax({
-                        url: "' . admin_url('admin-ajax.php') . '", // Echo the admin URL
-                        method: "POST", // Specify the method
-                        data: {
-                            "action": "edit",
-                            "edit_form_ajax": formData
-                        },
-                        success: function(data){
-                            //console.log(data);
-                             window.location.href = "' . admin_url('admin.php?page=zatca-customers&action=view') . '";
-                            
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                        }
-                    });
-                });
-            });
-        ');
-    }
 }
 
 // AJax Edit in DB - customers [ Edit-page]:
-function edit_form_customer(){
+function edit_customer_form(){
 
     if(isset($_REQUEST)){
 
         global $wpdb;
 
         // AJax Data:
-        $vals = $_REQUEST['edit_form_ajax'];
+        $vals = $_REQUEST['edit_form_data_ajax'];
 
         // Parse Data:
         parse_str($vals, $form_array);
 
         // Variables of data:
-        $id = $form_array['id'];
-        // $client_No = $form_array['client-no'];
+        $current_client_no = $form_array['current-client-no'];
+        $client_No = $form_array['client-no'];
         $client_Name_Ar = $form_array['client-name-ar'];
         $client_Name_En = $form_array['client-name-en'];
         $vat_Id = $form_array['vat-id'];
@@ -860,6 +383,7 @@ function edit_form_customer(){
         $second_Business_Id = $form_array['second-business-id'];
         $zatca_Invoice_Type = $form_array['zatca-invoice-type'];
         $apartment_No = $form_array['apartment-no'];
+        $postal_code = $form_array['postal-code'];
         $po_Box = $form_array['po-box'];
         $po_Box_Additional_No = $form_array['po-box-additional-no'];
         $street_Name_Ar = $form_array['street-name-ar'];
@@ -872,12 +396,13 @@ function edit_form_customer(){
         $country_Sub_Name_En = $form_array['country-sub-name-en'];
         $country = $form_array['country'];
 
-        // Get Customer-no:
-        $client_No = $wpdb->get_var($wpdb->prepare("select Customer from zatcacustomer where ID = $id"));
+        // Get country_arb & country_eng Depend On Country Choosing:
+        $countryArab = $wpdb->get_var($wpdb->prepare("SELECT arabic_name FROM country WHERE country_id = $country"));
+        $countryEnglish = $wpdb->get_var($wpdb->prepare("SELECT english_name FROM country WHERE country_id = $country"));
+                
 
         $table_name = 'zatcacustomer';
         $data = array(
-            'Customer'             => $client_No,
             'clientVendorNo'       => $client_No,
             'aName'                => $client_Name_Ar,
             'eName'                => $client_Name_En,
@@ -886,7 +411,8 @@ function edit_form_customer(){
             'secondBusinessID'      => $second_Business_Id,
             'zatcaInvoiceType'      => $zatca_Invoice_Type,
             'apartmentNum'          => $apartment_No,
-            'POBox'            => $po_Box,
+            'postalCode'            => $postal_code,
+            'POBox'                 => $po_Box,
             'POBoxAdditionalNum'    => $po_Box_Additional_No,
             'street_Arb'            => $street_Name_Ar,
             'street_Eng'            => $street_Name_En,
@@ -896,9 +422,11 @@ function edit_form_customer(){
             'city_Eng'              => $city_Name_En,
             'countrySubdivision_Arb'=> $country_Sub_Name_Ar,
             'countrySubdivision_Eng'=> $country_Sub_Name_En,
-            'country_No'            => $country
+            'country_No'            => $country,
+            'country_Arb'           => $countryArab,
+            'country_Eng'           => $countryEnglish
         );
-        $where = array('ID' => $id);
+        $where = array('clientVendorNo' => $current_client_no);
         $update_result = $wpdb->update($table_name, $data, $where);
     
 
@@ -908,7 +436,7 @@ function edit_form_customer(){
             echo "Error inserting data: $error_message";
         } else {
 
-            echo 'Data Inserted';
+            echo 'Data Updated';
         }
        
     }
@@ -1110,6 +638,7 @@ function submit_form_company(){
         $vat_Id = $form_array['vat-id'];
         $aName = $form_array['name'];
         $apartment_No = $form_array['apartment-no'];
+        $postal_code = $form_array['postal-code'];
         $po_Box = $form_array['po-box'];
         $po_Box_Additional_No = $form_array['po-box-additional-no'];
         $street_Name_Ar = $form_array['street-name-ar'];
@@ -1141,6 +670,7 @@ function submit_form_company(){
                     'VATID'                     => $vat_Id,
                     'aName'                     => $aName,
                     'apartmentNum'              => $apartment_No,
+                    'postalCode'                => $postal_code,
                     'POBox'                     => $po_Box,
                     'POBoxAdditionalNum'        => $po_Box_Additional_No,
                     'street_Arb'                => $street_Name_Ar,
@@ -1163,7 +693,7 @@ function submit_form_company(){
                 echo "Error inserting data: $error_message";
             } else {
 
-                echo 'Data Updated';
+                echo _e('Data Updated', 'zatca');
             }
 
 
@@ -1180,6 +710,7 @@ function submit_form_company(){
                 'VATID'                             => $vat_Id,
                 'aName'                             => $aName,
                 'apartmentNum'                      => $apartment_No,
+                'postalCode'                        => $postal_code,
                 'POBox'                             => $po_Box,
                 'POBoxAdditionalNum'                => $po_Box_Additional_No,
                 'street_Arb'                        => $street_Name_Ar,
@@ -1206,7 +737,7 @@ function submit_form_company(){
                 echo "Error inserting data: $error_message";
             } else {
 
-                echo 'Data Updated';
+                echo _e('Data Updated', 'zatca');
             }
         
         }
@@ -1894,7 +1425,7 @@ function document_check_customer(){
         $table_name_customes = 'zatcacustomer';
 
         // Prepare the query with a condition on Customer Exist or not:
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_customes WHERE Customer = $customerId") );
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_customes WHERE clientVendorNo = $customerId") );
 
         if($wpdb->num_rows > 0){ // If Date Valid:
 
