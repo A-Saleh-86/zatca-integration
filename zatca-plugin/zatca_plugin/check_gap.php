@@ -60,7 +60,7 @@ function check_counter_gap() {
     );
 
     // Display the results in a grid table
-    echo '<table border="1" cellpadding="5" cellspacing="0">';
+    echo '<table border="1" cellpadding="5" cellspacing="0" style="margin-left:15%">';
     echo '<tr><th>Missing Invoice Numbers</th></tr>';
 
     foreach ($response['missing_numbers'] as $missing_number) {
@@ -120,7 +120,7 @@ function check_hash_gap() {
     $response = array('missing_documents' => $results);
     
     // Display the results in a grid table
-    echo '<table border="1" cellpadding="5" cellspacing="0">';
+    echo '<table border="1" cellpadding="5" cellspacing="0" style="margin-left:15%">';
     echo '<tr><th>Document No</th><th>Device No</th><th>Invoice Hash</th></tr>';
 
     foreach ($results as $document) {

@@ -15,8 +15,26 @@ add_action('admin_enqueue_scripts', 'invoice_audit_enqueue_scripts');
 // Create admin page
 function invoice_audit_admin_page() {
     // 
+    add_menu_page(
+        'Zacta Tampering Detector', // Page title
+        'Zacta Tampering Detector', // Menu title
+        'manage_options', // Capability required to access the page
+        'invoice-audit-admin-page', // Unique menu slug
+        'invoice_audit_admin_page_content', // Callback function to display page content
+        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
+        4 // Menu position
+    );
 }
 add_action('admin_menu', 'invoice_audit_admin_page');
+
+// Admin page content
+function invoice_audit_admin_page_content() {
+    echo '<div class="wrap">';
+    echo '<h2>Zacta Tampering Detector</h2>';
+    // Add your admin page content here
+    echo do_shortcode('[invoice_audit_form]');
+    echo '</div>';
+}
 
 
 // Shortcode callback function to check gap form

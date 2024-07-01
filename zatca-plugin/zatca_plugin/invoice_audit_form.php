@@ -29,7 +29,7 @@ $check_hash_btn = ($current_lang == 'en') ? 'Check Hash Gap' : 'فحصل خلل 
         <div class="form-group">
             <label for="Branch"> <?php echo esc_html($Branch_label); ?> </label>
             <select name="BuildingNo" id="Branch" class="form-control">
-                <option value="">Select Branch</option>
+                <option value=""><?php echo esc_html($Branch_label); ?></option>
                 <?php
                     global $wpdb;
                     
