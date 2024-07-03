@@ -22,7 +22,7 @@
         <thead>
             <tr>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice No', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('WooCommerce Invoice No', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('System Invoice No', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Delivery Date', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Maximum Delivery Date', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Type', 'zatca') ?></th>
@@ -30,8 +30,6 @@
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Discount', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Net', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Subnet Total plus tax', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Discount Percentage', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Discount Total', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('VAT Category Code', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('VAT Category SubType Code', 'zatca') ?></th>
                 <!-- <th class="text-center" style="font-size: 0.7rem;"><?php //echo _e('Exemption Reason', 'zatca') ?></th> -->
@@ -70,12 +68,10 @@
                             
                             ?>
                         </td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->sumPayed ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->amountCalculatedPayed ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->subTotalDiscount ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->subNetTotal ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->subNetTotalPlusTax ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->discount ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->totalDiscount ?></td>
                         <td style="font-size: 10px;">
                             <?php
                             $vatcategoryName = $wpdb->get_var($wpdb->prepare("SELECT aName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $result->VATCategoryCodeNo")); 

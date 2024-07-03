@@ -5,6 +5,7 @@ jQuery(document).ready(function($) {
     const secondBusIdInput = document.getElementById('second-id-company');
     const vatCatCodeSubInput = document.getElementById('vat-cat-code-sub');
     var po = document.getElementById("po-company");
+    var cityAr = document.getElementById("city_ar");
     const copyBtn = document.getElementById('copy-company-data');
     const comAddressInput = document.getElementById('company-address');
     const comCityInput = document.getElementById('company-city');
@@ -85,6 +86,15 @@ jQuery(document).ready(function($) {
             return;
         }
 
+        // validation on city arabic name input:
+        if (cityAr.value == null || cityAr.value === '' ) {
+            msg = "<?php echo _e('Please Insert City Name.', 'zatca') ?>"
+            alert(msg);
+            // alert("Po Box Must be 5 Digits.");
+            return;
+        }
+
+
         $.ajax({
             url: myCompany.ajaxUrl,
             method: "POST", // Specify the method
@@ -123,6 +133,14 @@ jQuery(document).ready(function($) {
             msg = "<?php echo _e('Po Box Must be 5 Digits.', 'zatca') ?>"
             alert(msg);
             // alert("Po Box Must be 5 Digits.");
+            return;
+        }
+
+        // validation on city arabic name input:
+        if (cityAr.value == null || cityAr.value === '' ) {
+            // msg = "<?php echo _e('Please Insert City Name.', 'zatca') ?>"
+            // alert(msg);
+            alert("Please Insert City Name.");
             return;
         }
 

@@ -24,8 +24,9 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
     <!-- / Header -->
 
     <!-- Form Of Inputes -->
-    <form class="form-horizontal main-form mt-1" id="insert-document__form">
+    <form class="form-horizontal main-form mt-1" id="insert_document_form">
         
+
         <?php
         global $wpdb;
         
@@ -64,9 +65,9 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         <!-- /  documentNo field -->
 
 
-        <!--  Invoice No field -->
+        <!--  System Invoice No field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label "><?php echo _e('Woo Invoice No:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label "><?php echo _e('System Invoice No:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="input-group">
                     <input 
@@ -75,7 +76,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         id="woo-invoice-no"
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('Woo Invoice No', 'zatca') ?>"
+                        placeholder="<?php echo _e('System Invoice No', 'zatca') ?>"
                     />
 
                     <div class="mx-1"></div>
@@ -189,7 +190,26 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 </div>
             </div>
         </div>
-        <!-- /  Invoice No field -->
+        <!-- /  System Invoice No field -->
+
+        <!--  Invoice Date field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Invoice Date:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="invoice_date"
+                        id="invoice_date"
+                        class="form-control" 
+                        autocomplete="off"
+                        value="<?php echo date('d M Y') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Invoice Date field -->
 
         <!--  deliveryDate field -->
         <div class="mb-3 row col-mid-6">
@@ -198,7 +218,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 <div class="form-group">
                     <input 
                         type="date"
-                        name="deliveryDate" 
+                        name="deliveryDate"
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Delivery Date', 'zatca') ?>"
@@ -241,9 +261,9 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         </div>
         <!-- /  ZATCA Invoices Type  field -->
 
-        <!--  Payed field -->
+        <!--  Payed (Cash) field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Payed:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label"><?php echo _e('Payed (Cash):', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
@@ -252,16 +272,93 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         id="payed-input"
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('Payed', 'zatca') ?>"
+                        placeholder="<?php echo _e('Payed (Cash)', 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
         </div>
-        <!-- /  Payed field -->
+        <!-- /  Payed (Cash) field -->
 
-        <!--  SubTotalDiscount field -->
+        <!--  Payed (Visa) field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Discount:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label"><?php echo _e('Payed (Visa):', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="amountPayed02"
+                        id="payed_visa"
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('Payed (Visa)', 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Payed (Visa) field -->
+
+        <!--  Payed (Bank) field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Payed (Bank):', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="amountPayed03"
+                        id="payed_bank"
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('Payed (Bank)', 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Payed (Bank) field -->
+
+        <!--  Total Payed field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Total Payed:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="amountCalculatedPayed"
+                        id="amountCalculatedPayed"
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('Total Payed', 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Total Payed field -->
+
+        <!--  Invoice Total field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Invoice Total:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="subTotal"
+                        id="subTotal"
+                        class="form-control" 
+                        autocomplete="off"
+                        placeholder="<?php echo _e('Invoice Total', 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Invoice Total field -->
+
+        <!-- SubTotalDiscount field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Total Discount:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
@@ -270,7 +367,8 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         id="discount-input"
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('Discount', 'zatca') ?>"
+                        placeholder="<?php echo _e('Total Discount', 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
@@ -301,6 +399,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                     <input 
                         type="text"
                         name="taxRate1_Total"
+                        id="total_tax"
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Tax Total', 'zatca') ?>"
@@ -323,6 +422,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Invoice Net', 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
@@ -341,47 +441,12 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Subnet Total plus tax', 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
         </div>
         <!-- /  subNetTotalPlusTax field -->
-
-        <!--  discount field -->
-        <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Discount Percentage:', 'zatca') ?></label>
-            <div class="col-sm-6 col-md-5">
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="discount-percentage"
-                        id="discount-percentage"
-                        class="form-control" 
-                        autocomplete="off"
-                        placeholder="<?php echo _e('Discount Percentage', 'zatca') ?>"
-                    />
-                </div>
-            </div>
-        </div>
-        <!-- /  discount field -->
-
-        <!--  totalDiscount field -->
-        <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Discount Total:', 'zatca') ?></label>
-            <div class="col-sm-6 col-md-5">
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="totalDiscount"
-                        id="discount-total-input"
-                        class="form-control" 
-                        autocomplete="off"
-                        placeholder="<?php echo _e('Discount Total', 'zatca') ?>"
-                    />
-                </div>
-            </div>
-        </div>
-        <!-- /  totalDiscount field -->
 
         <!--  amountLeft field -->
         <div class="mb-3 row col-mid-6">
@@ -418,7 +483,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 <label class="col-sm-2 col-form-label"><?php echo _e('VAT Category Code:', 'zatca') ?></label>
                 <div class="col-sm-10 col-md-9">
                     <div class="form-group">
-                        <select class="form-select select2"  name="vat-cat-code" id="vat-cat-code">
+                        <select class="form-select select2"  name="insert-vat-cat-code" id="vat-cat-code">
                             <option value="">...</option>
                             <?php
                                 global $wpdb;

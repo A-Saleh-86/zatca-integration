@@ -319,7 +319,8 @@
                         <div class="form-group">
                             <input 
                                 type="text" 
-                                name="city-name-ar" 
+                                name="city-name-ar"
+                                id="city_ar"
                                 class="form-control"
                                 value="<?php echo $result->city_Arb ?>"
                             />

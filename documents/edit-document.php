@@ -38,7 +38,7 @@ if (!empty($results)) {
     <!-- / Header -->
 
     <!-- Form Of Inputes -->
-    <form class="form-horizontal main-form mt-1" id="edit-document__form">
+    <form class="form-horizontal main-form mt-1" id="edit_document_form">
         
         <!--  documentNo field -->
         <div class="mb-3 row col-mid-6">
@@ -51,7 +51,7 @@ if (!empty($results)) {
                         id="documentNo"
                         class="form-control" 
                         autocomplete="off"
-                        value="<?php echo _e($result->documentNo, 'zatca') ?>"
+                        value="<?php echo $result->documentNo ?>"
                         disabled
                     />
                 </div>
@@ -60,9 +60,9 @@ if (!empty($results)) {
         <!-- /  documentNo field -->
 
 
-        <!--  Invoice No field -->
+        <!--  System Invoice No field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label "><?php echo _e('Woo Invoice No:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label "><?php echo _e('System Invoice No:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="input-group">
                     <input 
@@ -78,7 +78,7 @@ if (!empty($results)) {
                     <div class="mx-1"></div>
 
                     <!-- Search Btn -->
-                    <button 
+                    <!-- <button 
                         type='button' 
                         class='btn my-plugin-button me-1' 
                         data-bs-toggle='modal' 
@@ -87,7 +87,7 @@ if (!empty($results)) {
                         data-bs-placement="top" 
                         title="<?php echo _e('Search Invoices', 'zatca') ?>">
                         <span class="dashicons dashicons-search"></span>
-                    </button>
+                    </button> -->
                     <!-- / Search Btn -->
 
                     <!-- Invoices Modal -->
@@ -189,7 +189,7 @@ if (!empty($results)) {
                 </div>
             </div>
         </div>
-        <!-- /  Invoice No field -->
+        <!-- /  System Invoice No field -->
 
         <!--  deliveryDate field -->
         <div class="mb-3 row col-mid-6">
@@ -239,9 +239,9 @@ if (!empty($results)) {
         </div>
         <!-- /  ZATCA Invoices Type  field -->
 
-        <!--  Payed field -->
+        <!--  Payed (Cash) field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Payed:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label"><?php echo _e('Payed (Cash):', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
@@ -251,11 +251,88 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->amountPayed01,2), 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
         </div>
-        <!-- /  Payed field -->
+        <!-- /  Payed (Cash) field -->
+
+        <!--  Payed (visa) field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Payed (visa):', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="amountPayed02"
+                        id="payed_visa"
+                        class="form-control" 
+                        autocomplete="off"
+                        value="<?php echo _e(round($result->amountPayed02,2), 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Payed (visa) field -->
+
+        <!--  Payed (Bank) field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Payed (Bank):', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="amountPayed03"
+                        id="payed_bank"
+                        class="form-control" 
+                        autocomplete="off"
+                        value="<?php echo _e(round($result->amountPayed03,2), 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Payed (Bank) field -->
+
+        <!--  Total Payed field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Total Payed:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="amountCalculatedPayed"
+                        id="amountCalculatedPayed"
+                        class="form-control" 
+                        autocomplete="off"
+                        value="<?php echo _e(round($result->amountCalculatedPayed,2), 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Total Payed field -->
+
+        <!--  Invoice Total field -->
+        <div class="mb-3 row col-mid-6">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Invoice Total:', 'zatca') ?></label>
+            <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                    <input 
+                        type="text"
+                        name="subTotal"
+                        id="subTotal"
+                        class="form-control" 
+                        autocomplete="off"
+                        value="<?php echo _e(round($result->subTotal,2), 'zatca') ?>"
+                        disabled
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- /  Invoice Total field -->
 
         <!--  SubTotalDiscount field -->
         <div class="mb-3 row col-mid-6">
@@ -269,6 +346,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->subTotalDiscount,2), 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
@@ -299,9 +377,10 @@ if (!empty($results)) {
                     <input 
                         type="text"
                         name="taxRate1_Total"
+                        id="total_tax"
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('Tax Total', 'zatca') ?>"
+                        value="<?php echo _e(round($result->taxRate1_Total,2), 'zatca') ?>"
                         disabled
                     />
                 </div>
@@ -321,6 +400,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e($result->subNetTotal, 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
@@ -339,47 +419,12 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->subNetTotalPlusTax,2), 'zatca') ?>"
+                        disabled
                     />
                 </div>
             </div>
         </div>
         <!-- /  subNetTotalPlusTax field -->
-
-        <!--  discount field -->
-        <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Discount Percentage:', 'zatca') ?></label>
-            <div class="col-sm-6 col-md-5">
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="discount-percentage"
-                        id="discount-percentage"
-                        class="form-control" 
-                        autocomplete="off"
-                        value="<?php echo _e(round($result->discount,2), 'zatca') ?>"
-                    />
-                </div>
-            </div>
-        </div>
-        <!-- /  discount field -->
-
-        <!--  totalDiscount field -->
-        <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label"><?php echo _e('Discount Total:', 'zatca') ?></label>
-            <div class="col-sm-6 col-md-5">
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="totalDiscount"
-                        id="discount-total-input"
-                        class="form-control" 
-                        autocomplete="off"
-                        value="<?php echo _e(round($result->totalDiscount,2), 'zatca') ?>"
-                    />
-                </div>
-            </div>
-        </div>
-        <!-- /  totalDiscount field -->
 
         <!--  amountLeft field -->
         <div class="mb-3 row col-mid-6">
@@ -392,7 +437,7 @@ if (!empty($results)) {
                         id="left-amount-input"
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('Left Amount', 'zatca') ?>"
+                        value="<?php echo _e(round($result->amountLeft,2), 'zatca') ?>"
                         disabled
                     />
                 </div>
@@ -416,7 +461,7 @@ if (!empty($results)) {
                 <label class="col-sm-2 col-form-label"><?php echo _e('VAT Category Code:', 'zatca') ?></label>
                 <div class="col-sm-10 col-md-9">
                     <div class="form-group">
-                        <select class="form-select select2"  name="vat-cat-code" id="vat-cat-code">
+                        <select class="form-select select2"  name="edit-vat-cat-code" id="vat-cat-code">
                             <option value="">...</option>
                             <?php
                                 global $wpdb;
@@ -491,12 +536,13 @@ if (!empty($results)) {
                     type="checkbox" 
                     id="isNominal" 
                     name="isNominal"
-                    value="<?php echo _e($result->zatcaInvoiceTransactionCode_isNominal, 'zatca') ?>"
+                    value="<?php echo $result->zatcaInvoiceTransactionCode_isNominal ?>"
                     <?php
                     // check if checked or not:
                     echo (isset($result->zatcaInvoiceTransactionCode_isNominal) && $result->zatcaInvoiceTransactionCode_isNominal==0) ? 'checked' : '';
 
-                    ?> >
+                    ?> 
+                    >
                 <label class="form-check-label ms-1 mb-1" for="isNominal">
                     <?php echo _e('Is Nominal', 'zatca'); ?>
                 </label>

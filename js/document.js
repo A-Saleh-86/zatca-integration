@@ -22,8 +22,23 @@ const copyBtn = document.getElementById('search-invoices-data');
 // Payed Input:
 const wooInvoiceNoInput = document.getElementById('woo-invoice-no');
 
-// Payed Input:
+// Payed (cash) Input:
 const payedInput = document.getElementById('payed-input');
+
+// Payed (visa) Input:
+const payedVisaInput = document.getElementById('payed_visa');
+
+// Payed (bank) Input:
+const payedBankInput = document.getElementById('payed_bank');
+
+// Total Payed Input:
+const totalPayedInput = document.getElementById('amountCalculatedPayed');
+
+// sub Total Input:
+const subTotalInput = document.getElementById('subTotal');
+
+// Total Tax Input:
+const totalTaxInput = document.getElementById('total_tax');
 
 // Discount Input:
 const discountInput = document.getElementById('discount-input');
@@ -31,14 +46,15 @@ const discountInput = document.getElementById('discount-input');
 // Invoice Net Input:
 const invoiceNetInput = document.getElementById('invoice-net-input');
 
+// left amount Input:
+const leftAmountInput = document.getElementById('left-amount-input');
+
 // Sub Net Total Plus Tax Input:
 const subnetTotalPlusTaxInput = document.getElementById('subnet-total-plus-tax-input');
 
 // zatcaInvoiceTypeInput Input:
 const zatcaInvoiceTypeInput = document.getElementById('zatcaInvoiceType');
 
-// Discount Total Input:
-const discountTotalInput = document.getElementById('discount-total-input');
 
 // Get the vat cat code sub Input
 const vatCatCodeSubInput = document.getElementById('vat-cat-code-sub');
@@ -80,7 +96,7 @@ function updateInput() {
             updateInput();
         });
 
-        $('select#vat-cat-code').on('change', function(event) {
+        $('#vat-cat-code').on('change', function(event) {
             const selectedVatCat = this.value;
 
 
@@ -90,7 +106,7 @@ function updateInput() {
                 method: 'POST',
                 data: {
                     'action': 'company',
-                    'company_form_ajax': selectedVatCat,
+                    'vat_cat_code_ajax': selectedVatCat,
                 },
                 
                 success: function(data) {
@@ -171,9 +187,21 @@ $('#search-invoices-data').on('click', function(event) {
             
                         // Put Data In Woo Invoice No input:
                         wooInvoiceNoInput.value = selectedOrderId;
+
+                        // Put Data In Woo Invoice No input:
+                        wooInvoiceNoInput.value = selectedOrderId;
                         
-                        // Put Data to Payed Input:
+                        // Put Data to Payed (cash) Input:
                         payedInput.value = data.payed;
+                        
+                        // Put Data to Payed (visa) Input:
+                        payedVisaInput.value = data.payedVisa;
+                        
+                        // Put Data to Payed (bank) Input:
+                        payedBankInput.value = data.payedBank;
+                        
+                        // Put Data to Total Payed Input:
+                        totalPayedInput.value = data.totalPayed;
                         
                         // Put Data to Dicount Input
                         discountInput.value = data.discount;
@@ -184,12 +212,14 @@ $('#search-invoices-data').on('click', function(event) {
                         // Put Data to subnetTotalPlusTax Input [ it's same like payed ]:
                         subnetTotalPlusTaxInput.value = data.payed;
                         
-                        // Put Data to Dicount Total Input
-                        discountTotalInput.value = data.discount;
-            
-                        // Put Data to Discount Percentage Input:
-                        discountPercentageInput.value = data.discountPercentage;
-
+                        // Put Data to subTotal Input:
+                        subTotalInput.value = data.subTotal;
+                        
+                        // Put Data to Total Tax Input:
+                        totalTaxInput.value = data.totalTax;
+                       
+                        // Put Data to Total Tax Input:
+                        leftAmountInput.value = data.leftAmount;
 
                         var selectedValue = data.invoiceTypeCode;
 
@@ -225,10 +255,28 @@ $('#search-invoices-data').on('click', function(event) {
 
 // Get Data from insert page and return it as ajax data to db:
 jQuery(document).ready(function($) {
-    $("#insert-document__form").submit(function(event){
+
+    // Add Dcument Form:
+    $("#insert_document_form").submit(function(event){
+        
         event.preventDefault();
+
+        // Enable the inputs fields temporarily:
+        $("#woo-invoice-no").prop("disabled", false);
+        $("#payed-input").prop("disabled", false);
+        $("#payed_visa").prop("disabled", false);
+        $("#payed_bank").prop("disabled", false);
+        $("#amountCalculatedPayed").prop("disabled", false);
+        $("#subTotal").prop("disabled", false);
+        $("#total_tax").prop("disabled", false);
+        $("#invoice-net-input").prop("disabled", false);
+        $("#subnet-total-plus-tax-input").prop("disabled", false);
+        $("#discount-input").prop("disabled", false);
+        $("#left-amount-input").prop("disabled", false);
+        
         var formData = $(this).serialize();
-        // console.log(formData);
+        // console.log(formData)
+
         
         $.ajax({
             url: myDoc.ajaxUrl, 
@@ -248,7 +296,48 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    // Edit Document Form:
+    $("#edit_document_form").submit(function(event){
+        event.preventDefault();
+
+        // Enable the inputs fields temporarily:
+        $("#documentNo").prop("disabled", false);
+        $("#woo-invoice-no").prop("disabled", false);
+        $("#payed-input").prop("disabled", false);
+        $("#payed_visa").prop("disabled", false);
+        $("#payed_bank").prop("disabled", false);
+        $("#amountCalculatedPayed").prop("disabled", false);
+        $("#subTotal").prop("disabled", false);
+        $("#total_tax").prop("disabled", false);
+        $("#invoice-net-input").prop("disabled", false);
+        $("#subnet-total-plus-tax-input").prop("disabled", false);
+        $("#discount-input").prop("disabled", false);
+        $("#left-amount-input").prop("disabled", false);
+        
+        var formData = $(this).serialize();
+        
+        $.ajax({
+            url: myDoc.ajaxUrl,
+            method: "POST", 
+            data: {
+                "action": "edit-document",
+                "document_edit_form_ajax": formData
+            },
+            success: function(data){
+                // console.log(data);
+                alert(data);
+                window.location.href = myDoc.adminUrl;
+                
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
 });
+
+
 
 
 
@@ -269,8 +358,7 @@ jQuery(document).ready(function($){
             success: function(response) {
               
                 alert(response.msg);
-
-                // $('#try-res').html(response.data);
+                // console.log(response);
                 window.location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -323,8 +411,6 @@ jQuery(document).ready(function($) {
         });
     });
 });
-
-
 
   
 

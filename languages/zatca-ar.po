@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-06-28T14:40:22+00:00\n"
+"POT-Creation-Date: 2024-07-03T05:25:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,132 +36,132 @@ msgstr ""
 msgid "Company"
 msgstr "الشركة"
 
-#: company/view.php:28 company/view.php:423
+#: company/view.php:28 company/view.php:424
 msgid "Zatca Stage:"
 msgstr "مرحلة الدمج مع هيئة الزكاة"
 
-#: company/view.php:32 company/view.php:429
+#: company/view.php:32 company/view.php:430
 msgid "ZATCA V1"
 msgstr "مرحله اولي"
 
-#: company/view.php:33 company/view.php:430
+#: company/view.php:33 company/view.php:431
 msgid "ZATCA V2"
 msgstr "مرحله ثانيه"
 
-#: company/view.php:34 company/view.php:428
+#: company/view.php:34 company/view.php:429
 msgid "No ZATCA"
 msgstr "لايوجد"
 
-#: company/view.php:46 company/view.php:442
+#: company/view.php:46 company/view.php:443
 msgid "Get Seller Data"
 msgstr "جلب بيانات البائع"
 
-#: company/view.php:58 company/view.php:454 customers/edit-customer.php:224
+#: company/view.php:58 company/view.php:455 customers/edit-customer.php:224
 #: customers/insert.php:217 documents/doc-add-customer.php:109
 msgid "Second Business ID Type:"
 msgstr "نوع المعرف الثاني"
 
-#: company/view.php:83 company/view.php:479 customers/edit-customer.php:248
+#: company/view.php:83 company/view.php:480 customers/edit-customer.php:248
 #: customers/insert.php:240 documents/doc-add-customer.php:132
 msgid "Second Business ID :"
 msgstr "المعرف الثاني"
 
-#: company/view.php:101 company/view.php:498 documents/edit-document.php:416
-#: documents/insert.php:418
+#: company/view.php:101 company/view.php:499 documents/edit-document.php:461
+#: documents/insert.php:483
 msgid "VAT Category Code:"
 msgstr "فئة الضريبة الرئيسية"
 
-#: company/view.php:125 company/view.php:522
+#: company/view.php:125 company/view.php:523
 msgid "VAT Category Code Sub Type No:"
 msgstr "فئة الضريبة الفرعية"
 
-#: company/view.php:149 company/view.php:546 customers/edit-customer.php:208
+#: company/view.php:149 company/view.php:547 customers/edit-customer.php:208
 #: customers/insert.php:200 documents/doc-add-customer.php:92
 msgid "VAT ID:"
 msgstr "الرقم الضريبي"
 
-#: company/view.php:170 company/view.php:568 company/view.php:575
+#: company/view.php:170 company/view.php:569 company/view.php:576
 msgid "Name:"
 msgstr "الاسم"
 
-#: company/view.php:186 company/view.php:584 company/view.php:591
+#: company/view.php:186 company/view.php:585 company/view.php:592
 #: customers/edit-customer.php:279 customers/insert.php:273
 #: documents/doc-add-customer.php:165
 msgid "Apartment No :"
 msgstr "رقم المبنى"
 
-#: company/view.php:202 company/view.php:600 company/view.php:607
+#: company/view.php:202 company/view.php:601 company/view.php:608
 #: customers/edit-customer.php:295 customers/insert.php:290
 msgid "Postal Code:"
 msgstr "الرقم البريدي"
 
-#: company/view.php:219 company/view.php:617 company/view.php:625
+#: company/view.php:219 company/view.php:618 company/view.php:626
 #: customers/edit-customer.php:313 customers/insert.php:308
 #: documents/doc-add-customer.php:182
 msgid "PO Box :"
 msgstr "صندوق البريد"
 
-#: company/view.php:236 company/view.php:635 company/view.php:642
+#: company/view.php:236 company/view.php:636 company/view.php:643
 #: customers/edit-customer.php:329 customers/insert.php:327
 #: documents/doc-add-customer.php:200
 msgid "PO Box Additional Number :"
 msgstr "رقم صندوق بريد إضافي"
 
-#: company/view.php:252 company/view.php:651 company/view.php:658
+#: company/view.php:252 company/view.php:652 company/view.php:659
 #: documents/doc-add-customer.php:217
 msgid "Street Name - AR :"
 msgstr "الشارع بالعربية"
 
-#: company/view.php:268 company/view.php:667 company/view.php:675
+#: company/view.php:268 company/view.php:668 company/view.php:676
 #: documents/doc-add-customer.php:235
 msgid "Street Name - EN :"
 msgstr "الشارع بالانجليزية"
 
-#: company/view.php:285 company/view.php:684 company/view.php:691
+#: company/view.php:285 company/view.php:685 company/view.php:692
 #: documents/doc-add-customer.php:253
 msgid "District Name - AR :"
 msgstr "المقاطعة بالعربية"
 
-#: company/view.php:301 company/view.php:700 company/view.php:707
+#: company/view.php:301 company/view.php:701 company/view.php:708
 #: documents/doc-add-customer.php:270
 msgid "District Name - EN :"
 msgstr "المقاطعة بالانجليزي"
 
-#: company/view.php:317 company/view.php:716 company/view.php:723
+#: company/view.php:317 company/view.php:717 company/view.php:724
 #: documents/doc-add-customer.php:287
 msgid "City Name - AR :"
 msgstr "المدينة بالعربية"
 
-#: company/view.php:333 company/view.php:732 company/view.php:740
+#: company/view.php:334 company/view.php:733 company/view.php:741
 #: documents/doc-add-customer.php:305
 msgid "City Name - EN :"
 msgstr "المدينة بالانجليزي"
 
-#: company/view.php:350 company/view.php:749 company/view.php:756
+#: company/view.php:351 company/view.php:750 company/view.php:757
 #: documents/doc-add-customer.php:323
 msgid "Country Subdivision - AR :"
 msgstr "محافظة بالعربية"
 
-#: company/view.php:366 company/view.php:765 company/view.php:772
+#: company/view.php:367 company/view.php:766 company/view.php:773
 #: documents/doc-add-customer.php:340
 msgid "Country Subdivision - EN :"
 msgstr "محافظة بالانجليزية"
 
-#: company/view.php:382 company/view.php:781 customers/edit-customer.php:477
+#: company/view.php:383 company/view.php:782 customers/edit-customer.php:477
 #: documents/doc-add-customer.php:357
 msgid "Country :"
 msgstr "البلد"
 
-#: company/view.php:408
+#: company/view.php:409
 msgid "Update Company Details"
 msgstr "تعديل بيانات الشركة"
 
-#: company/view.php:487 customers/insert.php:248
+#: company/view.php:488 customers/insert.php:248
 #: documents/doc-add-customer.php:140
 msgid "Second Business ID"
 msgstr "المعرف الثاني"
 
-#: company/view.php:806
+#: company/view.php:807
 msgid "Insert Company Details"
 msgstr "ادخال بيانات الشركة"
 
@@ -198,7 +198,7 @@ msgid "Name"
 msgstr "الاسم"
 
 #: customers/edit-customer.php:92 customers/insert.php:80
-#: documents/edit-document.php:108 documents/insert.php:111
+#: documents/edit-document.php:108 documents/insert.php:112
 msgid "Email"
 msgstr "البريد الالكتروني"
 
@@ -347,7 +347,7 @@ msgstr "البلد"
 
 #: customers/insert.php:507 customers/view.php:14
 #: documents/doc-add-customer.php:380 documents/edit-document.php:178
-#: documents/insert.php:179
+#: documents/insert.php:180
 msgid "Insert New Customer"
 msgstr "اضافه عميل جديد"
 
@@ -391,7 +391,7 @@ msgstr "المحافظة بالعربية"
 msgid "Country"
 msgstr "البلد"
 
-#: customers/view.php:36 devices/view.php:29 documents/view.php:42
+#: customers/view.php:36 devices/view.php:29 documents/view.php:40
 msgid "Action"
 msgstr "الاعدادات"
 
@@ -541,7 +541,7 @@ msgstr "المقاطعة بالعربية"
 
 #: documents/doc-add-customer.php:278
 msgid "District Name - EN"
-msgstr "المقاطعة بالانجليزي"
+msgstr "المقاطعة بالانجليزيه"
 
 #: documents/doc-add-customer.php:296
 msgid "City Name - AR"
@@ -555,164 +555,192 @@ msgstr "محافظة بالعربية"
 msgid "Country Subdivision - EN"
 msgstr "محافظة بالانجليزية"
 
-#: documents/edit-document.php:36 documents/edit-document.php:567
+#: documents/edit-document.php:36 documents/edit-document.php:613
 msgid "Edit Document"
 msgstr "تعديل بيانات الفاتوره"
 
-#: documents/edit-document.php:45 documents/insert.php:49
+#: documents/edit-document.php:45 documents/insert.php:50
 msgid "Invoice No:"
 msgstr "رقم الفاتورة"
 
-#: documents/edit-document.php:65 documents/insert.php:69
-msgid "Woo Invoice No:"
+#: documents/edit-document.php:65 documents/insert.php:70
+msgid "System Invoice No:"
 msgstr "رقم فاتورة النظام"
 
-#: documents/edit-document.php:88 documents/insert.php:91
+#: documents/edit-document.php:88 documents/insert.php:92
 msgid "Search Invoices"
 msgstr "البحث في الفواتير"
 
-#: documents/edit-document.php:98 documents/insert.php:101
+#: documents/edit-document.php:98 documents/insert.php:102
 msgid "Invoices"
 msgstr " الفواتير "
 
-#: documents/edit-document.php:107 documents/insert.php:110
+#: documents/edit-document.php:107 documents/insert.php:111
 msgid "Order No"
 msgstr "رقم الطلب"
 
-#: documents/edit-document.php:156 documents/insert.php:157
+#: documents/edit-document.php:156 documents/insert.php:158
 msgid "Customer Not Exist"
 msgstr "العميل غير مسجل"
 
-#: documents/edit-document.php:162 documents/insert.php:163
+#: documents/edit-document.php:162 documents/insert.php:164
 msgid "This Customer Not Exist In Zatca Customers.Insert Now?"
 msgstr "هذا العميل غير مسجل في جدول العملاء..هل تريد التسجيل الان؟"
 
-#: documents/edit-document.php:196 documents/insert.php:196
+#: documents/edit-document.php:196 documents/insert.php:216
 msgid "Delivery Date:"
-msgstr "تاريخ الانتهاء"
+msgstr "تاريخ التوصيل"
 
-#: documents/edit-document.php:213 documents/insert.php:213
+#: documents/edit-document.php:213 documents/insert.php:233
 msgid "Max Delivery Date:"
 msgstr "اقصي تاريخ للتوصيل"
 
-#: documents/edit-document.php:230 documents/insert.php:230
+#: documents/edit-document.php:230 documents/insert.php:250
 msgid "Invoices Type :"
 msgstr "نوع الفاتورة"
 
-#: documents/edit-document.php:244 documents/insert.php:246
-msgid "Payed:"
-msgstr "المدفوع"
+#: documents/edit-document.php:244 documents/insert.php:266
+msgid "Payed (Cash):"
+msgstr "المدفوع نقدا"
 
-#: documents/edit-document.php:262 documents/insert.php:264
+#: documents/edit-document.php:263
+msgid "Payed (visa):"
+msgstr "المدفوع فيزا"
+
+#: documents/edit-document.php:282 documents/insert.php:304
+msgid "Payed (Bank):"
+msgstr "المدفوع بتحويل بنكي"
+
+#: documents/edit-document.php:301 documents/insert.php:323
+msgid "Total Payed:"
+msgstr "اجمالي المدفوع"
+
+#: documents/edit-document.php:320 documents/insert.php:342
+msgid "Invoice Total:"
+msgstr "رقم الفاتورة قبل الخصم"
+
+#: documents/edit-document.php:339
 msgid "Discount:"
 msgstr "اجمالي الخصم"
 
-#: documents/edit-document.php:280 documents/insert.php:282
+#: documents/edit-document.php:358 documents/insert.php:380
 msgid "Tax Percentage :"
 msgstr "النسبه المئويه للضريبه"
 
-#: documents/edit-document.php:296 documents/insert.php:298
+#: documents/edit-document.php:374 documents/insert.php:396
 msgid "Tax Total:"
 msgstr "اجمالي الضريبه"
 
-#: documents/edit-document.php:304 documents/insert.php:306
-msgid "Tax Total"
-msgstr "اجمالي الضريبه"
-
-#: documents/edit-document.php:314 documents/insert.php:316
+#: documents/edit-document.php:393 documents/insert.php:415
 msgid "Invoice Net:"
 msgstr "الصافي"
 
-#: documents/edit-document.php:332 documents/insert.php:334
+#: documents/edit-document.php:412 documents/insert.php:434
 msgid "Subnet Total plus tax:"
 msgstr "الاجمالي بالضريبه"
 
-#: documents/edit-document.php:350 documents/insert.php:352
-msgid "Discount Percentage:"
-msgstr "نسبه مئويه الخصم"
-
-#: documents/edit-document.php:368 documents/insert.php:370
-msgid "Discount Total:"
-msgstr "اجمالي الخصم"
-
-#: documents/edit-document.php:386 documents/insert.php:388
+#: documents/edit-document.php:431 documents/insert.php:453
 msgid "Left Amount:"
 msgstr "المبلغ المتبقي"
 
-#: documents/edit-document.php:395 documents/insert.php:397
-msgid "Left Amount"
-msgstr "المبلغ المتبقي"
-
-#: documents/edit-document.php:440 documents/insert.php:442
+#: documents/edit-document.php:485 documents/insert.php:507
 msgid "VAT Category SubType Code:"
 msgstr "فئة الضريبة الفرعية"
 
-#: documents/edit-document.php:468 documents/insert.php:470
+#: documents/edit-document.php:513 documents/insert.php:535
 msgid "Exemption Reason:"
 msgstr "سبب الاعفاء"
 
-#: documents/edit-document.php:501 documents/insert.php:493
+#: documents/edit-document.php:547 documents/insert.php:558
 msgid "Is Nominal"
 msgstr "هل عينه؟"
 
-#: documents/edit-document.php:520 documents/insert.php:502
+#: documents/edit-document.php:566 documents/insert.php:567
 msgid "Is Export"
 msgstr "هل صادرات؟"
 
-#: documents/edit-document.php:539 documents/insert.php:511
+#: documents/edit-document.php:585 documents/insert.php:576
 msgid "Is Summary"
-msgstr "هل ملخص فترة"
+msgstr "هل ملخص فترة ؟"
 
-#: documents/edit-document.php:549 documents/insert.php:521
+#: documents/edit-document.php:595 documents/insert.php:586
 msgid "Notes:"
 msgstr "ملاحظات"
 
-#: documents/edit-document.php:557 documents/insert.php:529
-#: documents/view.php:41
+#: documents/edit-document.php:603 documents/insert.php:594
+#: documents/view.php:39
 msgid "Notes"
 msgstr "ملاحظات"
 
-#: documents/insert.php:22 documents/insert.php:539
+#: documents/insert.php:22 documents/insert.php:604
 msgid "Insert New Document"
 msgstr "اضافه فاتورة جديد"
 
-#: documents/insert.php:78
-msgid "Woo Invoice No"
-msgstr "رقم فاتورة النظام"
+#: documents/insert.php:79 documents/view.php:25
+msgid "System Invoice No"
+msgstr "رقم فاتورة النظام "
 
-#: documents/insert.php:204 documents/view.php:26
+#: documents/insert.php:197
+msgid "Invoice Date:"
+msgstr "تاريخ الفاتورة"
+
+#: documents/insert.php:224 documents/view.php:26
 msgid "Delivery Date"
 msgstr "تاريخ التوصيل"
 
-#: documents/insert.php:221
+#: documents/insert.php:241
 msgid "Max Delivery Date"
 msgstr "اقصي تاريخ للتوصيل"
 
-#: documents/insert.php:255 documents/view.php:29
-msgid "Payed"
-msgstr "المدفوع"
+#: documents/insert.php:275
+msgid "Payed (Cash)"
+msgstr "المدفوع نقدا"
 
-#: documents/insert.php:273 documents/view.php:30
-msgid "Discount"
+#: documents/insert.php:285
+msgid "Payed (Visa):"
+msgstr "المدفوع فيزا"
+
+#: documents/insert.php:294
+msgid "Payed (Visa)"
+msgstr "المدفوع فيزا"
+
+#: documents/insert.php:313
+msgid "Payed (Bank)"
+msgstr "المدفوع بتحويل بنكي"
+
+#: documents/insert.php:332
+msgid "Total Payed"
+msgstr "اجمالي المدفوع"
+
+#: documents/insert.php:351
+msgid "Invoice Total"
+msgstr "اجمالي الفاتورة قبل الخصم "
+
+#: documents/insert.php:361
+msgid "Total Discount:"
 msgstr "اجمالي الخصم"
 
-#: documents/insert.php:325 documents/view.php:31
+#: documents/insert.php:370
+msgid "Total Discount"
+msgstr "اجمالي الخصم"
+
+#: documents/insert.php:405
+msgid "Tax Total"
+msgstr "اجمالي الضريبه"
+
+#: documents/insert.php:424 documents/view.php:31
 msgid "Invoice Net"
 msgstr "الصافي"
 
-#: documents/insert.php:343 documents/view.php:32
+#: documents/insert.php:443 documents/view.php:32
 msgid "Subnet Total plus tax"
 msgstr "الاجمالي بالضريبه"
 
-#: documents/insert.php:361 documents/view.php:33
-msgid "Discount Percentage"
-msgstr "نسبه مئويه الخصم"
+#: documents/insert.php:462
+msgid "Left Amount"
+msgstr "المبلغ المتبقي"
 
-#: documents/insert.php:379 documents/view.php:34
-msgid "Discount Total"
-msgstr "اجمالي الخصم"
-
-#: documents/insert.php:479
+#: documents/insert.php:544
 msgid "Exemption Reason"
 msgstr "سبب الاعفاء"
 
@@ -728,10 +756,6 @@ msgstr "اضافه فاتورة جديد"
 msgid "Invoice No"
 msgstr "رقم الفاتورة "
 
-#: documents/view.php:25
-msgid "WooCommerce Invoice No"
-msgstr "رقم فاتورة النظام"
-
 #: documents/view.php:27
 msgid "Maximum Delivery Date"
 msgstr "اقصي تاريخ للتوصيل"
@@ -740,51 +764,59 @@ msgstr "اقصي تاريخ للتوصيل"
 msgid "Invoice Type"
 msgstr "نوع الفاتورة "
 
-#: documents/view.php:35
+#: documents/view.php:29
+msgid "Payed"
+msgstr "المدفوع"
+
+#: documents/view.php:30
+msgid "Discount"
+msgstr "اجمالي الخصم"
+
+#: documents/view.php:33
 msgid "VAT Category Code"
 msgstr "فئة الضريبة الرئيسية"
 
-#: documents/view.php:36
+#: documents/view.php:34
 msgid "VAT Category SubType Code"
 msgstr "فئة الضريبة الفرعية"
 
-#: documents/view.php:38
+#: documents/view.php:36
 msgid "isNominal"
 msgstr "هل عينه؟"
 
-#: documents/view.php:39
+#: documents/view.php:37
 msgid "isExports"
 msgstr "هل صادرات؟"
 
-#: documents/view.php:40
+#: documents/view.php:38
 msgid "isSummary"
 msgstr "هل ملخص فترة"
 
-#: documents/view.php:129
+#: documents/view.php:125
 msgid "Edit-Document"
 msgstr "تعديل بيانات الفاتورة"
 
-#: documents/view.php:144
+#: documents/view.php:140
 msgid "View Request Data"
 msgstr "اظهار بيانات الطلب"
 
-#: documents/view.php:179 documents/view.php:195
+#: documents/view.php:175 documents/view.php:191
 msgid "Send To Zatca"
 msgstr "ارسال الي زاتكا"
 
-#: documents/view.php:214
+#: documents/view.php:210
 msgid "Download XML"
 msgstr "تحميل المستند"
 
-#: documents/view.php:233
+#: documents/view.php:229
 msgid "Reissue"
 msgstr "اعاده ارسال"
 
-#: documents/view.php:254
+#: documents/view.php:250
 msgid "View Warning MSG"
 msgstr "اظهار رسالة الخطأ"
 
-#: documents/view.php:300
+#: documents/view.php:296
 msgid "Request Data"
 msgstr "بيانات الطلب"
 
@@ -928,9 +960,30 @@ msgstr "تعديل بيانات المستخدم"
 msgid "Delete User"
 msgstr "حذف المستخدم "
 
-#: zatca.php:1170 zatca.php:1214
+#: zatca.php:691 zatca.php:735
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
+
+#~ msgid "Woo Invoice No:"
+#~ msgstr "رقم فاتورة النظام"
+
+#~ msgid "Discount Percentage:"
+#~ msgstr "نسبه مئويه الخصم"
+
+#~ msgid "Discount Total:"
+#~ msgstr "اجمالي الخصم"
+
+#~ msgid "Woo Invoice No"
+#~ msgstr "رقم فاتورة النظام"
+
+#~ msgid "Discount Percentage"
+#~ msgstr "نسبه مئويه الخصم"
+
+#~ msgid "Discount Total"
+#~ msgstr "اجمالي الخصم"
+
+#~ msgid "WooCommerce Invoice No"
+#~ msgstr "رقم فاتورة النظام"
 
 #~ msgid "Search Customer"
 #~ msgstr "البحث في العملاء"

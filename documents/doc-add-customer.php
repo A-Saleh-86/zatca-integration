@@ -26,7 +26,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
     <!-- / Header -->
 
     <!-- Input form -->
-    <form class="form-horizontal main-form mt-1" id="contact-form__form">
+    <form class="form-horizontal main-form mt-1" id="insert_customer_form">
         
         <!-- Hidden input -->
         <input type="hidden" name='status' value="documents">
