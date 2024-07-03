@@ -1,0 +1,335 @@
+/* Start Remove Wordpress Footer */
+#wpfooter {
+    display: none;
+}
+/* End Remove Wordpress Footer */
+
+
+/* Basic */
+a{
+    text-decoration: none;
+}
+
+#warning {
+    z-index: 1050; /* or a higher value */
+}
+
+#request {
+    z-index: 1050; /* or a higher value */
+}
+.modal-content {
+    touch-action: none; /* Prevent default touch actions */
+}
+
+
+/* / Basic */
+
+
+/* Notification */
+
+
+.lobibox-notify-wrapper.top {
+    top: 39px !important;
+}
+
+/* /Notification */
+
+
+
+/* DaashIcon */
+
+.dashicons{
+    font-size: 20px !important;
+    height: 20px !important;
+}
+
+/* /DaashIcon */
+
+/* Change Background On Choose TD In Customers Search Modal */
+.selected {
+    background-color: rgb(139, 133, 133); 
+  }
+/* / Change Background On Choose TD In Customers Search Modal */
+
+
+
+/* Start DashIcon Size*/
+.dashicons {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+/* End DashIcon Size*/
+
+
+
+/* Start Disabled TD In Customers Search Modal */
+.disabled-td {
+    color: #999; 
+    pointer-events: none; 
+    background-color: #f4f4f4; 
+    opacity: 0.6; 
+}
+/* End Disabled TD In Customers Search Modal */
+
+
+/* Start Data Tables Details */
+
+.dt-length, .dt-search {
+    display: flex;
+    align-items: center;
+}
+
+.dt-length label, .dt-search label {
+    margin-bottom: 0;
+}
+
+@media (max-width: 767.98px) {
+    .dt-length, .dt-search {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dt-length select, .dt-search input {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .dt-length label, .dt-search label {
+        width: 100%;
+    }
+}
+
+
+/* End Data Tables Details */
+
+
+/* Start Default admin color scheme */
+body {
+    background-color: #f1f1f1;
+}
+
+/* Dark color scheme */
+body.wp-core-ui.colors-dark {
+    background-color: #222;
+    color: #fff;
+}
+
+/* Blue color scheme */
+body.wp-core-ui.colors-blue {
+    background-color: #e6f7ff;
+}
+
+/* Default button styles */
+.my-plugin-button {
+    background-color: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+     display: inline-flex; /* Ensure the anchor behaves as an inline-block and supports flexbox */
+    align-items: center; /* Vertically center the contents */
+    justify-content: center; /* Horizontally center the contents */
+    text-decoration: none; 
+}
+
+/* Dark color scheme button styles */
+body.wp-core-ui.colors-dark .my-plugin-button {
+    background-color: #444 !important;
+}
+
+/* Blue color scheme button styles */
+body.wp-core-ui.colors-blue .my-plugin-button {
+    background-color: #0073aa;
+}
+
+/* End Default admin color scheme */
+
+
+/* Start Documents */
+
+    /* Start Insert Page */
+    .checkbox-spacer {
+        margin-left: 1rem; /* Adjust margin as needed */
+    }
+    /* End Insert Page */
+
+/* End Documents */
+
+
+/* SELECT Lib */
+
+.select2-container .select2-selection--single{
+    
+    height: 34px !important;
+
+}
+/* / SELECT Lib */
+
+/* Log Page */
+
+.custom-log .form-check-label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .custom-log .form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the gap between label and input as needed */
+  }
+  
+  .custom-log .input-group {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .custom-log .form-check-input {
+    margin-left: 0.5em;
+  }
+  
+  .custom-log .btn-group-sm>.btn, .custom-log .btn-sm {
+    font-size: 1rem;
+  }
+  
+  .custom-log .form-group label {
+    flex: 0 0 30%; /* Adjust the percentage as needed for the label width */
+    max-width: 30%;
+    margin-bottom: 0;
+    white-space: nowrap;
+    width: 100%;
+  }
+  
+  .custom-log .form-control {
+    width: 100%;
+  }
+  
+  .custom-log .btn {
+    margin-left: 5px; /* Add margin to separate the button from the input */
+  }
+  
+  /* Media query for smaller screens (optional) */
+  @media (max-width: 767.98px) {
+    .custom-log .form-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .custom-log .form-group label {
+      flex: none;
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 5px;
+    }
+  
+    .custom-log .input-group {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+  
+    .custom-log .btn {
+      margin-left: 0 !important;
+      margin-top: 5px !important;
+      font-size: 1rem !important;
+    }
+  }
+  .custom-log .btn {
+    margin-left: 5px !important; /* Adjust margin as needed */
+  }
+
+  .custom-log .input-group .btn {
+    /* Existing styles */
+    display: inline-block !important;  
+    margin-left: auto !important;  
+  }
+
+  .custom-log .form-group .input-group {
+    /* Existing styles */
+    flex-wrap: wrap;  /* Allow elements to wrap within the input group */
+  }
+  .custom-log .input-group {
+    display: flex;
+    align-items: center;
+}
+
+.custom-log .input-group .form-control {
+    flex: 1;
+}
+
+.custom-log .reset-btn {
+    margin-left: 8px;
+}
+/* localization */
+
+/* General Grid Alignment */
+.grid-align {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+/* RTL Support */
+body[dir="rtl"] .grid-align {
+    grid-template-columns: 1fr auto;
+}
+
+body[dir="rtl"] .form-group label {
+    text-align: right;
+    margin-right: 10px;
+}
+
+body[dir="rtl"] .input-group {
+    direction: rtl;
+}
+
+body[dir="rtl"] .form-check {
+    flex-direction: row-reverse;
+}
+
+body[dir="rtl"] .input-group .form-control {
+    direction: ltr;
+}
+
+
+body[dir="rtl"] .form-check-label {
+    text-align: right;
+    margin-right: 10px;
+    margin-left: -2px; /* Add a small negative margin here */
+}
+
+body[dir="rtl"] .form-check-input {
+    margin-right: 0 !important;
+    margin-left: 10px;
+}
+
+
+
+/* / localization */
+
+
+/* / Log Page */
+
+
+/* Users Page */
+.custom-user .label-style {
+    font-size: 85%;
+    font-weight: 900;
+    line-height: 1;
+    
+  }
+
+.custom-user .col-form-label {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.custom-user .form-check-input{
+
+    margin: 18px;
+}
+/* / Users Page */

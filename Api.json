@@ -1,0 +1,228 @@
+{
+    "invoiceType": "TAX_INVOICE",
+    "invoiceTypeCode": "Standard",
+    "id": "1",
+    "icvIncrementalValue": 1, 
+    "referenceId": "fbe81c44-88b7-4b2b-bcd6-c0a6d4e04883", 
+    "issueDate": "2023-09-13", 
+    "issueTime": "14:40:40", 
+    "previousHash": "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==",
+    "seller": {
+      "name": "Seller name",
+      "additionalIdType": "OTH",  
+      "additionalIdNumber": "1112233344",
+      "vatNumber": "399999999900003", 
+      "groupVatNumber": "",
+      "address": {
+        "streetName": "12, Masjid Street",
+        "additionalNo": "1234",
+        "buildingNumber": "1243",
+        "city": "Dammam",
+        "state": "Riyadh",
+        "zipCode": "12313",
+        "district": "Riyadh",
+        "country": "SA"
+      }
+    },
+    "buyer": {
+      "name": "Zahid Gani",
+      "address": {
+        "streetName": "12, Masjid Street",
+        "additionalNo": "1234",
+        "buildingNumber": "1243",
+        "city": "Dammam",
+        "state": "Riyadh",
+        "zipCode": "12313",
+        "district": "Riyadh",
+        "country": "SA"
+      },
+      "additionalIdType": "OTH", 
+      "additionalIdNumber": "12345678",
+      "vatNumber": "399999999900003", 
+      "groupVatNumber": ""
+    },
+    "lineItems": [
+      {
+        "id": "1",
+        "description": "Macbook air m2",
+        "linePrice": {
+          "currencyCode": "SAR",
+          "amount": 10
+        },
+        "lineQuantity": "50",
+        "lineNetAmount": {
+          "currencyCode": "SAR",
+          "amount": 500
+        },
+        "lineDiscountAmount": {
+          "currencyCode": "SAR",
+          "amount": 0
+        },
+        "lineVatRate": "15.00",
+        "lineVatAmount": {
+          "currencyCode": "SAR",
+          "amount": 75
+        },
+        "lineAmountWithVat": {
+          "currencyCode": "SAR",
+          "amount": 575
+        },
+        "taxScheme": "VAT",
+        "taxSchemeId": "S"
+      }
+    ],
+    "totalAmountWithoutVat": {
+      "currencyCode": "SAR",
+      "amount": 500
+    },
+    "totalLineNetAmount": {
+      "currencyCode": "SAR",
+      "amount": 500
+    },
+    "totalVatAmount": {
+      "currencyCode": "SAR",
+      "amount": 75
+    },
+    "totalAmountWithVat": {
+      "currencyCode": "SAR",
+      "amount": 575
+    },
+    "totalDiscountAmount": {
+      "currencyCode": "SAR",
+      "amount": 0
+    },
+    "taxCategory": "S", 
+    "taxPercent": "15.0",
+    "supplyDate": "2024-04-29",
+    "lastestSupplyDate": "2024-04-29",
+    "invoiceCurrencyCode": "SAR",
+    "taxCurrencyCode": "SAR",
+    "note": {
+      "reason": "",
+      "invoiceNo": ""
+    },
+    "taxExemptionReasonCode": "",
+    "taxExemptionReason": "",
+    "invoiceNote": "",
+    "prePaidAmount": {
+      "currencyCode": "SAR",
+      "amount": 10
+    },
+    "invoiceTypeTransactionCode": {
+      "thirdPartyInvoice": false,
+      "nominalInvoice": false,
+      "exportsInvoice": false,
+      "summaryInvoice": false,
+      "selfBilledInvoice": false
+    },
+    
+      "tokin" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI",
+      "device" : "faf911aa-ad52-498c-8d85-e8ed4ee26f83",
+    
+
+
+
+
+      
+      "clearanceStatus":"CLEARED",
+      "validationResults":
+        {
+          "infoMessages":[
+            {
+              "type":"INFO",
+              "code":"XSD_ZATCA_VALID",
+              "category":"XSD validation",
+              "message":"Complied with UBL 2.1 standards in line with ZATCA specifications",
+              "status":"PASS"
+            }
+          ],
+          "warningMessages":[
+            {
+              "type":"WARNING",
+              "code":"BR-CO-16",
+              "category":"EN_16931",
+              "message":"Amount due for payment (BT-115) = Invoice total amount with VAT (BT-112) -Pre-Paid amount (BT-113) + Rounding amount (BT-114).",
+              "status":"WARNING"
+            },
+            {
+              "type":"WARNING",
+              "code":"BR-KSA-73",
+              "category":"KSA",
+              "message":"If Pre-Paid amount (BT-113) is provided, then the following data is mandatory to provide as additional invoice line(s)  Prepayment ID (KSA-26) ; Sequential invoice number (BT-1) of the prepayment invoice(s) Prepayment Issue Date (KSA-28) ; Issue date (BT-2) of the prepayment invoice(s) Prepayment Issue Time (KSA-29) ; Issue time (KSA-25) of the prepayment invoice(s) Prepayment Document Type Code (KSA-30); Invoice type code (BT-3) must be 386","status":"WARNING"
+            }
+          ],
+          "errorMessages":[],
+          "status":"WARNING"
+        },
+          "hash":"wjOtYM1zqAOP0T/bFK1kem+k+JwcZ+AnoYUBeaUfX84=",
+          "generatedQR":"AQtTZWxsZXIgbmFtZQIPMzk5OTk5OTk5OTAwMDAzAxMyMDIzLTA5LTEzVDE0OjQwOjQwBAM1NzUFAjc1Bix3ak90WU0xenFBT1AwVC9iRksxa2VtK2srSndjWitBbm9ZVUJlYVVmWDg0PQdgTUVRQ0lCRTNxM0lpeXVWTW1UKzBIcDRFOCtwNnZkQ05aOFJrQy82OHBOWG1YVDNmQWlBZ0QwQ1RSYm1wRFM3NWFGVHBlMFVuZE5RbzFDemVQTEhrbDV0SlpyRjlEUT09CFgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAAShYIprRJr0UgStM6/S4CQLVUgpfFT2c+nHa+V/jKEx6PLxzTZcluUOru0/J2jyarRqE4yY2jyDCeLte3UpP1R4",
+          "isValidationFromZatca":null,
+          "zatcaStatusCode":202
+        
+  };
+
+
+
+
+
+{
+  "clearanceStatus":"NOT_CLEARED",
+  "validationResults":
+  {
+    "infoMessages":
+      {
+        "type": "INFO",
+        "code": "XSD_ZATCA_VALID",
+        "category": "XSD validation",
+        "message": "Complied with UBL 2.1 standards in line with ZATCA specifications",
+        "status": "PASS" 
+      
+      }, 
+      ["warningMessages"]:
+      { 
+        { ["type"]: "WARNING",
+          ["code"]: "BR-Z-01",
+          ["category"]: "EN_16931",
+          ["message"]: "An Invoice that contains an Invoice line (BG-25), a Document level allowance (BG-20) or a Document level charge (BG-21) where the VAT category code (BT-151 or BT-95 or BT-102) is 'Zero rated' shall contain in the VAT breakdown (BG-23) at least one VAT category code (BT-118) equal with 'Zero rated'.",
+          ["status"]: "WARNING"
+        }, 
+        { 
+          ["type"]: "WARNING",
+          ["code"]: "BR-S-08",
+          ["category"]: "EN_16931",
+          ["message"]: "For each different value of VAT category rate (BT-119) where the VAT category code (BT-118) is “Standard Rated”, the VAT category taxable amount (BT-116) shall equal the sum of Invoice line net amounts (BT-131) minus the sum of Document level allowance amounts (BT-92) plus the sum of Document level charge amounts (BT-99) where the VAT category codes (BT-151, BT-95, BT-102) are “Standard Rate“. and the VAT rates (BT-152,BT-96,BT-103) equal the VAT category rate (BT-119)",
+          ["status"]: "WARNING"
+        },
+        { 
+          ["type"]: "WARNING",
+          ["code"]: "BR-KSA-66",
+          ["category"]:"KSA",
+          ["message"]:"Seller postal code (BT-38) must be 5 digits.",
+          ["status"]:"WARNING"
+        },
+        { 
+          ["type"]:"WARNING",
+          ["code"]:"BR-KSA-67",
+          ["category"]:"KSA",
+          ["message"]:"If the buyer country code (BT-55) is 'SA', then the Buyer postal code(BT-53) must be 5 digits.",
+          ["status"]:"WARNING"
+        } 
+      },
+       ["errorMessages"]:
+       {
+          {
+            ["type"]:"ERROR",
+            ["code"]:"BR-Z-05",
+            ["category"]:"EN_16931",
+            ["message"]:"In an Invoice line (BG-25) where the Invoiced item VAT category code (BT-151) is 'Zero rated' the Invoiced item VAT rate (BT-152) shall be 0 (zero).",
+            ["status"]:"ERROR"
+          }
+      }, 
+      ["status"]:"ERROR"
+  }, 
+  ["isValidationFromZatca"]:true,
+  ["zatcaStatusCode"]:400,
+  ["clearedInvoice"]:'',
+  ["hash"]:'',
+  ["generatedQR"]''
+}
