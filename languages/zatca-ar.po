@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-07-03T05:25:17+00:00\n"
+"POT-Creation-Date: 2024-07-04T11:50:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,132 +36,148 @@ msgstr ""
 msgid "Company"
 msgstr "الشركة"
 
-#: company/view.php:28 company/view.php:424
+#: company/view.php:28 company/view.php:507
 msgid "Zatca Stage:"
 msgstr "مرحلة الدمج مع هيئة الزكاة"
 
-#: company/view.php:32 company/view.php:430
+#: company/view.php:32 company/view.php:513
 msgid "ZATCA V1"
 msgstr "مرحله اولي"
 
-#: company/view.php:33 company/view.php:431
+#: company/view.php:33 company/view.php:514
 msgid "ZATCA V2"
 msgstr "مرحله ثانيه"
 
-#: company/view.php:34 company/view.php:429
+#: company/view.php:34 company/view.php:512
 msgid "No ZATCA"
 msgstr "لايوجد"
 
-#: company/view.php:46 company/view.php:443
+#: company/view.php:46 company/view.php:526
 msgid "Get Seller Data"
 msgstr "جلب بيانات البائع"
 
-#: company/view.php:58 company/view.php:455 customers/edit-customer.php:224
-#: customers/insert.php:217 documents/doc-add-customer.php:109
+#: company/view.php:58 company/view.php:538 customers/edit-customer.php:224
+#: customers/insert.php:222 documents/doc-add-customer.php:109
 msgid "Second Business ID Type:"
 msgstr "نوع المعرف الثاني"
 
-#: company/view.php:83 company/view.php:480 customers/edit-customer.php:248
-#: customers/insert.php:240 documents/doc-add-customer.php:132
+#: company/view.php:83 company/view.php:563 customers/edit-customer.php:248
+#: customers/insert.php:245 documents/doc-add-customer.php:132
 msgid "Second Business ID :"
 msgstr "المعرف الثاني"
 
-#: company/view.php:101 company/view.php:499 documents/edit-document.php:461
+#: company/view.php:101 company/view.php:582 documents/edit-document.php:461
 #: documents/insert.php:483
 msgid "VAT Category Code:"
 msgstr "فئة الضريبة الرئيسية"
 
-#: company/view.php:125 company/view.php:523
+#: company/view.php:125 company/view.php:606
 msgid "VAT Category Code Sub Type No:"
 msgstr "فئة الضريبة الفرعية"
 
-#: company/view.php:149 company/view.php:547 customers/edit-customer.php:208
-#: customers/insert.php:200 documents/doc-add-customer.php:92
+#: company/view.php:149 company/view.php:630 customers/edit-customer.php:208
+#: customers/insert.php:205 documents/doc-add-customer.php:92
 msgid "VAT ID:"
 msgstr "الرقم الضريبي"
 
-#: company/view.php:170 company/view.php:569 company/view.php:576
+#: company/view.php:170 company/view.php:652 company/view.php:659
 msgid "Name:"
 msgstr "الاسم"
 
-#: company/view.php:186 company/view.php:585 company/view.php:592
-#: customers/edit-customer.php:279 customers/insert.php:273
+#: company/view.php:186 company/view.php:668 company/view.php:675
+#: customers/edit-customer.php:279 customers/insert.php:278
 #: documents/doc-add-customer.php:165
 msgid "Apartment No :"
 msgstr "رقم المبنى"
 
-#: company/view.php:202 company/view.php:601 company/view.php:608
-#: customers/edit-customer.php:295 customers/insert.php:290
+#: company/view.php:202 company/view.php:684 company/view.php:691
+#: customers/edit-customer.php:295 customers/insert.php:295
 msgid "Postal Code:"
 msgstr "الرقم البريدي"
 
-#: company/view.php:219 company/view.php:618 company/view.php:626
-#: customers/edit-customer.php:313 customers/insert.php:308
+#: company/view.php:219 company/view.php:701 company/view.php:709
+#: customers/edit-customer.php:313 customers/insert.php:313
 #: documents/doc-add-customer.php:182
 msgid "PO Box :"
 msgstr "صندوق البريد"
 
-#: company/view.php:236 company/view.php:636 company/view.php:643
-#: customers/edit-customer.php:329 customers/insert.php:327
+#: company/view.php:236 company/view.php:719 company/view.php:726
+#: customers/edit-customer.php:329 customers/insert.php:332
 #: documents/doc-add-customer.php:200
 msgid "PO Box Additional Number :"
 msgstr "رقم صندوق بريد إضافي"
 
-#: company/view.php:252 company/view.php:652 company/view.php:659
+#: company/view.php:252 company/view.php:735 company/view.php:742
 #: documents/doc-add-customer.php:217
 msgid "Street Name - AR :"
 msgstr "الشارع بالعربية"
 
-#: company/view.php:268 company/view.php:668 company/view.php:676
+#: company/view.php:268 company/view.php:751 company/view.php:759
 #: documents/doc-add-customer.php:235
 msgid "Street Name - EN :"
 msgstr "الشارع بالانجليزية"
 
-#: company/view.php:285 company/view.php:685 company/view.php:692
+#: company/view.php:285 company/view.php:768 company/view.php:775
 #: documents/doc-add-customer.php:253
 msgid "District Name - AR :"
 msgstr "المقاطعة بالعربية"
 
-#: company/view.php:301 company/view.php:701 company/view.php:708
+#: company/view.php:301 company/view.php:784 company/view.php:791
 #: documents/doc-add-customer.php:270
 msgid "District Name - EN :"
 msgstr "المقاطعة بالانجليزي"
 
-#: company/view.php:317 company/view.php:717 company/view.php:724
+#: company/view.php:317 company/view.php:800 company/view.php:808
 #: documents/doc-add-customer.php:287
 msgid "City Name - AR :"
 msgstr "المدينة بالعربية"
 
-#: company/view.php:334 company/view.php:733 company/view.php:741
+#: company/view.php:334 company/view.php:817 company/view.php:826
 #: documents/doc-add-customer.php:305
 msgid "City Name - EN :"
 msgstr "المدينة بالانجليزي"
 
-#: company/view.php:351 company/view.php:750 company/view.php:757
+#: company/view.php:351 company/view.php:835 company/view.php:842
 #: documents/doc-add-customer.php:323
 msgid "Country Subdivision - AR :"
 msgstr "محافظة بالعربية"
 
-#: company/view.php:367 company/view.php:766 company/view.php:773
+#: company/view.php:367 company/view.php:851 company/view.php:858
 #: documents/doc-add-customer.php:340
 msgid "Country Subdivision - EN :"
 msgstr "محافظة بالانجليزية"
 
-#: company/view.php:383 company/view.php:782 customers/edit-customer.php:477
+#: company/view.php:383 company/view.php:867 customers/edit-customer.php:477
 #: documents/doc-add-customer.php:357
 msgid "Country :"
 msgstr "البلد"
 
-#: company/view.php:409
+#: company/view.php:412 company/view.php:892
+msgid "Branch No :"
+msgstr "رقم الفرع"
+
+#: company/view.php:430 company/view.php:910
+msgid "Device :"
+msgstr "رقم الجهاز"
+
+#: company/view.php:454 company/view.php:933
+msgid "ZATCA B2C Sending Interval :"
+msgstr "طريقة ارسال فواتير B2C  لهيئة الزكاة"
+
+#: company/view.php:469 company/view.php:950
+msgid "ZATCA Invoices Type:"
+msgstr "نوع الفواتير المدعومة"
+
+#: company/view.php:492
 msgid "Update Company Details"
 msgstr "تعديل بيانات الشركة"
 
-#: company/view.php:488 customers/insert.php:248
+#: company/view.php:571 customers/insert.php:253
 #: documents/doc-add-customer.php:140
 msgid "Second Business ID"
 msgstr "المعرف الثاني"
 
-#: company/view.php:807
+#: company/view.php:971
 msgid "Insert Company Details"
 msgstr "ادخال بيانات الشركة"
 
@@ -169,7 +185,7 @@ msgstr "ادخال بيانات الشركة"
 msgid "Row deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: customers/edit-customer.php:28 customers/insert.php:16
+#: customers/edit-customer.php:28 customers/insert.php:21
 #: devices/edit-device.php:28 devices/insert.php:13
 #: documents/doc-add-customer.php:16 documents/edit-document.php:28
 #: documents/insert.php:14 users/edit-user.php:28 users/insert.php:13
@@ -184,29 +200,29 @@ msgstr "تعديل بيانات العميل"
 msgid "Client / VendorNo:"
 msgstr "رقم العميل"
 
-#: customers/edit-customer.php:72 customers/insert.php:60
+#: customers/edit-customer.php:72 customers/insert.php:65
 msgid "Copy data from the system to here"
 msgstr "نسخ بيانات العميل من النظام"
 
-#: customers/edit-customer.php:82 customers/insert.php:70 customers/view.php:4
+#: customers/edit-customer.php:82 customers/insert.php:75 customers/view.php:4
 #: option.php:32 option.php:33
 msgid "Customers"
 msgstr "العملاء"
 
-#: customers/edit-customer.php:91 customers/insert.php:79
+#: customers/edit-customer.php:91 customers/insert.php:84
 msgid "Name"
 msgstr "الاسم"
 
-#: customers/edit-customer.php:92 customers/insert.php:80
+#: customers/edit-customer.php:92 customers/insert.php:85
 #: documents/edit-document.php:108 documents/insert.php:112
 msgid "Email"
 msgstr "البريد الالكتروني"
 
-#: customers/edit-customer.php:93 customers/insert.php:81
+#: customers/edit-customer.php:93 customers/insert.php:86
 msgid "Phone"
 msgstr "رقم الهاتف"
 
-#: customers/edit-customer.php:94 customers/insert.php:82
+#: customers/edit-customer.php:94 customers/insert.php:87
 msgid "Address"
 msgstr "العنوان"
 
@@ -214,52 +230,52 @@ msgstr "العنوان"
 msgid "Search Customer Data"
 msgstr "البحث في بيانات العميل"
 
-#: customers/edit-customer.php:174 customers/insert.php:165
+#: customers/edit-customer.php:174 customers/insert.php:170
 msgid "Client Name ( Arabic ):"
 msgstr "اسم العميل بالعربية"
 
-#: customers/edit-customer.php:191 customers/insert.php:182
+#: customers/edit-customer.php:191 customers/insert.php:187
 msgid "Client Name( English ):"
 msgstr "اسم العميل بالانجليزية"
 
-#: customers/edit-customer.php:264 customers/insert.php:257
+#: customers/edit-customer.php:264 customers/insert.php:262
 #: documents/doc-add-customer.php:149
 msgid "ZATCA Invoices Type :"
 msgstr "نوع الفواتير المدعومة"
 
-#: customers/edit-customer.php:303 customers/insert.php:298
+#: customers/edit-customer.php:303 customers/insert.php:303
 msgid "Postal Code"
 msgstr "الرمز البريدي"
 
-#: customers/edit-customer.php:345 customers/insert.php:344
+#: customers/edit-customer.php:345 customers/insert.php:349
 msgid "Street Name (Arabic):"
 msgstr "الشارع بالعربية"
 
-#: customers/edit-customer.php:362 customers/insert.php:362
+#: customers/edit-customer.php:362 customers/insert.php:367
 msgid "Street Name (English):"
 msgstr "الشارع بالانجليزي"
 
-#: customers/edit-customer.php:379 customers/insert.php:380
+#: customers/edit-customer.php:379 customers/insert.php:385
 msgid "District Name (Arabic):"
 msgstr "المقاطعة بالعربية"
 
-#: customers/edit-customer.php:395 customers/insert.php:397
+#: customers/edit-customer.php:395 customers/insert.php:402
 msgid "District Name (English):"
 msgstr "المقاطعة بالانجليزي"
 
-#: customers/edit-customer.php:411 customers/insert.php:414
+#: customers/edit-customer.php:411 customers/insert.php:419
 msgid "City Name(Arabic):"
 msgstr " المدينه بالعربيه"
 
-#: customers/edit-customer.php:428 customers/insert.php:432
+#: customers/edit-customer.php:428 customers/insert.php:437
 msgid "City Name(English):"
 msgstr " المدينه بالانجليزيه"
 
-#: customers/edit-customer.php:445 customers/insert.php:450
+#: customers/edit-customer.php:445 customers/insert.php:455
 msgid "Country Subdivision (Arabic):"
 msgstr " المحافظة بالعربية"
 
-#: customers/edit-customer.php:461 customers/insert.php:467
+#: customers/edit-customer.php:461 customers/insert.php:472
 msgid "Country Subdivision (English):"
 msgstr " المحافظة بالانجليزية"
 
@@ -267,85 +283,85 @@ msgstr " المحافظة بالانجليزية"
 msgid "Update Customer Details"
 msgstr "تعديل بيانات العميل"
 
-#: customers/insert.php:24 documents/doc-add-customer.php:24
+#: customers/insert.php:29 documents/doc-add-customer.php:24
 msgid "Add New Customer"
 msgstr "اضافه عميل جديد"
 
-#: customers/insert.php:37
+#: customers/insert.php:42
 msgid "Client No.:"
 msgstr "رقم العميل"
 
-#: customers/insert.php:46
+#: customers/insert.php:51
 msgid "Client No."
 msgstr "رقم العميل"
 
-#: customers/insert.php:147
+#: customers/insert.php:152
 msgid "Search Customer data"
 msgstr "البحث في بيانات العميل"
 
-#: customers/insert.php:173
+#: customers/insert.php:178
 msgid "Client Name ( Arabic )"
 msgstr "اسم العميل بالعربية"
 
-#: customers/insert.php:191
+#: customers/insert.php:196
 msgid "Client Name ( English )"
 msgstr "اسم العميل بالانجليزية"
 
-#: customers/insert.php:208 customers/view.php:28
+#: customers/insert.php:213 customers/view.php:28
 #: documents/doc-add-customer.php:100
 msgid "VAT ID"
 msgstr "الرقم الضريبي"
 
-#: customers/insert.php:281 documents/doc-add-customer.php:173
+#: customers/insert.php:286 documents/doc-add-customer.php:173
 msgid "Apartment No"
 msgstr "رقم المبنى"
 
-#: customers/insert.php:317 customers/view.php:135
+#: customers/insert.php:322 customers/view.php:135
 #: documents/doc-add-customer.php:191
 msgid "PO Box"
 msgstr "صندوق البريد"
 
-#: customers/insert.php:335 documents/doc-add-customer.php:208
+#: customers/insert.php:340 documents/doc-add-customer.php:208
 msgid "PO Box Additional Number"
 msgstr "رقم صندوق بريد إضافي"
 
-#: customers/insert.php:353
+#: customers/insert.php:358
 msgid "Street Name (Arabic)"
 msgstr " الشارع بالعربية"
 
-#: customers/insert.php:371
+#: customers/insert.php:376
 msgid "Street Name (English)"
 msgstr " الشارع بالانجليزيه"
 
-#: customers/insert.php:388
+#: customers/insert.php:393
 msgid "District Name (Arabic)"
 msgstr "المقاطعة بالعربية"
 
-#: customers/insert.php:405
+#: customers/insert.php:410
 msgid "District Name (English)"
 msgstr "المقاطعة بالانجليزيه"
 
-#: customers/insert.php:423
+#: customers/insert.php:428
 msgid "City Name(Arabic)"
 msgstr "المدينه بالعربيه"
 
-#: customers/insert.php:441
+#: customers/insert.php:446
 msgid "City Name(English)"
 msgstr "المدينه بالانجليزيه"
 
-#: customers/insert.php:458
+#: customers/insert.php:463
 msgid "Country Subdivision (Arabic)"
 msgstr "المحافظة بالعربية"
 
-#: customers/insert.php:475
+#: customers/insert.php:480
 msgid "Country Subdivision (English)"
 msgstr "المحافظة بالانجليزية"
 
-#: customers/insert.php:484
+#: customers/insert.php:489
 msgid "Country Name:"
 msgstr "البلد"
 
-#: customers/insert.php:507 customers/view.php:14
+#: customers/insert.php:512 customers/view.php:14
 #: documents/doc-add-customer.php:380 documents/edit-document.php:178
 #: documents/insert.php:180
 msgid "Insert New Customer"
@@ -960,7 +976,12 @@ msgstr "تعديل بيانات المستخدم"
 msgid "Delete User"
 msgstr "حذف المستخدم "
 
-#: zatca.php:691 zatca.php:735
+#: zatca.php:725
+#, fuzzy
+msgid "Data Inserted"
+msgstr "تم التعديل بنجاح"
+
+#: zatca.php:797
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
 

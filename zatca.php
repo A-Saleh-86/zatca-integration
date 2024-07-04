@@ -645,7 +645,11 @@ function submit_form_company(){
         $country_Sub_Name_Ar = $form_array['country-sub-name-ar'];
         $country_Sub_Name_En = $form_array['country-sub-name-en'];
         $country = $form_array['country'];
-
+        $branch_no = $form_array['branch-no'];
+        $branch_device = $form_array['device'];
+        $zatca_interval = $form_array['zatca-interval'];
+        $zatca_invoice_type = $form_array['zatca-invoice-type'];
+        
         // Get country_arb & country_eng Depend On Country Choosing:
         $countryArab = $wpdb->get_var($wpdb->prepare("SELECT arabic_name FROM country WHERE country_id = $country"));
         $countryEnglish = $wpdb->get_var($wpdb->prepare("SELECT english_name FROM country WHERE country_id = $country"));
@@ -653,7 +657,8 @@ function submit_form_company(){
 
         // Check If Insert:
         if($status == 'Insert'){
-        
+            
+            // insert zatcacompany data:
             $insert_company = $wpdb->insert(
                 'zatcacompany',
                 [
@@ -682,20 +687,49 @@ function submit_form_company(){
                 ]
             );
 
-            if ($insert_company === false) {
+            // insert zatcabranch data:
+            $insert_branch = $wpdb->insert(
+                'zatcabranch',
+                [
+                    'deviceID'                  => $branch_device,
+                    'zatcaStage'                => $zatca_Stage,
+                    'zatcaInvoiceType'          => $zatca_invoice_type,
+                    'secondBusinessIDType'      => $second_Business_Id_Type,
+                    'secondBusinessID'          => $second_Business_Id,
+                    'VATCategoryCodeNo'           => $vat_Cat_Code,
+                    'VATCategoryCodeSubTypeNo'  => $vat_Cat_Code_Sub_No,
+                    'apartmentNum'              => $apartment_No,
+                    'POBox'                     => $po_Box,
+                    'POBoxAdditionalNum'        => $po_Box_Additional_No,
+                    'street_Arb'                => $street_Name_Ar,
+                    'street_Eng'                => $street_Name_En,
+                    'district_Arb'              => $district_Name_Ar,
+                    'district_Eng'              => $district_Name_En,
+                    'city_Arb'                  => $city_Name_Ar,
+                    'city_Eng'                  => $city_Name_En,
+                    'countrySubdivision_Arb'    => $country_Sub_Name_Ar,
+                    'countrySubdivision_Eng'    => $country_Sub_Name_En,
+                    'countryNo'                 => $country, 
+                    'country_Arb'               => $countryArab,
+                    'country_Eng'               => $countryEnglish,
+                    'ZATCA_B2C_SendingIntervalType' => $zatca_interval,
+                ]
+            );
+
+            if ($insert_company === false || $insert_branch === false) {
                 // There was an error inserting data
                 $error_message = $wpdb->last_error;
                 echo "Error inserting data: $error_message";
             } else {
 
-                echo _e('Data Updated', 'zatca');
+                echo _e('Data Inserted', 'zatca');
             }
 
 
         }else{ // If Update:
 
+            // Update zatcacompany:
             $table_name = 'zatcacompany';
-
             $data = array(
                 'zatcaStage'                        => $zatca_Stage,
                 'secondBusinessIDType'              => $second_Business_Id_Type,
@@ -720,13 +754,41 @@ function submit_form_company(){
                 'country_Arb'                       => $countryArab,
                 'country_Eng'                       => $countryEnglish,
             );
-
             $where = array('companyNo' => $id);
-
-            $update_result = $wpdb->update($table_name, $data, $where);
+            $update_zatcacompany = $wpdb->update($table_name, $data, $where);
+            
+            
+            // Update zatcabranch:
+            $table_name = 'zatcabranch';
+            $data = array(
+                'deviceID'                  => $branch_device,
+                'zatcaStage'                => $zatca_Stage,
+                'zatcaInvoiceType'          => $zatca_invoice_type,
+                'secondBusinessIDType'      => $second_Business_Id_Type,
+                'secondBusinessID'          => $second_Business_Id,
+                'VATCategoryCodeNo'           => $vat_Cat_Code,
+                'VATCategoryCodeSubTypeNo'  => $vat_Cat_Code_Sub_No,
+                'apartmentNum'              => $apartment_No,
+                'POBox'                     => $po_Box,
+                'POBoxAdditionalNum'        => $po_Box_Additional_No,
+                'street_Arb'                => $street_Name_Ar,
+                'street_Eng'                => $street_Name_En,
+                'district_Arb'              => $district_Name_Ar,
+                'district_Eng'              => $district_Name_En,
+                'city_Arb'                  => $city_Name_Ar,
+                'city_Eng'                  => $city_Name_En,
+                'countrySubdivision_Arb'    => $country_Sub_Name_Ar,
+                'countrySubdivision_Eng'    => $country_Sub_Name_En,
+                'countryNo'                 => $country, 
+                'country_Arb'               => $countryArab,
+                'country_Eng'               => $countryEnglish,
+                'ZATCA_B2C_SendingIntervalType' => $zatca_interval,
+            );
+            $where = array('buildingNo' => $branch_no);
+            $update_zatcabranch = $wpdb->update($table_name, $data, $where);
         
 
-            if ($update_result === false) {
+            if ($update_zatcacompany === false || $update_zatcabranch === false) {
                 // There was an error inserting data
                 $error_message = $wpdb->last_error;
                 echo "Error inserting data: $error_message";
@@ -736,6 +798,7 @@ function submit_form_company(){
             }
         
         }
+
     }
 
     die();
