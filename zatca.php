@@ -26,7 +26,7 @@ include 'option.php';
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
 // Include the file that contains the create_custom_table function
-require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+// require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
 
 // Add Action in startup to create database tables:
 add_action('admin_menu', 'create_custom_tables');
