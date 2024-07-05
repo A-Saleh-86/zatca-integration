@@ -401,6 +401,89 @@
                 </div>
                 <!-- /  Country  field -->
 
+                <!-- ######## ZATCABRANCH INPUTS ######## -->
+                
+                <?php 
+                $branches = $wpdb->get_results( "SELECT * FROM zatcabranch" );
+                foreach($branches as $branch){?>
+
+                    <!--  Branch No field -->
+                    <div class="mb-3 row col-mid-6">
+                        <label class="col-sm-2 col-form-label"><?php echo _e('Branch No :', 'zatca') ?></label>
+                        <div class="col-sm-10 col-md-9">
+                            <div class="form-group">
+                                <input 
+                                    type="text" 
+                                    name="branch-no"
+                                    id="branch_id"
+                                    class="form-control"
+                                    value="<?php echo $branch->buildingNo ?>"
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /  Branch No field -->
+
+                    <!--  Device  field -->
+                    <div class="mb-3 row col-mid-6">
+                        <label class="col-sm-2 col-form-label"><?php echo _e('Device :', 'zatca') ?></label>
+                        <div class="col-sm-10 col-md-9">
+                            <div class="form-group">
+                                <select class="form-select select2"  name="device">
+                                    <option value=""> ...</option>
+                                    <?php 
+                                    global $wpdb;
+                                    
+                                    // Fetch Data From Database:
+                                    $devices = $wpdb->get_results( "SELECT * FROM zatcadevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
+                                    foreach($devices as $device) {?>
+                                        <option  value="<?php echo $device->deviceNo ?>" <?php if($branch->deviceID == $device->deviceNo){echo 'selected';} ?>><?php echo $device->deviceCSID ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /  Device  field -->
+
+                    <!--  ZATCA B2C Sending Interval  field -->
+                    <div class="mb-3 row col-mid-6">
+                        <label class="col-sm-2 col-form-label"><?php echo _e('ZATCA B2C Sending Interval :', 'zatca') ?></label>
+                        <div class="col-sm-10 col-md-9">
+                            <div class="form-group">
+                                <select class="form-select select2"  name="zatca-interval">
+                                    <option  value="1" <?php if($branch->ZATCA_B2C_SendingIntervalType == 1){echo 'selected';} ?> >Manual يدوي </option>
+                                    <option  value="2" <?php if($branch->ZATCA_B2C_SendingIntervalType == 2){echo 'selected';} ?> >Instant and continue invoicing ارسال اثناء الفوترة في الخلفية</option>
+                                    <option  value="3" <?php if($branch->ZATCA_B2C_SendingIntervalType == 3){echo 'selected';} ?> > Instant and hold invoicing إيقاف الفوترة حتى يصل رد من هيئة الزكاة</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /  ZATCA B2C Sending Interval  field -->
+
+                    <!--  ZATCA Invoice Type field -->
+                    <div class="mb-3 row col-mid-6">
+                        <label class="col-sm-2 col-form-label"><?php echo _e('ZATCA Invoices Type:', 'zatca') ?></label>
+                        <div class="col-sm-10 col-md-9">
+                            <div class="form-group">
+                                <select class="form-select select2"  name="zatca-invoice-type">
+                                    <option  value="0" <?php if($branch->zatcaInvoiceType == 0){echo 'selected';} ?> >B2C</option>
+                                    <option  value="1" <?php if($branch->zatcaInvoiceType == 1){echo 'selected';} ?>>B2B</option>
+                                    <option  value="2" <?php if($branch->zatcaInvoiceType == 2){echo 'selected';} ?>>Both</option>
+                                
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /  ZATCA Invoice Type field -->
+                
+                    <?php
+                }
+                ?>
+                <!-- ########  / ZATCABRANCH INPUTS ######## -->
 
 
                 <!-- Submit Btn -->
@@ -719,8 +802,8 @@
                     <div class="form-group">
                         <input 
                             type="text" 
-                            name="city-name-ar"
-                            id="city_ar" 
+                            name="city-name-ar" 
+                             id="city_ar"
                             class="form-control"
                             placeholder="<?php echo _e('City Name - AR :', 'zatca') ?>"
                         />
@@ -737,6 +820,7 @@
                         <input 
                         type="text" 
                         name="city-name-en"
+                       
                         id="company-city"
                         class="form-control"
                         placeholder="<?php echo _e('City Name - EN :', 'zatca') ?>"
@@ -800,7 +884,86 @@
                 </div>
             </div>
             <!-- /  Country  field -->
+            
+            <!-- ######## ZATCABRANCH INPUTS ######## -->
+            
+            <!--  Branch No field -->
+            <div class="mb-3 row col-mid-6">
+                <label class="col-sm-2 col-form-label"><?php echo _e('Branch No :', 'zatca') ?></label>
+                <div class="col-sm-10 col-md-9">
+                    <div class="form-group">
+                        <input 
+                            type="text" 
+                            name="branch-no"
+                            id="branch_id"
+                            class="form-control"
+                            value="1"
+                            disabled
+                        />
+                    </div>
+                </div>
+            </div>
+            <!-- /  Branch No field -->
 
+            <!--  Device  field -->
+            <div class="mb-3 row col-mid-6">
+                <label class="col-sm-2 col-form-label"><?php echo _e('Device :', 'zatca') ?></label>
+                <div class="col-sm-10 col-md-9">
+                    <div class="form-group">
+                        <select class="form-select select2"  name="device">
+                            <option value=""> ...</option>
+                            <?php 
+                            global $wpdb;
+                            
+                            // Fetch Data From Database:
+                            $devices = $wpdb->get_results( "SELECT * FROM zatcadevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
+                            foreach($devices as $device) {?>
+                                '<option  value="<?php echo $device->deviceNo ?>"><?php echo $device->deviceCSID ?></option>';
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- /  Device  field -->
+
+            <!--  ZATCA B2C Sending Interval  field -->
+            <div class="mb-3 row col-mid-6">
+                <label class="col-sm-2 col-form-label"><?php echo _e('ZATCA B2C Sending Interval :', 'zatca') ?></label>
+                <div class="col-sm-10 col-md-9">
+                    <div class="form-group">
+                        <select class="form-select select2"  name="zatca-interval">
+                            <option value=""> ...</option>
+                            <option  value="1">Manual يدوي </option>
+                            <option  value="2">Instant and continue invoicing ارسال اثناء الفوترة في الخلفية</option>
+                            <option  value="3"> Instant and hold invoicing إيقاف الفوترة حتى يصل رد من هيئة الزكاة</option>
+                          
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- /  ZATCA B2C Sending Interval  field -->
+
+            <!--  ZATCA Invoice Type field -->
+            <div class="mb-3 row col-mid-6">
+                <label class="col-sm-2 col-form-label"><?php echo _e('ZATCA Invoices Type:', 'zatca') ?></label>
+                <div class="col-sm-10 col-md-9">
+                    <div class="form-group">
+                        <select class="form-select select2"  name="zatca-invoice-type">
+                            <option value=""> ...</option>
+                            <option  value="0">B2C</option>
+                            <option  value="1">B2B</option>
+                            <option  value="2">Both</option>
+                          
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- /  ZATCA Invoice Type field -->
+            
+          
+            <!-- ########  / ZATCABRANCH INPUTS ######## -->
 
             <!-- Submit Btn -->
             <div class="mb-3 row">

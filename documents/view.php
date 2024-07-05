@@ -157,6 +157,7 @@
                                                                                     FROM zatcadocument 
                                                                                     WHERE documentNo =  $result->documentNo"));
 
+
                                 
                             // Check If zatcaSuccessResponse = 0 to show for all documents:
                             if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 0){
@@ -180,12 +181,23 @@
                             
                                 }else{ //if B2C will redirect to Report(): ?>
 
+                                    <?php
+                                    $zatcaCompanySatge = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
+                                    FROM zatcadocument zd, zatcacompany zc 
+                                    WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
+                                    ?>
                                     <!-- Send To Zatca Btn [ report() ] -->
                                     <a 
                                         href="#" 
                                         class="my-plugin-button btn-sm me-1" 
                                         id="send-zatca-report" 
-                                        data-doc-no = "<?php echo $result->documentNo ?>" 
+                                        data-doc-no = "<?php echo $result->documentNo ?>"
+                                        data-vatcategorycodesubtypeno = "<?php echo $result->VATCategoryCodeSubTypeNo ?>"
+                                        data-buyer-aname = "<?php echo $result->buyer_aName ?>"
+                                        data-buyer-secondbusinesstype = "<?php echo $result->buyer_secondBusinessIDType ?>"
+                                        data-buyer-secondbusinessid = "<?php echo $result->buyer_secondBusinessID ?>"
+                                        data-seller-secondbusinessid = "<?php echo $result->seller_secondBusinessID ?>"
+                                        data-company-stage = "<?php echo $zatcaCompanySatge ?>"
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
                                         title="<?php echo _e('Send To Zatca', 'zatca') ?>">

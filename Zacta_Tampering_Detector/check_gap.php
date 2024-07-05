@@ -23,18 +23,20 @@ function check_counter_gap() {
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
 
+    
     // Query to fetch the invoice numbers within the specified date range for the given branch
     $query = $wpdb->prepare("
-        SELECT invoiceNo
-        FROM zatcaDocument
-        INNER JOIN zatcaDevice ON zatcaDevice.deviceNo = zatcaDocument.deviceNo
-        INNER JOIN zatcaDocument ON zatcaDocument.BuildingNo = zatcaBranch.BuildingNo
-        WHERE zatcaBranch.BuildingNo = %d
-        AND zatcaDocument.dateG BETWEEN %s AND %s
-        ORDER BY invoiceNo
+        SELECT z1.invoiceNo
+        FROM zatcadocument z1
+        INNER JOIN zatcadevice zd ON zd.deviceNo = z1.deviceNo
+        INNER JOIN zatcabranch zb ON z1.buildingNo = zb.buildingNo
+        WHERE zb.buildingNo = %d
+        AND z1.dateG BETWEEN %s AND %s
+        ORDER BY z1.invoiceNo
     ", $BuildingNo, $from_date, $to_date);
 
     $results = $wpdb->get_results($query);
+
     
     // Initialize variables
     $missing_numbers = [];
@@ -58,7 +60,6 @@ function check_counter_gap() {
     $response = array(
         'missing_numbers' => $missing_numbers,
     );
-
     // Display the results in a grid table
     echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
     echo '<thead><tr><th>Missing Invoice Numbers</th></tr></thead>';

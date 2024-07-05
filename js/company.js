@@ -68,36 +68,40 @@ jQuery(document).ready(function($) {
         
         event.preventDefault();
 
+        $("#branch_id").prop("disabled", false);
+
         var formData = $(this).serialize();
+
+        // console.log(formData)
 
         // validation on second Bussiness Id input:
         if (secondBusIdInput.value.length != 10 ) {
-            msg = "<?php echo _e('Second Business Id Must be 10 Digits.', 'zatca') ?>"
-            // alert("Second Business Id Must be 10 Digits.");
-            alert(msg);
+            // msg = "<?php echo _e('Second Business Id Must be 10 Digits.', 'zatca') ?>"
+            // alert(msg);
+            alert("Second Business Id Must be 10 Digits.");
             return;
         }
 
         // validation on PO input:
         if (po.value.length != 5 ) {
-            msg = "<?php echo _e('Po Box Must be 5 Digits.', 'zatca') ?>"
-            alert(msg);
-            // alert("Po Box Must be 5 Digits.");
+            // msg = "<?php echo _e('Po Box Must be 5 Digits.', 'zatca') ?>"
+            // alert(msg);
+            alert("Po Box Must be 5 Digits.");
             return;
         }
 
         // validation on city arabic name input:
         if (cityAr.value == null || cityAr.value === '' ) {
-            msg = "<?php echo _e('Please Insert City Name.', 'zatca') ?>"
-            alert(msg);
-            // alert("Po Box Must be 5 Digits.");
+            // msg = "<?php echo _e('Please Insert City Name.', 'zatca') ?>"
+            // alert(msg);
+            alert("Please Insert City Name.");
             return;
         }
 
 
         $.ajax({
             url: myCompany.ajaxUrl,
-            method: "POST", // Specify the method
+            method: "POST", 
             data: {
                 "action": "submit_company",
                 "form_data_ajax_company": formData,
@@ -105,6 +109,7 @@ jQuery(document).ready(function($) {
             },
             success: function(data){
                 // console.log(data);
+                alert(data);
                 window.location.reload();
             },
             error: function(xhr, status, error) {
@@ -118,21 +123,23 @@ jQuery(document).ready(function($) {
         
         event.preventDefault();
 
+        $("#branch_id").prop("disabled", false);
+
         var formData = $(this).serialize();
 
         // validation on second Bussiness Id input:
         if (secondBusIdInput.value.length != 10 ) {
-            msg = "<?php echo _e('Second Business Id Must be 10 Digits.', 'zatca') ?>"
-            // alert("Second Business Id Must be 10 Digits.");
-            alert(msg);
+            // msg = "<?php echo _e('Second Business Id Must be 10 Digits.', 'zatca') ?>"
+            // alert(msg);
+            alert("Second Business Id Must be 10 Digits.");
             return;
         }
 
         // validation on PO input:
         if (po.value.length != 5 ) {
-            msg = "<?php echo _e('Po Box Must be 5 Digits.', 'zatca') ?>"
-            alert(msg);
-            // alert("Po Box Must be 5 Digits.");
+            // msg = "<?php echo _e('Po Box Must be 5 Digits.', 'zatca') ?>"
+            // alert(msg);
+            alert("Po Box Must be 5 Digits.");
             return;
         }
 

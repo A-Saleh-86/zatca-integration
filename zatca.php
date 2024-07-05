@@ -26,10 +26,10 @@ include 'option.php';
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
 // Include the file that contains the create_custom_table function
-require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+ //require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
 
 // Add Action in startup to create database tables:
-add_action('admin_menu', 'create_custom_tables');
+//add_action('admin_menu', 'create_custom_tables');
 
 // Add [CSS, JS, Bootstrap ] to admin panel:
 add_action('admin_enqueue_scripts', 'load_assets');
@@ -645,7 +645,11 @@ function submit_form_company(){
         $country_Sub_Name_Ar = $form_array['country-sub-name-ar'];
         $country_Sub_Name_En = $form_array['country-sub-name-en'];
         $country = $form_array['country'];
-
+        $branch_no = $form_array['branch-no'];
+        $branch_device = $form_array['device'];
+        $zatca_interval = $form_array['zatca-interval'];
+        $zatca_invoice_type = $form_array['zatca-invoice-type'];
+        
         // Get country_arb & country_eng Depend On Country Choosing:
         $countryArab = $wpdb->get_var($wpdb->prepare("SELECT arabic_name FROM country WHERE country_id = $country"));
         $countryEnglish = $wpdb->get_var($wpdb->prepare("SELECT english_name FROM country WHERE country_id = $country"));
@@ -653,7 +657,8 @@ function submit_form_company(){
 
         // Check If Insert:
         if($status == 'Insert'){
-        
+            
+            // insert zatcacompany data:
             $insert_company = $wpdb->insert(
                 'zatcacompany',
                 [
@@ -682,20 +687,49 @@ function submit_form_company(){
                 ]
             );
 
-            if ($insert_company === false) {
+            // insert zatcabranch data:
+            $insert_branch = $wpdb->insert(
+                'zatcabranch',
+                [
+                    'deviceID'                  => $branch_device,
+                    'zatcaStage'                => $zatca_Stage,
+                    'zatcaInvoiceType'          => $zatca_invoice_type,
+                    'secondBusinessIDType'      => $second_Business_Id_Type,
+                    'secondBusinessID'          => $second_Business_Id,
+                    'VATCategoryCodeNo'           => $vat_Cat_Code,
+                    'VATCategoryCodeSubTypeNo'  => $vat_Cat_Code_Sub_No,
+                    'apartmentNum'              => $apartment_No,
+                    'POBox'                     => $po_Box,
+                    'POBoxAdditionalNum'        => $po_Box_Additional_No,
+                    'street_Arb'                => $street_Name_Ar,
+                    'street_Eng'                => $street_Name_En,
+                    'district_Arb'              => $district_Name_Ar,
+                    'district_Eng'              => $district_Name_En,
+                    'city_Arb'                  => $city_Name_Ar,
+                    'city_Eng'                  => $city_Name_En,
+                    'countrySubdivision_Arb'    => $country_Sub_Name_Ar,
+                    'countrySubdivision_Eng'    => $country_Sub_Name_En,
+                    'countryNo'                 => $country, 
+                    'country_Arb'               => $countryArab,
+                    'country_Eng'               => $countryEnglish,
+                    'ZATCA_B2C_SendingIntervalType' => $zatca_interval,
+                ]
+            );
+
+            if ($insert_company === false || $insert_branch === false) {
                 // There was an error inserting data
                 $error_message = $wpdb->last_error;
                 echo "Error inserting data: $error_message";
             } else {
 
-                echo _e('Data Updated', 'zatca');
+                echo _e('Data Inserted', 'zatca');
             }
 
 
         }else{ // If Update:
 
+            // Update zatcacompany:
             $table_name = 'zatcacompany';
-
             $data = array(
                 'zatcaStage'                        => $zatca_Stage,
                 'secondBusinessIDType'              => $second_Business_Id_Type,
@@ -720,13 +754,41 @@ function submit_form_company(){
                 'country_Arb'                       => $countryArab,
                 'country_Eng'                       => $countryEnglish,
             );
-
             $where = array('companyNo' => $id);
-
-            $update_result = $wpdb->update($table_name, $data, $where);
+            $update_zatcacompany = $wpdb->update($table_name, $data, $where);
+            
+            
+            // Update zatcabranch:
+            $table_name = 'zatcabranch';
+            $data = array(
+                'deviceID'                  => $branch_device,
+                'zatcaStage'                => $zatca_Stage,
+                'zatcaInvoiceType'          => $zatca_invoice_type,
+                'secondBusinessIDType'      => $second_Business_Id_Type,
+                'secondBusinessID'          => $second_Business_Id,
+                'VATCategoryCodeNo'           => $vat_Cat_Code,
+                'VATCategoryCodeSubTypeNo'  => $vat_Cat_Code_Sub_No,
+                'apartmentNum'              => $apartment_No,
+                'POBox'                     => $po_Box,
+                'POBoxAdditionalNum'        => $po_Box_Additional_No,
+                'street_Arb'                => $street_Name_Ar,
+                'street_Eng'                => $street_Name_En,
+                'district_Arb'              => $district_Name_Ar,
+                'district_Eng'              => $district_Name_En,
+                'city_Arb'                  => $city_Name_Ar,
+                'city_Eng'                  => $city_Name_En,
+                'countrySubdivision_Arb'    => $country_Sub_Name_Ar,
+                'countrySubdivision_Eng'    => $country_Sub_Name_En,
+                'countryNo'                 => $country, 
+                'country_Arb'               => $countryArab,
+                'country_Eng'               => $countryEnglish,
+                'ZATCA_B2C_SendingIntervalType' => $zatca_interval,
+            );
+            $where = array('buildingNo' => $branch_no);
+            $update_zatcabranch = $wpdb->update($table_name, $data, $where);
         
 
-            if ($update_result === false) {
+            if ($update_zatcacompany === false || $update_zatcabranch === false) {
                 // There was an error inserting data
                 $error_message = $wpdb->last_error;
                 echo "Error inserting data: $error_message";
@@ -736,6 +798,7 @@ function submit_form_company(){
             }
         
         }
+
     }
 
     die();
@@ -2771,121 +2834,4 @@ function edit_user_zatcaUsers(){
 
 }
 
-
-
-
-/**************************MBAUOMY**************************** */
-
-function zatca_customer_form() {
-    include_once('customers/insert.php'); // Call the function and return its output
-}
-add_shortcode('zatca_customer_form1', 'zatca_customer_form');
-
-// Add tax_invoice_option checkbox in order details section
-add_action( 'woocommerce_admin_order_data_after_billing_address', 'add_tax_invoice_field_to_order_page');
-function add_tax_invoice_field_to_order_page( $order ) {
-    echo '<div class="order_data_column">';
-    woocommerce_wp_checkbox( array(
-        'id' => 'tax_invoice_option',
-        'label' => __('Request Tax Invoice'),
-        'value' => get_post_meta( $order->get_id(), 'tax_invoice_option', true ),
-    ) );
-    echo '</div>';
-    
-}
-
-add_action( 'woocommerce_process_shop_order_meta', 'save_tax_invoice_option_on_order_creation', 10, 2 );
-function save_tax_invoice_option_on_order_creation( $order_id, $post ) 
-{
-    if ( isset( $_POST['tax_invoice_option'] ) ) 
-    {
-        update_post_meta( $order_id, 'tax_invoice_option', 'yes' );
-    } 
-    else
-    {
-        update_post_meta( $order_id, 'tax_invoice_option', 'no' );
-    }
-}
-
-
-
-// Add zatca_customer_form1 after the Order Data section on the order page
-add_action( 'woocommerce_admin_order_data_after_order_details', 'add_custom_section_after_order_data' );
-
-function add_custom_section_after_order_data( $order ) {
-
-    // Add taxInvoiceOption to be used in JavaScript
-    $tax_invoice_option = get_post_meta( $order->get_id(), 'tax_invoice_option', true );
-    wp_localize_script( 'custom-script', 'custom_vars', array(
-        'taxInvoiceOption' => $tax_invoice_option
-    ) );
-
-    // Add zatca_customer_form1 for the new section here
-    echo '<div class="custom-section" style="padding-top:250px;width:1000px;">';
-
-    echo do_shortcode('[zatca_customer_form1]');
-
-    echo '</div>';
-}
-
-
-// Enqueue custom JavaScript file to show and hide zactaCustomer
-function enqueue_custom_js() {
-    wp_enqueue_script( 'custom-script', plugin_dir_url( __FILE__ ) . 'js/custom-script.js', array( 'jquery' ), null, true );
-}
-add_action( 'admin_enqueue_scripts', 'enqueue_custom_js' );
-
-
-
-
-
-/////////////////////////Task2/////////////////////////////
-
-// Create admin page
-function invoice_audit_admin_page() {
-    // 
-    /*add_menu_page(
-        'Zacta Tampering Detector', // Page title
-        'Zacta Tampering Detector', // Menu title
-        'manage_options', // Capability required to access the page
-        'invoice-audit-admin-page', // Unique menu slug
-        'invoice_audit_admin_page_content', // Callback function to display page content
-        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
-        4 // Menu position
-    );*/
-
-    // Add sub-menu pages
-    add_submenu_page(
-        'zatca', // Parent menu slug
-        __( 'Zacta Tampering Detector', 'zatca' ), // Page title
-        __( 'Zacta Tampering Detector', 'zatca' ), // Menu title
-        'manage_options', // Capability required to access menu
-        'invoice-audit-admin-page', // Unique menu slug
-        'invoice_audit_admin_page_content', // Callback function to display page content
-        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
-    );
-}
-add_action('admin_menu', 'invoice_audit_admin_page');
-
-// Admin page content
-function invoice_audit_admin_page_content() {
-    echo '<div class="wrap container">';
-    echo '<h2>Zacta Tampering Detector</h2>';
-    // Add your admin page content here
-    echo do_shortcode('[invoice_audit_form]');
-    echo '</div>';
-}
-
-
-// Shortcode callback function to check gap form
-function invoice_audit_form_shortcode()
-{
-    ob_start();
-    require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/invoice_audit_form.php');
-    
-// Database Operations Here>> check_gap.php
-require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/check_gap.php');
-    return ob_get_clean();
-}
-add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
-
+require_once('btasks.php');

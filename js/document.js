@@ -368,8 +368,81 @@ jQuery(document).ready(function($){
     });
 
     $(document).on('click', '#send-zatca-report', function(event){
+        const docNo = $(this).data('doc-no');
+        const vatCategoryCodeSubTypeNo = $(this).data('vatcategorycodesubtypeno');
+        const buyeraName = $(this).data('buyer-aname');
+        const buyerSecondbusinesstype = $(this).data('buyer-secondbusinesstype');
+        const buyerSecondbusinessid = $(this).data('buyer-secondbusinessid');
+        const sellerSecondbusinessid = $(this).data('seller-secondbusinessid');
+        const companyStage = $(this).data('company-stage');
 
-        alert('Report Function');
+
+        if((vatCategoryCodeSubTypeNo == 0 || vatCategoryCodeSubTypeNo == 1) && buyeraName == '')
+            {
+                alert('Buyer arabic name is mandatory and the same as his name in his National ID');
+                window.location.reload();
+            }
+        else if(buyerSecondbusinesstype != 8)
+            {
+                alert('Second business type must be National ID, Please edit customer profile');
+                window.location.reload();
+            }
+        else if(buyerSecondbusinessid == '')
+            {
+                alert('Buyer Second business ID must be filled, Please edit customer profile');
+                window.location.reload();
+            }
+        else if(companyStage == 2 && sellerSecondbusinessid == '')
+            {
+                alert('Seller Second business ID must be filled, Please edit company profile');
+                window.location.reload();
+            }
+        else if(companyStage != 2)
+            {
+                alert('Company zatca stage must be V2, Please edit company profile');
+                window.location.reload();
+            }
+        else
+            {
+                //ajax code here to send zatca B2C document
+                $.ajax({
+                    url: myDoc.ajaxUrl, 
+                    method: "POST", 
+                    data: {
+                        action: 'zatca_report',
+                        "doc_no_from_ajax": docNo
+                    },
+                    success: function(response) {
+                      
+                        alert(response.msg);
+                        //console.log(response);
+                        window.location.reload();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error: ', textStatus, errorThrown);
+                    }
+                });
+            }
+        
+        /*$.ajax({
+            url: myDoc.ajaxUrl, 
+            method: "POST", 
+            data: {
+                action: 'zatca_report',
+                "doc_no_from_ajax": docNo
+            },
+            success: function(response) {
+              
+                alert(response.msg);
+                //console.log(response);
+                window.location.reload();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error: ', textStatus, errorThrown);
+            }
+        });*/
+
+        //alert('Report Function');
     })
 
     $(document).on('click', '#send-zatca-reissue', function(event){

@@ -36,7 +36,7 @@ $check_hash_btn = ($current_lang == 'en') ? 'فحصل خلل الهاش' : 'Chec
                     global $wpdb;
                     
                     // Custom SQL query to retrieve branches from wp_zatcaBranch table
-                    $query = "SELECT BuildingNo FROM {$wpdb->zatcaBranch}";
+                    $query = "SELECT buildingNo FROM zatcabranch";
 
                     // Fetch results from the database
                     $results = $wpdb->get_results($query);
@@ -45,10 +45,10 @@ $check_hash_btn = ($current_lang == 'en') ? 'فحصل خلل الهاش' : 'Chec
                     if ($results) {
                         foreach ($results as $branch) {
                             // Get the BuildingNo (Branch No)
-                            $Building_No = $branch->BuildingNo;
+                            $Building_No = $branch->buildingNo;
 
                             // Output an option for each branch
-                            echo '<option value="' . esc_attr($branch->BuildingNo) . '">' . esc_html($Building_No) . '</option>';
+                            echo '<option value="' . esc_attr($branch->buildingNo) . '">' . esc_html($Building_No) . '</option>';
                             
                         
                         }

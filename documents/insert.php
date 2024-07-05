@@ -33,7 +33,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         // Prepare the query for documentNo [ If Not Equal 0 get it +1]:
         $table_name_document = 'zatcadocument';
 
-        $table_schema = 'wp_crud';
+        $table_schema = $wpdb->dbname;
 
         $query = $wpdb->prepare(
             "SELECT AUTO_INCREMENT
