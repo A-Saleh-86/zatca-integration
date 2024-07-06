@@ -377,7 +377,7 @@ jQuery(document).ready(function($){
         const companyStage = $(this).data('company-stage');
 
 
-        if((vatCategoryCodeSubTypeNo == 0 || vatCategoryCodeSubTypeNo == 1) && buyeraName == '')
+        if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
             {
                 alert('Buyer arabic name is mandatory and the same as his name in his National ID');
                 window.location.reload();
