@@ -608,6 +608,36 @@ function create_zatcadocumentunit_table() {
 
 }
 
+// Create zatcadevice table & insert Data:
+function create_zatcadevice_table() {
+
+    global $wpdb;
+    $table_name = 'zatcadevice';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    // SQL to create the table
+    $sql = "
+        CREATE TABLE IF NOT EXISTS  $table_name (
+            `VendorId` int(11) NOT NULL DEFAULT 0,
+            `deviceNo` int(11) NOT NULL AUTO_INCREMENT,
+            `deviceCSID` varchar(255) DEFAULT NULL,
+            `CsID_ExpiryDate` datetime DEFAULT NULL,
+            `tokenData` varchar(500) DEFAULT NULL,
+            `lastHash` varchar(255) DEFAULT NULL,
+            `lastDocumentNo` int(11) DEFAULT NULL,
+            `lastDocumentDateTime` date DEFAULT NULL,
+            `deviceStatus` tinyint(1) DEFAULT NULL,
+            `row_timestamp` timestamp NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`deviceNo`,`VendorId`)
+        ) ENGINE=InnoDB $charset_collate;
+    ";
+
+    // Execute the query
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+
+}
+
 // Create zatcadocumentxml table & insert Data:
 function create_zatcadocumentxml_table() {
 
@@ -731,5 +761,6 @@ function create_custom_tables(){
     create_zatcainfo_table();
     create_zatcalog_table();
     create_zatcauser_table();
+    create_zatcadevice_table();
 
 }
