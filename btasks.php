@@ -109,8 +109,8 @@ function invoice_audit_form_shortcode()
     ob_start();
     require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/invoice_audit_form.php');
     
-// Database Operations Here>> check_gap.php
-require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/check_gap.php');
+    // Database Operations Here>> check_gap.php
+    require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/check_gap.php');
     return ob_get_clean();
 }
 add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
@@ -421,10 +421,9 @@ add_action('wp_ajax_zatca_report', 'send_request_to_zatca_report');
             "invoiceType" => $invoiceType,
             "invoiceTypeCode" => $invoiceTypeCode,
             "id" => $id,
-            "icvIncrementalValue" => $icvIncrementalValue,
-            "referenceId" => $referenceId,
             "issueDate" => $issueDate,
             "issueTime" => $issueTime,
+            "icvIncrementalValue" => $icvIncrementalValue,
             "previousHash" => $previousHash,
             "seller" => [
                 "name" => $sellerName,
@@ -443,8 +442,8 @@ add_action('wp_ajax_zatca_report', 'send_request_to_zatca_report');
                 "groupVatNumber" => ""
             ],
             "lineItems" => $lineItems,
-            "totalAmountWithoutVat" => $totalAmountWithoutVat,
             "totalLineNetAmount" => $totalLineNetAmount,
+            "totalAmountWithoutVat" => $totalAmountWithoutVat,
             "totalVatAmount" => $totalVatAmount,
             "totalAmountWithVat" => $totalAmountWithVat,
             "totalDiscountAmount" => ["currencyCode" => "SAR", "amount" => 0],
@@ -549,7 +548,7 @@ function send_request_to_zatca_report(){
 
         $statusCode = $responseArray['zatcaStatusCode'];
         $isZatcaValid = $responseArray['isValidationFromZatca'];
-        $clearanceStatus = $responseArray['clearanceStatus'];
+        $reportingStatus = $responseArray['reportingStatus'];
         $validationResults = $responseArray['validationResults'];
         $hashed = $responseArray['hash'];
         $qrCode = $responseArray['generatedQR'];
@@ -577,7 +576,7 @@ function send_request_to_zatca_report(){
 
         
         // Check If response Valid:
-        if($clearanceStatus == 'REPORTED'){
+        if($reportingStatus == 'REPORTED'){
 
             if($statusCode == '200'){
 
@@ -753,3 +752,8 @@ function send_request_to_zatca_report(){
     die();
 }
 
+
+
+////////////////////////////////////////////PDF Code/////////////////////////////////////////////////
+
+require_once(plugin_dir_path(__FILE__) . 'documents/pdf-document.php');

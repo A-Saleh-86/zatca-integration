@@ -113,6 +113,7 @@ add_action('wp_ajax_insert_user', 'insert_user_zatcaUsers');
 add_action('wp_ajax_edit_user', 'edit_user_zatcaUsers');
 
 
+
 // Function to run Text Domain:
 function my_plugin_load_textdomain() {
     load_plugin_textdomain( 'zatca', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -2524,6 +2525,8 @@ function send_request_to_zatca_clear(){
         
     die();
 }
+
+
 
 
 // function to get response and conver invoice to xml and create xml file: 

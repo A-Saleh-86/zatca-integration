@@ -267,6 +267,18 @@
                                 <?php
                             }
 
+                            ?>
+
+                            <a href="<?php echo plugin_dir_url(__FILE__) . 'pdf-document.php?doc-no='. $result->documentNo ?>"
+                            target="_blank"
+                            id="create-pdf"
+                            class="my-plugin-button btn-sm me-1"
+                             data-doc-no="<?php echo $result->documentNo ?>"
+                             title="Print Document">
+                                Print <span class="dashicons dashicons-external"></span></a>
+
+                            <?php
+
                             // get warning msg:
                             $warningMsg = $wpdb->get_var($wpdb->prepare("SELECT zatcaErrorResponse FROM zatcadocument Where documentNo = $result->documentNo"));
                             $modalWarningMsg = $warningMsg;
