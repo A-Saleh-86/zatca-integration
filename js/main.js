@@ -1,3 +1,4 @@
+
 // Confirm Delete:
 jQuery(document).ready(function($) {
     $('.confirm').click(function () {
@@ -13,13 +14,27 @@ jQuery(document).ready( function () {
 
    
     $('#example').DataTable( {
-        responsive: true
+        responsive: true,
+
+        select: {  
+            style: 'multi'  
+        },
+
+        "columnDefs": [
+            { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
+            {
+                "targets": [ 17, 18 ],
+                "searchable": true,
+                "visible": false
+            }
+        ]                 
     } );
 
 } );
 
 // DataTable Date Filter
 $(document).ready(function($){
+    
 
     let minDate, maxDate;
  
@@ -27,7 +42,7 @@ $(document).ready(function($){
     DataTable.ext.search.push(function (settings, data, dataIndex) {
         let min = minDate.val() ? new Date(minDate.val()) : null;
         let max = maxDate.val() ? new Date(maxDate.val()) : null;
-        let date = new Date(data[1]);
+        let date = new Date(data[3]);
      
         if (
             (min === null && max === null) ||
@@ -50,6 +65,7 @@ $(document).ready(function($){
      
     // DataTables initialisation
     let table = new DataTable('#example');
+  
      
     // Refilter the table
     document.querySelectorAll('#min, #max').forEach((el) => {
@@ -85,10 +101,11 @@ $(document).ready(function($){
       $('#failed').on('change', function() {
         if (this.checked) {
             // Filter to show only rows with "Failed" status
-            table.column(5).search('false').draw();
+            table.column(17).search('^(0|3)$', true, false).column(18).search('^(NULL)$', true, false).draw();
+            //table.draw();
         } else {
             // Clear the filter
-            table.column(5).search('').draw();
+            table.column(17).search('').column(18).search('').draw();
         }
     });
 

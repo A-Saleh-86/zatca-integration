@@ -955,6 +955,154 @@ function woo_document(){
         $vatCatName = $subCat->aName;
     }
 
+    //////// get documentUnits lines: //////////////////////////////////////////////////////////////
+
+    // #####################################
+    // Add Data to zatcadocumentunit_array:#
+    // #####################################
+
+    // Initialize an empty array to store zatcadocumentunit data  
+    $zatcadocumentunit_array = [];
+
+    // get item id for item [ line_item ]:
+    $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
+
+    // get item id for tax [ tax ]:
+    $doc_unit_item_id_rate_percentage = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'tax'"));
+
+    // get item id for discount [ tax ]:
+    $doc_unit_item_id_coupon = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+    
+
+    // Funtion to handle order discount:
+    function get_qty_percentage_for_item($orderId)
+    {
+
+        global $wpdb;
+        // Prefix Of woo-order-item
+        $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
+    
+        
+        // define items number & Number of Items & Item Qty & Total Qty Of Order:
+        
+        $total_order_qty = 0;
+    
+        $array_items = [];
+        
+        $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
+        
+        foreach($doc_unit_item_id as $itemId)
+        {
+    
+            $item_qty = wc_get_order_item_meta( $itemId->order_item_id , '_qty', true );
+    
+            $order_discount_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+    
+            $order_discount = wc_get_order_item_meta($order_discount_id, 'discount_amount', true);
+            
+            $array_items[$itemId->order_item_id] = $item_qty;
+    
+            $total_order_qty +=  + $item_qty;
+        }
+    
+        $array_items['order_discount'] = $order_discount;
+        $array_items['total_order_qty'] = $total_order_qty;
+    
+    
+        //define percentage of each item:
+    
+        $updated_total_qty = [];
+    
+        foreach ($array_items as $key => $value) 
+        {
+            if (is_numeric($key)) 
+            {  // Check for integer keys
+                $updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
+            }
+        }
+    
+        // Now $updated_total_qty will contain the updated quantities for items with numeric keys
+        return $updated_total_qty;
+        
+    }
+
+    foreach($doc_unit_item_id as $item)
+    {
+
+        
+        // Item Qty:
+        $doc_unit_item_qty = wc_get_order_item_meta( $item->order_item_id , '_qty', true );
+        
+        // Product_id:
+        $doc_unit_product_id =wc_get_order_item_meta($item->order_item_id, '_product_id', true);
+        
+        // Tax Percentage:
+        $doc_unit_vatRate =wc_get_order_item_meta($doc_unit_item_id_rate_percentage, 'rate_percent', true);
+
+        // Item name:
+        $doc_unit_sku = $wpdb->get_var($wpdb->prepare("select order_item_name from $table_orders_items WHERE order_item_id='$item->order_item_id' AND order_id = $orderId AND order_item_type = 'line_item'"));
+        
+        // Item Price:
+        $doc_unit_price = get_post_meta($doc_unit_product_id, '_price', true);
+        $final_price = number_format((float)$doc_unit_price, 6, '.', '');
+
+        // Discount:
+        $doc_unit_discount = wc_get_order_item_meta($doc_unit_item_id_coupon, 'discount_amount', true);
+
+        // Subttotal [ price * quantity ]:
+        $doc_unit_subtotal = $doc_unit_price * $doc_unit_item_qty;
+
+
+        // Get the Function of define discount by line:
+        $array_of_discounts = get_qty_percentage_for_item($orderId);
+
+        // Loop to get Each Item Discount:
+        foreach($array_of_discounts as $key => $value)
+        {
+    
+            if($key == $item->order_item_id)
+            {
+
+                $final_item_discount= $array_of_discounts[$key];
+
+                // netAmount [ ((price * quantity)-discount) ]:
+                $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
+                $final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
+
+                // vatAmount [ netAmount*vatRate ]:
+                $doc_unit_vatAmount = ($doc_unit_netAmount * $doc_unit_vatRate) / 100;
+                $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+
+                // amountWithVat [ netAmount+vatAmount ]:
+                $doc_unit_amountWithVat = $doc_unit_netAmount + $doc_unit_vatAmount;
+                $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 2, '.', '');
+            
+
+                // Prepare zatcadocumentunit data  
+                $zatcadocumentunit_data = 
+                [  
+                    'itemNo'        => $item->order_item_id,  
+                    'eName'         => $doc_unit_sku,  
+                    'price'         => $final_price,  
+                    'quantity'      => $doc_unit_item_qty,  
+                    'discount'      => $final_item_discount,  
+                    'vatRate'       => $doc_unit_vatRate,  
+                    'vatAmount'     => $final_vatAmount,  
+                    'netAmount'     => $final_netAmount,  
+                    'amountWithVAT' => $final_amountWithVat
+                ];
+
+                // Push the zatcadocumentunit data to the array  
+                $zatcadocumentunit_array[] = $zatcadocumentunit_data;
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
     // Return the fetched data
     $response = array(
         'payed'         => number_format($payed, 2, '.', ''),
@@ -968,7 +1116,8 @@ function woo_document(){
         'payedBank' => $payedBank,
         'totalPayed' => number_format($totalPayed, 2, '.', ''),
         'totalTax' => $totalTax,
-        'leftAmount' =>$leftAmount
+        'leftAmount' =>$leftAmount,
+        'zatca_document_unit_lines' => $zatcadocumentunit_array
     );
 
     // Return the array as JSON
@@ -2402,6 +2551,30 @@ function send_request_to_zatca_clear(){
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
+                // update zatca device fields with last document submitted:
+                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $doc_no") );
+
+                $zatcadevice_update_response_data = [
+                    "lastHash" => $hashed,
+                    "lastDocumentNo" => $doc_no,
+                    "lastDocumentDateTime" => $hashed
+                ];
+                $where1 = array('deviceNo' => $device_no);
+
+                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+
+                // Check for errors
+                if ($zatcadevice_update_response_result === false) {
+                    
+                    // Handle error
+                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                
+                }elseif ($zatcadevice_update_response_result === 0) {
+                   
+                    // No rows affected
+                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                }
+
                 $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
             
             }elseif($statusCode == '202'){
@@ -2455,6 +2628,31 @@ function send_request_to_zatca_clear(){
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
+
+                // update zatca device fields with last document submitted:
+                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $doc_no") );
+
+                $zatcadevice_update_response_data = [
+                    "lastHash" => $hashed,
+                    "lastDocumentNo" => $doc_no,
+                    "lastDocumentDateTime" => $hashed
+                ];
+                $where1 = array('deviceNo' => $device_no);
+
+                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+
+                // Check for errors
+                if ($zatcadevice_update_response_result === false) {
+                    
+                    // Handle error
+                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                
+                }elseif ($zatcadevice_update_response_result === 0) {
+                   
+                    // No rows affected
+                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                }
+
                 $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
             }
           

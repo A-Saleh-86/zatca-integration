@@ -1,10 +1,12 @@
 <div class="container">
+    
+
+    <div class="row">
     <div class="col-xl-12 mx-auto mt-3">
         <h4 class="mb-0 text-uppercase text-center"><?php echo _e('Documents', 'zatca') ?></h4>
     </div>
-
-    <!-- Add Btn -->
-    <div class="col-xl-12 mx-auto mt-3">
+        <!-- Add Btn -->
+    <div class="col-md-9 col-sm-12 mx-auto mt-3">
         <a 
             href="<?php echo admin_url('admin.php?page=zatca-documents&action=insert')  ?>" 
             class="my-plugin-button btn add-btn" 
@@ -15,14 +17,46 @@
         </a>
     </div>
     <!-- / Add Btn -->
+
+    <!-- Send Selected To Zatca Btn -->
+    <div class="col-md-3 col-sm-12 mx-auto mt-3">
+        <a 
+        href="#" 
+        class="my-plugin-button btn-sm" 
+        id="send-zatca-sellected" 
+        data-bs-toggle="tooltip" 
+        data-bs-placement="top" 
+        title="<?php echo _e('Send Sellected To Zatca', 'zatca') ?>">Send Selected To Zatca
+        <span class="dashicons dashicons-cloud-upload"></span> 
+        </a>
+    </div>
+    <!-- / Add Btn -->
+    </div>
     
     <!-- Table Of Data -->
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tbody>
+            <tr>
+                <td><?php echo _e('Unsubmitted /Rejected Documents', 'zatca') ?></td>
+                <td><input type="checkbox" id="failed"></td>
+                <td><?php echo _e('Min Invoice Date', 'zatca') ?></td>
+                <td><input type="text" id="min" name="min"></td>
+                <td><?php echo _e('Max Invoice Date', 'zatca') ?></td>
+                <td><input type="text" id="max" name="max"></td>
+                <td><button class="btn btn-primary btn-sm" type="button" id="reset"><?php echo _e('Clear', 'zatca') ?></button></td>
+            </tr>
+        </tbody>
+    </table>
+    
     <table id="example" class="table table-striped" width="100%">
 
         <thead>
+            
             <tr>
+                <th><input type="checkbox" onchange="checkAll(this)"></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice No', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('System Invoice No', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Date', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Delivery Date', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Maximum Delivery Date', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Type', 'zatca') ?></th>
@@ -32,11 +66,12 @@
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Subnet Total plus tax', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('VAT Category Code', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('VAT Category SubType Code', 'zatca') ?></th>
-                <!-- <th class="text-center" style="font-size: 0.7rem;"><?php //echo _e('Exemption Reason', 'zatca') ?></th> -->
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('isNominal', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('isExports', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('isSummary', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Notes', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('zatcaSuccessResponse', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('zatcaAcceptedReissueInvoiceNo', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Action', 'zatca') ?></th>
             </tr>
         </thead>
@@ -52,9 +87,28 @@
             if ($resultes) {
                 foreach ($resultes as $result) {?>
 
+                    <?php
+                        $zatcaCompanySatge1 = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
+                        FROM zatcadocument zd, zatcacompany zc 
+                        WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
+                    ?>
                     <tr>
+                        <td>
+                            <input type="checkbox"
+                             class="rowCheckbox"
+                             data-document-no = "<?php echo $result->documentNo ?>"
+                             data-success-response = "<?php echo $result->zatcaSuccessResponse ?>"
+                             data-invoice-type = "<?php echo $result->zatcaInvoiceType ?>"
+                             data-vatcategorycodesubtypeno = "<?php echo $result->VATCategoryCodeSubTypeNo ?>"
+                             data-buyer-aname = "<?php echo $result->buyer_aName ?>"
+                             data-buyer-secondbusinesstype = "<?php echo $result->buyer_secondBusinessIDType ?>"
+                             data-buyer-secondbusinessid = "<?php echo $result->buyer_secondBusinessID ?>"
+                             data-seller-secondbusinessid = "<?php echo $result->seller_secondBusinessID ?>"
+                             data-company-stage = "<?php echo $zatcaCompanySatge1 ?>">
+                        </td>
                         <td style="font-size: 0.8rem;"><?php echo $result->documentNo ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->invoiceNo ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->dateG ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->deliveryDate ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->gaztLatestDeliveryDate ?></td>
                         <td style="font-size: 0.8rem;">
@@ -105,6 +159,11 @@
                         <!--/ Is Summary -->
 
                         <td style="font-size: 0.8rem;">Notes</td>
+
+                        <td style="font-size: 0.8rem;"><?php echo $result->zatcaSuccessResponse ?></td>
+                        <td style="font-size: 0.8rem;"><?php if($result->zatcaAcceptedReissueInvoiceNo == NULL){echo "NULL";} ?></td>
+
+
                         <td style="font-size: 0.8rem;" class="">
                             <?php
                             // validation in zatcasuccessresponse - if 2  disable edit btn:
@@ -113,7 +172,19 @@
                             $zatcaSuccessResponse = $wpdb->get_var($wpdb->prepare("SELECT zatcaSuccessResponse 
                                                                                         FROM zatcadocument 
                                                                                         WHERE documentNo =  $result->documentNo"));
-                            
+
+                            $zatcaRejectedInvoiceNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo 
+                                                                                        FROM zatcadocument 
+                                                                                        WHERE documentNo =  $result->documentNo"));
+
+                            $zatcaAcceptedReissueInvoiceNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaAcceptedReissueInvoiceNo 
+                                                                                        FROM zatcadocument 
+                                                                                        WHERE documentNo =  $result->documentNo"));
+                                                                                        
+                            $isZatcaReissued = $wpdb->get_var($wpdb->prepare("SELECT isZatcaReissued 
+                                                                                        FROM zatcadocument 
+                                                                                        WHERE documentNo =  $result->documentNo"));
+
                             if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse == 0){?>
 
                                 <!-- Edit Btn -->
@@ -162,6 +233,11 @@
                             // Check If zatcaSuccessResponse = 0 to show for all documents:
                             if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 0){
                                 
+                                
+                                $zatcaCompanySatge = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
+                                FROM zatcadocument zd, zatcacompany zc 
+                                WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
+                                    
                                 // Check If docuemnt B2B will redirect to clear():
                                 if($zatcaInvoiceType == 1){?>
 
@@ -171,6 +247,8 @@
                                         class="my-plugin-button btn-sm me-1" 
                                         id="send-zatca-clear" 
                                         data-doc-no = "<?php echo $result->documentNo ?>" 
+                                        data-company-stage = "<?php echo $zatcaCompanySatge ?>"
+                                        data-seller-secondbusinessid = "<?php echo $result->seller_secondBusinessID ?>"
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
                                         title="<?php echo _e('Send To Zatca', 'zatca') ?>">
@@ -181,11 +259,7 @@
                             
                                 }else{ //if B2C will redirect to Report(): ?>
 
-                                    <?php
-                                    $zatcaCompanySatge = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
-                                    FROM zatcadocument zd, zatcacompany zc 
-                                    WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
-                                    ?>
+                                    
                                     <!-- Send To Zatca Btn [ report() ] -->
                                     <a 
                                         href="#" 
@@ -209,8 +283,8 @@
                                 }
                             }
 
-                            // check for if zatca success reponse 1-2 - show download xml:
-                            if((int)$zatcaSuccessResponse == 1 || (int)$zatcaSuccessResponse == 2){?>
+                            // check for if zatca success reponse > 0 - show download xml:
+                            if((int)$zatcaSuccessResponse > 0){?>
 
                                 <!--  Download XML Btn -->
                                 <button 
@@ -228,7 +302,7 @@
                             }
                             
                             // Reissue Btn for doc have zatca success response = 3:
-                            if($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 3){?>
+                            if($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 3 && $zatcaRejectedInvoiceNo == NULL && $zatcaAcceptedReissueInvoiceNo == NULL && $isZatcaReissued == false){?>
                                 
                                 <!-- Reissue -->
                                 <a 
@@ -269,6 +343,9 @@
 
                             ?>
 
+                            <?php
+                            if((((int)$zatcaSuccessResponse === 1 || (int)$zatcaSuccessResponse === 2) && $zatcaInvoiceType == 1) || ((int)$zatcaSuccessResponse > 0 && $zatcaInvoiceType == 0)){
+                            ?>
                             <a href="<?php echo plugin_dir_url(__FILE__) . 'pdf-document.php?doc-no='. $result->documentNo ?>"
                             target="_blank"
                             id="create-pdf"
@@ -276,7 +353,7 @@
                              data-doc-no="<?php echo $result->documentNo ?>"
                              title="Print Document">
                                 Print <span class="dashicons dashicons-external"></span></a>
-
+                                <?php } ?>
                             <?php
 
                             // get warning msg:
@@ -284,6 +361,52 @@
                             $modalWarningMsg = $warningMsg;
                             $doc_no = $result->documentNo;
                             ?>
+
+                            <div class="row">
+                            <?php
+                                global $wpdb;
+
+                                // Fetch Data From Database [ met_vatcategorycode table ]:
+                                $reissuanceInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaRejectedInvoiceNo='$result->documentNo' and isZATCAreissued=0" );
+                                $originalInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaAcceptedReissueInvoiceNo='$result->documentNo'" );
+                                foreach($reissuanceInvoices as $reissuance) {?>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="card border-0 shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5 class="card-title"><?php echo _e('Reissued Invoice', 'zatca') ?></h5>
+                                                        <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?> <span class="badge bg-primary"><?php echo $reissuance->documentNo ?></span></p>
+                                                        <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $reissuance->dateG ?></span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            <?php
+                                }
+                            
+                                foreach($originalInvoices as $original) {?>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="card border-0 shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5 class="card-title"><?php echo _e('Original of Reissued Invoice', 'zatca') ?></h5>
+                                                        <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?> <span class="badge bg-primary"><?php echo $original->documentNo ?></span></p>
+                                                        <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $original->dateG ?></span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            <?php
+                                }
+                            ?>
+
+                            </div>
                         </td>
                     </tr>
 

@@ -515,6 +515,14 @@ msgstr "رقم الجهاز"
 msgid "Device Status"
 msgstr "حاله الجهاز"
 
+#: devices/view.php:52
+msgid "Yes"
+msgstr "نشط"
+
+#: devices/view.php:52
+msgid "No"
+msgstr "غير نشط"
+
 #: devices/view.php:64
 msgid "Edit Device"
 msgstr "تعديل بيانات الجهاز"

@@ -48,7 +48,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
-                        type="datetime-local"
+                        type="date"
                         name="csid-ex-date" 
                         class="form-control" 
                         autocomplete="off"

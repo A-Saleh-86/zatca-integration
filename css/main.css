@@ -333,3 +333,13 @@ body[dir="rtl"] .form-check-input {
     margin: 18px;
 }
 /* / Users Page */
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before
+{
+  left: 65px!important;
+}
+
+.tax_invoice_option_field
+{
+  margin: 10px!important;
+}

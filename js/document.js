@@ -1,3 +1,12 @@
+
+// function to select all displayed rows in datatables
+function checkAll(source) {  
+    var checkboxes = document.querySelectorAll('.rowCheckbox');  
+    checkboxes.forEach(function(checkbox) {  
+        checkbox.checked = source.checked;  
+    });  
+}
+
 // Change background Color Of Selected TR:
 (function($) {
     $(document).ready(function() {
@@ -99,6 +108,17 @@ function updateInput() {
         $('#vat-cat-code').on('change', function(event) {
             const selectedVatCat = this.value;
 
+            // Show or hide Exemption Reason Div depend on vat-cat-code value
+            if(selectedVatCat != 0)
+            {
+                // show Exemption Reason Div if vat-cat-code != 0
+                $('#exemptionReason').show();
+            }
+            else
+            {
+                // hide Exemption Reason Div if vat-cat-code = 0 >> Standard Rate
+                $('#exemptionReason').hide();
+            }
 
             // Make an AJAX request to fetch data based on selectedUserId
             $.ajax({
@@ -233,7 +253,41 @@ $('#search-invoices-data').on('click', function(event) {
                         $("#selectedInvoiceTypeName").text(selectedOptionText);
 
                         
-                        console.log(data.invoiceTypeCode);
+                        console.log(data.zatca_document_unit_lines);
+
+                        // Assuming zatcadocumentunit_array is your array containing zatcadocumentunit data  
+
+                        $.each(data.zatca_document_unit_lines, function(index, data) {  
+                            // Access each zatcadocumentunit data fields here  
+
+                            var trContent = '<tr>';
+                            trContent += '<td>' + data.itemNo + '</td>';
+                            trContent += '<td>' + data.eName + '</td>';
+                            trContent += '<td>' + data.eName + '</td>';
+                            trContent += '<td>' + data.price + '</td>';
+                            trContent += '<td>' + data.quantity + '</td>';
+                            trContent += '<td>' + data.discount + '</td>';
+                            trContent += '<td>' + data.vatRate + '</td>';
+                            trContent += '<td>' + data.vatAmount + '</td>';
+                            trContent += '<td>' + data.netAmount + '</td>';
+                            trContent += '<td>' + data.amountWithVAT + '</td>';
+                            trContent += '</tr>';
+                            var tr = $(trContent).appendTo('tbody.order_details');  
+                        });
+                        //
+                        /*var trContent = '<tr>';
+                        trContent += '<td>' + data.payed + '</td>';
+                        trContent += '<td>' + data.discount + '</td>';
+                        trContent += '<td>' + data.vatCatName + '</td>';
+                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
+                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
+                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
+                        trContent += '<td>' + data.leftAmount + '</td>';
+                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
+                        trContent += '<td>' + data.leftAmount + '</td>';
+                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
+                        trContent += '</tr>';
+                        var tr = $(trContent).appendTo('tbody.order_details');*/
                        
             
                     },
@@ -347,24 +401,36 @@ jQuery(document).ready(function($){
     
     $(document).on('click', '#send-zatca-clear', function(event) {
         const docNo = $(this).data('doc-no');
-        // alert(docNo);
-        $.ajax({
-            url: myDoc.ajaxUrl, 
-            method: "POST", 
-            data: {
-                action: 'zatca_clear',
-                "doc_no_from_ajax": docNo
-            },
-            success: function(response) {
-              
-                alert(response.msg);
-                // console.log(response);
-                window.location.reload();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error: ', textStatus, errorThrown);
-            }
-        });
+        const companyStage = $(this).data('company-stage');
+        const sellerSecondbusinessid = $(this).data('seller-secondbusinessid');
+
+        // check seller_secondbusinessId must be filled if company stage is V2 
+        if(companyStage == 2 && sellerSecondbusinessid == '')
+        {
+            alert('Seller Second business ID must be filled, Please edit company profile');
+            window.location.reload();
+        }
+        else
+        {
+            $.ajax({
+                url: myDoc.ajaxUrl, 
+                method: "POST", 
+                data: {
+                    action: 'zatca_clear',
+                    "doc_no_from_ajax": docNo
+                },
+                success: function(response) {
+                
+                    alert(response.msg);
+                    // console.log(response);
+                    window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error: ', textStatus, errorThrown);
+                }
+            });
+        }
+        
     });
 
     $(document).on('click', '#send-zatca-report', function(event){
@@ -424,28 +490,119 @@ jQuery(document).ready(function($){
                 });
             }
         
-        /*$.ajax({
+    });
+
+    $(document).on('click', '#send-zatca-sellected', function(event){
+
+        var checkboxes = document.querySelectorAll('.rowCheckbox:checked');
+
+        checkboxes.forEach(function(checkbox) {  
+            const documentNo = checkbox.getAttribute('data-document-no');  
+            const zatcaSuccessResponse = checkbox.getAttribute('data-success-response');  
+            const zatcaInvoiceType = checkbox.getAttribute('data-invoice-type');
+
+            //B2B Invoices
+            if(zatcaInvoiceType == 1 && zatcaSuccessResponse == 0)
+            {
+                $.ajax({
+                    url: myDoc.ajaxUrl, 
+                    method: "POST", 
+                    data: {
+                        action: 'zatca_clear',
+                        "doc_no_from_ajax": documentNo
+                    },
+                    success: function(response) {
+                        alert(response.msg);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error: ', textStatus, errorThrown);
+                    }
+                });
+            }
+
+            //B2C Invoices
+            else if(zatcaInvoiceType == 0 && zatcaSuccessResponse == 0)
+            {
+                const vatCategoryCodeSubTypeNo = checkbox.getAttribute('data-vatcategorycodesubtypeno');
+                const buyeraName = checkbox.getAttribute('data-buyer-aname');
+                const buyerSecondbusinesstype = checkbox.getAttribute('data-buyer-secondbusinesstype');
+                const buyerSecondbusinessid = checkbox.getAttribute('data-buyer-secondbusinessid');
+                const sellerSecondbusinessid = checkbox.getAttribute('data-seller-secondbusinessid');
+                const companyStage = checkbox.getAttribute('data-company-stage');
+
+                if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
+                    {
+                        alert(documentNo + ': Buyer arabic name is mandatory and the same as his name in his National ID');
+                        window.location.reload();
+                    }
+                else if(buyerSecondbusinesstype != 8)
+                    {
+                        alert(documentNo + ': Second business type must be National ID, Please edit customer profile');
+                        window.location.reload();
+                    }
+                else if(buyerSecondbusinessid == '')
+                    {
+                        alert(documentNo + ': Buyer Second business ID must be filled, Please edit customer profile');
+                        window.location.reload();
+                    }
+                else if(companyStage == 2 && sellerSecondbusinessid == '')
+                    {
+                        alert(documentNo + ': Seller Second business ID must be filled, Please edit company profile');
+                        window.location.reload();
+                    }
+                else if(companyStage != 2)
+                    {
+                        alert(documentNo + ': Company zatca stage must be V2, Please edit company profile');
+                        window.location.reload();
+                    }
+                else
+                    {
+                        //ajax code here to send zatca B2C document
+                        $.ajax({
+                            url: myDoc.ajaxUrl, 
+                            method: "POST", 
+                            data: {
+                                action: 'zatca_report',
+                                "doc_no_from_ajax": documentNo
+                            },
+                            success: function(response) {
+                              
+                                alert(response.msg);
+                                //console.log(response);
+                                //window.location.reload();
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error('Error: ', textStatus, errorThrown);
+                            }
+                        });
+                    }
+            }
+        });
+
+        window.location.reload();
+    })
+
+    $(document).on('click', '#send-zatca-reissue', function(event){
+
+        const docNo = $(this).data('doc-no');
+
+        $.ajax({
             url: myDoc.ajaxUrl, 
             method: "POST", 
             data: {
-                action: 'zatca_report',
+                action: 'zatca_reissue',
                 "doc_no_from_ajax": docNo
             },
             success: function(response) {
-              
+            
                 alert(response.msg);
-                //console.log(response);
+                // console.log(response);
                 window.location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error: ', textStatus, errorThrown);
             }
-        });*/
-
-        //alert('Report Function');
-    })
-
-    $(document).on('click', '#send-zatca-reissue', function(event){
+        });
 
         alert('Reissue');
     })

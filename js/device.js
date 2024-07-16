@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
     $("#device_insert_form").submit(function(event){
         event.preventDefault();
         var formData = $(this).serialize();
+        var formData1 = $(this).serializeArray();
 
         $.ajax({
             url:myDevice.ajaxUrl,
@@ -13,6 +14,7 @@ jQuery(document).ready(function($) {
             },
             success: function(data){
                 alert(data);
+                localStorage.setItem("deviceCSID", formData1[0].value);
                 window.location.href = myDevice.adminUrl;
             },
             error: function(xhr, status, error) {

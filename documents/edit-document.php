@@ -509,7 +509,7 @@ if (!empty($results)) {
         ?>
 
         <!--  taxExemptionReason field -->
-        <div class="mb-3 row col-mid-6">
+        <div class="mb-3 row col-mid-6" id="exemptionReason">
             <label class="col-sm-2 col-form-label"><?php echo _e('Exemption Reason:', 'zatca') ?></label>
             <div class="col-sm-10 col-md-9">
                 <div class="form-group">
@@ -607,6 +607,46 @@ if (!empty($results)) {
         </div>
         <!-- /  note field -->
 
+        <!---->
+        <?php
+        // Prepare the query with a condition to get orders 
+        $results1 = $wpdb->get_results( $wpdb->prepare( "SELECT o.order_item_name, z.* FROM zatcadocumentunit z, wp_woocommerce_order_items o WHERE z.documentNo = %d and z.itemNo=o.order_item_id and o.order_item_type='line_item'", $docNo ) );
+        ?>
+        <div class="container">
+            <table id="example" class="table table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Item No', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Name Ar', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Name En', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Price', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Quantity', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Discount', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Tax Percentage', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Tax Amount', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Net Amount', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Total Amount with Tax', 'zatca') ?></th>
+                    </tr>
+                </thead>
+                <tbody class="order_details">
+                <?php foreach ($results1 as $data) { ?>
+                    <tr>
+                        <td class="text-center"><?php echo $data->itemNo ?></td>
+                        <td class="text-center"><?php echo $data->order_item_name ?></td>
+                        <td class="text-center"><?php echo $data->order_item_name ?></td>
+                        <td class="text-center"><?php echo $data->price ?></td>
+                        <td class="text-center"><?php echo $data->quantity ?></td>
+                        <td class="text-center"><?php echo $data->discount ?></td>
+                        <td class="text-center"><?php echo $data->vatRate ?>%</td>
+                        <td class="text-center"><?php echo $data->vatAmount ?></td>
+                        <td class="text-center"><?php echo $data->netAmount ?></td>
+                        <td class="text-center"><?php echo $data->amountWithVAT ?></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
         <!-- Submit Btn -->
         <div class="mb-3 row">
             <div class="d-grid gap-2 col-8 md-flex justify-content-md-end">
@@ -614,6 +654,8 @@ if (!empty($results)) {
             </div>
         </div>
         <!-- / Submit Btn -->
+
+        
 
     </form>
     <!--  /Form Of Inputes -->

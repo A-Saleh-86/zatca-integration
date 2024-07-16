@@ -9,24 +9,29 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-04T11:50:29+00:00\n"
+"POT-Creation-Date: 2024-07-15T14:09:00+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: zatca\n"
 
 #. Plugin Name of the plugin
-#: zatca.php
+#: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
 msgid "zatca"
 msgstr ""
 
 #. Description of the plugin
-#: zatca.php
+#: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
 msgid "Zatca Integration"
 msgstr ""
 
 #. Author of the plugin
-#: zatca.php
+#: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
 msgid "Appy Innovate"
+msgstr ""
+
+#: btasks.php:126
+#: btasks.php:127
+msgid "Zacta Tampering Detector"
 msgstr ""
 
 #: company/view.php:4
@@ -496,7 +501,7 @@ msgstr ""
 
 #: customers/view.php:36
 #: devices/view.php:29
-#: documents/view.php:40
+#: documents/view.php:75
 msgid "Action"
 msgstr ""
 
@@ -616,6 +621,14 @@ msgstr ""
 msgid "Device Status"
 msgstr ""
 
+#: devices/view.php:52
+msgid "Yes"
+msgstr ""
+
+#: devices/view.php:52
+msgid "No"
+msgstr ""
+
 #: devices/view.php:64
 msgid "Edit Device"
 msgstr ""
@@ -673,12 +686,14 @@ msgid "Country Subdivision - EN"
 msgstr ""
 
 #: documents/edit-document.php:36
-#: documents/edit-document.php:613
+#: documents/edit-document.php:653
 msgid "Edit Document"
 msgstr ""
 
 #: documents/edit-document.php:45
 #: documents/insert.php:50
+#: documents/view.php:374
+#: documents/view.php:392
 msgid "Invoice No:"
 msgstr ""
 
@@ -812,26 +827,79 @@ msgstr ""
 
 #: documents/edit-document.php:603
 #: documents/insert.php:594
-#: documents/view.php:39
+#: documents/view.php:72
 msgid "Notes"
 msgstr ""
 
+#: documents/edit-document.php:619
+#: documents/insert.php:606
+msgid "Item No"
+msgstr ""
+
+#: documents/edit-document.php:620
+#: documents/insert.php:607
+msgid "Name Ar"
+msgstr ""
+
+#: documents/edit-document.php:621
+#: documents/insert.php:608
+msgid "Name En"
+msgstr ""
+
+#: documents/edit-document.php:622
+#: documents/insert.php:609
+msgid "Price"
+msgstr ""
+
+#: documents/edit-document.php:623
+#: documents/insert.php:610
+msgid "Quantity"
+msgstr ""
+
+#: documents/edit-document.php:624
+#: documents/insert.php:611
+#: documents/view.php:64
+msgid "Discount"
+msgstr ""
+
+#: documents/edit-document.php:625
+#: documents/insert.php:612
+msgid "Tax Percentage"
+msgstr ""
+
+#: documents/edit-document.php:626
+#: documents/insert.php:613
+msgid "Tax Amount"
+msgstr ""
+
+#: documents/edit-document.php:627
+#: documents/insert.php:614
+msgid "Net Amount"
+msgstr ""
+
+#: documents/edit-document.php:628
+#: documents/insert.php:615
+msgid "Total Amount with Tax"
+msgstr ""
+
 #: documents/insert.php:22
-#: documents/insert.php:604
+#: documents/insert.php:627
 msgid "Insert New Document"
 msgstr ""
 
 #: documents/insert.php:79
-#: documents/view.php:25
+#: documents/view.php:58
 msgid "System Invoice No"
 msgstr ""
 
 #: documents/insert.php:197
+#: documents/view.php:375
+#: documents/view.php:393
 msgid "Invoice Date:"
 msgstr ""
 
 #: documents/insert.php:224
-#: documents/view.php:26
+#: documents/view.php:60
 msgid "Delivery Date"
 msgstr ""
 
@@ -876,12 +944,12 @@ msgid "Tax Total"
 msgstr ""
 
 #: documents/insert.php:424
-#: documents/view.php:31
+#: documents/view.php:65
 msgid "Invoice Net"
 msgstr ""
 
 #: documents/insert.php:443
-#: documents/view.php:32
+#: documents/view.php:66
 msgid "Subnet Total plus tax"
 msgstr ""
 
@@ -893,82 +961,118 @@ msgstr ""
 msgid "Exemption Reason"
 msgstr ""
 
-#: documents/view.php:3
+#: documents/view.php:6
 #: option.php:51
 #: option.php:52
 msgid "Documents"
 msgstr ""
 
-#: documents/view.php:13
+#: documents/view.php:15
 msgid "Add New Document"
 msgstr ""
 
-#: documents/view.php:24
+#: documents/view.php:29
+msgid "Send Sellected To Zatca"
+msgstr ""
+
+#: documents/view.php:40
+msgid "Unsubmitted /Rejected Documents"
+msgstr ""
+
+#: documents/view.php:42
+msgid "Min Invoice Date"
+msgstr ""
+
+#: documents/view.php:44
+msgid "Max Invoice Date"
+msgstr ""
+
+#: documents/view.php:46
+msgid "Clear"
+msgstr ""
+
+#: documents/view.php:57
 msgid "Invoice No"
 msgstr ""
 
-#: documents/view.php:27
+#: documents/view.php:59
+msgid "Invoice Date"
+msgstr ""
+
+#: documents/view.php:61
 msgid "Maximum Delivery Date"
 msgstr ""
 
-#: documents/view.php:28
+#: documents/view.php:62
 msgid "Invoice Type"
 msgstr ""
 
-#: documents/view.php:29
+#: documents/view.php:63
 msgid "Payed"
 msgstr ""
 
-#: documents/view.php:30
-msgid "Discount"
-msgstr ""
-
-#: documents/view.php:33
+#: documents/view.php:67
 msgid "VAT Category Code"
 msgstr ""
 
-#: documents/view.php:34
+#: documents/view.php:68
 msgid "VAT Category SubType Code"
 msgstr ""
 
-#: documents/view.php:36
+#: documents/view.php:69
 msgid "isNominal"
 msgstr ""
 
-#: documents/view.php:37
+#: documents/view.php:70
 msgid "isExports"
 msgstr ""
 
-#: documents/view.php:38
+#: documents/view.php:71
 msgid "isSummary"
 msgstr ""
 
-#: documents/view.php:125
+#: documents/view.php:73
+msgid "zatcaSuccessResponse"
+msgstr ""
+
+#: documents/view.php:74
+msgid "zatcaAcceptedReissueInvoiceNo"
+msgstr ""
+
+#: documents/view.php:196
 msgid "Edit-Document"
 msgstr ""
 
-#: documents/view.php:140
+#: documents/view.php:211
 msgid "View Request Data"
 msgstr ""
 
-#: documents/view.php:175
-#: documents/view.php:191
+#: documents/view.php:247
+#: documents/view.php:274
 msgid "Send To Zatca"
 msgstr ""
 
-#: documents/view.php:210
+#: documents/view.php:293
 msgid "Download XML"
 msgstr ""
 
-#: documents/view.php:229
+#: documents/view.php:312
 msgid "Reissue"
 msgstr ""
 
-#: documents/view.php:250
+#: documents/view.php:333
 msgid "View Warning MSG"
 msgstr ""
 
-#: documents/view.php:296
+#: documents/view.php:373
+msgid "Reissued Invoice"
+msgstr ""
+
+#: documents/view.php:391
+msgid "Original of Reissued Invoice"
+msgstr ""
+
+#: documents/view.php:437
 msgid "Request Data"
 msgstr ""
 
@@ -1124,10 +1228,10 @@ msgstr ""
 msgid "Delete User"
 msgstr ""
 
-#: zatca.php:725
+#: zatca.php:726
 msgid "Data Inserted"
 msgstr ""
 
-#: zatca.php:797
+#: zatca.php:798
 msgid "Data Updated"
 msgstr ""

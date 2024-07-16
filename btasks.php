@@ -2,38 +2,28 @@
 
 /**************************MBAUOMY**************************** */
 
+
+// Add tax_invoice_option checkbox to checkout page
+
+
 function zatca_customer_form() {
     include_once('customers/insert.php'); // Call the function and return its output
 }
 add_shortcode('zatca_customer_form1', 'zatca_customer_form');
 
-// Add tax_invoice_option checkbox in order details section
-add_action( 'woocommerce_admin_order_data_after_billing_address', 'add_tax_invoice_field_to_order_page');
-function add_tax_invoice_field_to_order_page( $order ) {
-    echo '<div class="order_data_column">';
-    woocommerce_wp_checkbox( array(
-        'id' => 'tax_invoice_option',
-        'label' => __('Request Tax Invoice'),
-        'value' => get_post_meta( $order->get_id(), 'tax_invoice_option', true ),
-    ) );
+
+// Add tax_invoice_option checkbox in order details section the_post / woocommerce_before_checkout_form
+/*add_action( 'woocommerce_before_checkout_form', 'display_custom_checkout_shortcode');
+function display_custom_checkout_shortcode() {
+    // Add zatca_customer_form1 for the new section here
+    echo '<div class="" style="width:100%; position:relative;top:80%;z-index:1000;">';
+
+    echo do_shortcode('[zatca_customer_form1]');
+
     echo '</div>';
     
 }
-
-add_action( 'woocommerce_process_shop_order_meta', 'save_tax_invoice_option_on_order_creation', 10, 2 );
-function save_tax_invoice_option_on_order_creation( $order_id, $post ) 
-{
-    if ( isset( $_POST['tax_invoice_option'] ) ) 
-    {
-        update_post_meta( $order_id, 'tax_invoice_option', 'yes' );
-    } 
-    else
-    {
-        update_post_meta( $order_id, 'tax_invoice_option', 'no' );
-    }
-}
-
-
+*/
 
 // Add zatca_customer_form1 after the Order Data section on the order page
 add_action( 'woocommerce_admin_order_data_after_order_details', 'add_custom_section_after_order_data' );
@@ -42,26 +32,45 @@ function add_custom_section_after_order_data( $order ) {
 
     // Add taxInvoiceOption to be used in JavaScript
     $tax_invoice_option = get_post_meta( $order->get_id(), 'tax_invoice_option', true );
+    woocommerce_wp_checkbox(array(  
+        'id' => 'tax_invoice_option',  
+        'label' => __('Tax Invoice Option'),  
+        'value' => !empty($tax_invoice_option) ? 'yes' : 'no',  
+    ));  
+    
+    echo '</div>'; 
+
     wp_localize_script( 'custom-script', 'custom_vars', array(
         'taxInvoiceOption' => $tax_invoice_option
     ) );
 
     // Add zatca_customer_form1 for the new section here
-    echo '<div class="custom-section" style="padding-top:250px;width:1000px;">';
+    echo '<div class="custom-section" style="padding-top:250px;width:800px;">';
 
     echo do_shortcode('[zatca_customer_form1]');
 
     echo '</div>';
 }
 
+// Save the Tax Invoice Option checkbox value  
+add_action('woocommerce_process_shop_order_meta', 'save_tax_invoice_option_custom_field', 10, 1);  
+function save_tax_invoice_option_custom_field($order_id){  
+    $tax_invoice_option = isset($_POST['tax_invoice_option']) ? 'yes' : 'no';  
+    update_post_meta($order_id, 'tax_invoice_option', $tax_invoice_option);  
+}
+
+
+
+ 
+
 
 // Enqueue custom JavaScript file to show and hide zactaCustomer
 function enqueue_custom_js() {
-    wp_enqueue_script( 'custom-script', plugin_dir_url( __FILE__ ) . 'js/custom-script.js', array( 'jquery' ), null, true );
+    wp_enqueue_script( 'custom-script', plugin_dir_url( __FILE__ ) . 'js/custom-script.js', array(), false, true );
 }
 add_action( 'admin_enqueue_scripts', 'enqueue_custom_js' );
 
-
+add_action('wp_enqueue_scripts',  'enqueue_custom_js');
 
 
 
@@ -121,6 +130,8 @@ add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
 
 // Action of Send Reporting request to zatca:
 add_action('wp_ajax_zatca_report', 'send_request_to_zatca_report');
+// Action of Reissue request to zatca:
+add_action('wp_ajax_zatca_reissue', 'send_reissue_request_to_zatca');
 
 // Function to update Seller - Buyer Data Before Send:
     function update_zatca1($doc_no){
@@ -628,6 +639,30 @@ function send_request_to_zatca_report(){
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
+                // update zatca device fields with last document submitted:
+                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $doc_no") );
+
+                $zatcadevice_update_response_data = [
+                    "lastHash" => $hashed,
+                    "lastDocumentNo" => $doc_no,
+                    "lastDocumentDateTime" => $hashed
+                ];
+                $where1 = array('deviceNo' => $device_no);
+
+                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+
+                // Check for errors
+                if ($zatcadevice_update_response_result === false) {
+                    
+                    // Handle error
+                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                
+                }elseif ($zatcadevice_update_response_result === 0) {
+                   
+                    // No rows affected
+                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                }
+
                 $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
             
             }elseif($statusCode == '202'){
@@ -681,6 +716,31 @@ function send_request_to_zatca_report(){
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
+
+                // update zatca device fields with last document submitted:
+                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $doc_no") );
+
+                $zatcadevice_update_response_data = [
+                    "lastHash" => $hashed,
+                    "lastDocumentNo" => $doc_no,
+                    "lastDocumentDateTime" => $hashed
+                ];
+                $where1 = array('deviceNo' => $device_no);
+
+                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+
+                // Check for errors
+                if ($zatcadevice_update_response_result === false) {
+                    
+                    // Handle error
+                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                
+                }elseif ($zatcadevice_update_response_result === 0) {
+                   
+                    // No rows affected
+                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                }
+
                 $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
             }
           
@@ -752,6 +812,12 @@ function send_request_to_zatca_report(){
     die();
 }
 
+function send_reissue_request_to_zatca(){
+    global $wpdb;
+    // document no pass from ajax:
+    $doc_no = $_REQUEST['doc_no_from_ajax'];
+
+}
 
 
 ////////////////////////////////////////////PDF Code/////////////////////////////////////////////////

@@ -531,7 +531,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         ?>
 
         <!--  taxExemptionReason field -->
-        <div class="mb-3 row col-mid-6">
+        <div class="mb-3 row col-mid-6" id="exemptionReason">
             <label class="col-sm-2 col-form-label"><?php echo _e('Exemption Reason:', 'zatca') ?></label>
             <div class="col-sm-10 col-md-9">
                 <div class="form-group">
@@ -597,6 +597,29 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             </div>
         </div>
         <!-- /  note field -->
+
+        <!---->
+        <div class="container">
+            <table id="example" class="table table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Item No', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Name Ar', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Name En', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Price', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Quantity', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Discount', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Tax Percentage', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Tax Amount', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Net Amount', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Total Amount with Tax', 'zatca') ?></th>
+                    </tr>
+                </thead>
+                <tbody class="order_details">
+                    
+                </tbody>
+            </table>
+        </div>
 
         <!-- Submit Btn -->
         <div class="mb-3 row">
