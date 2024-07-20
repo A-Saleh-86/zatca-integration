@@ -495,6 +495,7 @@ jQuery(document).ready(function($){
     $(document).on('click', '#send-zatca-sellected', function(event){
 
         var checkboxes = document.querySelectorAll('.rowCheckbox:checked');
+        var promises = [];  
 
         checkboxes.forEach(function(checkbox) {  
             const documentNo = checkbox.getAttribute('data-document-no');  
@@ -504,6 +505,7 @@ jQuery(document).ready(function($){
             //B2B Invoices
             if(zatcaInvoiceType == 1 && zatcaSuccessResponse == 0)
             {
+                const promise = new Promise((resolve, reject) => {
                 $.ajax({
                     url: myDoc.ajaxUrl, 
                     method: "POST", 
@@ -513,11 +515,15 @@ jQuery(document).ready(function($){
                     },
                     success: function(response) {
                         alert(response.msg);
+                        resolve(); // Resolve if successful 
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error('Error: ', textStatus, errorThrown);
+                        reject(); // Reject if there's an error
                     }
                 });
+            });
+                promises.push(promise); 
             }
 
             //B2C Invoices
@@ -533,30 +539,31 @@ jQuery(document).ready(function($){
                 if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
                     {
                         alert(documentNo + ': Buyer arabic name is mandatory and the same as his name in his National ID');
-                        window.location.reload();
+                        return; // Stop process, do not send an AJAX request  
                     }
                 else if(buyerSecondbusinesstype != 8)
                     {
                         alert(documentNo + ': Second business type must be National ID, Please edit customer profile');
-                        window.location.reload();
+                        return; // Stop process, do not send an AJAX request  
                     }
                 else if(buyerSecondbusinessid == '')
                     {
                         alert(documentNo + ': Buyer Second business ID must be filled, Please edit customer profile');
-                        window.location.reload();
+                        return; // Stop process, do not send an AJAX request  
                     }
                 else if(companyStage == 2 && sellerSecondbusinessid == '')
                     {
                         alert(documentNo + ': Seller Second business ID must be filled, Please edit company profile');
-                        window.location.reload();
+                        return; // Stop process, do not send an AJAX request  
                     }
                 else if(companyStage != 2)
                     {
                         alert(documentNo + ': Company zatca stage must be V2, Please edit company profile');
-                        window.location.reload();
+                        return; // Stop process, do not send an AJAX request  
                     }
                 else
                     {
+                        const promise = new Promise((resolve, reject) => {
                         //ajax code here to send zatca B2C document
                         $.ajax({
                             url: myDoc.ajaxUrl, 
@@ -568,18 +575,33 @@ jQuery(document).ready(function($){
                             success: function(response) {
                               
                                 alert(response.msg);
+                                resolve(); // Resolve if successful 
                                 //console.log(response);
                                 //window.location.reload();
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 console.error('Error: ', textStatus, errorThrown);
+                                reject(); // Reject if there's an error
                             }
                         });
+                    });
+                    promises.push(promise);
+                        
                     }
             }
+
         });
 
-        window.location.reload();
+        // Wait for all promises to be resolved and then reload the page  
+        Promise.all(promises)  
+        .then(() => {  
+            // All AJAX calls have completed successfully  
+            window.location.reload();  
+        })  
+        .catch(() => {  
+            // Handle any errors here if needed  
+            console.error('One or more requests failed.');  
+        });
     })
 
     $(document).on('click', '#send-zatca-reissue', function(event){
@@ -604,7 +626,7 @@ jQuery(document).ready(function($){
             }
         });
 
-        alert('Reissue');
+        //alert(docNo);
     })
 
 

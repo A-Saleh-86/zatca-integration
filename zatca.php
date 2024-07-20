@@ -2424,7 +2424,8 @@ function send_request_to_zatca_clear(){
         
         $msg = 'You Muse Insert Buyer additional Number in zatca customer';
 
-    }else{
+    }
+    else{
 
    
         $curl = curl_init();
@@ -3034,5 +3035,12 @@ function edit_user_zatcaUsers(){
     die();
 
 }
+
+
+		/**
+ * Add the field to the checkout
+ */
+
+	
 
 require_once('btasks.php');

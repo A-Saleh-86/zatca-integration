@@ -238,7 +238,7 @@
                                 FROM zatcadocument zd, zatcacompany zc 
                                 WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
                                     
-                                // Check If docuemnt B2B will redirect to clear():
+                                // Check If 1 docuemnt B2B will redirect to clear():
                                 if($zatcaInvoiceType == 1){?>
 
                                     <!-- Send To Zatca Btn [ clear() ] -->
@@ -257,7 +257,8 @@
                                     <!-- / Send To Zatca Btn [ clear() ] -->
                                     <?php
                             
-                                }else{ //if B2C will redirect to Report(): ?>
+                                }
+                                else{ //if B2C will redirect to Report(): ?>
 
                                     
                                     <!-- Send To Zatca Btn [ report() ] -->
@@ -302,7 +303,7 @@
                             }
                             
                             // Reissue Btn for doc have zatca success response = 3:
-                            if($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 3 && $zatcaRejectedInvoiceNo == NULL && $zatcaAcceptedReissueInvoiceNo == NULL && $isZatcaReissued == false){?>
+                            if($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 3 && $zatcaRejectedInvoiceNo == NULL && $zatcaAcceptedReissueInvoiceNo == NULL && ($isZatcaReissued == 1 || $isZatcaReissued == NULL)){?>
                                 
                                 <!-- Reissue -->
                                 <a 
@@ -367,7 +368,7 @@
                                 global $wpdb;
 
                                 // Fetch Data From Database [ met_vatcategorycode table ]:
-                                $reissuanceInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaRejectedInvoiceNo='$result->documentNo' and isZATCAreissued=0" );
+                                $reissuanceInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaRejectedInvoiceNo='$result->documentNo' and isZatcaReissued=0" );
                                 $originalInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaAcceptedReissueInvoiceNo='$result->documentNo'" );
                                 foreach($reissuanceInvoices as $reissuance) {?>
                                     
