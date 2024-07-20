@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-16T13:18:58+02:00\n"
+"POT-Creation-Date: 2024-07-20T22:28:09+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: zatca\n"
@@ -29,8 +29,8 @@ msgstr ""
 msgid "Appy Innovate"
 msgstr ""
 
-#: btasks.php:95
-#: btasks.php:96
+#: btasks.php:141
+#: btasks.php:142
 msgid "Zacta Tampering Detector"
 msgstr ""
 
@@ -692,8 +692,8 @@ msgstr ""
 
 #: documents/edit-document.php:45
 #: documents/insert.php:50
-#: documents/view.php:374
-#: documents/view.php:392
+#: documents/view.php:381
+#: documents/view.php:399
 msgid "Invoice No:"
 msgstr ""
 
@@ -893,8 +893,8 @@ msgid "System Invoice No"
 msgstr ""
 
 #: documents/insert.php:197
-#: documents/view.php:375
-#: documents/view.php:393
+#: documents/view.php:382
+#: documents/view.php:400
 msgid "Invoice Date:"
 msgstr ""
 
@@ -1047,32 +1047,32 @@ msgstr ""
 msgid "View Request Data"
 msgstr ""
 
-#: documents/view.php:247
-#: documents/view.php:274
+#: documents/view.php:254
+#: documents/view.php:278
 msgid "Send To Zatca"
 msgstr ""
 
-#: documents/view.php:293
+#: documents/view.php:297
 msgid "Download XML"
 msgstr ""
 
-#: documents/view.php:312
+#: documents/view.php:316
 msgid "Reissue"
 msgstr ""
 
-#: documents/view.php:333
+#: documents/view.php:337
 msgid "View Warning MSG"
 msgstr ""
 
-#: documents/view.php:373
+#: documents/view.php:380
 msgid "Reissued Invoice"
 msgstr ""
 
-#: documents/view.php:391
+#: documents/view.php:398
 msgid "Original of Reissued Invoice"
 msgstr ""
 
-#: documents/view.php:437
+#: documents/view.php:444
 msgid "Request Data"
 msgstr ""
 
@@ -1228,10 +1228,10 @@ msgstr ""
 msgid "Delete User"
 msgstr ""
 
-#: zatca.php:726
+#: zatca.php:729
 msgid "Data Inserted"
 msgstr ""
 
-#: zatca.php:798
+#: zatca.php:801
 msgid "Data Updated"
 msgstr ""

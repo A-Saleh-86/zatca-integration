@@ -191,6 +191,7 @@ function load_assets(){
     wp_enqueue_style('fontawsome-solid-css', plugin_dir_url(__FILE__) . '/css/solid.css');
     wp_enqueue_style('fontawsome-brands-css', plugin_dir_url(__FILE__) . '/css/brands.css');
     wp_enqueue_style('fontawsome-min-css', plugin_dir_url(__FILE__) . '/css/fontawesome.min.css');
+    wp_enqueue_style('notification-css', plugin_dir_url(__FILE__) . '/css/notification.css');
     wp_enqueue_style("dashicons");
     
     
@@ -231,6 +232,8 @@ function load_assets(){
         'adminUrl' => admin_url('admin.php?page=zatca-customers&action=view'),
         'document' => admin_url('admin.php?page=zatca-documents&action=insert'),) 
     );
+
+    wp_enqueue_script('notification-js', plugin_dir_url(__FILE__) . '/js/notification.js', array(), false, true);
 
 }
 
@@ -3036,11 +3039,6 @@ function edit_user_zatcaUsers(){
 
 }
 
-
-		/**
- * Add the field to the checkout
- */
-
-	
+            
 
 require_once('btasks.php');

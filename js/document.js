@@ -397,7 +397,13 @@ jQuery(document).ready(function($) {
 
 // Send To Zatca Btn - view page:
 jQuery(document).ready(function($){
-    
+    const popup = Notification({
+        position: 'center',
+        duration: 4000,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+        });
     
     $(document).on('click', '#send-zatca-clear', function(event) {
         const docNo = $(this).data('doc-no');
@@ -421,7 +427,62 @@ jQuery(document).ready(function($){
                 },
                 success: function(response) {
                 
-                    alert(response.msg);
+                    if(response.responseArray['clearanceStatus'] == "NOT_CLEARED")
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                        {
+                            alert("Error: " + response.responseArray['portalResults']);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 303)
+                        {
+                            alert("Please submit via reporing");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 401)
+                        {
+                            alert("Unauthorized, Please check authentication certificate and secret and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 413)
+                        {
+                            alert("Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 429)
+                        {
+                            alert("Please wait for 1 minute and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 500)
+                        {
+                            alert("Internal Server Error, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 503)
+                        {
+                            alert("Service Unavailable, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 504)
+                        {
+                            alert("Gateway Timeout, Please try again later");
+                        }
+
+                    }
+                    else
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 202)
+                        {
+                            // warning
+                            popup.warning({
+                                title: 'Warning',
+                                message: 'Submitted but please check this warning: ' + response.msg
+                            });
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 200)
+                        {
+                            // success
+                            popup.success({
+                                title: 'Success',
+                                message: 'Your Document Submitted Successfully'
+                            });
+                        }
+                    }
+                    
                     // console.log(response);
                     window.location.reload();
                 },
@@ -480,9 +541,66 @@ jQuery(document).ready(function($){
                     },
                     success: function(response) {
                       
-                        alert(response.msg);
-                        //console.log(response);
-                        window.location.reload();
+                        if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
+                            {
+                                if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                                {
+                                    alert("Error: " + response.responseArray['portalResults']);
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 303)
+                                {
+                                    alert("Please submit via reporing");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 401)
+                                {
+                                    alert("Unauthorized, Please check authentication certificate and secret and resubmit");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 413)
+                                {
+                                    alert("Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 429)
+                                {
+                                    alert("Please wait for 1 minute and resubmit");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 500)
+                                {
+                                    alert("Internal Server Error, Please try again later");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 503)
+                                {
+                                    alert("Service Unavailable, Please try again later");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 504)
+                                {
+                                    alert("Gateway Timeout, Please try again later");
+                                }
+                            
+                            }
+                            else
+                            {
+                                if(response.responseArray['zatcaStatusCode'] == 202)
+                                {
+                                    popup.warning({
+                                        title: 'Warning',
+                                        message: 'Submitted but please check this warning: ' + response.msg
+                                    });
+                                    
+                                    //alert("Submitted but please check this warning: " + response.msg);
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 200)
+                                {
+                                    // success
+                                    popup.success({
+                                        title: 'Success',
+                                        message: 'Your Document Submitted Successfully'
+                                    });
+                                    //alert("Your Document Submitted Successfully");
+                                }
+                            }
+
+                             //console.log(response);
+                            window.location.reload();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error('Error: ', textStatus, errorThrown);
@@ -514,7 +632,64 @@ jQuery(document).ready(function($){
                         "doc_no_from_ajax": documentNo
                     },
                     success: function(response) {
-                        alert(response.msg);
+                        if(response.responseArray['clearanceStatus'] == "NOT_CLEARED")
+                            {
+                                if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                                {
+                                    alert("Error: " + documentNo + " - " + response.responseArray['portalResults']);
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 303)
+                                {
+                                    alert(documentNo + " - Please submit via reporing");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 401)
+                                {
+                                    alert(documentNo + " - Unauthorized, Please check authentication certificate and secret and resubmit");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 413)
+                                {
+                                    alert(documentNo + " - Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 429)
+                                {
+                                    alert(documentNo + " - Please wait for 1 minute and resubmit");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 500)
+                                {
+                                    alert(documentNo + " - Internal Server Error, Please try again later");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 503)
+                                {
+                                    alert(documentNo + " - Service Unavailable, Please try again later");
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 504)
+                                {
+                                    alert(documentNo + " - Gateway Timeout, Please try again later");
+                                }
+                            
+                            }
+                            else
+                            {
+                                if(response.responseArray['zatcaStatusCode'] == 202)
+                                {
+                                    // warning
+                                    popup.warning({
+                                        title: 'Warning',
+                                        message: documentNo + '- Submitted but please check this warning: ' + response.msg
+                                    });
+                                    //alert(documentNo + " - Submitted but please check this warning: " + response.msg);
+                                }
+                                else if(response.responseArray['zatcaStatusCode'] == 200)
+                                {
+                                    // success
+                                    popup.success({
+                                        title: 'Success',
+                                        message: documentNo + ' - Your Document Submitted Successfully'
+                                    });
+                                    //alert(documentNo + " - Your Document Submitted Successfully");
+                                }
+                            }
+                            
                         resolve(); // Resolve if successful 
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -574,10 +749,65 @@ jQuery(document).ready(function($){
                             },
                             success: function(response) {
                               
-                                alert(response.msg);
+                                if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
+                                    {
+                                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                                        {
+                                            alert("Error: " + documentNo + " - " + response.responseArray['portalResults']);
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 303)
+                                        {
+                                            alert(documentNo + " - Please submit via reporing");
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 401)
+                                        {
+                                            alert(documentNo + " - Unauthorized, Please check authentication certificate and secret and resubmit");
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 413)
+                                        {
+                                            alert(documentNo + " - Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 429)
+                                        {
+                                            alert(documentNo + " - Please wait for 1 minute and resubmit");
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 500)
+                                        {
+                                            alert(documentNo + " - Internal Server Error, Please try again later");
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 503)
+                                        {
+                                            alert(documentNo + " - Service Unavailable, Please try again later");
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 504)
+                                        {
+                                            alert(documentNo + " - Gateway Timeout, Please try again later");
+                                        }
+                                    
+                                    }
+                                    else
+                                    {
+                                        if(response.responseArray['zatcaStatusCode'] == 202)
+                                        {
+                                            // warning
+                                            popup.warning({
+                                                title: 'Warning',
+                                                message: documentNo + '- Submitted but please check this warning: ' + response.msg
+                                            });
+                                            //alert(documentNo + " - Submitted but please check this warning: " + response.msg);
+                                        }
+                                        else if(response.responseArray['zatcaStatusCode'] == 200)
+                                        {
+                                            // success
+                                            popup.success({
+                                                title: 'Success',
+                                                message: documentNo + ' - Your Document Submitted Successfully'
+                                            });
+                                            //alert(documentNo + " - Your Document Submitted Successfully");
+                                        }
+                                    }
                                 resolve(); // Resolve if successful 
-                                //console.log(response);
-                                //window.location.reload();
+                                
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 console.error('Error: ', textStatus, errorThrown);
@@ -617,8 +847,121 @@ jQuery(document).ready(function($){
             },
             success: function(response) {
             
-                alert(response.msg);
+                if(response.responseArray['clearanceStatus'] == "NOT_CLEARED")
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                        {
+                            alert("Error: " + response.responseArray['portalResults']);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 303)
+                        {
+                            alert("Please submit via reporing");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 401)
+                        {
+                            alert("Unauthorized, Please check authentication certificate and secret and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 413)
+                        {
+                            alert("Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 429)
+                        {
+                            alert("Please wait for 1 minute and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 500)
+                        {
+                            alert("Internal Server Error, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 503)
+                        {
+                            alert("Service Unavailable, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 504)
+                        {
+                            alert("Gateway Timeout, Please try again later");
+                        }
+                    
+                    }
+                    else
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 202)
+                        {
+                            // warning
+                            popup.warning({
+                                title: 'Warning',
+                                message: 'Submitted but please check this warning: ' + response.msg
+                            });
+                            //alert("Submitted but please check this warning: " + response.msg);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 200)
+                        {
+                            // success
+                            popup.success({
+                                title: 'Success',
+                                message: 'Your Document Submitted Successfully'
+                            });
+                            //alert("Your Document Submitted Successfully");
+                        }
+                    }
                 // console.log(response);
+                if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                        {
+                            alert("Error: " + response.responseArray['portalResults']);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 303)
+                        {
+                            alert("Please submit via reporing");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 401)
+                        {
+                            alert("Unauthorized, Please check authentication certificate and secret and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 413)
+                        {
+                            alert("Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 429)
+                        {
+                            alert("Please wait for 1 minute and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 500)
+                        {
+                            alert("Internal Server Error, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 503)
+                        {
+                            alert("Service Unavailable, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 504)
+                        {
+                            alert("Gateway Timeout, Please try again later");
+                        }
+                    
+                    }
+                    else
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 202)
+                        {
+                            popup.warning({
+                                title: 'Warning',
+                                message: 'Submitted but please check this warning: ' + response.msg
+                            });
+                            
+                            //alert("Submitted but please check this warning: " + response.msg);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 200)
+                        {
+                            // success
+                            popup.success({
+                                title: 'Success',
+                                message: 'Your Document Submitted Successfully'
+                            });
+                            //alert("Your Document Submitted Successfully");
+                        }
+                    }
                 window.location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {

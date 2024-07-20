@@ -66,8 +66,6 @@ function custom_override_default_address_fields( $address_fields ) {
     return $address_fields;
 }
 */        
-            
-
 
 
 
