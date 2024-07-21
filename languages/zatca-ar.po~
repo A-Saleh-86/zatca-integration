@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-07-21T21:16:03+02:00\n"
+"POT-Creation-Date: 2024-07-21T20:49:51+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1119,35 +1119,31 @@ msgstr "فحص خلل الترتيب"
 msgid "Check Hash Gap"
 msgstr "فحصل خلل الهاش"
 
-#: zatca.php:474
-msgid "Not allowed to add more one device active"
-msgstr "غير مسموح باضافة اكثر من جهاز واحد نشط"
-
-#: zatca.php:494
+#: zatca.php:485
 msgid "New Device Inserted"
 msgstr "تم اضافة جهاز جديد"
 
-#: zatca.php:548
+#: zatca.php:536
 msgid "Sorry Cant Edit..Please Contact Your System Admin"
 msgstr "نأسف لا يمكنك التعديل .. الرجاء التواصل مع مسئول النظام"
 
-#: zatca.php:567
+#: zatca.php:555
 msgid "Device Status Updated"
 msgstr "تم تعديل حالة الجهاز"
 
-#: zatca.php:592 zatca.php:813 zatca.php:2051
+#: zatca.php:580 zatca.php:801 zatca.php:2039
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
 
-#: zatca.php:741
+#: zatca.php:729
 msgid "Data Inserted"
 msgstr "تم بنجاح"
 
-#: zatca.php:1339
+#: zatca.php:1327
 msgid "Device CsID_ExpiryDate is Expired"
 msgstr "تاريخ صلاحية الجهاز انتهت"
 
-#: zatca.php:1607
+#: zatca.php:1595
 msgid "Document Created successifly"
 msgstr "تم ادخال الفاتورة بنجاح"
 

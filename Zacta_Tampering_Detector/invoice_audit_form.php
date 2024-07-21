@@ -1,14 +1,3 @@
-<?php
-// Get the current language code (e.g., 'en' for English, 'ar' for Arabic)
-$current_lang = get_locale();
-// Define text strings based on language
-$from_date_label = ($current_lang == 'en') ? 'من تاريخ' : 'From Date';
-$to_date_label = ($current_lang == 'en') ? 'الى تاريخ' : 'To Date';
-$Branch_label = ($current_lang == 'en') ? 'الفرع' : 'Branch';
-$check_counter_btn = ($current_lang == 'en') ? 'فحص خلل الترتيب' : 'Check Counter Gap';
-$check_hash_btn = ($current_lang == 'en') ? 'فحصل خلل الهاش' : 'Check Hash Gap';
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,18 +9,18 @@ $check_hash_btn = ($current_lang == 'en') ? 'فحصل خلل الهاش' : 'Chec
     <form action="" method="post" class="container">
         <div class="row">
         <div class="form-group col-md-6">
-            <label for="from_date"><?php echo esc_html($from_date_label); ?> </label>
+            <label for="from_date"><?php echo _e('From Date', 'zatca') ?> </label>
             <input type="date" name="from_date" id="from_date" class="form-control" required>
         </div>
         <div class="form-group col-md-6">
-            <label for="to_date"><?php echo esc_html($to_date_label); ?> </label>
+            <label for="to_date"><?php echo _e('To Date', 'zatca') ?> </label>
             <input type="date" name="to_date" id="to_date" class="form-control" required>
         </div>
         </div>
         <div class="form-group">
-            <label for="Branch"> <?php echo esc_html($Branch_label); ?> </label>
+            <label for="Branch"> <?php echo _e('Branch', 'zatca') ?> </label>
             <select name="BuildingNo" id="Branch" class="form-control">
-                <option value=""><?php echo esc_html($Branch_label); ?></option>
+                <option value=""><?php echo _e('Branch', 'zatca') ?></option>
                 <?php
                     global $wpdb;
                     
@@ -57,8 +46,8 @@ $check_hash_btn = ($current_lang == 'en') ? 'فحصل خلل الهاش' : 'Chec
             </select>
         </div>
         <div class="form-group">
-            <button class="btn btn-sm btn-primary m-2" name="check_counter_gap" type="submit"><?php echo esc_html($check_counter_btn); ?> </button>
-            <button class="btn btn-sm btn-primary m-2" name="check_hash_gap" type="submit"><?php echo esc_html($check_hash_btn); ?> </button>
+            <button class="btn btn-sm btn-primary m-2" name="check_counter_gap" type="submit"><?php echo _e('Check Counter Gap', 'zatca') ?> </button>
+            <button class="btn btn-sm btn-primary m-2" name="check_hash_gap" type="submit"><?php echo _e('Check Hash Gap', 'zatca') ?> </button>
         </div>
     </form>
 </body>

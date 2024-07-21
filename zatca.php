@@ -465,25 +465,35 @@ function insert_form_devices(){
         $token_Data = $form_array['token-data'];
         $deviceStatus = $form_array['deviceStatus'];
 
-
-        $insert_result = $wpdb->insert(
-            'zatcadevice',
-            [
-                'deviceCSID'            => $device_Csid,
-                'CsID_ExpiryDate'       => $csid_Ex_Date,
-                'tokenData'             => $token_Data,
-                'deviceStatus'             => $deviceStatus
-            ]
-        );
-
-        if ($insert_result === false) {
-            // There was an error inserting data
-            $error_message = $wpdb->last_error;
-            echo "Error inserting data: $error_message";
-        } else {
-
-            echo 'New Device Inserted';
+        // check if exist deviceStatus = 0 in zatcadevice table or not
+        $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
+        // if exist deviceStatus = 0 in zatcadevice table
+        if ($check_deviceStatus) {
+            echo __("Not allowed to add more one device active", "zatca");
         }
+        else
+        {
+            $insert_result = $wpdb->insert(
+                'zatcadevice',
+                [
+                    'deviceCSID'            => $device_Csid,
+                    'CsID_ExpiryDate'       => $csid_Ex_Date,
+                    'tokenData'             => $token_Data,
+                    'deviceStatus'             => $deviceStatus
+                ]
+            );
+    
+            if ($insert_result === false) {
+                // There was an error inserting data
+                $error_message = $wpdb->last_error;
+                echo "Error inserting data: " . $error_message;
+            } else {
+    
+                echo __("New Device Inserted", "zatca");
+            }
+        }
+
+        
 
     }
 
@@ -533,52 +543,78 @@ function edit_form_device(){
                     $data->tokenData != $token_Data )
                 {
 
-                    echo 'Sorry Cant Edit..Please Contact Your System Admin';
+                    echo __("Sorry Cant Edit..Please Contact Your System Admin", "zatca");
                     
-               }else{ // Update Device Status Only:
+               }
+               else{ // Update Device Status Only:
 
-                    $table_name = 'zatcadevice';
-                    $data = array(
-
-                        'deviceStatus' => $deviceStatus
-                    );
-                    $where = array('deviceNo' => $device_No_id);
-                    $update_result = $wpdb->update($table_name, $data, $where);
-                
-            
-                    if ($update_result === false) {
-                        // There was an error inserting data
-                        $error_message = $wpdb->last_error;
-                        echo "Error inserting data: $error_message";
-                    } else {
-            
-                        echo 'Device Status Updated';
+                    // check if exist deviceStatus = 0 in zatcadevice table or not
+                    $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
+                    // if exist deviceStatus = 0 in zatcadevice table
+                    if ($check_deviceStatus && $deviceStatus == 0) {
+                        echo __("Not allowed to add more one device active", "zatca");
                     }
+                    else
+                    { // Update Device Status Only:
+                        $table_name = 'zatcadevice';
+                        $data = array(
+                            'deviceStatus' => $deviceStatus
+                        );
+                        $where = array('deviceNo' => $device_No_id);
+                        $update_result = $wpdb->update($table_name, $data, $where);
+                    
+                
+                        if ($update_result === false) {
+                            // There was an error inserting data
+                            $error_message = $wpdb->last_error;
+                            echo "Error inserting data: $error_message";
+                        } else {
+                
+                            echo __("Device Status Updated", "zatca");
+                        }
+                    }
+                    
+                    
                }
 
             }
-        }else{ // Update Device Data if Not Used in zatcadocument:
+        }
+        else
+        { 
+            // Update Device Data if Not Used in zatcadocument:
 
-            $table_name = 'zatcadevice';
-            $data = array(
-                'deviceNo'      => $device_No,
-                'deviceCSID'    => $device_Csid,
-                'CsID_ExpiryDate'=> $csid_Ex_Date,
-                'tokenData'     => $token_Data,
-                'deviceStatus'  => $deviceStatus
-            );
-            $where = array('deviceNo' => $device_No_id);
-            $update_result = $wpdb->update($table_name, $data, $where);
-        
-    
-            if ($update_result === false) {
-                // There was an error inserting data
-                $error_message = $wpdb->last_error;
-                echo "Error inserting data: $error_message";
-            } else {
-    
-                echo 'Data Updated';
+            // check if exist deviceStatus = 0 in zatcadevice table or not
+            $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
+            // if exist deviceStatus = 0 in zatcadevice table
+            if (!empty($check_deviceStatus) && $deviceStatus == 0) {
+                //echo __("Not allowed to add more one device active", "zatca");
+                echo '<script type="text/javascript"> alert("'.$deviceStatus.'");</script>';  // alert message
             }
+            else
+            {
+                $table_name = 'zatcadevice';
+                $data = array(
+                    'deviceNo'      => $device_No,
+                    'deviceCSID'    => $device_Csid,
+                    'CsID_ExpiryDate'=> $csid_Ex_Date,
+                    'tokenData'     => $token_Data,
+                    'deviceStatus'  => $deviceStatus
+                );
+                $where = array('deviceNo' => $device_No_id);
+                $update_result = $wpdb->update($table_name, $data, $where);
+            
+        
+                if ($update_result === false) {
+                    // There was an error inserting data
+                    $error_message = $wpdb->last_error;
+                    echo "Error inserting data: $error_message";
+                } else {
+        
+                    echo __("Data Updated", "zatca");
+                }
+            }
+
+            
         }
         
        
@@ -1324,7 +1360,7 @@ function insert_form_documents(){
 
         if(empty($device_ExpiryDate)){ // If Date Valid:
 
-            $msg = "Device CsID_ExpiryDate is Expired";
+            $msg = __("Device CsID_ExpiryDate is Expired","zatca");
 
         }else{ // If No Date Valid
 
@@ -1592,7 +1628,7 @@ function insert_form_documents(){
                 }
             }
 
-            $msg = 'Document Created successifly';
+            $msg = __("Document Created successifly", "zatca");
 
         }
         
@@ -2036,7 +2072,7 @@ function document_edit_form(){
             echo "Error Editing data: " . $wpdb->last_error;
         } else {
 
-            echo 'Data Updated';
+            echo __("Data Updated", "zatca");
         }
         // print_r($data);
        

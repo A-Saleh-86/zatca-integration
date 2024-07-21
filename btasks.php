@@ -12,63 +12,6 @@ function zatca_customer_form() {
 add_shortcode('zatca_customer_form1', 'zatca_customer_form');
 
 
-// Add tax_invoice_option checkbox in order details section the_post / woocommerce_before_checkout_form
-/*add_action( 'woocommerce_before_checkout_form', 'display_custom_checkout_shortcode');
-function display_custom_checkout_shortcode() {
-    // Add zatca_customer_form1 for the new section here
-    echo '<div class="custom-section1" style="width:100%; position:relative;top:80%;z-index:1000;">';
-
-    echo do_shortcode('[zatca_customer_form1]');
-
-    echo '</div>';
-    
-}
-*/
-
-
-
-
-////////////////////////test code for checkout ppage//////////////////////
-
-// Add custom shortcode
-/*
-add_shortcode( 'custom_address_fields', 'custom_address_fields_shortcode' );
-
-// Function to handle the shortcode
-function custom_address_fields_shortcode( $atts ) {
-    // Get the default address fields
-    $address_fields = apply_filters( 'woocommerce_default_address_fields', array() );
-
-    // Override the default address fields
-    $address_fields['first_name']['required'] = false;
-
-    // Output the custom address fields
-    $output='';
-    $output .= '<div class="custom-section1">';
-    foreach ( $address_fields as $field => $args ) {
-        $output .= require('customers/insert.php');
-        //$output.= '<p><label for="aaa">'. 'aaaa' . '</label> <input type="text" id="aaa" name="aaa" /></p>';
-    }
-    $output .= '</div>';
-
-    return $output;
-}
-
-echo do_shortcode('[custom_address_fields]');
-*/
-// Hook in
-/*add_filter( 'woocommerce_default_address_fields' , 'custom_override_default_address_fields' );
-
-// Our hooked in function - $address_fields is passed via the filter!
-function custom_override_default_address_fields( $address_fields ) {
-    $address_fields['first_name']['required'] = false;
-
-    return $address_fields;
-}
-*/        
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////
 // Add zatca_customer_form1 after the Order Data section on the order page
@@ -105,11 +48,6 @@ function save_tax_invoice_option_custom_field($order_id){
     update_post_meta($order_id, 'tax_invoice_option', $tax_invoice_option);  
 }
 
-
-
- 
-
-
 // Enqueue custom JavaScript file to show and hide zactaCustomer
 function enqueue_custom_js() {
     wp_enqueue_script( 'custom-script', plugin_dir_url( __FILE__ ) . 'js/custom-script.js', array(), false, true );
@@ -120,21 +58,10 @@ add_action('wp_enqueue_scripts',  'enqueue_custom_js');
 
 
 
-/////////////////////////Task2/////////////////////////////
+///////////////////////////////////////////////Task2/////////////////////////////////////////////////
 
 // Create admin page
 function invoice_audit_admin_page() {
-    // 
-    /*add_menu_page(
-        'Zacta Tampering Detector', // Page title
-        'Zacta Tampering Detector', // Menu title
-        'manage_options', // Capability required to access the page
-        'invoice-audit-admin-page', // Unique menu slug
-        'invoice_audit_admin_page_content', // Callback function to display page content
-        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
-        4 // Menu position
-    );*/
-
     // Add sub-menu pages
     add_submenu_page(
         'zatca', // Parent menu slug
@@ -151,7 +78,7 @@ add_action('admin_menu', 'invoice_audit_admin_page');
 // Admin page content
 function invoice_audit_admin_page_content() {
     echo '<div class="wrap container">';
-    echo '<h2>Zacta Tampering Detector</h2>';
+    echo '<h2 class="text-center">'. __( 'Zacta Tampering Detector', 'zatca' ) .'</h2>';
     // Add your admin page content here
     echo do_shortcode('[invoice_audit_form]');
     echo '</div>';

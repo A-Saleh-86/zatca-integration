@@ -19,10 +19,10 @@ $deleted = $wpdb->delete( $table_name, $where );
 
 if ( $deleted === false ) {
 //     // Deletion failed
-    echo "Failed to delete row.";
+    echo __("Failed to delete device.","zatca");
 } else {
     // Deletion successful
-    echo "Row deleted successfully.";?>
+    echo __("Device deleted successfully.","zatca");?>
     <script>
         window.location.href = '<?php echo admin_url('admin.php?page=zatca-devices&action=view'); ?>';
     </script>

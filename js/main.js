@@ -3,7 +3,7 @@
 jQuery(document).ready(function($) {
     $('.confirm').click(function () {
 
-        return confirm('Are You Sure?');
+        return confirm('Are You Sure? - هل أنت متأكد؟');
     })
 });
 

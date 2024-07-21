@@ -26,7 +26,7 @@
         id="send-zatca-sellected" 
         data-bs-toggle="tooltip" 
         data-bs-placement="top" 
-        title="<?php echo _e('Send Sellected To Zatca', 'zatca') ?>">Send Selected To Zatca
+        title="<?php echo _e('Send Sellected To Zatca', 'zatca') ?>"><?php echo _e('Send Sellected To Zatca', 'zatca') ?>
         <span class="dashicons dashicons-cloud-upload"></span> 
         </a>
     </div>
@@ -142,23 +142,23 @@
                         
                         <!-- Is Nominal -->
                         <td style="font-size: 0.8rem;">
-                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isNominal) && $result->zatcaInvoiceTransactionCode_isNominal==0) ? 'Yes' : 'No'; ?>
+                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isNominal) && $result->zatcaInvoiceTransactionCode_isNominal==0) ? __("Yes", "zatca") : __("No", "zatca"); ?>
                         </td>
                         <!--/ Is Nominal -->
 
                         <!-- Is Exports -->
                         <td style="font-size: 0.8rem;">
-                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isExports) && $result->zatcaInvoiceTransactionCode_isExports==0) ? 'Yes' : 'No'; ?>
+                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isExports) && $result->zatcaInvoiceTransactionCode_isExports==0) ? __("Yes", "zatca") : __("No", "zatca"); ?>
                         </td>
                         <!--/ Is Exports -->
 
                         <!-- Is Summary -->
                         <td style="font-size: 0.8rem;">
-                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isSummary) && $result->zatcaInvoiceTransactionCode_isSummary==0) ? 'Yes' : 'No'; ?>
+                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isSummary) && $result->zatcaInvoiceTransactionCode_isSummary==0) ? __("Yes", "zatca") : __("No", "zatca"); ?>
                         </td>
                         <!--/ Is Summary -->
 
-                        <td style="font-size: 0.8rem;">Notes</td>
+                        <td style="font-size: 0.8rem;"><?php echo __("Notes", "zatca") ?></td>
 
                         <td style="font-size: 0.8rem;"><?php echo $result->zatcaSuccessResponse ?></td>
                         <td style="font-size: 0.8rem;"><?php if($result->zatcaAcceptedReissueInvoiceNo == NULL){echo "NULL";} ?></td>
@@ -352,8 +352,9 @@
                             id="create-pdf"
                             class="my-plugin-button btn-sm me-1"
                              data-doc-no="<?php echo $result->documentNo ?>"
-                             title="Print Document">
-                                Print <span class="dashicons dashicons-external"></span></a>
+                             title="<?php echo __("Print Document", "zatca") ?>">
+                             <?php echo __("Print Document", "zatca") ?> 
+                             <span class="dashicons dashicons-download"></span></a>
                                 <?php } ?>
                             <?php
 

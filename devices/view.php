@@ -49,7 +49,7 @@
                         <td class="text-center"><?php echo $result->tokenData ?></td>
                         <td class="text-center">
                             <?php 
-                            echo (isset($result->deviceStatus) && $result->deviceStatus==0) ? _e('Yes', 'zatca') : _e('No', 'zatca'); 
+                            echo (isset($result->deviceStatus) && $result->deviceStatus==0) ? _e('Active', 'zatca') : _e('Inactive', 'zatca'); 
                             ?>
                         </td>
                         
