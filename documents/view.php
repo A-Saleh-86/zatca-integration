@@ -314,7 +314,7 @@
                                     data-doc-no = "<?php echo $result->documentNo ?>" 
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
-                                    title="<?php echo _e('Reissue', 'zatca') ?>">Reissue
+                                    title="<?php echo _e('Reissue', 'zatca') ?>"><?php echo _e('Reissue', 'zatca') ?>
                                     <span class="dashicons dashicons-controls-repeat"></span>
                                 </a>
                                 <!-- / Reissue-->
@@ -327,7 +327,7 @@
                                     data-doc-no = "<?php echo $result->documentNo ?>" 
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
-                                    title="<?php echo _e('Return', 'zatca') ?>">Return
+                                    title="<?php echo _e('Return', 'zatca') ?>"><?php echo _e('Return', 'zatca') ?>
                                     <span class="dashicons dashicons-dismiss"></span>
                                 </a>
                                 <!-- / Return-->

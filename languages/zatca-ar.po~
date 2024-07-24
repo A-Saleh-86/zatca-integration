@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-07-21T21:16:03+02:00\n"
+"POT-Creation-Date: 2024-07-22T17:07:38+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -471,7 +471,7 @@ msgstr "فشل حذف الجهاز"
 msgid "Device deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: devices/edit-device.php:36 devices/edit-device.php:140
+#: devices/edit-device.php:36 devices/edit-device.php:141
 msgid "Edit Device Details"
 msgstr "تعديل بيانات الجهاز"
 
@@ -688,69 +688,69 @@ msgstr "فئة الضريبة الفرعية"
 msgid "Exemption Reason:"
 msgstr "سبب الاعفاء"
 
-#: documents/edit-document.php:547 documents/insert.php:558
+#: documents/edit-document.php:547 documents/insert.php:576
 msgid "Is Nominal"
 msgstr "هل عينه؟"
 
-#: documents/edit-document.php:566 documents/insert.php:567
+#: documents/edit-document.php:566 documents/insert.php:585
 msgid "Is Export"
 msgstr "هل صادرات؟"
 
-#: documents/edit-document.php:585 documents/insert.php:576
+#: documents/edit-document.php:585 documents/insert.php:594
 msgid "Is Summary"
 msgstr "هل ملخص فترة ؟"
 
-#: documents/edit-document.php:595 documents/insert.php:586
+#: documents/edit-document.php:595 documents/insert.php:604
 msgid "Notes:"
 msgstr "ملاحظات"
 
-#: documents/edit-document.php:603 documents/insert.php:594
+#: documents/edit-document.php:603 documents/insert.php:612
 #: documents/view.php:72 documents/view.php:161
 msgid "Notes"
 msgstr "ملاحظات"
 
-#: documents/edit-document.php:619 documents/insert.php:606
+#: documents/edit-document.php:619 documents/insert.php:624
 msgid "Item No"
 msgstr "مسلسل"
 
-#: documents/edit-document.php:620 documents/insert.php:607
+#: documents/edit-document.php:620 documents/insert.php:625
 msgid "Name Ar"
 msgstr "الاسم العربي"
 
-#: documents/edit-document.php:621 documents/insert.php:608
+#: documents/edit-document.php:621 documents/insert.php:626
 msgid "Name En"
 msgstr "الاسم الانجليزي"
 
-#: documents/edit-document.php:622 documents/insert.php:609
+#: documents/edit-document.php:622 documents/insert.php:627
 msgid "Price"
 msgstr "السعر"
 
-#: documents/edit-document.php:623 documents/insert.php:610
+#: documents/edit-document.php:623 documents/insert.php:628
 msgid "Quantity"
 msgstr "الكمية"
 
-#: documents/edit-document.php:624 documents/insert.php:611
+#: documents/edit-document.php:624 documents/insert.php:629
 #: documents/view.php:64
 msgid "Discount"
 msgstr "اجمالي الخصم"
 
-#: documents/edit-document.php:625 documents/insert.php:612
+#: documents/edit-document.php:625 documents/insert.php:630
 msgid "Tax Percentage"
 msgstr "النسبه المئويه للضريبه"
 
-#: documents/edit-document.php:626 documents/insert.php:613
+#: documents/edit-document.php:626 documents/insert.php:631
 msgid "Tax Amount"
 msgstr "مبلغ الضريبة"
 
-#: documents/edit-document.php:627 documents/insert.php:614
+#: documents/edit-document.php:627 documents/insert.php:632
 msgid "Net Amount"
 msgstr "المبلغ الصافى"
 
-#: documents/edit-document.php:628 documents/insert.php:615
+#: documents/edit-document.php:628 documents/insert.php:633
 msgid "Total Amount with Tax"
 msgstr "الاجمالى بعد الضريبة"
 
-#: documents/insert.php:22 documents/insert.php:627
+#: documents/insert.php:22 documents/insert.php:645
 msgid "Insert New Document"
 msgstr "اضافه فاتورة جديد"
 
@@ -821,6 +821,14 @@ msgstr "المبلغ المتبقي"
 #: documents/insert.php:544
 msgid "Exemption Reason"
 msgstr "سبب الاعفاء"
+
+#: documents/insert.php:553
+msgid "Return Reason:"
+msgstr "سبب الارجاع"
+
+#: documents/insert.php:562
+msgid "Return Reason"
+msgstr "سبب الارجاع"
 
 #: documents/view.php:6 option.php:51 option.php:52
 msgid "Documents"
@@ -1119,35 +1127,35 @@ msgstr "فحص خلل الترتيب"
 msgid "Check Hash Gap"
 msgstr "فحصل خلل الهاش"
 
-#: zatca.php:474
+#: zatca.php:472 zatca.php:556 zatca.php:591
 msgid "Not allowed to add more one device active"
 msgstr "غير مسموح باضافة اكثر من جهاز واحد نشط"
 
-#: zatca.php:494
+#: zatca.php:492
 msgid "New Device Inserted"
 msgstr "تم اضافة جهاز جديد"
 
-#: zatca.php:548
+#: zatca.php:547
 msgid "Sorry Cant Edit..Please Contact Your System Admin"
 msgstr "نأسف لا يمكنك التعديل .. الرجاء التواصل مع مسئول النظام"
 
-#: zatca.php:567
+#: zatca.php:574
 msgid "Device Status Updated"
 msgstr "تم تعديل حالة الجهاز"
 
-#: zatca.php:592 zatca.php:813 zatca.php:2051
+#: zatca.php:613 zatca.php:837 zatca.php:2075
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
 
-#: zatca.php:741
+#: zatca.php:765
 msgid "Data Inserted"
 msgstr "تم بنجاح"
 
-#: zatca.php:1339
+#: zatca.php:1363
 msgid "Device CsID_ExpiryDate is Expired"
 msgstr "تاريخ صلاحية الجهاز انتهت"
 
-#: zatca.php:1607
+#: zatca.php:1631
 msgid "Document Created successifly"
 msgstr "تم ادخال الفاتورة بنجاح"
 
