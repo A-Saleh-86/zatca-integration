@@ -249,6 +249,8 @@
                                         data-doc-no = "<?php echo $result->documentNo ?>" 
                                         data-company-stage = "<?php echo $zatcaCompanySatge ?>"
                                         data-seller-secondbusinessid = "<?php echo $result->seller_secondBusinessID ?>"
+                                        data-buyer-vat = "<?php echo $result->buyer_VAT ?>"
+                                        data-invoicetransactioncode-isexports = "<?php echo $result->zatcaInvoiceTransactionCode_isExports ?? 1 ?>"
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
                                         title="<?php echo _e('Send To Zatca', 'zatca') ?>">
@@ -256,7 +258,6 @@
                                     </a>
                                     <!-- / Send To Zatca Btn [ clear() ] -->
                                     <?php
-                            
                                 }
                                 else{ //if B2C will redirect to Report(): ?>
 
@@ -313,10 +314,23 @@
                                     data-doc-no = "<?php echo $result->documentNo ?>" 
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
-                                    title="<?php echo _e('Reissue', 'zatca') ?>">
+                                    title="<?php echo _e('Reissue', 'zatca') ?>">Reissue
                                     <span class="dashicons dashicons-controls-repeat"></span>
                                 </a>
                                 <!-- / Reissue-->
+
+                                <!-- Return -->
+                                <a 
+                                    href="#" 
+                                    class="my-plugin-button btn-sm me-1" 
+                                    id="send-zatca-return" 
+                                    data-doc-no = "<?php echo $result->documentNo ?>" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    title="<?php echo _e('Return', 'zatca') ?>">Return
+                                    <span class="dashicons dashicons-dismiss"></span>
+                                </a>
+                                <!-- / Return-->
                             
                                 <?php
                             }

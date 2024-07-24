@@ -28,6 +28,9 @@ const tableRows = $('tr');
 // Btn Of Copy Order Data:
 const copyBtn = document.getElementById('search-invoices-data');
 
+// Oredr Status Input:
+const wooInvoiceOrderStatus = document.getElementById('woo-order-status');
+
 // Payed Input:
 const wooInvoiceNoInput = document.getElementById('woo-invoice-no');
 
@@ -96,10 +99,43 @@ function updateInput() {
     });
 }
 
+
+// Change return reason on change returnReasonType[ Insert Page]:
+(function($) {
+    $(document).ready(function() {
+
+        if($('#return-reason-type').val() == '')
+        {
+            $('#returnReason').val('');
+        }
+
+        $('#return-reason-type').on('change', function(event) {
+            const selectedReasonType = this.value;
+
+            var selectedText = $('#return-reason-type option:selected').text();
+
+            // Show or hide Exemption Reason Div depend on vat-cat-code value
+            if(selectedReasonType != '')
+            {
+                $('#returnReason').val(selectedText);
+            }
+            else
+            {
+                $('#returnReason').val('');
+            }
+        });
+    });
+})(jQuery);
+
+
 // Change vat cat code sub on change vat cat code [ Insert Page]:
 (function($) {
     $(document).ready(function() {
 
+        if($('#vat-cat-code').val() == 0)
+        {
+            $('#exemptionReason').hide();
+        }
         // Update exemption-reason on vat-cat-code-sub change:
         $('#vat-cat-code-sub').on('change', function(event) {
             updateInput();
@@ -205,6 +241,22 @@ $('#search-invoices-data').on('click', function(event) {
             
                         $('#exampleModal-search-invoices').modal('hide');
             
+                        // put order status input
+                        
+
+                        if(data.order_status == 'wc-refunded')
+                        {
+                            // set span text
+                            $('#statusOrderSpan').html('Return Sell Invoice');
+                            wooInvoiceOrderStatus.value = 23;
+                        }
+                        else
+                        {
+                            // set span text
+                            $('#statusOrderSpan').html('Sell Invoice');
+                            wooInvoiceOrderStatus.value = 33;
+                        }
+
                         // Put Data In Woo Invoice No input:
                         wooInvoiceNoInput.value = selectedOrderId;
 
@@ -242,6 +294,7 @@ $('#search-invoices-data').on('click', function(event) {
                         leftAmountInput.value = data.leftAmount;
 
                         var selectedValue = data.invoiceTypeCode;
+                        
 
                         // Select the option based on the retrieved value
                         $("#zatcaInvoiceType").val(selectedValue).trigger("change");
@@ -253,8 +306,6 @@ $('#search-invoices-data').on('click', function(event) {
                         $("#selectedInvoiceTypeName").text(selectedOptionText);
 
                         
-                        console.log(data.zatca_document_unit_lines);
-
                         // Assuming zatcadocumentunit_array is your array containing zatcadocumentunit data  
 
                         $.each(data.zatca_document_unit_lines, function(index, data) {  
@@ -405,15 +456,28 @@ jQuery(document).ready(function($){
         maxOpened: 3,
         });
     
+    // send to clear
     $(document).on('click', '#send-zatca-clear', function(event) {
         const docNo = $(this).data('doc-no');
         const companyStage = $(this).data('company-stage');
         const sellerSecondbusinessid = $(this).data('seller-secondbusinessid');
+        const buyerVat = $(this).data('buyer-vat');
+        const invoicetransactioncode_isexports = $(this).data('invoicetransactioncode-isexports');
 
         // check seller_secondbusinessId must be filled if company stage is V2 
         if(companyStage == 2 && sellerSecondbusinessid == '')
         {
             alert('Seller Second business ID must be filled, Please edit company profile');
+            window.location.reload();
+        }
+        else if(invoicetransactioncode_isexports == 0 && buyerVat != '')
+        {
+            alert('Sorry, VAT ID for the client must be empty because the invoice is exports');
+            window.location.reload();
+        }
+        else if(invoicetransactioncode_isexports != 0 && buyerVat == '')
+        {
+            alert('Sorry, VAT ID for the client must be filled because the invoice is not exports');
             window.location.reload();
         }
         else
@@ -429,7 +493,7 @@ jQuery(document).ready(function($){
                 
                     if(response.responseArray['clearanceStatus'] == "NOT_CLEARED")
                     {
-                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
                         {
                             alert("Error: " + response.responseArray['portalResults']);
                         }
@@ -494,6 +558,7 @@ jQuery(document).ready(function($){
         
     });
 
+    // send to report
     $(document).on('click', '#send-zatca-report', function(event){
         const docNo = $(this).data('doc-no');
         const vatCategoryCodeSubTypeNo = $(this).data('vatcategorycodesubtypeno');
@@ -543,7 +608,7 @@ jQuery(document).ready(function($){
                       
                         if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
                             {
-                                if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                                if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
                                 {
                                     alert("Error: " + response.responseArray['portalResults']);
                                 }
@@ -610,6 +675,7 @@ jQuery(document).ready(function($){
         
     });
 
+    // send sellected to zatca clear or report
     $(document).on('click', '#send-zatca-sellected', function(event){
 
         var checkboxes = document.querySelectorAll('.rowCheckbox:checked');
@@ -634,7 +700,7 @@ jQuery(document).ready(function($){
                     success: function(response) {
                         if(response.responseArray['clearanceStatus'] == "NOT_CLEARED")
                             {
-                                if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                                if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
                                 {
                                     alert("Error: " + documentNo + " - " + response.responseArray['portalResults']);
                                 }
@@ -751,7 +817,7 @@ jQuery(document).ready(function($){
                               
                                 if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
                                     {
-                                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
                                         {
                                             alert("Error: " + documentNo + " - " + response.responseArray['portalResults']);
                                         }
@@ -832,8 +898,9 @@ jQuery(document).ready(function($){
             // Handle any errors here if needed  
             console.error('One or more requests failed.');  
         });
-    })
+    });
 
+    // resend the rejected doc to zatca again clear or report
     $(document).on('click', '#send-zatca-reissue', function(event){
 
         const docNo = $(this).data('doc-no');
@@ -849,7 +916,7 @@ jQuery(document).ready(function($){
             
                 if(response.responseArray['clearanceStatus'] == "NOT_CLEARED")
                     {
-                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
                         {
                             alert("Error: " + response.responseArray['portalResults']);
                         }
@@ -907,7 +974,7 @@ jQuery(document).ready(function($){
                 // console.log(response);
                 if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
                     {
-                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null)
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
                         {
                             alert("Error: " + response.responseArray['portalResults']);
                         }
@@ -970,8 +1037,150 @@ jQuery(document).ready(function($){
         });
 
         //alert(docNo);
-    })
+    });
 
+    // return doc to zatca clear or report
+    $(document).on('click', '#send-zatca-return', function(event) {
+
+        const docNo = $(this).data('doc-no');
+
+        
+        $.ajax({
+            url: myDoc.ajaxUrl, 
+            method: "POST", 
+            data: {
+                action: 'zatca_return',
+                "doc_no_from_ajax": docNo
+            },
+            success: function(response) {
+            
+                if(response.responseArray['clearanceStatus'] == "NOT_CLEARED")
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
+                        {
+                            alert("Error: " + response.responseArray['portalResults']);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 303)
+                        {
+                            alert("Please submit via reporing");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 401)
+                        {
+                            alert("Unauthorized, Please check authentication certificate and secret and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 413)
+                        {
+                            alert("Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 429)
+                        {
+                            alert("Please wait for 1 minute and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 500)
+                        {
+                            alert("Internal Server Error, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 503)
+                        {
+                            alert("Service Unavailable, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 504)
+                        {
+                            alert("Gateway Timeout, Please try again later");
+                        }
+                    
+                    }
+                    else
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 202)
+                        {
+                            // warning
+                            popup.warning({
+                                title: 'Warning',
+                                message: 'Submitted but please check this warning: ' + response.msg
+                            });
+                            //alert("Submitted but please check this warning: " + response.msg);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 200)
+                        {
+                            // success
+                            popup.success({
+                                title: 'Success',
+                                message: 'Your Document Submitted Successfully'
+                            });
+                            //alert("Your Document Submitted Successfully");
+                        }
+                    }
+                // console.log(response);
+                if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)
+                        {
+                            alert("Error: " + response.responseArray['portalResults']);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 303)
+                        {
+                            alert("Please submit via reporing");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 401)
+                        {
+                            alert("Unauthorized, Please check authentication certificate and secret and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 413)
+                        {
+                            alert("Please resend with smaller payload(invoice), Decrease invoice details and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 429)
+                        {
+                            alert("Please wait for 1 minute and resubmit");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 500)
+                        {
+                            alert("Internal Server Error, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 503)
+                        {
+                            alert("Service Unavailable, Please try again later");
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 504)
+                        {
+                            alert("Gateway Timeout, Please try again later");
+                        }
+                    
+                    }
+                    else
+                    {
+                        if(response.responseArray['zatcaStatusCode'] == 202)
+                        {
+                            popup.warning({
+                                title: 'Warning',
+                                message: 'Submitted but please check this warning: ' + response.msg
+                            });
+                            
+                            //alert("Submitted but please check this warning: " + response.msg);
+                        }
+                        else if(response.responseArray['zatcaStatusCode'] == 200)
+                        {
+                            // success
+                            popup.success({
+                                title: 'Success',
+                                message: 'Your Document Submitted Successfully'
+                            });
+                            //alert("Your Document Submitted Successfully");
+                        }
+                    }
+
+                //console.log(response);
+                
+                window.location.reload();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error: ', textStatus, errorThrown);
+            }
+        });
+
+        //alert(docNo);
+    });
 
 });
 

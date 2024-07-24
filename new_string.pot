@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-21T21:16:03+02:00\n"
+"POT-Creation-Date: 2024-07-22T17:07:38+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: zatca\n"
@@ -564,7 +564,7 @@ msgid "Device deleted successfully."
 msgstr ""
 
 #: devices/edit-device.php:36
-#: devices/edit-device.php:140
+#: devices/edit-device.php:141
 msgid "Edit Device Details"
 msgstr ""
 
@@ -816,85 +816,85 @@ msgid "Exemption Reason:"
 msgstr ""
 
 #: documents/edit-document.php:547
-#: documents/insert.php:558
+#: documents/insert.php:576
 msgid "Is Nominal"
 msgstr ""
 
 #: documents/edit-document.php:566
-#: documents/insert.php:567
+#: documents/insert.php:585
 msgid "Is Export"
 msgstr ""
 
 #: documents/edit-document.php:585
-#: documents/insert.php:576
+#: documents/insert.php:594
 msgid "Is Summary"
 msgstr ""
 
 #: documents/edit-document.php:595
-#: documents/insert.php:586
+#: documents/insert.php:604
 msgid "Notes:"
 msgstr ""
 
 #: documents/edit-document.php:603
-#: documents/insert.php:594
+#: documents/insert.php:612
 #: documents/view.php:72
 #: documents/view.php:161
 msgid "Notes"
 msgstr ""
 
 #: documents/edit-document.php:619
-#: documents/insert.php:606
+#: documents/insert.php:624
 msgid "Item No"
 msgstr ""
 
 #: documents/edit-document.php:620
-#: documents/insert.php:607
+#: documents/insert.php:625
 msgid "Name Ar"
 msgstr ""
 
 #: documents/edit-document.php:621
-#: documents/insert.php:608
+#: documents/insert.php:626
 msgid "Name En"
 msgstr ""
 
 #: documents/edit-document.php:622
-#: documents/insert.php:609
+#: documents/insert.php:627
 msgid "Price"
 msgstr ""
 
 #: documents/edit-document.php:623
-#: documents/insert.php:610
+#: documents/insert.php:628
 msgid "Quantity"
 msgstr ""
 
 #: documents/edit-document.php:624
-#: documents/insert.php:611
+#: documents/insert.php:629
 #: documents/view.php:64
 msgid "Discount"
 msgstr ""
 
 #: documents/edit-document.php:625
-#: documents/insert.php:612
+#: documents/insert.php:630
 msgid "Tax Percentage"
 msgstr ""
 
 #: documents/edit-document.php:626
-#: documents/insert.php:613
+#: documents/insert.php:631
 msgid "Tax Amount"
 msgstr ""
 
 #: documents/edit-document.php:627
-#: documents/insert.php:614
+#: documents/insert.php:632
 msgid "Net Amount"
 msgstr ""
 
 #: documents/edit-document.php:628
-#: documents/insert.php:615
+#: documents/insert.php:633
 msgid "Total Amount with Tax"
 msgstr ""
 
 #: documents/insert.php:22
-#: documents/insert.php:627
+#: documents/insert.php:645
 msgid "Insert New Document"
 msgstr ""
 
@@ -970,6 +970,14 @@ msgstr ""
 
 #: documents/insert.php:544
 msgid "Exemption Reason"
+msgstr ""
+
+#: documents/insert.php:553
+msgid "Return Reason:"
+msgstr ""
+
+#: documents/insert.php:562
+msgid "Return Reason"
 msgstr ""
 
 #: documents/view.php:6
@@ -1289,36 +1297,38 @@ msgstr ""
 msgid "Check Hash Gap"
 msgstr ""
 
-#: zatca.php:474
+#: zatca.php:472
+#: zatca.php:556
+#: zatca.php:591
 msgid "Not allowed to add more one device active"
 msgstr ""
 
-#: zatca.php:494
+#: zatca.php:492
 msgid "New Device Inserted"
 msgstr ""
 
-#: zatca.php:548
+#: zatca.php:547
 msgid "Sorry Cant Edit..Please Contact Your System Admin"
 msgstr ""
 
-#: zatca.php:567
+#: zatca.php:574
 msgid "Device Status Updated"
 msgstr ""
 
-#: zatca.php:592
-#: zatca.php:813
-#: zatca.php:2051
+#: zatca.php:613
+#: zatca.php:837
+#: zatca.php:2075
 msgid "Data Updated"
 msgstr ""
 
-#: zatca.php:741
+#: zatca.php:765
 msgid "Data Inserted"
 msgstr ""
 
-#: zatca.php:1339
+#: zatca.php:1363
 msgid "Device CsID_ExpiryDate is Expired"
 msgstr ""
 
-#: zatca.php:1607
+#: zatca.php:1631
 msgid "Document Created successifly"
 msgstr ""

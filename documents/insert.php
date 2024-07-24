@@ -32,18 +32,27 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         
         // Prepare the query for documentNo [ If Not Equal 0 get it +1]:
         $table_name_document = 'zatcadocument';
+        $table_name_device = 'zatcadevice';
 
         $table_schema = $wpdb->dbname;
 
-        $query = $wpdb->prepare(
+        $deviceNo = $wpdb->get_var($wpdb->prepare(
+            "SELECT deviceNo
+            FROM $table_name_device
+            WHERE deviceStatus = 0")
+            );
+
+        /*$query = $wpdb->prepare(
             "SELECT AUTO_INCREMENT
             FROM information_schema.TABLES
             WHERE TABLE_SCHEMA = %s
             AND TABLE_NAME = %s",
             $table_schema,
             $table_name_document
-        );
+        );*/
+        $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcadocument WHERE deviceNo = $deviceNo");
         $docNo = $wpdb->get_var($query);
+        $docNo = $docNo + 1;
         ?>
         <!--  documentNo field -->
         <div class="mb-3 row col-mid-6">
@@ -92,6 +101,8 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         title="<?php echo _e('Search Invoices', 'zatca') ?>">
                         <span class="dashicons dashicons-search"></span>
                     </button>
+                    <span id="statusOrderSpan" style="color:red;font-weight:bolder;margin:2px;padding:2px;"></span>
+                    <input type="text" class="m-2" id="woo-order-status" name="billTypeNo" hidden>
                     <!-- / Search Btn -->
 
                     <!-- Invoices Modal -->
@@ -547,6 +558,30 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             </div>
         </div>
         <!-- /  taxExemptionReason field -->
+
+        <!--Retrive all aName from zatcareturnreason table from database-->
+        <?php
+        global $wpdb;
+        $reasons = $wpdb->get_results( "SELECT * FROM zatcareturnreason");
+        ?>
+        <!--  returnReasonType field -->
+        <div class="mb-3 row col-mid-6" id="returnReasonType">
+            <label class="col-sm-2 col-form-label"><?php echo _e('Return Reason:', 'zatca') ?></label>
+            <div class="col-sm-10 col-md-9">
+                <div class="form-group">
+                    <select name="returnReasonType" id="return-reason-type" class="form-control">
+                        <option value=""><?php echo _e('Return Reason', 'zatca') ?></option>
+                        <?php
+                        foreach($reasons as $reason) {
+                        ?>
+                        <option value="<?= $reason->ID ?>"><?= $reason->aName ?></option>
+                        <?php } ?>
+                    </select>
+                    <input type="hidden" name="returnReason" id="returnReason">
+                </div>
+            </div>
+        </div>
+        <!-- /  returnReasonType field -->
         
         <!-- CheckBox [ isNominal ] -->
         <div class="row mb-3">

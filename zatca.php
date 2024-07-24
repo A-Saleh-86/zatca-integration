@@ -521,6 +521,7 @@ function edit_form_device(){
         $token_Data = $form_array['token-data'];
         $deviceStatus = $form_array['deviceStatus'];
 
+
         // Validation on deviceNo If Used in zatcadocument:
         $zatcaDocDeviceNo = $wpdb->get_var($wpdb->prepare("SELECT deviceNo FROM zatcadocument WHERE deviceNo = $device_No_id"));
 
@@ -587,8 +588,7 @@ function edit_form_device(){
             $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
             // if exist deviceStatus = 0 in zatcadevice table
             if (!empty($check_deviceStatus) && $deviceStatus == 0) {
-                //echo __("Not allowed to add more one device active", "zatca");
-                echo '<script type="text/javascript"> alert("'.$deviceStatus.'");</script>';  // alert message
+                echo __("Not allowed to add more one device active", "zatca");
             }
             else
             {
@@ -910,6 +910,9 @@ function woo_document(){
     // Get customer id from wc_orders For address:
     $customerId = $wpdb->get_var($wpdb->prepare("select customer_id from $table_orders WHERE id = $orderId "));
    
+    // Get order status from wc_orders:
+    $order_status = $wpdb->get_var($wpdb->prepare("select status from $table_orders WHERE id = $orderId "));
+
     // Get Payed from wc_orders For address:
     $payed = $wpdb->get_var($wpdb->prepare("select total_amount from $table_orders WHERE id = $orderId "));
     
@@ -1156,7 +1159,8 @@ function woo_document(){
         'totalPayed' => number_format($totalPayed, 2, '.', ''),
         'totalTax' => $totalTax,
         'leftAmount' =>$leftAmount,
-        'zatca_document_unit_lines' => $zatcadocumentunit_array
+        'zatca_document_unit_lines' => $zatcadocumentunit_array,
+        'order_status' => $order_status
     );
 
     // Return the array as JSON
@@ -1186,7 +1190,7 @@ function insert_form_documents(){
         $table_name_device = 'zatcadevice';
 
         // Prepare the query with a condition on CsID_ExpiryDate not expire:
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW()") );
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
         foreach($results as $device){
 
             if($wpdb->num_rows > 0){ // If Date Valid:
@@ -1355,16 +1359,23 @@ function insert_form_documents(){
         }
 
         // Validation on CsID_ExpiryDate not expire:
-        $device_ExpiryDate = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW()") );
+        $device_ExpiryDate = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
         
 
-        if(empty($device_ExpiryDate)){ // If Date Valid:
+        if(empty($device_ExpiryDate)){ // If No Date Valid:
 
             $msg = __("Device CsID_ExpiryDate is Expired","zatca");
 
-        }else{ // If No Date Valid
+        }else{ // If Date Valid
 
-            
+            $deviceNo = $wpdb->get_var($wpdb->prepare(
+                "SELECT deviceNo
+                FROM $table_name_device
+                WHERE deviceStatus = 0")
+                );
+            $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcadocument WHERE deviceNo = $deviceNo");
+            $docNo = $wpdb->get_var($query);
+            $docNo = $docNo + 1;
             // #################################
             // Insert Data into zatcadocument:##
             // #################################
@@ -1372,8 +1383,10 @@ function insert_form_documents(){
             $insert_doc = $wpdb->insert(
                 'zatcadocument',
                 [
+                    'documentNo'                            => $docNo,
                     'deviceNo'                              => $deviceNo,
                     'invoiceNo'                             => $form_array['invoice-no'],
+                    'billTypeNo'                             => $form_array['billTypeNo'],
                     'deliveryDate'                          => $delivery_Date,
                     'gaztLatestDeliveryDate'                => $latest_Delivery_Date,
                     'zatcaInvoiceType'                      => $form_array['zatcaInvoiceType'],
@@ -1464,7 +1477,7 @@ function insert_form_documents(){
                         $data_doc_xml = $wpdb->insert(
                             'zatcadocumentxml',
                             [
-                                'documentNo'  => $last_doc,
+                                'documentNo'  => $docNo,
                                 'deviceNo'    => $device_No
                             ]
                         );
@@ -1595,7 +1608,7 @@ function insert_form_documents(){
                                 'zatcadocumentunit',
                                 [
                                     'deviceNo'      => $device_No,
-                                    'documentNo'    => $last_doc,
+                                    'documentNo'    => $docNo,
                                     'itemNo'        => $item->order_item_id,
                                     'eName'         => $doc_unit_sku,
                                     'price'         => $final_price,
@@ -2698,7 +2711,8 @@ function send_request_to_zatca_clear(){
           
         }else{
 
-            if($http_status == '400'){
+            if($http_status == '400')
+            {
 
                 // update zatca document fields with response Data:
                 $zatcadocument_error_response_data = [
@@ -2735,8 +2749,19 @@ function send_request_to_zatca_clear(){
 
                 
             
-            }else{
-
+            }
+            else if($http_status == '303')
+            {
+                // update zatca document fields with response Data:
+                $zatcadocument_error_response_data = [
+                    "zatcaB2B_isForced_To_B2C" => 1];
+                $where = array('documentNo' => $doc_no);
+                $zatcadocument_error_response_result = $wpdb->update('zatcadocument',
+                $zatcadocument_error_response_data, $where);
+                $msg = $response;
+            }
+            else
+            {
                 $msg = $response;
             }
 
@@ -2748,12 +2773,10 @@ function send_request_to_zatca_clear(){
         log_send_to_zatca($user_login, $user_id);
 
         $send_response = [
-
             'msg' => $msg,
             'validationResults' => $validationResults,
             'responseArray' => $responseArray,
             'data' => $data
-
         ];
 
         wp_send_json($send_response);

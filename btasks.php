@@ -103,12 +103,13 @@ add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
 
 // Action of Send Reporting request to zatca:
 add_action('wp_ajax_zatca_report', 'send_request_to_zatca_report');
+
 // Action of Reissue request to zatca:
 add_action('wp_ajax_zatca_reissue', 'send_reissue_request_to_zatca');
 
-// Function to update Seller - Buyer Data Before Send:
-    
-    
+// Action of Return request to zatca:
+add_action('wp_ajax_zatca_return', 'send_return_request_to_zatca');
+
 
 // Function to update Seller - Buyer Data Before Send:
     function update_zatca1($doc_no){
@@ -791,7 +792,7 @@ function send_request_to_zatca_report(){
 }
 
 
-//function to insert new copy of woocommerce to database
+//function to insert new copy of woocommerce to database [Reissue]
 function insert_woocommerce_copy($docNo){
     global $wpdb;
 
@@ -868,22 +869,30 @@ function insert_woocommerce_copy($docNo){
 
 }
 
+//function to insert new copy of zatcaDocument to database [Reissue]
 function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
     global $wpdb;
 
-    // Get the last order ID in the table  
-    $last_document_id = $wpdb->get_var($wpdb->prepare("SELECT MAX(documentNo) FROM zatcadocument"));
+    // Table Name:
+    $table_name_device = 'zatcadevice';
+
+    // Get the current Active device
+    $device__No = $wpdb->get_var($wpdb->prepare(
+        "SELECT deviceNo
+        FROM $table_name_device
+        WHERE deviceStatus = 0")
+        );
+    $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcadocument WHERE deviceNo = $device__No");
+    $doc__no = $wpdb->get_var($query);
+    $last_document_id = $doc__no + 1;
 
     $new_document_id = $last_document_id + 1;
 
     $uuid = wp_generate_uuid4();
 
     // Get Device No from ZatcaDevice:
-        // Table Name:
-        $table_name_device = 'zatcadevice';
-
-        // Prepare the query with a condition on CsID_ExpiryDate not expire:
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW()") );
+        // Prepare the query with a condition on CsID_ExpiryDate not expire and is active:
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus = 0") );
         foreach($results as $device)
         {
             if($wpdb->num_rows > 0)
@@ -903,7 +912,7 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
     $wpdb->query(  
         $wpdb->prepare("  
             INSERT INTO zatcadocument  
-            SELECT vendorId, $new_document_id, deviceNo , $newInvoiceNo, buildingNo, billTypeNo, dateG, deliveryDate,
+            SELECT vendorId, $new_document_id, $device_No , $newInvoiceNo, buildingNo, billTypeNo, dateG, deliveryDate,
             gaztLatestDeliveryDate, zatcaInvoiceType, amountPayed01, amountPayed02, amountPayed03, amountPayed04,
             amountPayed05, amountCalculatedPayed, returnReasonType, subTotal, subTotalDiscount, taxRate1_Percentage,
             taxRate1_Total, subNetTotal, subNetTotalPlusTax, amountLeft, isAllItemsReturned, isZatcaRetuerned, reason,
@@ -929,6 +938,7 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
     $wpdb->query($wpdb->prepare("INSERT INTO zatcadocumentxml (documentNo,deviceNo) VALUES (%d, %d)", $new_document_id, $device_No));
 }
 
+//function to insert new copy of zatcaDocumentUnits to database [Reissue]
 function insert_zatcaDocumentUnit_copy($neworderId, $deviceNo, $newDocNo)
 {
     global $wpdb;
@@ -1081,6 +1091,7 @@ function insert_zatcaDocumentUnit_copy($neworderId, $deviceNo, $newDocNo)
 
 }
 
+//function to send reissue request to zatca [Reissue]
 function send_reissue_zatca($docNo)
 {
     global $wpdb;
@@ -1424,7 +1435,18 @@ function send_reissue_zatca($docNo)
     
                     
                 
-                }else{
+                }
+                else if($http_status == '303')
+                {
+                    // update zatca document fields with response Data:
+                    $zatcadocument_error_response_data = [
+                        "zatcaB2B_isForced_To_B2C" => 1];
+                    $where = array('documentNo' => $docNo);
+                    $zatcadocument_error_response_result = $wpdb->update('zatcadocument',
+                    $zatcadocument_error_response_data, $where);
+                    $msg = $response;
+                }
+            else{
     
                     $msg = $response;
                 }
@@ -1818,6 +1840,7 @@ function send_reissue_zatca($docNo)
     }
 }
 
+//function to insert new copy of data and fire the reissue button action [Reissue]
 function send_reissue_request_to_zatca(){
     global $wpdb;
     // document no pass from ajax:
@@ -1831,6 +1854,1005 @@ function send_reissue_request_to_zatca(){
 
 }
 
+////////////////////////////////////////Return Functions//////////////////////////////////////////////
+
+//function to insert new copy of zatcaDocument to database [Return]
+function insert_zatcaDocument_returned($docNo, $invoice_no){
+    global $wpdb;
+
+    // Table Name:
+    $table_name_device = 'zatcadevice';
+
+    // Get the current Active device
+    $device__No = $wpdb->get_var($wpdb->prepare(
+        "SELECT deviceNo
+        FROM $table_name_device
+        WHERE deviceStatus = 0")
+        );
+    $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcadocument WHERE deviceNo = $device__No");
+    $doc__no = $wpdb->get_var($query);
+    $last_document_id = $doc__no;
+
+    $new_document_id = $last_document_id + 1;
+
+    $uuid = wp_generate_uuid4();
+
+    // Get Device No from ZatcaDevice:
+        // Prepare the query with a condition on CsID_ExpiryDate not expire and is active:
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus = 0") );
+        foreach($results as $device)
+        {
+            if($wpdb->num_rows > 0)
+            { // If Date Valid:
+                $deviceNo = $device->deviceNo;
+            }
+            else
+            { // If No Date Valid
+                // $msg = "You Must Insert Valid CsID_ExpiryDate";
+            }
+        }
+
+        $device_No = $deviceNo;
+
+
+    // Insert new order data 
+    $wpdb->query(  
+        $wpdb->prepare("  
+            INSERT INTO zatcadocument  
+            SELECT vendorId, $new_document_id, $device_No , $invoice_no, buildingNo, 23, dateG, deliveryDate,
+            gaztLatestDeliveryDate, zatcaInvoiceType, amountPayed01, amountPayed02, amountPayed03, amountPayed04,
+            amountPayed05, amountCalculatedPayed, returnReasonType, subTotal, subTotalDiscount, taxRate1_Percentage,
+            taxRate1_Total, subNetTotal, subNetTotalPlusTax, amountLeft, isAllItemsReturned, 0, reason,
+            previousDocumentNo, previousInvoiceHash, seller_secondBusinessIDType, seller_secondBusinessID, buyer_secondBusinessIDType,
+            buyer_secondBusinessID, VATCategoryCodeNo, VATCategoryCodeSubTypeNo, zatca_TaxExemptionReason, zatcaInvoiceTransactionCode_isNominal,
+            zatcaInvoiceTransactionCode_isExports, zatcaInvoiceTransactionCode_isSummary, zatcaInvoiceTransactionCode_is3rdParty,
+            zatcaInvoiceTransactionCode_isSelfBilled, '$uuid', seller_VAT, seller_aName, seller_eName, seller_apartmentNum,
+            seller_countrySubdivision_Arb, seller_countrySubdivision_Eng, seller_street_Arb, seller_street_Eng, seller_district_Arb,
+            seller_district_Eng, seller_city_Arb, seller_city_Eng, seller_country_Arb, seller_country_Eng, seller_country_No,
+            seller_PostalCode, seller_POBox, seller_POBoxAdditionalNum, buyer_VAT, buyer_aName, buyer_eName, buyer_apartmentNum,
+            buyer_countrySubdivision_Arb, buyer_countrySubdivision_Eng, buyer_street_Arb, buyer_street_Eng,
+            buyer_district_Arb, buyer_district_Eng, buyer_city_Arb, buyer_city_Eng, buyer_country_Arb, buyer_country_Eng,
+            buyer_country_No, buyer_PostalCode, buyer_POBox, buyer_POBoxAdditionalNum, 0, NULL, NULL, zatcaB2B_isForced_To_B2C, zatcaRejectedBuildingNo,
+            %d, zatcaAcceptedReissueBuildingNo, zatcaAcceptedReissueInvoiceNo, isZatcaReissued, row_timestamp
+            FROM zatcadocument  
+            WHERE documentNo = %d", $docNo, $docNo)
+    );
+
+    // function of insert new copy to zatcadocumentunit table
+    insert_zatcaDocumentUnit_returned($invoice_no, $device_No, $new_document_id);
+
+    //insert new row into zatcadocumentxml
+    $wpdb->query($wpdb->prepare("INSERT INTO zatcadocumentxml (documentNo,deviceNo) VALUES (%d, %d)", $new_document_id, $device_No));
+}
+
+//function to insert new copy of zatcaDocumentUnits to database [Return]
+function insert_zatcaDocumentUnit_returned($orderId, $deviceNo, $newDocNo)
+{
+    global $wpdb;
+
+    $device_No = $deviceNo;
+    $last_doc = $newDocNo;
+
+    // ###########################################
+    // Insert Copy of Data to zatcadocumentunit:##
+    // ###########################################
+
+    // Prefix Of woo-order-item
+    $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
+
+    // get item id for item [ line_item ]:
+    $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
+
+    // get item id for tax [ tax ]:
+    $doc_unit_item_id_rate_percentage = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'tax'"));
+
+    // get item id for discount [ tax ]:
+    $doc_unit_item_id_coupon = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+
+
+    // Funtion to handle order discount:
+    function get_qty_percentage_for_item($orderId){
+    
+        global $wpdb;
+        // Prefix Of woo-order-item
+        $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
+    
+        
+        // define items number & Number of Items & Item Qty & Total Qty Of Order:
+        
+        $total_order_qty = 0;
+    
+        $array_items = [];
+        
+        $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
+        
+        foreach($doc_unit_item_id as $itemId){
+    
+            $item_qty = wc_get_order_item_meta( $itemId->order_item_id , '_qty', true );
+    
+            $order_discount_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+    
+            $order_discount = wc_get_order_item_meta($order_discount_id, 'discount_amount', true);
+            
+            $array_items[$itemId->order_item_id] = $item_qty;
+    
+            $total_order_qty +=  + $item_qty;
+    
+        }
+    
+        $array_items['order_discount'] = $order_discount;
+        $array_items['total_order_qty'] = $total_order_qty;
+    
+    
+        //define percentage of each item:
+    
+        $updated_total_qty = [];
+    
+        foreach ($array_items as $key => $value) {
+            if (is_numeric($key)) {  // Check for integer keys
+                $updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
+            }
+        }
+    
+        // Now $updated_total_qty will contain the updated quantities for items with numeric keys
+        return $updated_total_qty;
+        
+    }
+
+    //
+    foreach($doc_unit_item_id as $item){
+    
+                        
+        // Item Qty:
+        $doc_unit_item_qty = wc_get_order_item_meta( $item->order_item_id , '_qty', true );
+        
+        // Product_id:
+        $doc_unit_product_id =wc_get_order_item_meta($item->order_item_id, '_product_id', true);
+        
+        // Tax Percentage:
+        $doc_unit_vatRate =wc_get_order_item_meta($doc_unit_item_id_rate_percentage, 'rate_percent', true);
+
+        // Item name:
+        $doc_unit_sku = get_post_meta($doc_unit_product_id, '_sku', true);
+        
+        // Item Price:
+        $doc_unit_price = get_post_meta($doc_unit_product_id, '_price', true);
+        $final_price = number_format((float)$doc_unit_price, 6, '.', '');
+
+        // Discount:
+        $doc_unit_discount = wc_get_order_item_meta($doc_unit_item_id_coupon, 'discount_amount', true);
+
+        // Subttotal [ price * quantity ]:
+        $doc_unit_subtotal = $doc_unit_price * $doc_unit_item_qty;
+
+
+        // Get the Function of define discount by line:
+        $array_of_discounts = get_qty_percentage_for_item($orderId);
+
+        // Loop to get Each Item Discount:
+        foreach($array_of_discounts as $key => $value)
+        {
+
+            if($key == $item->order_item_id)
+            {
+
+                $final_item_discount= $array_of_discounts[$key];
+
+                // netAmount [ ((price * quantity)-discount) ]:
+                $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
+                $final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
+
+                // vatAmount [ netAmount*vatRate ]:
+                $doc_unit_vatAmount = ($doc_unit_netAmount * $doc_unit_vatRate) / 100;
+                $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+
+                // amountWithVat [ netAmount+vatAmount ]:
+                $doc_unit_amountWithVat = $doc_unit_netAmount + $doc_unit_vatAmount;
+                $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 2, '.', '');
+            
+
+                // Insert Data To zatcadocumentunit:
+                $insert_doc_unit = $wpdb->insert(
+                    'zatcadocumentunit',
+                    [
+                        'deviceNo'      => $device_No,
+                        'documentNo'    => $last_doc,
+                        'itemNo'        => $item->order_item_id,
+                        'eName'         => $doc_unit_sku,
+                        'price'         => $final_price,
+                        'quantity'      => $doc_unit_item_qty,
+                        'discount'      => $final_item_discount,
+                        'vatRate'       => $doc_unit_vatRate,
+                        'vatAmount'     => $final_vatAmount,
+                        'netAmount'     => $final_netAmount,
+                        'amountWithVAT' => $final_amountWithVat
+                    ]
+                );
+            }
+        }
+
+    }
+
+    // function to send the new one to zatca and handle the response from zatca depend on zatcaSuccessResponse code
+    send_return_zatca($newDocNo);
+
+}
+
+//function to send reissue request to zatca [Return]
+function send_return_zatca($docNo)
+{
+    global $wpdb;
+    // Get the invoice type (B2B or B2C) 
+    $zatcaInvoice_type = $wpdb->get_var($wpdb->prepare("SELECT zatcaInvoiceType FROM zatcadocument WHERE documentNo =  $docNo"));
+
+    // check invoice type to detect CLEAR or REPORT
+    // if B2B
+    if($zatcaInvoice_type == 1)
+    {
+        $data = update_zatca($docNo);
+
+        $requestArray = json_decode($data, true);
+
+        $msg = '';
+
+        // Validation Fields:
+        $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
+        $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
+        
+        $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
+        $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
+
+        // validation on seller_additionalIdNumber & buyer_additionalNo:
+        if($seller_additionalIdNumber_validation == false)
+        {
+
+            $msg = 'You Muse Insert Seller additional Id Number in zatca Company';
+            // $msg = var_dump($requestArray);
+        }
+        elseif($buyer_additionalNo_validation == false)
+        { // Validation on additionalNo - customer [ buyer ]:
+            $msg = 'You Muse Insert Buyer additional Number in zatca customer';
+        }
+
+        else{
+   
+            $curl = curl_init();
+    
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Clear?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS =>$data,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json',
+                    'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                ),
+            ));
+    
+            $response = curl_exec($curl);
+    
+            if ($response === false) {
+                $error = curl_error($curl);
+                $errorCode = curl_errno($curl);
+                echo "cURL Error: $error (Error Code: $errorCode)";
+            }
+            
+            $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    
+            $http_status_msg = "HTTP Status Code: " . $http_status . "\n";
+    
+            curl_close($curl);
+    
+            if ($response === false) {
+                echo 'Curl error: ' . curl_error($curl);
+            } else {
+                // echo 'HTTP status code: ' . $http_status;
+                // echo 'Response: ' . $response;
+            }
+    
+            $responseArray = json_decode($response, true);
+    
+            $statusCode = $responseArray['zatcaStatusCode'];
+            $isZatcaValid = $responseArray['isValidationFromZatca'];
+            $clearanceStatus = $responseArray['clearanceStatus'];
+            $validationResults = $responseArray['validationResults'];
+            $hashed = $responseArray['hash'];
+            $qrCode = $responseArray['generatedQR'];
+            $response_date = date('Y-m-d H:i:s');
+            $warningMessage='';
+            $clearedInvoice = $responseArray['clearedInvoice'];
+            $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+    
+            // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
+            $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
+                                                                    FROM zatcadocument 
+                                                                    ORDER BY zatcaResponseDate DESC 
+                                                                    LIMIT 1"));
+            
+            if (isset($responseArray['validationResults']['warningMessages']) && is_array($responseArray['validationResults']['warningMessages'])) {
+                foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
+                    if (isset($Message['message'])) 
+                    {
+                        $warningMessage = $Message['message'];
+                    }
+                    else
+                    {
+                        echo 'WRONG';
+                    }
+                }
+            }
+    
+            
+            // Check If response Valid:
+            if($clearanceStatus == 'CLEARED'){
+    
+                if($statusCode == '200'){
+
+                    // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcadocument WHERE documentNo =  $docNo"));
+
+                    /*
+                    // update zatca document fields with response Data:
+                    $zatcadocument_original_update_data = [
+                        "zatcaAcceptedReissueInvoiceNo" => $docNo
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcadocument_original_update_result = $wpdb->update('zatcadocument', $zatcadocument_original_update_data, $whereOriginal);
+                    ///////end////////
+                    */
+
+                    //  update zatca document xml fields with response Data:
+                    $zatcadocumentxml_update_response_data = [
+                        "previousInvoiceHash" => $previousInvoiceHash,
+                        "invoiceHash" => $hashed,
+                        "qrCode" => $qrCode,
+                        "APIRequest" => $data,
+                        "APIResponse" => $response,
+                        "typeClearanceOrReporting" => 0
+                    ];
+        
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocumentxml_update_response_result = $wpdb->update('zatcadocumentxml', $zatcadocumentxml_update_response_data, $where);
+        
+                    // Check for errors
+                    if ($zatcadocumentxml_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating on zatcadocumentxml in the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocumentxml_update_response_result === 0) {
+                        
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    
+                    }  
+        
+                    // update zatca document fields with response Data:
+                    $zatcadocument_update_response_data = [
+        
+                        "zatcaResponseDate" => $response_date,
+                        "zatcaSuccessResponse" => 1,
+                        "previousInvoiceHash" => $hashed
+                    ];
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocument_update_response_result = $wpdb->update('zatcadocument', $zatcadocument_update_response_data, $where);
+                    
+                    // Check for errors
+                    if ($zatcadocument_update_response_result === false) {
+                        // Handle error
+                        $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    }elseif ($zatcadocument_update_response_result === 0) {
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    // update zatca device fields with last document submitted:
+                    $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $docNo") );
+    
+                    $zatcadevice_update_response_data = [
+                        "lastHash" => $hashed,
+                        "lastDocumentNo" => $docNo,
+                        "lastDocumentDateTime" => $hashed
+                    ];
+                    $where1 = array('deviceNo' => $device_no);
+    
+                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+    
+                    // Check for errors
+                    if ($zatcadevice_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadevice_update_response_result === 0) {
+                       
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                
+                }elseif($statusCode == '202'){
+    
+                    // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcadocument WHERE documentNo =  $docNo"));
+
+                    /*
+                    // update zatca document fields with response Data:
+                    $zatcadocument_original_update_data = [
+                        "zatcaAcceptedReissueInvoiceNo" => $docNo
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcadocument_original_update_result = $wpdb->update('zatcadocument', $zatcadocument_original_update_data, $whereOriginal);
+                    ///////end////////
+                    */
+
+
+                     // update zatca document xml fields with response Data:
+                    $zatcadocumentxml_update_response_data = [
+        
+                        "previousInvoiceHash" => $previousInvoiceHash,
+                        "invoiceHash" => $hashed,
+                        "qrCode" => $qrCode,
+                        "APIRequest" => $data,
+                        "APIResponse" => $response,
+                        "typeClearanceOrReporting" => 0
+                    ];
+        
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocumentxml_update_response_result = $wpdb->update('zatcadocumentxml', $zatcadocumentxml_update_response_data, $where);
+        
+                    // Check for errors
+                    if ($zatcadocumentxml_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating on zatcadocumentxml in the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocumentxml_update_response_result === 0) {
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }   
+        
+                    // update zatca document fields with response Data:
+                    $zatcadocument_update_response_data = [
+        
+                        "zatcaResponseDate" => $response_date,
+                        "zatcaSuccessResponse" => 2,
+                        "previousInvoiceHash" => $hashed,
+                        "zatcaErrorResponse" => $warningMessage
+                    ];
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocument_update_response_result = $wpdb->update('zatcadocument', $zatcadocument_update_response_data, $where);
+                    
+                    // Check for errors
+                    if ($zatcadocument_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocument_update_response_result === 0) {
+                       
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    // update zatca device fields with last document submitted:
+                    $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $docNo") );
+    
+                    $zatcadevice_update_response_data = [
+                        "lastHash" => $hashed,
+                        "lastDocumentNo" => $docNo,
+                        "lastDocumentDateTime" => $hashed
+                    ];
+                    $where1 = array('deviceNo' => $device_no);
+    
+                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+    
+                    // Check for errors
+                    if ($zatcadevice_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadevice_update_response_result === 0) {
+                       
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                }
+              
+            }else{
+    
+                if($http_status == '400'){
+    
+                    // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcadocument WHERE documentNo =  $docNo"));
+
+                    /*
+                    // update zatca document fields with response Data:
+                    $zatcadocument_original_update_data = [
+                        "isZatcaReissued" => 1
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcadocument_original_update_result = $wpdb->update('zatcadocument', $zatcadocument_original_update_data, $whereOriginal);
+                    ///////end////////
+                    */
+
+                    
+                    // update zatca document fields with response Data:
+                    $zatcadocument_error_response_data = [
+    
+                        "zatcaResponseDate" => $response_date,
+                        "zatcaSuccessResponse" => 3,
+                        "zatcaErrorResponse" => $errorMessage
+                    ];
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocument_error_response_result = $wpdb->update('zatcadocument', $zatcadocument_error_response_data, $where);
+                    
+                    // Check for errors
+                    if ($zatcadocument_error_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocument_error_response_result === 0) {
+                        
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    // check if have error message or not:
+                    if(is_array($validationResults)){
+    
+                        $msg = $http_status_msg . ' Error: ' . $errorMessage;
+    
+                    }else{
+    
+                        $msg = $http_status_msg . ' Error: ' . $validationResults;
+                    }
+    
+                    
+                
+                }
+                else if($http_status == '303')
+                {
+                    // update zatca document fields with response Data:
+                    $zatcadocument_error_response_data = [
+                        "zatcaB2B_isForced_To_B2C" => 1];
+                    $where = array('documentNo' => $docNo);
+                    $zatcadocument_error_response_result = $wpdb->update('zatcadocument',
+                    $zatcadocument_error_response_data, $where);
+                    $msg = $response;
+                }
+            else{
+    
+                    $msg = $response;
+                }
+    
+            }
+    
+            // Log the send to zatca:
+            $user_login = wp_get_current_user()->user_login;
+            $user_id = wp_get_current_user()->ID;
+            log_send_to_zatca($user_login, $user_id);
+    
+            $send_response = [
+    
+                'msg' => $msg,
+                'validationResults' => $validationResults,
+                'responseArray' => $responseArray,
+                'data' => $data
+    
+            ];
+    
+            wp_send_json($send_response);
+          
+            
+        }
+
+
+        //end if
+    }
+    // if not B2B
+    else
+    {
+        $data = update_zatca1($docNo);
+
+        $requestArray = json_decode($data, true);
+
+        $msg = '';
+
+        // Validation Fields:
+        $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
+        $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
+        
+        $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
+        $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
+
+        // validation on seller_additionalIdNumber & buyer_additionalNo:
+        if($seller_additionalIdNumber_validation == false)
+        {
+            $msg = 'You Muse Insert Seller additional Id Number in zatca Company';
+            // $msg = var_dump($requestArray);
+        }
+        elseif($buyer_additionalNo_validation == false)
+        { // Validation on additionalNo - customer [ buyer ]:
+            $msg = 'You Muse Insert Buyer additional Number in zatca customer';
+        }
+
+        else
+        {
+   
+            $curl = curl_init();
+    
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Report?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS =>$data,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json',
+                    'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                ),
+            ));
+    
+            $response = curl_exec($curl);
+    
+            if ($response === false) {
+                $error = curl_error($curl);
+                $errorCode = curl_errno($curl);
+                echo "cURL Error: $error (Error Code: $errorCode)";
+            }
+            
+            $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+           
+    
+            $http_status_msg = "HTTP Status Code: " . $http_status . "\n";
+    
+            curl_close($curl);
+    
+            if ($response === false) {
+                echo 'Curl error: ' . curl_error($curl);
+            } else {
+                // echo 'HTTP status code: ' . $http_status;
+                // echo 'Response: ' . $response;
+            }
+    
+            $responseArray = json_decode($response, true);
+    
+            $statusCode = $responseArray['zatcaStatusCode'];
+            $isZatcaValid = $responseArray['isValidationFromZatca'];
+            $reportingStatus = $responseArray['reportingStatus'];
+            $validationResults = $responseArray['validationResults'];
+            $hashed = $responseArray['hash'];
+            $qrCode = $responseArray['generatedQR'];
+            $response_date = date('Y-m-d H:i:s');
+            $warningMessage='';
+            $clearedInvoice = $responseArray['clearedInvoice'];
+            $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+    
+            // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
+            $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
+                                                                    FROM zatcadocument 
+                                                                    ORDER BY zatcaResponseDate DESC 
+                                                                    LIMIT 1"));
+            
+            if (isset($responseArray['validationResults']['warningMessages']) && is_array($responseArray['validationResults']['warningMessages'])) {
+                foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
+                    if (isset($Message['message'])) {
+                        $warningMessage = $Message['message'];
+                    }else{
+                        echo 'WRONG';
+                    }
+                }
+            }
+    
+            
+            // Check If response Valid:
+            if($reportingStatus == 'REPORTED'){
+    
+                if($statusCode == '200'){
+    
+                    // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcadocument WHERE documentNo =  $docNo"));
+
+                    /*
+                    // update zatca document fields with response Data:
+                    $zatcadocument_original_update_data = [
+                        "zatcaAcceptedReissueInvoiceNo" => $docNo
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcadocument_original_update_result = $wpdb->update('zatcadocument', $zatcadocument_original_update_data, $whereOriginal);
+                    ///////end////////
+                    */
+
+
+                    //  update zatca document xml fields with response Data:
+                    $zatcadocumentxml_update_response_data = [
+        
+                        "previousInvoiceHash" => $previousInvoiceHash,
+                        "invoiceHash" => $hashed,
+                        "qrCode" => $qrCode,
+                        "APIRequest" => $data,
+                        "APIResponse" => $response,
+                        "typeClearanceOrReporting" => 0
+                    ];
+        
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocumentxml_update_response_result = $wpdb->update('zatcadocumentxml', $zatcadocumentxml_update_response_data, $where);
+        
+                    // Check for errors
+                    if ($zatcadocumentxml_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating on zatcadocumentxml in the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocumentxml_update_response_result === 0) {
+                        
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    
+                    }  
+        
+                    // update zatca document fields with response Data:
+                    $zatcadocument_update_response_data = [
+        
+                        "zatcaResponseDate" => $response_date,
+                        "zatcaSuccessResponse" => 1,
+                        "previousInvoiceHash" => $hashed
+                    ];
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocument_update_response_result = $wpdb->update('zatcadocument', $zatcadocument_update_response_data, $where);
+                    
+                    // Check for errors
+                    if ($zatcadocument_update_response_result === false) {
+                        // Handle error
+                        $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    }elseif ($zatcadocument_update_response_result === 0) {
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    // update zatca device fields with last document submitted:
+                    $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $docNo") );
+    
+                    $zatcadevice_update_response_data = [
+                        "lastHash" => $hashed,
+                        "lastDocumentNo" => $docNo,
+                        "lastDocumentDateTime" => $hashed
+                    ];
+                    $where1 = array('deviceNo' => $device_no);
+    
+                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+    
+                    // Check for errors
+                    if ($zatcadevice_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadevice_update_response_result === 0) {
+                       
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                
+                }elseif($statusCode == '202'){
+    
+                    // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcadocument WHERE documentNo =  $docNo"));
+
+                    /*
+                    // update zatca document fields with response Data:
+                    $zatcadocument_original_update_data = [
+                        "zatcaAcceptedReissueInvoiceNo" => $docNo
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcadocument_original_update_result = $wpdb->update('zatcadocument', $zatcadocument_original_update_data, $whereOriginal);
+                    ///////end////////
+                    */
+
+
+                     // update zatca document xml fields with response Data:
+                    $zatcadocumentxml_update_response_data = [
+        
+                        "previousInvoiceHash" => $previousInvoiceHash,
+                        "invoiceHash" => $hashed,
+                        "qrCode" => $qrCode,
+                        "APIRequest" => $data,
+                        "APIResponse" => $response,
+                        "typeClearanceOrReporting" => 1
+                    ];
+        
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocumentxml_update_response_result = $wpdb->update('zatcadocumentxml', $zatcadocumentxml_update_response_data, $where);
+        
+                    // Check for errors
+                    if ($zatcadocumentxml_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating on zatcadocumentxml in the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocumentxml_update_response_result === 0) {
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }   
+        
+                    // update zatca document fields with response Data:
+                    $zatcadocument_update_response_data = [
+        
+                        "zatcaResponseDate" => $response_date,
+                        "zatcaSuccessResponse" => 2,
+                        "previousInvoiceHash" => $hashed,
+                        "zatcaErrorResponse" => $warningMessage
+                    ];
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocument_update_response_result = $wpdb->update('zatcadocument', $zatcadocument_update_response_data, $where);
+                    
+                    // Check for errors
+                    if ($zatcadocument_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocument_update_response_result === 0) {
+                       
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    // update zatca device fields with last document submitted:
+                    $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $docNo") );
+    
+                    $zatcadevice_update_response_data = [
+                        "lastHash" => $hashed,
+                        "lastDocumentNo" => $docNo,
+                        "lastDocumentDateTime" => $hashed
+                    ];
+                    $where1 = array('deviceNo' => $device_no);
+    
+                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+    
+                    // Check for errors
+                    if ($zatcadevice_update_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadevice_update_response_result === 0) {
+                       
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                }
+              
+            }
+            else
+            {
+    
+                if($http_status == '400'){
+    
+                    // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcadocument WHERE documentNo =  $docNo"));
+
+                    /*
+                    // update zatca document fields with response Data:
+                    $zatcadocument_original_update_data = [
+                        "isZatcaReissued" => 1
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcadocument_original_update_result = $wpdb->update('zatcadocument', $zatcadocument_original_update_data, $whereOriginal);
+                    ///////end////////
+                    */
+
+
+                    // update zatca document fields with response Data:
+                    $zatcadocument_error_response_data = [
+    
+                        "zatcaResponseDate" => $response_date,
+                        "zatcaSuccessResponse" => 3,
+                        "zatcaErrorResponse" => $errorMessage
+                    ];
+                    $where = array('documentNo' => $docNo);
+        
+                    $zatcadocument_error_response_result = $wpdb->update('zatcadocument', $zatcadocument_error_response_data, $where);
+                    
+                    // Check for errors
+                    if ($zatcadocument_error_response_result === false) {
+                        
+                        // Handle error
+                        $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    
+                    }elseif ($zatcadocument_error_response_result === 0) {
+                        
+                        // No rows affected
+                        $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    }
+    
+                    // check if have error message or not:
+                    if(is_array($validationResults)){
+    
+                        $msg = $http_status_msg . ' Error: ' . $errorMessage;
+    
+                    }else{
+    
+                        $msg = $http_status_msg . ' Error: ' . $validationResults;
+                    }
+    
+                    
+                
+                }else{
+    
+                    $msg = $response;
+                }
+    
+            }
+    
+            // Log the send to zatca:
+            $user_login = wp_get_current_user()->user_login;
+            $user_id = wp_get_current_user()->ID;
+            log_send_to_zatca($user_login, $user_id);
+    
+            $send_response = [
+    
+                'msg' => $msg,
+                'validationResults' => $validationResults,
+                'responseArray' => $responseArray,
+                'data' => $data
+    
+            ];
+    
+            wp_send_json($send_response);
+            
+        }
+    }
+}
+
+//function to insert new copy of data and fire the return button action [Return]
+function send_return_request_to_zatca(){
+    global $wpdb;
+    // document no pass from ajax:
+    $doc_no = $_REQUEST['doc_no_from_ajax'];
+
+
+    // get deviceNo from zatcadocument table where documentNo = doc_no
+    $invoiceNo = $wpdb->get_var("SELECT invoiceNo FROM zatcadocument WHERE documentNo = '$doc_no'");
+
+    // function to insert new copy to woocommerce and new copy to zatcadocument and new copy to zatcadocumentunit
+    insert_zatcaDocument_returned($doc_no, $invoiceNo);
+
+}
 
 ////////////////////////////////////////////PDF Code/////////////////////////////////////////////////
 

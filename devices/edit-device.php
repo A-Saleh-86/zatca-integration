@@ -119,12 +119,13 @@ if (!empty($results)) {
                     </label>
                     <div class="col-sm-8 col-md-8">
                         <div class="form-group">
+                            <input type="hidden" name="deviceStatus" value="1"> <!-- Hidden input for unchecked state -->  
                             <input
                                 class="form-check-input form-check-input-sm"
                                 type="checkbox"
                                 name="deviceStatus"
                                 class="form-control"
-                                value="<?php echo $result->deviceStatus ?>"
+                                value="0"
                                 <?php
                                 echo (isset($result->deviceStatus) && $result->deviceStatus==0) ? 'checked' : ''; 
                                 ?>
