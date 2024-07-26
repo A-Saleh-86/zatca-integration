@@ -361,11 +361,10 @@
                             <?php
                             if((((int)$zatcaSuccessResponse === 1 || (int)$zatcaSuccessResponse === 2) && $zatcaInvoiceType == 1) || ((int)$zatcaSuccessResponse > 0 && $zatcaInvoiceType == 0)){
                             ?>
-                            <a href="<?php echo plugin_dir_url(__FILE__) . 'pdf-document.php?doc-no='. $result->documentNo ?>"
+                            <a href="<?php echo plugin_dir_url(__FILE__) . 'document80mm.php?docno='. $result->documentNo ?>"
                             target="_blank"
                             id="create-pdf"
                             class="my-plugin-button btn-sm me-1"
-                             data-doc-no="<?php echo $result->documentNo ?>"
                              title="<?php echo __("Print Document", "zatca") ?>">
                              <?php echo __("Print Document", "zatca") ?> 
                              <span class="dashicons dashicons-download"></span></a>
