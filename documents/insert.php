@@ -574,7 +574,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         <?php
                         foreach($reasons as $reason) {
                         ?>
-                        <option value="<?= $reason->ID ?>"><?= $reason->aName ?></option>
+                        <option value="<?= $reason->aName ?>"><?= $reason->aName ?></option>
                         <?php } ?>
                     </select>
                     <input type="hidden" name="returnReason" id="returnReason">

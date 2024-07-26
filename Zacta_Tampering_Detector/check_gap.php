@@ -11,7 +11,7 @@ if (isset($_POST['check_counter_gap']))
 if (isset($_POST['check_hash_gap'])) 
 {
     // Call the hash gap function
-    check_hash_gap();
+    check_hash_gap1();
 }
 
 // callback to check counter gap
@@ -26,13 +26,13 @@ function check_counter_gap() {
     
     // Query to fetch the invoice numbers within the specified date range for the given branch
     $query = $wpdb->prepare("
-        SELECT z1.invoiceNo
+        SELECT z1.documentNo
         FROM zatcadocument z1
         INNER JOIN zatcadevice zd ON zd.deviceNo = z1.deviceNo
         INNER JOIN zatcabranch zb ON z1.buildingNo = zb.buildingNo
         WHERE zb.buildingNo = %d
         AND z1.dateG BETWEEN %s AND %s
-        ORDER BY z1.invoiceNo
+        ORDER BY z1.documentNo
     ", $BuildingNo, $from_date, $to_date);
 
     $results = $wpdb->get_results($query);
@@ -44,7 +44,7 @@ function check_counter_gap() {
 
     // Check for missing invoice numbers
     foreach ($results as $result) {
-        $current_number = $result->invoiceNo;
+        $current_number = $result->documentNo;
 
         if ($prev_number !== null && $current_number - $prev_number > 1) {
             // Gap detected, add missing numbers to the array
@@ -62,8 +62,8 @@ function check_counter_gap() {
     );
     // Display the results in a grid table
     echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
-    echo '<thead><tr><th>' . __("Missing Invoice Numbers", "zatca") . '</th></tr></thead>';
-    echo '<tbody>';
+    echo '<thead><tr><th class="text-center">' . __("Missing Invoice Numbers", "zatca") . '</th></tr></thead>';
+    echo '<tbody class="text-center">';
 
     foreach ($response['missing_numbers'] as $missing_number) {
         echo '<tr><td>' . $missing_number . '</td></tr>';
@@ -75,7 +75,7 @@ function check_counter_gap() {
     //wp_send_json_success($response);
 }
 
-
+/*
 // callback to check hash gap
 function check_hash_gap() {
     global $wpdb;
@@ -86,21 +86,24 @@ function check_hash_gap() {
     $to_date = $_POST['to_date'];
 
     // Get the necessary POST data
-    $encryption_key = 'your_encryption_key_here'; // Replace with actual encryption key
     $results = []; // Array to store the missing records
 
     // Query to fetch the relevant fields from zatcaDocument
     
-    $query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash FROM zatcaDocument z, zatcaDocumentXML z1 WHERE z.BuildingNo= %d AND z.dateG BETWEEN %s AND %s AND z.documentNo=z1.documentNo",
+    $query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
+    FROM zatcaDocument z, zatcaDocumentXML z1 
+    WHERE z.BuildingNo= %d 
+    AND z.dateG BETWEEN %s AND %s 
+    AND z.documentNo=z1.documentNo",
     $BuildingNo, $from_date, $to_date);
 
     $documents = $wpdb->get_results($query);
 
     // Encrypt and search for each document in zatcaInfo
     foreach ($documents as $document) {
-        $encrypted_documentNo = encrypt_data($document->documentNo, $encryption_key);
-        $encrypted_deviceNo = encrypt_data($document->deviceNo, $encryption_key);
-        $encrypted_invoiceHash = encrypt_data($document->invoiceHash, $encryption_key);
+        $encrypted_documentNo = encrypt_data($document->documentNo);
+        $encrypted_deviceNo = encrypt_data($document->deviceNo);
+        $encrypted_invoiceHash = encrypt_data($document->invoiceHash);
 
         // Query zatcaInfo for matching encrypted values
         $query = $wpdb->prepare("
@@ -123,7 +126,7 @@ function check_hash_gap() {
     
     // Display the results in a grid table
     echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
-    echo '<thead><tr><th>'. __("Document No", "zatca") .'</th><th>'. __("Device No", "zatca") .'</th><th>'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody>';
+    echo '<thead><tr><th class="text-center">'. __("Document No", "zatca") .'</th><th class="text-center">'. __("Device No", "zatca") .'</th><th class="text-center">'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody class="text-center">';
 
     foreach ($results as $document) {
         echo '<tr>';
@@ -133,14 +136,92 @@ function check_hash_gap() {
         echo '</tr>';
     }
 
-    echo '</tvody></table></div>';
+    echo '</tbody></table></div>';
 
     //wp_send_json_success($response);
 }
+*/
+ 
+
+//////////////////////////
+
+function check_hash_gap1() {  
+    global $wpdb;
+
+    // Get the necessary POST data
+    $BuildingNo = $_POST['BuildingNo']; // branch id
+    $from_date = $_POST['from_date'];
+    $to_date = $_POST['to_date'];
+
+    // Define zatcainfo table name  
+    $zacainfo_table = 'zatcainfo';  
+
+    $missing_records = [];  
+
+    // Step 1: Select zatcainfo1, zatcainfo2, and zatcainfo3 from zacainfo table  
+    $zacainfo_query = $wpdb->prepare(  
+        "SELECT zatcainfo1, zatcainfo2, zatcainfo3 FROM $zacainfo_table"  
+    );  
+    $zacainfo_records = $wpdb->get_results( $zacainfo_query, ARRAY_A );  
+
+    // Step 2: Select documentNo, deviceNo, and invoiceHash from zatcadocument & zatcaDocumentXML tables
+    // within the given date range  
+    $zatcadocument_query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
+    FROM zatcaDocument z, zatcaDocumentXML z1 
+    WHERE z.BuildingNo= %d 
+    AND z.dateG BETWEEN %s AND %s 
+    AND z.documentNo=z1.documentNo",
+    $BuildingNo, $from_date, $to_date);
+
+    $zatcadocument_records = $wpdb->get_results( $zatcadocument_query, ARRAY_A );  
+
+    // Step 3: Create an associative array for zatcadocument records for quick lookup  
+    $zatcadocument_map = [];  
+    foreach ( $zatcadocument_records as $document ) {  
+        $key = implode('|', [$document['invoiceHash'], $document['documentNo'], $document['deviceNo']]);  
+        $zatcadocument_map[ $key ] = $document;  
+    }  
+
+    // Step 4: Check for existence of records from zacainfo in zatcadocument  
+    foreach ( $zacainfo_records as $info ) {
+        
+        $key = implode('|', [decrypt_data($info['zatcainfo1']), decrypt_data($info['zatcainfo2']), decrypt_data($info['zatcainfo3'])]);  
+        
+        // Check if the composite key exists in zatcadocument  
+        if ( ! isset( $zatcadocument_map[ $key ] ) ) {  
+            // Push missing record's values to the array  
+            $missing_records[] = [  
+                'invoiceHash' => decrypt_data($info['zatcainfo1']),  
+                'documentNo' => decrypt_data($info['zatcainfo2']),  
+                'deviceNo' => decrypt_data($info['zatcainfo3'])  
+            ];  
+        }  
+    }
+
+    // Display the results in a grid table
+    echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
+    echo '<thead><tr><th class="text-center">'. __("Document No", "zatca") .'</th><th class="text-center">'. __("Device No", "zatca") .'</th><th class="text-center">'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody class="text-center">';
+
+    foreach ($missing_records as $document1) {
+        echo '<tr>';
+        echo '<td>' . $document1['documentNo'] . '</td>';
+        echo '<td>' . $document1['deviceNo'] . '</td>';
+        echo '<td>' . $document1['invoiceHash'] . '</td>';
+        echo '</tr>';
+    }
+
+    echo '</tbody></table></div>';
+
+}  
+
+/////////////////////////
 
 // Function to encrypt data
-function encrypt_data($data, $key) {
-    // Make sure to use the same encryption method and key for encryption and decryption
-    // Return the encrypted data
+function decrypt_data($data) {
+    // Make sure to use the same encryption method for encryption and decryption
+    // Decoding the previously encoded text  
+    $decodedText  = base64_decode($data);
+
+    return $decodedText ;
 }
 ?>

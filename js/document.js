@@ -249,12 +249,14 @@ $('#search-invoices-data').on('click', function(event) {
                             // set span text
                             $('#statusOrderSpan').html('Return Sell Invoice');
                             wooInvoiceOrderStatus.value = 23;
+                            $('#returnReasonType').show();
                         }
                         else
                         {
                             // set span text
                             $('#statusOrderSpan').html('Sell Invoice');
                             wooInvoiceOrderStatus.value = 33;
+                            $('#returnReasonType').hide();
                         }
 
                         // Put Data In Woo Invoice No input:
@@ -308,10 +310,14 @@ $('#search-invoices-data').on('click', function(event) {
                         
                         // Assuming zatcadocumentunit_array is your array containing zatcadocumentunit data  
 
+                        // Clear the trContent variable
+                        var trContent = '';
+                        // Clear the tbody element
+                        $('tbody.order_details').empty();
                         $.each(data.zatca_document_unit_lines, function(index, data) {  
                             // Access each zatcadocumentunit data fields here  
 
-                            var trContent = '<tr>';
+                            trContent = '<tr>';
                             trContent += '<td>' + data.itemNo + '</td>';
                             trContent += '<td>' + data.eName + '</td>';
                             trContent += '<td>' + data.eName + '</td>';
@@ -326,21 +332,6 @@ $('#search-invoices-data').on('click', function(event) {
                             var tr = $(trContent).appendTo('tbody.order_details');  
                         });
                         //
-                        /*var trContent = '<tr>';
-                        trContent += '<td>' + data.payed + '</td>';
-                        trContent += '<td>' + data.discount + '</td>';
-                        trContent += '<td>' + data.vatCatName + '</td>';
-                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
-                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
-                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
-                        trContent += '<td>' + data.leftAmount + '</td>';
-                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
-                        trContent += '<td>' + data.leftAmount + '</td>';
-                        trContent += '<td>' + data.invoiceTypeCode + '</td>';
-                        trContent += '</tr>';
-                        var tr = $(trContent).appendTo('tbody.order_details');*/
-                       
-            
                     },
                     error: function(xhr, status, error) {
                         console.error('Error fetching data:', error);
@@ -1111,7 +1102,7 @@ jQuery(document).ready(function($){
                             //alert("Your Document Submitted Successfully");
                         }
                     }
-                // console.log(response);
+
                 if(response.responseArray['reportingStatus'] == "NOT_REPORTED")
                     {
                         if(response.responseArray['zatcaStatusCode'] == 400 || response.responseArray['zatcaStatusCode'] == null || response.responseArray['zatcaStatusCode'] == 0)

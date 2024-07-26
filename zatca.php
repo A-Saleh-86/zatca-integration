@@ -1376,6 +1376,9 @@ function insert_form_documents(){
             $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcadocument WHERE deviceNo = $deviceNo");
             $docNo = $wpdb->get_var($query);
             $docNo = $docNo + 1;
+
+            $returnReason = $form_array['returnReason'];
+            $reason = $form_array['returnReasonType'];
             // #################################
             // Insert Data into zatcadocument:##
             // #################################
@@ -1394,6 +1397,8 @@ function insert_form_documents(){
                     'amountPayed02'                         => $form_array['amountPayed02'],
                     'amountPayed03'                         => $form_array['amountPayed03'],
                     'amountCalculatedPayed'                 => $form_array['amountCalculatedPayed'],
+                    'returnReasonType'                      => $returnReason,
+                    'reason'                                => $reason,
                     'subTotal'                              => $form_array['subTotal'],
                     'subTotalDiscount'                      => $form_array['subTotalDiscount'],
                     'taxRate1_Total'                        => $form_array['taxRate1_Total'],
@@ -2142,6 +2147,10 @@ function update_zatca($doc_no){
 
         $order_Id = $doc->invoiceNo;
 
+        $billTypeNo = $doc->billTypeNo;
+        $reason = $doc->reason;
+        $zatcaRejectedInvoiceNo = $doc->zatcaRejectedInvoiceNo;
+
         $invoiceType = "TAX_INVOICE";
         $invoiceTypeCode = "Standard";
         $id =  $doc->documentNo;
@@ -2388,6 +2397,23 @@ function update_zatca($doc_no){
 
     }
 
+    // original document number if returned bill
+    $originalDoc =  "";
+    // reason of return
+    $returnReason = "";
+    // check if billTypeNo is 23
+    if($billTypeNo == 23)
+    {
+        $originalDoc =  $zatcaRejectedInvoiceNo;
+        $returnReason = $reason;
+    }
+    // check if billTypeNo is 33
+    else if($billTypeNo == 33)
+    {
+        $originalDoc =  "";
+        $returnReason = "";
+    }
+
     // Build the array Of Request:
     $data = [
         "invoiceType" => $invoiceType,
@@ -2427,8 +2453,8 @@ function update_zatca($doc_no){
         "invoiceCurrencyCode" => $invoiceCurrencyCode,
         "taxCurrencyCode" => $taxCurrencyCode,
         "note" => [
-            "reason" => "",
-            "invoiceNo" => ""
+            "reason" => $returnReason,
+            "invoiceNo" => $originalDoc
         ],
         "taxExemptionReasonCode" => "",
         "taxExemptionReason" => "",
@@ -2628,6 +2654,7 @@ function send_request_to_zatca_clear(){
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
+                insert_encrypted_row($hashed, $doc_no, $device_no);
                 $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
             
             }elseif($statusCode == '202'){
@@ -2706,6 +2733,8 @@ function send_request_to_zatca_clear(){
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
+                insert_encrypted_row($hashed, $doc_no, $device_no);
+                
                 $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
             }
           
