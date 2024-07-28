@@ -361,7 +361,7 @@
                             <?php
                             if((((int)$zatcaSuccessResponse === 1 || (int)$zatcaSuccessResponse === 2) && $zatcaInvoiceType == 1) || ((int)$zatcaSuccessResponse > 0 && $zatcaInvoiceType == 0)){
                             ?>
-                            <a href="<?php echo plugin_dir_url(__FILE__) . 'document80mm.php?docno='. $result->documentNo ?>"
+                            <a href="<?php echo plugin_dir_url(__FILE__) . 'documentA4.php?docno='. $result->documentNo ?>"
                             target="_blank"
                             id="create-pdf"
                             class="my-plugin-button btn-sm me-1"
