@@ -6,7 +6,7 @@ $deviceNo = $_GET['deviceNo'];
 global $wpdb;
 
 // Assuming your table is named 'wp_custom_table'
-$table_name = 'zatcadevice';
+$table_name = 'zatcaDevice';
 
 // Define the condition to identify the row(s) to delete
 $where = array(

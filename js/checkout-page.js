@@ -167,7 +167,7 @@ function isArabic(string) {
 
 jQuery(document).ready(function($) {
 
-  // Check If woo fields have arabic inputs use in zatcacustomer form :
+  // Check If woo fields have arabic inputs use in zatcaCustomer form :
 
   // If come with data stored before [ first name input ]:
   if (isArabic($('#billing-first_name').val())) {

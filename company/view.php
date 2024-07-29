@@ -420,7 +420,7 @@
                                 global $wpdb;
                                 
                                 // Fetch Data From Database:
-                                $devices = $wpdb->get_results( "SELECT * FROM zatcadevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
+                                $devices = $wpdb->get_results( "SELECT * FROM zatcaDevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
                                 foreach($devices as $device) {?>
                                     <option  value="<?php echo $device->deviceNo ?>" <?php if($branch->deviceID == $device->deviceNo){echo 'selected';} ?>><?php echo $device->deviceCSID ?></option>
                                     <?php
@@ -869,7 +869,7 @@
                         global $wpdb;
                         
                         // Fetch Data From Database:
-                        $devices = $wpdb->get_results( "SELECT * FROM zatcadevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
+                        $devices = $wpdb->get_results( "SELECT * FROM zatcaDevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
                         foreach($devices as $device) {?>
                             '<option  value="<?php echo $device->deviceNo ?>"><?php echo $device->deviceCSID ?></option>';
                             <?php

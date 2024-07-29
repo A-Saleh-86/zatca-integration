@@ -32,7 +32,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         
         // Prepare the query for documentNo [ If Not Equal 0 get it +1]:
         $table_name_document = 'zatcaDocument';
-        $table_name_device = 'zatcadevice';
+        $table_name_device = 'zatcaDevice';
 
         $table_schema = $wpdb->dbname;
 
@@ -529,10 +529,10 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <!-- /  note field -->
 
             
-            <!--Retrive all aName from zatcareturnreason table from database-->
+            <!--Retrive all aName from zatcaReturnReason table from database-->
             <?php
             global $wpdb;
-            $reasons = $wpdb->get_results( "SELECT * FROM zatcareturnreason");
+            $reasons = $wpdb->get_results( "SELECT * FROM zatcaReturnReason");
             ?>
 
             <!--  returnReasonType field -->

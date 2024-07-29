@@ -28,8 +28,8 @@ function check_counter_gap() {
     $query = $wpdb->prepare("
         SELECT z1.documentNo
         FROM zatcaDocument z1
-        INNER JOIN zatcadevice zd ON zd.deviceNo = z1.deviceNo
-        INNER JOIN zatcabranch zb ON z1.buildingNo = zb.buildingNo
+        INNER JOIN zatcaDevice zd ON zd.deviceNo = z1.deviceNo
+        INNER JOIN zatcaBranch zb ON z1.buildingNo = zb.buildingNo
         WHERE zb.buildingNo = %d
         AND z1.dateG BETWEEN %s AND %s
         ORDER BY z1.documentNo
@@ -91,7 +91,7 @@ function check_hash_gap() {
     // Query to fetch the relevant fields from zatcaDocument
     
     $query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
-    FROM zatcaDocument z, zatcaDocumentXML z1 
+    FROM zatcaDocument z, zatcaDocumentxml z1 
     WHERE z.BuildingNo= %d 
     AND z.dateG BETWEEN %s AND %s 
     AND z.documentNo=z1.documentNo",
@@ -164,10 +164,10 @@ function check_hash_gap1() {
     );  
     $zacainfo_records = $wpdb->get_results( $zacainfo_query, ARRAY_A );  
 
-    // Step 2: Select documentNo, deviceNo, and invoiceHash from zatcaDocument & zatcaDocumentXML tables
+    // Step 2: Select documentNo, deviceNo, and invoiceHash from zatcaDocument & zatcaDocumentxml tables
     // within the given date range  
     $zatcaDocument_query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
-    FROM zatcaDocument z, zatcaDocumentXML z1 
+    FROM zatcaDocument z, zatcaDocumentxml z1 
     WHERE z.BuildingNo= %d 
     AND z.dateG BETWEEN %s AND %s 
     AND z.documentNo=z1.documentNo",

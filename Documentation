@@ -27,11 +27,11 @@ Updated:
 17- After Choose From Search Menu Data Will Append in Fields.
 18- Make a Validation on Choosen Customers to Can't Choose again.
 19- Make Vendor/Client-No Disabled to Cant Insert Any Data - Just Choose From Search Modal.
-20- Make Customer Field In zatcacustomers Can Be Null.
+20- Make Customer Field In zatcaCustomers Can Be Null.
 21- use admin color schema in my css style.
 22- Localization - All The Plugin.
 23- Create Docemnet Pages.
-24- insert new doceument validate on customer i choose if not exist in zatcacustomer redirect to it to
+24- insert new doceument validate on customer i choose if not exist in zatcaCustomer redirect to it to
     inserted.
 25- create edit document page.
 

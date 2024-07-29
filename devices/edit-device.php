@@ -7,7 +7,7 @@ global $wpdb;
 
 
 // Table Name:
-$table_name = 'zatcadevice';
+$table_name = 'zatcaDevice';
 
 // Prepare the query with a condition on the deviceNo: 
 $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE deviceNo = $deviceNo" ) );

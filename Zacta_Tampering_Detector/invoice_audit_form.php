@@ -24,7 +24,7 @@
                         global $wpdb;
                         
                         // Custom SQL query to retrieve branches from wp_zatcaBranch table
-                        $query = "SELECT buildingNo FROM zatcabranch";
+                        $query = "SELECT buildingNo FROM zatcaBranch";
 
                         // Fetch results from the database
                         $results = $wpdb->get_results($query);

@@ -544,16 +544,16 @@ function insert_form_devices(){
         $token_Data = $form_array['token-data'];
         $deviceStatus = $form_array['deviceStatus'];
 
-        // check if exist deviceStatus = 0 in zatcadevice table or not
-        $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
-        // if exist deviceStatus = 0 in zatcadevice table
+        // check if exist deviceStatus = 0 in zatcaDevice table or not
+        $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcaDevice WHERE deviceStatus = 0");
+        // if exist deviceStatus = 0 in zatcaDevice table
         if ($check_deviceStatus) {
             echo __("Not allowed to add more one device active", "zatca");
         }
         else
         {
             $insert_result = $wpdb->insert(
-                'zatcadevice',
+                'zatcaDevice',
                 [
                     'deviceCSID'            => $device_Csid,
                     'CsID_ExpiryDate'       => $csid_Ex_Date,
@@ -607,7 +607,7 @@ function edit_form_device(){
         if($zatcaDocDeviceNo != NULL){
 
             
-            $deviceData = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceNo = $device_No_id");
+            $deviceData = $wpdb->get_results("SELECT * FROM zatcaDevice WHERE deviceNo = $device_No_id");
             foreach($deviceData as $data){
 
                 // Convert DateTime Format to Validate:
@@ -628,15 +628,15 @@ function edit_form_device(){
                }
                else{ // Update Device Status Only:
 
-                    // check if exist deviceStatus = 0 in zatcadevice table or not
-                    $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
-                    // if exist deviceStatus = 0 in zatcadevice table
+                    // check if exist deviceStatus = 0 in zatcaDevice table or not
+                    $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcaDevice WHERE deviceStatus = 0");
+                    // if exist deviceStatus = 0 in zatcaDevice table
                     if ($check_deviceStatus && $deviceStatus == 0) {
                         echo __("Not allowed to add more one device active", "zatca");
                     }
                     else
                     { // Update Device Status Only:
-                        $table_name = 'zatcadevice';
+                        $table_name = 'zatcaDevice';
                         $data = array(
                             'deviceStatus' => $deviceStatus
                         );
@@ -663,15 +663,15 @@ function edit_form_device(){
         { 
             // Update Device Data if Not Used in zatcaDocument:
 
-            // check if exist deviceStatus = 0 in zatcadevice table or not
-            $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
-            // if exist deviceStatus = 0 in zatcadevice table
+            // check if exist deviceStatus = 0 in zatcaDevice table or not
+            $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcaDevice WHERE deviceStatus = 0");
+            // if exist deviceStatus = 0 in zatcaDevice table
             if (!empty($check_deviceStatus) && $deviceStatus == 0) {
                 echo __("Not allowed to add more one device active", "zatca");
             }
             else
             {
-                $table_name = 'zatcadevice';
+                $table_name = 'zatcaDevice';
                 $data = array(
                     'deviceNo'      => $device_No,
                     'deviceCSID'    => $device_Csid,
@@ -1270,10 +1270,10 @@ function insert_form_documents(){
 
         global $wpdb;
 
-        // Get Device No from ZatcaDevice:
+        // Get Device No from zatcaDevice:
 
         // Table Name:
-        $table_name_device = 'zatcadevice';
+        $table_name_device = 'zatcaDevice';
 
         // Prepare the query with a condition on CsID_ExpiryDate not expire:
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
@@ -1962,7 +1962,7 @@ function document_edit_form(){
         $woo_invoice_No = $form_array['invoice-no'];
 
         // Tables Name:
-        $table_name_device = 'zatcadevice';
+        $table_name_device = 'zatcaDevice';
         $table_name_document = 'zatcaDocument';
         $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
         $table_orders = $wpdb->prefix . 'wc_orders';
@@ -2721,22 +2721,22 @@ function send_request_to_zatca_clear(){
                 // update zatca device fields with last document submitted:
                 $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $doc_no") );
 
-                $zatcadevice_update_response_data = [
+                $zatcaDevice_update_response_data = [
                     "lastHash" => $hashed,
                     "lastDocumentNo" => $doc_no,
                     "lastDocumentDateTime" => $hashed
                 ];
                 $where1 = array('deviceNo' => $device_no);
 
-                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
 
                 // Check for errors
-                if ($zatcadevice_update_response_result === false) {
+                if ($zatcaDevice_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadevice_update_response_result === 0) {
+                }elseif ($zatcaDevice_update_response_result === 0) {
                    
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -2800,22 +2800,22 @@ function send_request_to_zatca_clear(){
                 // update zatca device fields with last document submitted:
                 $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $doc_no") );
 
-                $zatcadevice_update_response_data = [
+                $zatcaDevice_update_response_data = [
                     "lastHash" => $hashed,
                     "lastDocumentNo" => $doc_no,
                     "lastDocumentDateTime" => $hashed
                 ];
                 $where1 = array('deviceNo' => $device_no);
 
-                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
 
                 // Check for errors
-                if ($zatcadevice_update_response_result === false) {
+                if ($zatcaDevice_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadevice_update_response_result === 0) {
+                }elseif ($zatcaDevice_update_response_result === 0) {
                    
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -2997,7 +2997,7 @@ function log_user_action($user_login, $user_id, $operationType) {
     }
     
     
-    $table_name = 'zatcalog';
+    $table_name = 'zatcaLog';
     $timestamp = current_time('mysql');
     $ip_address = $_SERVER['REMOTE_ADDR'];
 
@@ -4090,22 +4090,22 @@ function send_request_to_zatca_report(){
                 // update zatca device fields with last document submitted:
                 $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $doc_no") );
 
-                $zatcadevice_update_response_data = [
+                $zatcaDevice_update_response_data = [
                     "lastHash" => $hashed,
                     "lastDocumentNo" => $doc_no,
                     "lastDocumentDateTime" => $hashed
                 ];
                 $where1 = array('deviceNo' => $device_no);
 
-                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
 
                 // Check for errors
-                if ($zatcadevice_update_response_result === false) {
+                if ($zatcaDevice_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadevice_update_response_result === 0) {
+                }elseif ($zatcaDevice_update_response_result === 0) {
                    
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -4170,22 +4170,22 @@ function send_request_to_zatca_report(){
                 // update zatca device fields with last document submitted:
                 $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $doc_no") );
 
-                $zatcadevice_update_response_data = [
+                $zatcaDevice_update_response_data = [
                     "lastHash" => $hashed,
                     "lastDocumentNo" => $doc_no,
                     "lastDocumentDateTime" => $hashed
                 ];
                 $where1 = array('deviceNo' => $device_no);
 
-                $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
 
                 // Check for errors
-                if ($zatcadevice_update_response_result === false) {
+                if ($zatcaDevice_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadevice_update_response_result === 0) {
+                }elseif ($zatcaDevice_update_response_result === 0) {
                    
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -4346,7 +4346,7 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
     global $wpdb;
 
     // Table Name:
-    $table_name_device = 'zatcadevice';
+    $table_name_device = 'zatcaDevice';
 
     // Get the current Active device
     $device__No = $wpdb->get_var($wpdb->prepare(
@@ -4362,7 +4362,7 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
 
     $uuid = wp_generate_uuid4();
 
-    // Get Device No from ZatcaDevice:
+    // Get Device No from zatcaDevice:
         // Prepare the query with a condition on CsID_ExpiryDate not expire and is active:
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus = 0") );
         foreach($results as $device)
@@ -4740,22 +4740,22 @@ function send_reissue_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -4834,22 +4834,22 @@ function send_reissue_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -5122,22 +5122,22 @@ function send_reissue_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -5216,22 +5216,22 @@ function send_reissue_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -5345,7 +5345,7 @@ function insert_zatcaDocument_returned($docNo, $invoice_no){
     global $wpdb;
 
     // Table Name:
-    $table_name_device = 'zatcadevice';
+    $table_name_device = 'zatcaDevice';
 
     // Get the current Active device
     $device__No = $wpdb->get_var($wpdb->prepare(
@@ -5361,7 +5361,7 @@ function insert_zatcaDocument_returned($docNo, $invoice_no){
 
     $uuid = wp_generate_uuid4();
 
-    // Get Device No from ZatcaDevice:
+    // Get Device No from zatcaDevice:
         // Prepare the query with a condition on CsID_ExpiryDate not expire and is active:
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus = 0") );
         foreach($results as $device)
@@ -5731,22 +5731,22 @@ function send_return_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -5816,22 +5816,22 @@ function send_return_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -6098,22 +6098,22 @@ function send_return_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -6183,22 +6183,22 @@ function send_return_zatca($docNo)
                     // update zatca device fields with last document submitted:
                     $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $docNo") );
     
-                    $zatcadevice_update_response_data = [
+                    $zatcaDevice_update_response_data = [
                         "lastHash" => $hashed,
                         "lastDocumentNo" => $docNo,
                         "lastDocumentDateTime" => $hashed
                     ];
                     $where1 = array('deviceNo' => $device_no);
     
-                    $zatcadevice_update_response_result = $wpdb->update('zatcadevice', $zatcadevice_update_response_data, $where1);
+                    $zatcaDevice_update_response_result = $wpdb->update('zatcaDevice', $zatcaDevice_update_response_data, $where1);
     
                     // Check for errors
-                    if ($zatcadevice_update_response_result === false) {
+                    if ($zatcaDevice_update_response_result === false) {
                         
                         // Handle error
-                        $msg = "There was an error updating zatcadevice on the field." . $wpdb->last_error;
+                        $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                     
-                    }elseif ($zatcadevice_update_response_result === 0) {
+                    }elseif ($zatcaDevice_update_response_result === 0) {
                        
                         // No rows affected
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 

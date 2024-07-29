@@ -608,11 +608,11 @@ function create_zatcaDocumentUnit_table() {
 
 }
 
-// Create zatcadevice table & insert Data:
-function create_zatcadevice_table() {
+// Create zatcaDevice table & insert Data:
+function create_zatcaDevice_table() {
 
     global $wpdb;
-    $table_name = 'zatcadevice';
+    $table_name = 'zatcaDevice';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -750,11 +750,11 @@ function create_zatcaReturnReason_table() {
 
 }
 
-// Create zatcalog table & insert Data:
-function create_zatcalog_table() {
+// Create zatcaLog table & insert Data:
+function create_zatcaLog_table() {
 
     global $wpdb;
-    $table_name = 'zatcalog';
+    $table_name = 'zatcaLog';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -819,9 +819,9 @@ function create_custom_tables(){
     create_zatcaDocumentUnit_table();
     create_zatcaDocumentxml_table();
     create_zatcainfo_table();
-    create_zatcalog_table();
+    create_zatcaLog_table();
     create_zatcaUser_table();
-    create_zatcadevice_table();
+    create_zatcaDevice_table();
     create_zatcaReturnReason_table();
 
 }
