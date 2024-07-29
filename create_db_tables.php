@@ -387,7 +387,7 @@ function create_zatcaCompany_table() {
             `VATCategoryCode` int(11) DEFAULT NULL,
             `VATCategoryCodeSubTypeNo` int(11) DEFAULT NULL,
             `VATID` varchar(50) DEFAULT NULL,
-            `aName` varchar(255) NOT NULL,
+            `companyName` varchar(255) NOT NULL,
             `apartmentNum` varchar(18) DEFAULT NULL,
             `POBox` varchar(18) DEFAULT NULL,
             `POBoxAdditionalNum` varchar(18) DEFAULT NULL,
