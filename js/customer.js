@@ -10,10 +10,13 @@ jQuery(document).ready(function($) {
     const clientVendorNoInput = document.getElementById('client-no');
 
     // Get the client-name-ar input element to populate with fetched data
-    const clientNameArabicInput = document.getElementById('client-name-ar');
+    const clientNameArabicInput = document.getElementById('client_name_ar');
+
+    // Get the client-name-ar input element to populate with fetched data
+    const clientNameEnglishInput = document.getElementById('client_name_en');
 
     // Get the client-name-eng input element to populate with fetched data
-    const clientNameInput = document.getElementById('client-name');
+    // const clientNameInput = document.getElementById('client-name');
 
     // Get the address input element to populate with fetched data
     const addressArabicInput = document.getElementById('address-ar');
@@ -27,18 +30,71 @@ jQuery(document).ready(function($) {
     // Get the English city input element to populate with fetched data
     const cityEnglishInput = document.getElementById('city-en');
 
+    // Get Postal Code Input element:
+    var postal_Code = document.getElementById("postal_code");
+    
+    // Get second_bus_id Input element:
+    var second_bus_id_input = document.getElementById("second_bus_id");
+
+    // Get dist_ar Input element:
+    var dist_ar_input = document.getElementById("dist_ar");
+
 
     // Insert New Customer Form:
     $("#insert_customer_form").submit(function(event){
         event.preventDefault();
-        var formData = $(this).serialize();
-        var po = document.getElementById("po-insert-customer");
-        
-        // validation on PO input:
-        if (po.value.length != 5 ) {
-            alert("Po Must be 5 Numbers.");
+
+
+        // validation on postalCode input:
+        if (postal_Code.value == '' ) {
+            // alert("Postal Code Cant be Null");
+            alert(myCustomer.postal_null);
             return;
         }
+       
+
+        // validation on postalCode input:
+        if (postal_Code.value.length != 5 ) {
+            // alert("Postal Code Must be 5 Digits.");
+            alert(myCustomer.postal_digits);
+            return;
+        }
+
+        // validation on addressArabicInput :
+        if (addressArabicInput.value == '' ) {
+            // alert("Street Arabic Name Cant be Null.");
+            alert(myCustomer.street);
+            return;
+        }
+
+        // validation on second_bus_id_input :
+        if (second_bus_id_input.value == '' ) {
+            // alert("second business id Cant be Null.");
+            alert(myCustomer.second_id);
+            return;
+        }
+
+        // validation on dist_ar_input input:
+        if (dist_ar_input.value == '' ) {
+            // alert("District Arabic Name Cant be Null.");
+            alert(myCustomer.district);
+            return;
+        }
+
+        // validation on cityArabicInput :
+        if (cityArabicInput.value == '' ) {
+            // alert("City Arabic Name Cant be Null.");
+            alert(myCustomer.city);
+            return;
+        }
+
+        // validation on second_bus_id_input:
+        // if (second_bus_id_input.value.length != 10 ) {
+        //     alert("second business id Must be 10 Digits.");
+        //     return;
+        // }
+
+        var formData = $(this).serialize();
 
         $.ajax({
             url: myCustomer.ajaxUrl,
@@ -54,12 +110,14 @@ jQuery(document).ready(function($) {
                 // Check for Which Page client come from:
                 if(data == "customers"){ // if from customers page:
                     
-                    alert('Customer Inserted Success')
+                    // alert('Customer Inserted Success')
+                    alert(myCustomer.customer_inserted);
                     window.location.href = myCustomer.adminUrl;
                     
                 }else{ // if from document insert customer
                     
-                    alert('Customer Inserted Success')
+                    // alert('Customer Inserted Success')
+                    alert(myCustomer.customer_inserted);
                     window.location.href = myCustomer.document;
                 }
             },
@@ -89,7 +147,8 @@ jQuery(document).ready(function($) {
 
             // If Client Not Choose a Customer:
             if (!selectedRow.length) {
-                alert('Please select a customer first.');
+                // alert('Please select a customer first.');
+                alert(myCustomer.select_customer);
                 return;
             }
 
@@ -111,16 +170,16 @@ jQuery(document).ready(function($) {
                 success: function(data) {
 
                     // Variables Come From Ajax:
+                    var postalCode = data.postalCode;
                     var first_name = data.first_name;
                     var last_name = data.last_name;
+                    var address = data.address;
+                    var city = data.city;
                     
                     
                     // change values of inputs:
-                    clientNameInput.value = first_name + ' ' + last_name;
+                    postal_Code.value = postalCode;
                     
-                    // Check For Input Language [ Arabic - English ]
-                    var address = data.address;
-                    var city = data.city;
 
                     function containsArabic(text) {
                         var arabicRegex = /[\u0600-\u06FF]/;
@@ -143,6 +202,7 @@ jQuery(document).ready(function($) {
                     cityArabicInput.value = '';
                     cityEnglishInput.value = '';
             
+                    // Check For address arabic or english:
                     if (containsArabic(address)) {
                         
                         // Insert New Value
@@ -158,6 +218,23 @@ jQuery(document).ready(function($) {
                         console.log('Unable to determine the language of the address.');
                     }
 
+                    // Check For client name arabic or english:
+                    if (containsArabic(first_name) && containsArabic(last_name)  ) {
+                        
+                        // Insert New Value
+                        clientNameArabicInput.value = first_name + ' ' + last_name;
+
+                    } else if (containsEnglish(first_name) && containsEnglish(last_name)) {
+
+                        // Insert New Value
+                        clientNameEnglishInput.value = first_name + ' ' + last_name;
+
+                    } else {
+
+                        console.log('Unable to determine the language of the client name.');
+                    }
+
+                    // Check For city arabic or english:
                     if (containsArabic(city)) {
 
                         // Insert New Value
@@ -188,6 +265,49 @@ jQuery(document).ready(function($) {
         event.preventDefault();
         clientVendorNoInput.disabled = false
         var formData = $(this).serialize();
+
+        // validation on postalCode input:
+        if (postal_Code.value == '' ) {
+            // alert("Postal Code Cant be Null.");
+            alert(myCustomer.postal_null);
+            return;
+        }
+
+        // validation on postalCode input:
+        if (postal_Code.value.length != 5 ) {
+            // alert("Postal Code Must be 5 Digits.");
+            alert(myCustomer.postal_digits);
+            return;
+        }
+
+        // validation on addressArabicInput :
+        if (addressArabicInput.value == '' ) {
+            // alert("Street Arabic Name Cant be Null.");
+            alert(myCustomer.street);
+            return;
+        }
+
+        // validation on second_bus_id_input :
+        if (second_bus_id_input.value == '' ) {
+            // alert("second business id Cant be Null.");
+            alert(myCustomer.second_id);
+            return;
+        }
+
+        // validation on dist_ar_input :
+        if (dist_ar_input.value == '' ) {
+            // alert("District Arabic Name Cant be Null.");
+            alert(myCustomer.district);
+            return;
+        }
+
+        // validation on cityArabicInput :
+        if (cityArabicInput.value == '' ) {
+            // alert("City Arabic Name Cant be Null.");
+            alert(myCustomer.city);
+            return;
+        }
+
         $.ajax({
             url: myCustomer.ajaxUrl,
             method: "POST",

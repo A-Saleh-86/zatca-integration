@@ -1,6 +1,7 @@
 <?php
 include_once dirname(dirname(__FILE__)) . '/zatca.php';
 ?>
+
 <div class="container">
     
     <!-- Back Btn -->
@@ -28,7 +29,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
 
         <!--  personNo field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label label-style"><?php echo _e('Person No:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label label-style"><?php echo _e('User No:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <select class="form-select select2"  name="person-no" id="person-no">
@@ -56,7 +57,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
 
         <!--  a Name field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label label-style"><?php echo _e('Arabic name:', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label label-style"><?php echo _e('Arabic Name:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
@@ -65,7 +66,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         id="arabic-name"
                         class="form-control" 
                         autocomplete="off"
-                        placeholder="<?php echo _e('Arabic name', 'zatca') ?>"
+                        placeholder="<?php echo _e('Arabic Name', 'zatca') ?>"
                     />
                 </div>
             </div>
@@ -74,7 +75,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
 
         <!--  e Name field -->
         <div class="mb-3 row col-mid-6">
-            <label class="col-sm-2 col-form-label label-style"><?php echo _e('English Name :', 'zatca') ?></label>
+            <label class="col-sm-2 col-form-label label-style"><?php echo _e('English Name:', 'zatca') ?></label>
             <div class="col-sm-6 col-md-5">
                 <div class="form-group">
                     <input 
@@ -93,7 +94,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         <!-- ZATCA_B2C_NotIssuedDocuments_isRemind field -->
         <div class="mb-3 row col-md-6">
             <label class="col-sm-4 col-form-label text-wrap label-style" >
-                <?php echo _e('ZATCA_B2C_NotIssuedDocuments_isRemind :', 'zatca') ?>
+                <?php echo _e('Remind with Late B2C Invoices:', 'zatca') ?>
             </label>
             <div class="col-sm-8 col-md-8">
                 <div class="form-group">
@@ -112,19 +113,22 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         <!-- ZATCA_B2C_NotIssuedDocuments_RemindInterval field -->
         <div class="mb-3 row col-md-6">
             <label class="col-sm-4 col-form-label label-style" >
-                <?php echo _e('ZATCA_B2C_NotIssuedDocuments_RemindInterval :', 'zatca') ?>
+                <?php echo _e('Remind with Late B2C Invoices before ZATCA grace period ending with ( number box ) hours:', 'zatca') ?>
             </label>
             <div class="col-sm-8 col-md-8">
                 <div class="form-group">
-                    <input 
-                        type="text"
-                        name="remindInterval" 
-                        id="remindInterval"
-                        class="form-control" 
-                        autocomplete="off"
-                        placeholder="<?php echo _e('RemindInterval', 'zatca') ?>"
-                        disabled
-                    />
+                    <div class="input-group">
+                        <input 
+                            type="text"
+                            name="remindInterval" 
+                            id="remindInterval"
+                            class="form-control" 
+                            autocomplete="off"
+                            placeholder="<?php echo _e('Remind Interval', 'zatca')?>"
+                            disabled
+                        />
+                        <span class="d-inline mx-2"><?php echo _e('Hours', 'zatca');?></span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -323,11 +323,11 @@ function create_zatcabusinessidtype_table() {
     }
 }
 
-// Create zatcabranch table & insert Data:
-function create_zatcabranch_table() {
+// Create zatcaBranch table & insert Data:
+function create_zatcaBranch_table() {
 
     global $wpdb;
-    $table_name = 'zatcabranch';
+    $table_name = 'zatcaBranch';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -369,11 +369,11 @@ function create_zatcabranch_table() {
 
 }
 
-// Create zatcacompany table & insert Data:
-function create_zatcacompany_table() {
+// Create zatcaCompany table & insert Data:
+function create_zatcaCompany_table() {
 
     global $wpdb;
-    $table_name = 'zatcacompany';
+    $table_name = 'zatcaCompany';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -414,11 +414,11 @@ function create_zatcacompany_table() {
 
 }
 
-// Create zatcacustomer table & insert Data:
-function create_zatcacustomer_table() {
+// Create zatcaCustomer table & insert Data:
+function create_zatcaCustomer_table() {
 
     global $wpdb;
-    $table_name = 'zatcacustomer';
+    $table_name = 'zatcaCustomer';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -427,7 +427,7 @@ function create_zatcacustomer_table() {
             `VendorId` int(11) NOT NULL DEFAULT 0,
             `clientVendorNo` varchar(50) NOT NULL,
             `aName` varchar(255) NOT NULL,
-            `eName` varchar(255) NOT NULL,
+            `eName` varchar(255)  DEFAULT NULL,
             `VATID` varchar(50) DEFAULT NULL,
             `secondBusinessIDType` varchar(50) DEFAULT NULL,
             `secondBusinessID` varchar(18) DEFAULT NULL,
@@ -458,11 +458,11 @@ function create_zatcacustomer_table() {
 
 }
 
-// Create zatcadocument table & insert Data:
-function create_zatcadocument_table() {
+// Create zatcaDocument table & insert Data:
+function create_zatcaDocument_table() {
 
     global $wpdb;
-    $table_name = 'zatcadocument';
+    $table_name = 'zatcaDocument';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -474,7 +474,7 @@ function create_zatcadocument_table() {
             `invoiceNo` int(11) DEFAULT NULL,
             `buildingNo` varchar(50) DEFAULT '0',
             `billTypeNo` int(11) DEFAULT 33,
-            `dateG` date DEFAULT current_timestamp(),
+            `dateG` DATETIME DEFAULT current_timestamp(),
             `deliveryDate` date DEFAULT current_timestamp(),
             `gaztLatestDeliveryDate` date DEFAULT current_timestamp(),
             `zatcaInvoiceType` int(11) DEFAULT NULL,
@@ -566,11 +566,11 @@ function create_zatcadocument_table() {
 
 }
 
-// Create zatcadocumentunit table & insert Data:
-function create_zatcadocumentunit_table() {
+// Create zatcaDocumentUnit table & insert Data:
+function create_zatcaDocumentUnit_table() {
 
     global $wpdb;
-    $table_name = 'zatcadocumentunit';
+    $table_name = 'zatcaDocumentUnit';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -638,11 +638,11 @@ function create_zatcadevice_table() {
 
 }
 
-// Create zatcadocumentxml table & insert Data:
-function create_zatcadocumentxml_table() {
+// Create zatcaDocumentxml table & insert Data:
+function create_zatcaDocumentxml_table() {
 
     global $wpdb;
-    $table_name = 'zatcadocumentxml';
+    $table_name = 'zatcaDocumentxml';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -678,15 +678,75 @@ function create_zatcainfo_table() {
     // SQL to create the table
     $sql = "
         CREATE TABLE IF NOT EXISTS  $table_name (
-            `zatcaInfo1` longtext DEFAULT NULL,
-            `zatcaInfo2` longtext DEFAULT NULL,
-            `zatcaInfo3` longtext DEFAULT NULL
+            VendorId int NOT NULL,
+            incrementerNo varchar(20) NOT NULL,
+            zatcaInfo1 varchar(255) NULL,
+            zatcaInfo2 varchar(255) NULL,
+            zatcaInfo3 varchar(255) NULL,
+            row_timestamp timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (VendorId, incrementerNo)
         ) ENGINE=InnoDB $charset_collate;
     ";
 
     // Execute the query
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
+
+}
+
+// Create zatcaReturnReason table & insert Data:
+function create_zatcaReturnReason_table() {
+
+    global $wpdb;
+    $table_name = 'zatcaReturnReason';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    // SQL to create the table
+    $sql = "
+        CREATE TABLE IF NOT EXISTS  $table_name (
+            ID int NOT NULL AUTO_INCREMENT,
+            aName varchar(200) NULL,
+            eName varchar(200) NULL,
+            PRIMARY KEY (ID)
+        ) ENGINE=InnoDB $charset_collate;
+    ";
+
+    // Execute the query
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+
+    $data = array(
+        array(
+            'ID' => 1,
+            'aName' => 'إلغاء أو تعليق التوريدات بعد حدوثها كلياً أو جزئياً',
+            'eName' => 'Cancellation or suspension of the supplies after its occurrence either wholly or partially'
+        ),
+        array(
+            'ID' => 2,
+            'aName' => 'في حالة حدوث تغيير أو تعديل جوهري في التوريد مما يؤدي إلى تغيير ضريبة القيمة المضافة المستحقة',
+            'eName' => 'In case of essential change or amendment in the supply, which leads to the change of the VAT due'
+        ),
+        array(
+            'ID' => 3,
+            'aName' => 'في حالة استرداد البضائع أو الخدمات',
+            'eName' => 'In case of goods or services refund'
+        ),
+        array(
+            'ID' => 4,
+            'aName' => 'في حالة التغيير في معلومات البائع أو المشتري',
+            'eName' => 'In case of change in Seller\'s or Buyer\'s information'
+        ),
+        array(
+            'ID' => 5,
+            'aName' => 'تعديل قيمة التوريد المتفق عليها مسبقاً بين المورد والمستهلك',
+            'eName' => 'Amendment of the supply value which is pre-agreed upon between the supplier and consumer'
+        )
+    );
+
+    // Insert data
+    foreach ($data as $record) {
+        $wpdb->insert($table_name, $record);
+    }
 
 }
 
@@ -719,11 +779,11 @@ function create_zatcalog_table() {
 
 }
 
-// Create zatcauser table & insert Data:
-function create_zatcauser_table() {
+// Create zatcaUser table & insert Data:
+function create_zatcaUser_table() {
 
     global $wpdb;
-    $table_name = 'zatcauser';
+    $table_name = 'zatcaUser';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -751,16 +811,17 @@ function create_custom_tables(){
     create_zatca_country_table();
     create_zatca_met_vatcategorycode_table();
     create_zatca_met_vatcategorycodesubtype_table();
-    create_zatcabranch_table();
+    create_zatcaBranch_table();
     create_zatcabusinessidtype_table();
-    create_zatcacompany_table();
-    create_zatcacustomer_table();
-    create_zatcadocument_table();
-    create_zatcadocumentunit_table();
-    create_zatcadocumentxml_table();
+    create_zatcaCompany_table();
+    create_zatcaCustomer_table();
+    create_zatcaDocument_table();
+    create_zatcaDocumentUnit_table();
+    create_zatcaDocumentxml_table();
     create_zatcainfo_table();
     create_zatcalog_table();
-    create_zatcauser_table();
+    create_zatcaUser_table();
     create_zatcadevice_table();
+    create_zatcaReturnReason_table();
 
 }

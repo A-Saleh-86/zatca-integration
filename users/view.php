@@ -1,3 +1,4 @@
+
 <div class="container">
 
     
@@ -37,7 +38,7 @@
             global $wpdb;
 
             // Query to retrieve data from zatca log:
-            $resultes = $wpdb->get_results("SELECT * FROM zatcauser");
+            $resultes = $wpdb->get_results("SELECT * FROM zatcaUser");
 
             // Check if there are results
             if ($resultes) {

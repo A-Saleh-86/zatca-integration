@@ -5,7 +5,7 @@ $personNo = $_GET['personNo'];
 
 global $wpdb;
 
-$table_name = 'zatcauser';
+$table_name = 'zatcaUser';
 
 // Define the condition to identify the row(s) to delete
 $where = array(

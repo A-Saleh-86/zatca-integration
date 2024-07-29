@@ -7,7 +7,7 @@ global $wpdb;
 
 
 // Table Name:
-$table_name = 'zatcacustomer';
+$table_name = 'zatcaCustomer';
 
 // Prepare the query with a condition on the VendorId column using the %d placeholder
 $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE clientVendorNo = $clientNo") );
@@ -62,7 +62,7 @@ if (!empty($results)) {
                             <div class="mx-1"></div>
 
                             <!-- Search Btn -->
-                            <button 
+                            <!-- <button 
                                 type='button' 
                                 class='btn my-plugin-button me-1' 
                                 data-bs-toggle='modal' 
@@ -71,7 +71,7 @@ if (!empty($results)) {
                                 data-bs-placement="top" 
                                 title="<?php echo _e('Copy data from the system to here', 'zatca') ?>">
                                 <span class="dashicons dashicons-search"></span>
-                            </button>
+                            </button> -->
                             <!-- / Search Btn -->
 
                             <!-- Customers Modal -->
@@ -113,7 +113,7 @@ if (!empty($results)) {
                                                             $billing_email = get_user_meta($user_id, 'billing_email', true);
 
                                                                 // check if this customer choose before or not:
-                                                            $checks = $wpdb->get_results("SELECT * FROM zatcacustomer WHERE clientVendorNo = $customer->user_id");
+                                                            $checks = $wpdb->get_results("SELECT * FROM zatcaCustomer WHERE clientVendorNo = $customer->user_id");
                                                             if ($wpdb->num_rows > 0) {?>
                                                                 <tr>
                                                                     <!-- Disabled -->
@@ -169,335 +169,331 @@ if (!empty($results)) {
                 </div>
                 <!-- /  clientVendorNo field -->
 
-                <!--  Client Name Arabic field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Client Name ( Arabic ):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text"
-                                id="client-name-ar"
-                                name="client-name-ar" 
-                                class="form-control"
-                                value="<?php echo $result->aName ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Client Name Arabic field -->
+                <!-- Client Name Ar - En -->
+                <div class="row g-3 mb-3">
 
-                <!--  Client Name English field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Client Name( English ):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text"
-                                id="client-name"
-                                name="client-name-en" 
-                                class="form-control"
-                                value="<?php echo $result->eName ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Client Name English field -->
-
-                <!--  VAT ID field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('VAT ID:', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="vat-id" 
-                                class="form-control"
-                                value="<?php echo $result->VATID ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  VAT ID field -->
-
-                <!--  Second Business ID Type field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Second Business ID Type:', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <select class="form-select select2"  name="second-business-id-type">
-                                <option value="">...</option>
-                                <?php
-                                    global $wpdb;
-    
-                                    // Fetch Data From Database:
-                                    $buyers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE isBuyer=1" );
-                                    foreach($buyers as $buyer) {?>
-                                        
-                                        <option value="<?php echo $buyer->codeNumber ?>" <?php if($result->secondBusinessIDType == $buyer->codeNumber){ echo 'selected';} ?> ><?php echo $buyer->aName. ' - ' . $buyer->eName ?></option>
-                                        <?php
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Second Business ID Type field -->
-
-                <!--  Second Business ID  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Second Business ID :', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="second-business-id" 
-                                class="form-control"
-                                value="<?php echo $result->secondBusinessID ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Second Business ID  field -->
-
-                <!--  ZATCA Invoices Type  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('ZATCA Invoices Type :', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <select class="form-select select2"  name="zatca-invoice-type">
-                                <option value="B2B" <?php if($result->zatcaInvoiceType  == 'B2B'){ echo 'selected';}?>>B2B</option>
-                                <option value="B2C" <?php if($result->zatcaInvoiceType  == 'B2C'){ echo 'selected';}?> >B2C</option>
-                                <option value="Both" <?php if($result->zatcaInvoiceType  == 'Both'){ echo 'selected';}?> >Both</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <!-- /  ZATCA Invoices Type  field -->
-
-                <!--  Apartment No  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Apartment No :', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="apartment-no" 
-                                class="form-control"
-                                value="<?php echo $result->apartmentNum ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Apartment No  field -->
-                
-                <!--  Postal Code field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Postal Code:', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="postal-code"
-                                class="form-control" 
-                                autocomplete="off"
-                                placeholder="<?php echo _e('Postal Code', 'zatca') ?>"
-                                
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Postal Code field -->
-
-                <!--  PO Box  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('PO Box :', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="po-box" 
-                                class="form-control"
-                                value="<?php echo $result->POBox ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  PO Box  field -->
-
-                <!--  PO Box Additional Number  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('PO Box Additional Number :', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="po-box-additional-no" 
-                                class="form-control"
-                                value="<?php echo $result->POBoxAdditionalNum ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  PO Box Additional Number  field -->
-
-                <!--  Street Name - AR  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Street Name (Arabic):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text"
-                                id="address-ar"
-                                name="street-name-ar" 
-                                class="form-control"
-                                value="<?php echo $result->street_Arb ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Street Name - AR  field -->
-
-                <!--  Street Name - EN  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Street Name (English):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text"
-                                id="address-en"
-                                name="street-name-en" 
-                                class="form-control"
-                                value="<?php echo $result->street_Eng ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  Street Name - EN  field -->
-
-                <!--  District Name - AR  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('District Name (Arabic):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="district-name-ar" 
-                                class="form-control"
-                                value="<?php echo $result->district_Arb ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  District Name - AR  field -->
-
-                <!--  District Name - EN  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('District Name (English):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="district-name-en" 
-                                class="form-control"
-                                value="<?php echo $result->district_Eng ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  District Name - EN  field -->
-
-                <!--  City Name - AR  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('City Name(Arabic):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text"
-                                id="city-ar"
-                                name="city-name-ar" 
-                                class="form-control"
-                                value="<?php echo $result->city_Arb ?>"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <!-- /  City Name - AR  field -->
-
-                <!--  City Name - EN  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('City Name(English):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
+                    <!--  Client Name Arabic field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Client Name ( Arabic ):', 'zatca') ?></label>
+                        <input 
                             type="text"
-                            id="city-en"
-                            name="city-name-en" 
+                            id="client_name_ar"
+                            name="client-name-ar" 
                             class="form-control"
+                            value="<?php echo $result->aName ?>"
+                        />
+                    </div>
+                    <!-- /  Client Name Arabic field -->
+
+                    <!--  Client Name English field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Client Name( English ):', 'zatca') ?></label>
+                        <input 
+                            type="text"
+                            id="client_name_en"
+                            name="client-name-en" 
+                            class="form-control"
+                            value="<?php echo $result->eName ?>"
+                        />
+                    </div>
+                    <!-- /  Client Name English field -->
+
+                </div>
+                <!-- / Client Name Ar - En -->
+
+                <!-- VatId & Second Business ID -->
+                <div class="row g-3 mb-3">
+
+                    <!--  VAT ID field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('VAT ID:', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="vat-id" 
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->VATID ?>"
+                        />
+                    </div>
+                    <!-- /  VAT ID field -->
+
+                    <!--  Second Business ID  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Second Business ID :', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="second-business-id"
+                            id="second_bus_id"
+                            class="form-control" 
+                            autocomplete="off"
+                                            value="<?php echo $result->secondBusinessID ?>"
+                        />
+                    </div>
+                    <!-- /  Second Business ID  field -->
+
+                </div>
+                <!-- / VatId & Second Business ID -->
+
+                <!-- Second Business ID Type & ZATCA Invoices Type & Country -->
+                <div class="row g-3 mb-3">
+
+                    <!--  ZATCA Invoices Type  field -->
+                    <div class="col-md-4">
+                        <label class="form-label"><?php echo _e('ZATCA Invoices Type :', 'zatca') ?></label>
+                        <select class="form-select select2"  name="zatca-invoice-type">
+                            <option value="B2B" <?php if($result->zatcaInvoiceType  == 'B2B'){ echo 'selected';}?>>B2B</option>
+                            <option value="B2C" <?php if($result->zatcaInvoiceType  == 'B2C'){ echo 'selected';}?> >B2C</option>
+                            <option value="Both" <?php if($result->zatcaInvoiceType  == 'Both'){ echo 'selected';}?> >Both</option>
+                        </select>
+                    </div>
+                    <!-- /  ZATCA Invoices Type  field -->
+
+                    <!--  Second Business ID Type field -->
+                    <div class="col-md-4">
+                        <label class="form-label"><?php echo _e('Second Business ID Type:', 'zatca') ?></label>
+                        <select class="form-select select2"  name="second-business-id-type">
+                            <option value="">...</option>
+                            <?php 
+                            global $wpdb;
+                            
+                            // Fetch Data From Database:
+                            $buyers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE isBuyer=1" );
+                            foreach($buyers as $buyer) {?>
+                                <option value="<?php echo $buyer->codeNumber ?>" <?php if($result->secondBusinessIDType == $buyer->codeNumber){ echo 'selected';} ?> ><?php echo $buyer->aName. ' - ' . $buyer->eName ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <!-- /  Second Business ID Type field -->
+
+                    <!--  Country  field -->
+                    <div class="col-md-4">
+                        <label class="form-label"><?php echo _e('Country Name:', 'zatca') ?></label>
+                        <select class="form-select select2"  name="country">
+                            <option value=""> ...</option>
+                            <?php 
+                            global $wpdb;
+                            
+                            // Fetch Data From Database:
+                            $countries = $wpdb->get_results( "SELECT * FROM country" );
+                            foreach($countries as $country) {?>
+                                <option  value="<?php echo $country->country_id ?>" <?php if($result->country_No == $country->country_id){echo 'selected';} ?>><?php echo $country->arabic_name ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <!-- /  Country  field -->
+
+
+                </div>
+                <!-- / Second Business ID Type & ZATCA Invoices Type & Country -->
+
+                <!-- Apartment No &  PO Box Additional Number-->
+                <div class="row g-3 mb-3">
+
+                    <!--  Apartment No  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Apartment No :', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="apartment-no" 
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->apartmentNum ?>"
+                        />
+                    </div>
+                    <!-- /  Apartment No  field -->
+
+                    <!--  PO Box Additional Number  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('PO Box Additional Number :', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="po-box-additional-no" 
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->POBoxAdditionalNum ?>"
+                        />
+                
+                    </div>
+                    <!-- /  PO Box Additional Number  field -->
+ 
+                </div>
+                <!-- / Apartment No &  PO Box Additional Number-->
+
+                <!-- Postal Code & PO Box -->
+                <div class="row g-3 mb-3">
+
+                    <!--  Postal Code field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Postal Code:', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="postal-code"
+                            id="postal_code"
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->postalCode ?>"
+                            
+                        />
+                    </div>
+                    <!-- /  Postal Code field -->
+
+                    <!--  PO Box  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('PO Box :', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="po-box"
+                            id="po-insert-customer"
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->POBox ?>"
+                        />
+                    </div>
+                    <!-- /  PO Box  field -->
+
+                </div>
+                <!-- / Postal Code & PO Box -->
+
+                <!-- Street Name AR - EN -->
+                <div class="row g-3 mb-3">
+
+                    <!--  Street Name - AR  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Street Name (Arabic):', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="street-name-ar"
+                            id="address-ar"
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->street_Arb ?>"
+                        />
+                    </div>
+                    <!-- /  Street Name - AR  field -->
+
+                    <!--  Street Name - EN  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Street Name (English):', 'zatca') ?></label>
+                        <input 
+                            type="text"
+                            id="address-en"
+                            name="street-name-en" 
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->street_Eng ?>"
+                        />
+                    </div>
+                    <!-- /  Street Name - EN  field -->
+
+                </div>
+                <!-- / Street Name AR - EN -->
+
+                <!-- District Name AR - EN -->
+                <div class="row g-3 mb-3">
+
+                    <!--  District Name - AR  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('District Name (Arabic):', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="district-name-ar"
+                            id="dist_ar"
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->district_Arb ?>"
+                        />
+                    </div>
+                    <!-- /  District Name - AR  field -->
+
+                    <!--  District Name - EN  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('District Name (English):', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="district-name-en" 
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->district_Eng ?>"
+                        />
+                    </div>
+                    <!-- /  District Name - EN  field -->
+
+                </div>
+                <!-- / District Name AR - EN -->
+
+                <!-- City Name AR - EN -->
+                <div class="row g-3 mb-3">
+        
+                    <!--  City Name - AR  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('City Name(Arabic):', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="city-name-ar"
+                            id="city-ar"
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->city_Arb ?>"
+                        />
+                    </div>
+                    <!-- /  City Name - AR  field -->
+        
+                    <!--  City Name - EN  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('City Name(English):', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="city-name-en"
+                            id="city-en"
+                            class="form-control" 
+                            autocomplete="off"
                             value="<?php echo $result->city_Eng ?>"
-                            />
-                        </div>
+                        />
                     </div>
-                </div>
-                <!-- /  City Name - EN  field -->
+                    <!-- /  City Name - EN  field -->
 
-                <!--  Country Subdivision - AR  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Country Subdivision (Arabic):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                name="country-sub-name-ar" 
-                                class="form-control"
-                                value="<?php echo $result->countrySubdivision_Arb ?>"
-                            />
-                        </div>
+                </div>
+                <!-- / City Name AR - EN  -->
+
+                <!-- Country Subdivision AR - EN -->
+                <div class="row g-3 mb-3">
+        
+                    <!--  Country Subdivision - AR  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Country Subdivision (Arabic):', 'zatca') ?></label>
+                        <input 
+                            type="text" 
+                            name="country-sub-name-ar" 
+                            class="form-control" 
+                            autocomplete="off"
+                            value="<?php echo $result->countrySubdivision_Arb ?>"
+                        />
                     </div>
-                </div>
-                <!-- /  Country Subdivision - AR  field -->
+                    <!-- /  Country Subdivision - AR  field -->
 
-                <!--  Country Subdivision - EN  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Country Subdivision (English):', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <input 
+                    <!--  Country Subdivision - EN  field -->
+                    <div class="col-md-6">
+                        <label class="form-label"><?php echo _e('Country Subdivision (English):', 'zatca') ?></label>
+                        <input 
                             type="text" 
                             name="country-sub-name-en" 
-                            class="form-control"
+                            class="form-control" 
+                            autocomplete="off"
                             value="<?php echo $result->countrySubdivision_Eng ?>"
-                            />
-                        </div>
+                        />
                     </div>
-                </div>
-                <!-- /  Country Subdivision - EN  field -->
+                    <!-- /  Country Subdivision - EN  field -->
 
-                <!--  Country  field -->
-                <div class="mb-3 row col-mid-6">
-                    <label class="col-sm-2 col-form-label"><?php echo _e('Country :', 'zatca') ?></label>
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            <select class="form-select select2"  name="country">
-                                <option value=""> ...</option>
-                                <?php 
-                                global $wpdb;
-                                
-                                // Fetch Data From Database:
-                                $countries = $wpdb->get_results( "SELECT * FROM country" );
-                                foreach($countries as $country) {?>
-                                     '<option  value="<?php echo $country->country_id ?>" <?php if($result->country_No == $country->country_id){echo 'selected';} ?>><?php echo $country->arabic_name ?></option>';
-                                    <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
                 </div>
-                <!-- /  Country  field -->
+                <!-- / Country Subdivision AR - EN -->
 
                 <!-- Submit Btn -->
                 <div class="mb-3 row">
-                    <div class="d-grid gap-2 col-8 md-flex justify-content-md-end">
+                    <div class="d-flex justify-content-center">
                         <input type="submit" value="<?php echo _e('Update Customer Details', 'zatca') ?>" class="btn my-plugin-button " />
                     </div>
                 </div>

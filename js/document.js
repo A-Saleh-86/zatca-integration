@@ -308,14 +308,14 @@ $('#search-invoices-data').on('click', function(event) {
                         $("#selectedInvoiceTypeName").text(selectedOptionText);
 
                         
-                        // Assuming zatcadocumentunit_array is your array containing zatcadocumentunit data  
+                        // Assuming zatcaDocumentUnit_array is your array containing zatcaDocumentUnit data  
 
                         // Clear the trContent variable
                         var trContent = '';
                         // Clear the tbody element
                         $('tbody.order_details').empty();
                         $.each(data.zatca_document_unit_lines, function(index, data) {  
-                            // Access each zatcadocumentunit data fields here  
+                            // Access each zatcaDocumentUnit data fields here  
 
                             trContent = '<tr>';
                             trContent += '<td>' + data.itemNo + '</td>';

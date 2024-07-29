@@ -81,7 +81,7 @@
             global $wpdb;
 
             // Query to retrieve data
-            $resultes = $wpdb->get_results( "SELECT * FROM zatcadocument");
+            $resultes = $wpdb->get_results( "SELECT * FROM zatcaDocument");
             
             // Check if there are results
             if ($resultes) {
@@ -89,7 +89,7 @@
 
                     <?php
                         $zatcaCompanySatge1 = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
-                        FROM zatcadocument zd, zatcacompany zc 
+                        FROM zatcaDocument zd, zatcaCompany zc 
                         WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
                     ?>
                     <tr>
@@ -170,19 +170,19 @@
                             global $wpdb;
 
                             $zatcaSuccessResponse = $wpdb->get_var($wpdb->prepare("SELECT zatcaSuccessResponse 
-                                                                                        FROM zatcadocument 
+                                                                                        FROM zatcaDocument 
                                                                                         WHERE documentNo =  $result->documentNo"));
 
                             $zatcaRejectedInvoiceNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo 
-                                                                                        FROM zatcadocument 
+                                                                                        FROM zatcaDocument 
                                                                                         WHERE documentNo =  $result->documentNo"));
 
                             $zatcaAcceptedReissueInvoiceNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaAcceptedReissueInvoiceNo 
-                                                                                        FROM zatcadocument 
+                                                                                        FROM zatcaDocument 
                                                                                         WHERE documentNo =  $result->documentNo"));
                                                                                         
                             $isZatcaReissued = $wpdb->get_var($wpdb->prepare("SELECT isZatcaReissued 
-                                                                                        FROM zatcadocument 
+                                                                                        FROM zatcaDocument 
                                                                                         WHERE documentNo =  $result->documentNo"));
 
                             if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse == 0){?>
@@ -221,11 +221,11 @@
                             global $wpdb;
 
                             $zatcaSuccessResponse = $wpdb->get_var($wpdb->prepare("SELECT zatcaSuccessResponse 
-                                                                                    FROM zatcadocument 
+                                                                                    FROM zatcaDocument 
                                                                                     WHERE documentNo =  $result->documentNo"));
                             
                             $zatcaInvoiceType = $wpdb->get_var($wpdb->prepare("SELECT zatcaInvoiceType 
-                                                                                    FROM zatcadocument 
+                                                                                    FROM zatcaDocument 
                                                                                     WHERE documentNo =  $result->documentNo"));
 
 
@@ -235,7 +235,7 @@
                                 
                                 
                                 $zatcaCompanySatge = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
-                                FROM zatcadocument zd, zatcacompany zc 
+                                FROM zatcaDocument zd, zatcaCompany zc 
                                 WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
                                     
                                 // Check If 1 docuemnt B2B will redirect to clear():
@@ -372,7 +372,7 @@
                             <?php
 
                             // get warning msg:
-                            $warningMsg = $wpdb->get_var($wpdb->prepare("SELECT zatcaErrorResponse FROM zatcadocument Where documentNo = $result->documentNo"));
+                            $warningMsg = $wpdb->get_var($wpdb->prepare("SELECT zatcaErrorResponse FROM zatcaDocument Where documentNo = $result->documentNo"));
                             $modalWarningMsg = $warningMsg;
                             $doc_no = $result->documentNo;
                             ?>

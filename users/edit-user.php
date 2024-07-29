@@ -7,7 +7,7 @@ global $wpdb;
 
 
 // Table Name:
-$table_name = 'zatcauser';
+$table_name = 'zatcaUser';
 
 // Prepare the query with a condition on the DeviceId column using the %d placeholder
 $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE personNo = $personNo" ) );
@@ -105,7 +105,7 @@ if (!empty($results)) {
                 <!-- ZATCA_B2C_NotIssuedDocuments_isRemind field -->
                 <div class="mb-3 row col-md-6">
                     <label class="col-sm-4 col-form-label text-wrap label-style" >
-                        <?php echo _e('ZATCA_B2C_NotIssuedDocuments_isRemind :', 'zatca') ?>
+                        <?php echo _e('Remind with Late B2C Invoices:', 'zatca') ?>
                     </label>
                     <div class="col-sm-8 col-md-8">
                         <div class="form-group">
@@ -127,21 +127,24 @@ if (!empty($results)) {
                 <!-- ZATCA_B2C_NotIssuedDocuments_RemindInterval field -->
                 <div class="mb-3 row col-md-6">
                     <label class="col-sm-4 col-form-label label-style" >
-                        <?php echo _e('ZATCA_B2C_NotIssuedDocuments_RemindInterval :', 'zatca') ?>
+                        <?php echo _e('Remind with Late B2C Invoices before ZATCA grace period ending with ( number box ) hours:', 'zatca') ?>
                     </label>
                     <div class="col-sm-8 col-md-8">
                         <div class="form-group">
-                            <input 
-                                type="text"
-                                name="remindInterval" 
-                                id="remindInterval"
-                                class="form-control" 
-                                autocomplete="off"
-                                value="<?php echo $result->ZATCA_B2C_NotIssuedDocumentsReminderInterval ?>"
-                                <?php
-                                echo (isset($result->ZATCA_B2C_NotIssuedDocuments_isRemind) && $result->ZATCA_B2C_NotIssuedDocuments_isRemind==1) ? '' : 'disabled'; 
-                                ?>
-                            />
+                            <div class="input-group">
+                                <input 
+                                    type="text"
+                                    name="remindInterval" 
+                                    id="remindInterval"
+                                    class="form-control" 
+                                    autocomplete="off"
+                                    value="<?php echo $result->ZATCA_B2C_NotIssuedDocumentsReminderInterval ?>"
+                                    <?php
+                                    echo (isset($result->ZATCA_B2C_NotIssuedDocuments_isRemind) && $result->ZATCA_B2C_NotIssuedDocuments_isRemind==1) ? '' : 'disabled'; 
+                                    ?>
+                                />
+                                <span class="d-inline mx-2"><?php echo _e('Hours', 'zatca');?></span>
+                            </div>
                         </div>
                     </div>
                 </div>

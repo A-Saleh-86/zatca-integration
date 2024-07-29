@@ -1,0 +1,121 @@
+.client-name-ar-input,
+.district-name-ar-input,
+.vat-id-input,
+.apartment-no-input,
+.second-bussiness-id,
+.address-name-ar-input,
+.city-name-ar-input,
+.postal-code {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.floating-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 16px;
+  color: #aaa;
+  transition: 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.client-name-ar-input:not(:placeholder-shown) + .floating-label, 
+.district-name-ar-input:not(:placeholder-shown) + .floating-label, 
+.vat-id-input:not(:placeholder-shown) + .floating-label,
+.apartment-no-input:not(:placeholder-shown) + .floating-label,
+.second-bussiness-id:not(:placeholder-shown) + .floating-label,
+.address-name-ar-input:not(:placeholder-shown) + .floating-label,
+.city-name-ar-input:not(:placeholder-shown) + .floating-label,
+.postal-code:not(:placeholder-shown) + .floating-label {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #666;
+}
+
+.client-name-ar-input:focus + .floating-label, 
+.district-name-ar-input:focus + .floating-label,
+.vat-id-input:focus + .floating-label,
+.apartment-no-input:focus + .floating-label,
+.second-bussiness-id:focus + .floating-label,
+.address-name-ar-input:focus + .floating-label,
+.city-name-ar-input:focus + .floating-label,
+.postal-code:focus + .floating-label {
+  top: 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+.client-name-ar-input:not(:placeholder-shown):valid + .floating-label,
+.district-name-ar-input:not(:placeholder-shown):valid + .floating-label,
+.vat-id-input:not(:placeholder-shown):valid + .floating-label,
+.apartment-no-input:not(:placeholder-shown):valid + .floating-label,
+.second-bussiness-id:not(:placeholder-shown):valid + .floating-label,
+.address-name-ar-input:not(:placeholder-shown):valid + .floating-label,
+.city-name-ar-input:not(:placeholder-shown):valid + .floating-label,
+.postal-code:not(:placeholder-shown):valid + .floating-label {
+  top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  display: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.checkout-inputs input {
+  margin-bottom: 10px!important;
+}
+
+
+/* Apply general styling for the select element */
+#new-combobox .components-combobox-control__input {
+  background: #fff;
+  border: 1px solid #50575e;
+  border-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #2b2d2f;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1em;
+  max-height: 52px;
+  padding: 1.5em .5em .5em;
+  text-align: left;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* Style the select element when focused */
+#new-combobox .components-combobox-control__input:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #50575e;
+  color: #2b2d2f;
+  outline: 0;
+}
+
+/* Remove bottom border radius when expanded */
+#new-combobox .components-combobox-control__input[aria-expanded="true"] {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#new-combobox .wc-block-components-combobox-control label.components-base-control__label {
+  top: -12px; /* Adjust this value as needed */
+}
+

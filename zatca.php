@@ -26,16 +26,21 @@ include 'option.php';
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
 // Include the file that contains the create_custom_table function
- //require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
 
-// Add Action in startup to create database tables:
-//add_action('admin_menu', 'create_custom_tables');
+// Create Tables when Plugin run:
+register_activation_hook( __FILE__, 'create_custom_tables' );
 
 // Add [CSS, JS, Bootstrap ] to admin panel:
 add_action('admin_enqueue_scripts', 'load_assets');
 
 // add assets (css, js, etc):
 add_action('wp_enqueue_scripts',  'load_assets');
+
+
+// Action For Javascript Localization:
+add_action('wp_enqueue_scripts', 'localization');
+add_action('admin_enqueue_scripts', 'localization');
 
 // Action Of Sending woo order data in AJax [ Document ]:
 add_action('admin_enqueue_scripts', 'document_data_ajax');
@@ -51,6 +56,9 @@ add_action('wp_ajax_insert-documents', 'insert_form_documents');
 
 // ajax action - edit - customers:
 add_action('wp_ajax_edit_customer', 'edit_customer_form');
+
+// ajax action - edit - checkout Page:
+add_action('wp_ajax_edit_checkout_page', 'edit_checkout_page_function');
 
 // ajax action - edit - devices:
 add_action('wp_ajax_edit_device', 'edit_form_device');
@@ -78,7 +86,7 @@ add_action('wp_ajax_woo-document-data', 'woo_document');
 add_action('wp_ajax_doc_check_customer', 'document_check_customer');
 
 
-// Action to get data as ajax data to check if customer exists in zatcacustomer or not - document:
+// Action to get data as ajax data to check if customer exists in zatcaCustomer or not - document:
 add_action('wp_ajax_doc_customer', 'doc_customer_Get_data_ajax');
 
 // Action to get data to put in customer insert page when redirected from document page:
@@ -112,7 +120,15 @@ add_action('wp_ajax_insert_user', 'insert_user_zatcaUsers');
 // Action to Edit Users data - zatcaUsers:
 add_action('wp_ajax_edit_user', 'edit_user_zatcaUsers');
 
+// Action to check Users Notification - zatcaUsers:
+add_action('wp_ajax_check_admin_notification', 'check_admin_for_B2C_notification');
 
+// Short code to checkbox [ checkout page ]:
+add_shortcode('checkbox', 'checkbox_function');
+    
+// Hook of woo to insert checkbox in checkout page [ checkout page ]:
+add_action('woocommerce_blocks_checkout_enqueue_data', 'add_custom_field_to_checkout_blocks');
+    
 
 // Function to run Text Domain:
 function my_plugin_load_textdomain() {
@@ -179,12 +195,13 @@ function my_plugin_button_styles() {
     echo '<style>.my-plugin-button { ' . $button_style . ' }</style>';
 }
 
-
+// Function to load all assets [ CSS - JS]:
 function load_assets(){
 
     wp_enqueue_style('datatables-css', plugin_dir_url(__FILE__) . '/css/datatables.min.css');
     wp_enqueue_style('datatables-responsive-css', plugin_dir_url(__FILE__) . '/css/datatable-responsive.css');
     wp_enqueue_style('main', plugin_dir_url(__FILE__) . '/css/main.css') ;
+    wp_enqueue_style('checkout-page', plugin_dir_url(__FILE__) . '/css/checkout-page.css') ;
     wp_enqueue_style('bootstap-css', plugin_dir_url(__FILE__) . '/css/bootstrap.min.css');
     wp_enqueue_style('elect2', plugin_dir_url(__FILE__) . '/css/select.css');
     wp_enqueue_style('fontawsome-css', plugin_dir_url(__FILE__) . '/css/fontawesome.css');
@@ -206,6 +223,16 @@ function load_assets(){
     wp_enqueue_script('fontawsome-js', plugin_dir_url(__FILE__) . '/js/fontawesome.min.js', array(), false, true);
     wp_enqueue_script('main-js',  plugin_dir_url(__FILE__) . '/js/main.js', array(), false, true);
     wp_enqueue_script('document-js',  plugin_dir_url(__FILE__) . '/js/document.js', array(), false, true);
+    wp_enqueue_script('checkout-page',  plugin_dir_url(__FILE__) . '/js/checkout-page.js', array(), false, true);
+    wp_localize_script( 'checkout-page', 'checkoutPage', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        ) 
+    );
+    
+    wp_localize_script( 'main-js', 'main', array( 
+        'dtLoc' => plugin_dir_url(__FILE__) . '/js/datatable-localization.json',
+        'locale' => get_locale())
+    );
     wp_localize_script( 'document-js', 'myDoc', array( 
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
@@ -214,7 +241,8 @@ function load_assets(){
     wp_enqueue_script('users-js',  plugin_dir_url(__FILE__) . '/js/users.js', array(), false, true);
     wp_localize_script( 'users-js', 'myUser', array( 
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-        'adminUrl' => admin_url('admin.php?page=zatca-users&action=view'),) 
+        'adminUrl' => admin_url('admin.php?page=zatca-users&action=view'),
+        'isAdmin' => is_admin() ? 'true' : 'false',) 
     );
     wp_enqueue_script('device-js',  plugin_dir_url(__FILE__) . '/js/device.js', array(), false, true);
     wp_localize_script( 'device-js', 'myDevice', array( 
@@ -230,12 +258,61 @@ function load_assets(){
     wp_localize_script( 'customer-js', 'myCustomer', array( 
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-customers&action=view'),
-        'document' => admin_url('admin.php?page=zatca-documents&action=insert'),) 
+        'document' => admin_url('admin.php?page=zatca-documents&action=insert'),
+        ) 
     );
-
     wp_enqueue_script('notification-js', plugin_dir_url(__FILE__) . '/js/notification.js', array(), false, true);
 
 }
+
+    // Function to javascript localization:
+    function localization() {
+
+        // zatcaCustomer Localization:
+        wp_enqueue_script('customer-js', plugin_dir_url(__FILE__) . 'js/customer.js', array(), false, true);
+        wp_localize_script('customer-js', 'myCustomer', array( 
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'adminUrl' => admin_url('admin.php?page=zatca-customers&action=view'),
+            'document' => admin_url('admin.php?page=zatca-documents&action=insert'),
+            'postal_null' => __('Postal Code Cant be Null', 'zatca'),
+            'postal_digits' => __('Postal Code Must be 5 Digits', 'zatca'),
+            'street' => __('Street Arabic Name Cant be Null', 'zatca'),
+            'second_id' => __('second business id Cant be Null', 'zatca'),
+            'district' => __('District Arabic Name Cant be Null', 'zatca'),
+            'city' => __('City Arabic Name Cant be Null', 'zatca'),
+            'customer_inserted' => __('Customer Inserted Success', 'zatca'),
+            'select_customer' => __('Please select a customer first', 'zatca'),
+        ));
+    
+        // zatcaCompany localization:
+        wp_enqueue_script('company-js',  plugin_dir_url(__FILE__) . '/js/company.js', array(), false, true);
+        wp_localize_script( 'company-js', 'myCompany', array( 
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'adminUrl' => admin_url('admin.php?page=zatca-company&action=view'),
+            'second_bus' => __('Second Business Id Must be 10 Digits', 'zatca'),
+            'city_ar' => __('Please Insert City Arabic Name', 'zatca'),
+            'dist_ar' => __('Please Insert District Arabic Name', 'zatca'),
+            'company_name' => __('Please Insert Company Name', 'zatca'),
+            'appartment_no' => __('Please Insert Appartment No.', 'zatca'),
+            'po_box_additional' => __('Please Insert Po Box Additional No.', 'zatca'),
+            'street_ar' => __('Please Insert Street Arabic Name', 'zatca'),
+        ));
+    
+        // zatcaUser localization:
+        wp_enqueue_script('users-js',  plugin_dir_url(__FILE__) . '/js/users.js', array(), false, true);
+        wp_localize_script( 'users-js', 'myUser', array( 
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'adminUrl' => admin_url('admin.php?page=zatca-users&action=view'),
+            'isAdmin' => is_admin() ? 'true' : 'false',
+            'person_no_validation' => __('Person No Cant be Null', 'zatca'),
+            'reminder_hours_validation' => __('Please insert reminder hours', 'zatca'),
+            'reminder_hours_validation_number' => __('Reminder hours must be between 1-23 Hours', 'zatca'),
+            'user_exist' => __('User Already Exist', 'zatca'),
+            'user_inserted' => __('User Inserted Successfully', 'zatca'),
+            ) 
+        );
+    
+    }
 
 // AJax Insert_Data to DB - customers [ Insert-page]:
 function submit_customer_form(){
@@ -283,7 +360,7 @@ function submit_customer_form(){
 
 
         $insert_result = $wpdb->insert(
-            'zatcacustomer',
+            'zatcaCustomer',
             [
                 'clientVendorNo'       => $client_No,
                 'aName'                => $client_Name_Ar,
@@ -343,6 +420,7 @@ function get_customer_data_from_woo(){
         $last_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_last_name' and user_id = $vals"));
         $address = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_address_1' and user_id = $vals"));
         $city = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_city' and user_id = $vals"));
+        $postalCode = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_postcode' and user_id = $vals"));
 
         // Return the fetched data
         // echo $first_name . ' ' . $last_name;
@@ -350,7 +428,8 @@ function get_customer_data_from_woo(){
             'first_name' => $first_name,
             'last_name'  => $last_name,
             'address'    => $address,
-            'city'       => $city
+            'city'       => $city,
+            'postalCode' => $postalCode
         );
 
         // Return the array as JSON
@@ -402,7 +481,7 @@ function edit_customer_form(){
         $countryEnglish = $wpdb->get_var($wpdb->prepare("SELECT english_name FROM country WHERE country_id = $country"));
                 
 
-        $table_name = 'zatcacustomer';
+        $table_name = 'zatcaCustomer';
         $data = array(
             'clientVendorNo'       => $client_No,
             'aName'                => $client_Name_Ar,
@@ -437,7 +516,7 @@ function edit_customer_form(){
             echo "Error inserting data: $error_message";
         } else {
 
-            echo 'Data Updated';
+            echo __('Data Updated', 'zatca');
         }
        
     }
@@ -522,8 +601,8 @@ function edit_form_device(){
         $deviceStatus = $form_array['deviceStatus'];
 
 
-        // Validation on deviceNo If Used in zatcadocument:
-        $zatcaDocDeviceNo = $wpdb->get_var($wpdb->prepare("SELECT deviceNo FROM zatcadocument WHERE deviceNo = $device_No_id"));
+        // Validation on deviceNo If Used in zatcaDocument:
+        $zatcaDocDeviceNo = $wpdb->get_var($wpdb->prepare("SELECT deviceNo FROM zatcaDocument WHERE deviceNo = $device_No_id"));
 
         if($zatcaDocDeviceNo != NULL){
 
@@ -582,7 +661,7 @@ function edit_form_device(){
         }
         else
         { 
-            // Update Device Data if Not Used in zatcadocument:
+            // Update Device Data if Not Used in zatcaDocument:
 
             // check if exist deviceStatus = 0 in zatcadevice table or not
             $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcadevice WHERE deviceStatus = 0");
@@ -697,10 +776,11 @@ function submit_form_company(){
 
         // Check If Insert:
         if($status == 'Insert'){
-            
-            // insert zatcacompany data:
+
+            // $wpdb->show_errors();
+            // insert zatcaCompany data:
             $insert_company = $wpdb->insert(
-                'zatcacompany',
+                'zatcaCompany',
                 [
                     'zatcaStage'                => $zatca_Stage,
                     'secondBusinessIDType'      => $second_Business_Id_Type,
@@ -708,7 +788,7 @@ function submit_form_company(){
                     'VATCategoryCode'           => $vat_Cat_Code,
                     'VATCategoryCodeSubTypeNo'  => $vat_Cat_Code_Sub_No,
                     'VATID'                     => $vat_Id,
-                    'aName'                     => $aName,
+                    'companyName'                     => $aName,
                     'apartmentNum'              => $apartment_No,
                     'postalCode'                => $postal_code,
                     'POBox'                     => $po_Box,
@@ -723,13 +803,14 @@ function submit_form_company(){
                     'countrySubdivision_Eng'    => $country_Sub_Name_En,
                     'countryNo'                 => $country, 
                     'country_Arb'               => $countryArab,
-                    'country_Eng'               => $countryEnglish,
+                    'country_Eng'               => $countryEnglish
                 ]
             );
 
-            // insert zatcabranch data:
+            // $wpdb->print_error();
+            // insert zatcaBranch data:
             $insert_branch = $wpdb->insert(
-                'zatcabranch',
+                'zatcaBranch',
                 [
                     'deviceID'                  => $branch_device,
                     'zatcaStage'                => $zatca_Stage,
@@ -768,8 +849,8 @@ function submit_form_company(){
 
         }else{ // If Update:
 
-            // Update zatcacompany:
-            $table_name = 'zatcacompany';
+            // Update zatcaCompany:
+            $table_name = 'zatcaCompany';
             $data = array(
                 'zatcaStage'                        => $zatca_Stage,
                 'secondBusinessIDType'              => $second_Business_Id_Type,
@@ -777,7 +858,7 @@ function submit_form_company(){
                 'VATCategoryCode'                   => $vat_Cat_Code,
                 'VATCategoryCodeSubTypeNo'          => $vat_Cat_Code_Sub_No,
                 'VATID'                             => $vat_Id,
-                'aName'                             => $aName,
+                'companyName'                             => $aName,
                 'apartmentNum'                      => $apartment_No,
                 'postalCode'                        => $postal_code,
                 'POBox'                             => $po_Box,
@@ -795,11 +876,11 @@ function submit_form_company(){
                 'country_Eng'                       => $countryEnglish,
             );
             $where = array('companyNo' => $id);
-            $update_zatcacompany = $wpdb->update($table_name, $data, $where);
+            $update_zatcaCompany = $wpdb->update($table_name, $data, $where);
             
             
-            // Update zatcabranch:
-            $table_name = 'zatcabranch';
+            // Update zatcaBranch:
+            $table_name = 'zatcaBranch';
             $data = array(
                 'deviceID'                  => $branch_device,
                 'zatcaStage'                => $zatca_Stage,
@@ -825,10 +906,10 @@ function submit_form_company(){
                 'ZATCA_B2C_SendingIntervalType' => $zatca_interval,
             );
             $where = array('buildingNo' => $branch_no);
-            $update_zatcabranch = $wpdb->update($table_name, $data, $where);
+            $update_zatcaBranch = $wpdb->update($table_name, $data, $where);
         
 
-            if ($update_zatcacompany === false || $update_zatcabranch === false) {
+            if ($update_zatcaCompany === false || $update_zatcaBranch === false) {
                 // There was an error inserting data
                 $error_message = $wpdb->last_error;
                 echo "Error inserting data: $error_message";
@@ -854,15 +935,20 @@ function woo_company(){
 
     // Get Data from wp_options For address:
     $address = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_address'"));
+    // Get Data from wp_options For address 2:
+    $address_2 = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_address_2'"));
 
     // Get Data from wp_options For city:
     $city = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_city'"));
-
+    // Get Data from wp_options For Postal code:
+    $postal_code = $wpdb->get_var($wpdb->prepare("select option_value from $table_usermeta WHERE option_name ='woocommerce_store_postcode'"));
     // Return the fetched data
 
     $response = array(
-        'address'   => $address,
-        'city'      => $city
+        'address'       => $address,
+        'address_2'     => $address_2,
+        'city'          => $city,
+        'postal_code'   => $postal_code
     );
 
     // Return the array as JSON
@@ -952,8 +1038,8 @@ function woo_document(){
     // left amount:
     $leftAmount = $payed - $totalPayed;
 
-    $customerVatId = $wpdb->get_var($wpdb->prepare("SELECT VATID FROM zatcacustomer WHERE clientVendorNo = $customerId"));
-    $invoiceType = $wpdb->get_var($wpdb->prepare("select zatcaInvoiceType from zatcacustomer where clientVendorNo = $customerId"));
+    $customerVatId = $wpdb->get_var($wpdb->prepare("SELECT VATID FROM zatcaCustomer WHERE clientVendorNo = $customerId"));
+    $invoiceType = $wpdb->get_var($wpdb->prepare("select zatcaInvoiceType from zatcaCustomer where clientVendorNo = $customerId"));
     
     $invoiceTypeCode = 0;
 
@@ -1000,11 +1086,11 @@ function woo_document(){
     //////// get documentUnits lines: //////////////////////////////////////////////////////////////
 
     // #####################################
-    // Add Data to zatcadocumentunit_array:#
+    // Add Data to zatcaDocumentUnit_array:#
     // #####################################
 
-    // Initialize an empty array to store zatcadocumentunit data  
-    $zatcadocumentunit_array = [];
+    // Initialize an empty array to store zatcaDocumentUnit data  
+    $zatcaDocumentUnit_array = [];
 
     // get item id for item [ line_item ]:
     $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
@@ -1120,8 +1206,8 @@ function woo_document(){
                 $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 2, '.', '');
             
 
-                // Prepare zatcadocumentunit data  
-                $zatcadocumentunit_data = 
+                // Prepare zatcaDocumentUnit data  
+                $zatcaDocumentUnit_data = 
                 [  
                     'itemNo'        => $item->order_item_id,  
                     'eName'         => $doc_unit_sku,  
@@ -1134,8 +1220,8 @@ function woo_document(){
                     'amountWithVAT' => $final_amountWithVat
                 ];
 
-                // Push the zatcadocumentunit data to the array  
-                $zatcadocumentunit_array[] = $zatcadocumentunit_data;
+                // Push the zatcaDocumentUnit data to the array  
+                $zatcaDocumentUnit_array[] = $zatcaDocumentUnit_data;
             }
         }
     }
@@ -1159,7 +1245,7 @@ function woo_document(){
         'totalPayed' => number_format($totalPayed, 2, '.', ''),
         'totalTax' => $totalTax,
         'leftAmount' =>$leftAmount,
-        'zatca_document_unit_lines' => $zatcadocumentunit_array,
+        'zatca_document_unit_lines' => $zatcaDocumentUnit_array,
         'order_status' => $order_status
     );
 
@@ -1219,8 +1305,8 @@ function insert_form_documents(){
         // Get Sub Net Total from woo_order_itemmeta:
         $sub_net_total = wc_get_order_item_meta( $item_id_line_item, '_line_total', true );
         
-        // Check For Document no in zatcadocument [Previouse Doc No]:
-        $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcadocument") );
+        // Check For Document no in zatcaDocument [Previouse Doc No]:
+        $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocument") );
 
         $previuos_docNo = 0;
         $previousInvoiceHash = '';
@@ -1239,11 +1325,11 @@ function insert_form_documents(){
             $previousInvoiceHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
         }
         
-        // Get seconde bussiness id type from zatcacompany [ seller ]:
-        $seller_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcacompany"));
+        // Get seconde bussiness id type from zatcaCompany [ seller ]:
+        $seller_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCompany"));
        
-        // Get seconde bussiness id from zatcacompany [ seller ]:
-        $seller_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcacompany"));
+        // Get seconde bussiness id from zatcaCompany [ seller ]:
+        $seller_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCompany"));
         
         // Prifix of wp_wc_orders:
         $table_orders = $wpdb->prefix . 'wc_orders';
@@ -1251,92 +1337,92 @@ function insert_form_documents(){
         // get customer id from order table:
         $order_Customer_Id = $wpdb->get_var($wpdb->prepare("select customer_id from $table_orders WHERE id = $orderId"));
         
-        // get buyer_secondBusinessIDType from zatcacustomers:
-        $buyer_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get buyer_secondBusinessIDType from zatcaCustomers:
+        $buyer_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get buyer_secondBusinessID from zatcacustomers:
-        $buyer_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get buyer_secondBusinessID from zatcaCustomers:
+        $buyer_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // Get Seller Vat from zatcacompany [ seller ]:
-        $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcacompany"));
+        // Get Seller Vat from zatcaCompany [ seller ]:
+        $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCompany"));
         
-        // Get Seller apartment from zatcacompany [ seller ]:
-        $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcacompany"));
+        // Get Seller apartment from zatcaCompany [ seller ]:
+        $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCompany"));
         
-        // Get Seller POBoxAdditionalNum from zatcacompany [ seller ]:
-        $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcacompany"));
+        // Get Seller POBoxAdditionalNum from zatcaCompany [ seller ]:
+        $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCompany"));
         
-        // Get Seller POBox from zatcacompany [ seller ]:
-        $seller_POBox_Company = $wpdb->get_var($wpdb->prepare("select POBox from zatcacompany"));
+        // Get Seller POBox from zatcaCompany [ seller ]:
+        $seller_POBox_Company = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCompany"));
         
-        // Get Seller postal code from zatcacompany:
-        $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcacompany"));
+        // Get Seller postal code from zatcaCompany:
+        $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCompany"));
         
-        // Get Seller street_Arb from zatcacompany [ seller ]:
-        $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcacompany"));
+        // Get Seller street_Arb from zatcaCompany [ seller ]:
+        $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCompany"));
         
-        // Get Seller street_Eng from zatcacompany [ seller ]:
-        $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcacompany"));
+        // Get Seller street_Eng from zatcaCompany [ seller ]:
+        $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCompany"));
         
-        // Get Seller district_Arb from zatcacompany [ seller ]:
-        $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcacompany"));
+        // Get Seller district_Arb from zatcaCompany [ seller ]:
+        $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCompany"));
         
-        // Get Seller district_Eng from zatcacompany [ seller ]:
-        $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcacompany"));
+        // Get Seller district_Eng from zatcaCompany [ seller ]:
+        $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCompany"));
         
-        // Get Seller city_Arb from zatcacompany [ seller ]:
-        $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcacompany"));
+        // Get Seller city_Arb from zatcaCompany [ seller ]:
+        $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCompany"));
         
-        // Get Seller city_Eng from zatcacompany [ seller ]:
-        $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcacompany"));
+        // Get Seller city_Eng from zatcaCompany [ seller ]:
+        $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCompany"));
         
-        // Get Seller country_Arb from zatcacompany [ seller ]:
-        $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcacompany"));
+        // Get Seller country_Arb from zatcaCompany [ seller ]:
+        $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCompany"));
         
-        // Get Seller country_Eng from zatcacompany [ seller ]:
-        $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcacompany"));
+        // Get Seller country_Eng from zatcaCompany [ seller ]:
+        $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCompany"));
         
-        // Get Seller CountryNo from zatcacompany [ seller ]:
-        $seller_CountryNo_Company = $wpdb->get_var($wpdb->prepare("select countryNo from zatcacompany "));
+        // Get Seller CountryNo from zatcaCompany [ seller ]:
+        $seller_CountryNo_Company = $wpdb->get_var($wpdb->prepare("select countryNo from zatcaCompany "));
         
-        // get aName from zatcacustomers:
-        $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get aName from zatcaCustomers:
+        $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get eName from zatcacustomers:
-        $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get eName from zatcaCustomers:
+        $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get apartmentNum from zatcacustomers:
-        $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get apartmentNum from zatcaCustomers:
+        $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get POBoxAdditionalNum from zatcacustomers:
-        $buyer_POBoxAdditionalNum_Customer = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get POBoxAdditionalNum from zatcaCustomers:
+        $buyer_POBoxAdditionalNum_Customer = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get PostalCode from zatcacustomers:
-        $buyer_PoCode = $wpdb->get_var($wpdb->prepare("select POBox from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get PostalCode from zatcaCustomers:
+        $buyer_PoCode = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get PostalCode from zatcacustomers:
-        $buyer_PostalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get PostalCode from zatcaCustomers:
+        $buyer_PostalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get street_Arb from zatcacustomers:
-        $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get street_Arb from zatcaCustomers:
+        $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get street_Eng from zatcacustomers:
-        $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get street_Eng from zatcaCustomers:
+        $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get district_Arb from zatcacustomers:
-        $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get district_Arb from zatcaCustomers:
+        $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get district_Eng from zatcacustomers:
-        $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get district_Eng from zatcaCustomers:
+        $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get city_Arb from zatcacustomers:
-        $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get city_Arb from zatcacustomers:
-        $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get CountryNo from zatcacustomers:
-        $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get CountryNo from zatcaCustomers:
+        $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
 
 
@@ -1373,18 +1459,18 @@ function insert_form_documents(){
                 FROM $table_name_device
                 WHERE deviceStatus = 0")
                 );
-            $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcadocument WHERE deviceNo = $deviceNo");
+            $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcaDocument WHERE deviceNo = $deviceNo");
             $docNo = $wpdb->get_var($query);
             $docNo = $docNo + 1;
 
             $returnReason = $form_array['returnReason'];
             $reason = $form_array['returnReasonType'];
             // #################################
-            // Insert Data into zatcadocument:##
+            // Insert Data into zatcaDocument:##
             // #################################
             
             $insert_doc = $wpdb->insert(
-                'zatcadocument',
+                'zatcaDocument',
                 [
                     'documentNo'                            => $docNo,
                     'deviceNo'                              => $deviceNo,
@@ -1456,7 +1542,7 @@ function insert_form_documents(){
             } else {
     
                 // Get Last DocNo Inserted:
-                $last_doc_no = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcadocument"));
+                $last_doc_no = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaDocument"));
         
                 if($last_doc_no === false) {
     
@@ -1465,7 +1551,7 @@ function insert_form_documents(){
                     echo "Error Get Last DocNo Inserted: " . $wpdb->last_error;
                 }else {
     
-                    // Get last DocNo in zatcadocumentno:
+                    // Get last DocNo in zatcaDocumentno:
                     $last_doc=0;
     
                     foreach($last_doc_no as $doc){
@@ -1476,18 +1562,18 @@ function insert_form_documents(){
                     
                     
                     /* ####################################
-                    ## Insert Data into zatcadocumentxml:##
+                    ## Insert Data into zatcaDocumentxml:##
                     */ ####################################
     
                         $data_doc_xml = $wpdb->insert(
-                            'zatcadocumentxml',
+                            'zatcaDocumentxml',
                             [
                                 'documentNo'  => $docNo,
                                 'deviceNo'    => $device_No
                             ]
                         );
     
-                        // Validation of inserting zatcadocumentxml:
+                        // Validation of inserting zatcaDocumentxml:
                         if ($data_doc_xml === false) {
     
                             // Check For Error:
@@ -1497,7 +1583,7 @@ function insert_form_documents(){
     
     
                     // ################################
-                    // Add Data to zatcadocumentunit:##
+                    // Add Data to zatcaDocumentUnit:##
                     // ################################
     
                     // get item id for item [ line_item ]:
@@ -1608,9 +1694,9 @@ function insert_form_documents(){
                                 $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 2, '.', '');
                             
     
-                            // Insert Data To zatcadocumentunit:
+                            // Insert Data To zatcaDocumentUnit:
                             $insert_doc_unit = $wpdb->insert(
-                                'zatcadocumentunit',
+                                'zatcaDocumentUnit',
                                 [
                                     'deviceNo'      => $device_No,
                                     'documentNo'    => $docNo,
@@ -1628,7 +1714,7 @@ function insert_form_documents(){
                         }
                         }
                         
-                        // Validation of zatcadocumentunit:
+                        // Validation of zatcaDocumentUnit:
                         if ($insert_doc_unit === false) {
     
                             // Check For Error:
@@ -1659,7 +1745,7 @@ function insert_form_documents(){
 }
 
 
-// Function to check if customer exist on zatcacustomer or not:
+// Function to check if customer exist on zatcaCustomer or not:
 function document_check_customer(){
 
     if(isset($_REQUEST)){
@@ -1670,7 +1756,7 @@ function document_check_customer(){
         global $wpdb;
 
         // Table Name:
-        $table_name_customes = 'zatcacustomer';
+        $table_name_customes = 'zatcaCustomer';
 
         // Prepare the query with a condition on Customer Exist or not:
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_customes WHERE clientVendorNo = $customerId") );
@@ -1692,7 +1778,7 @@ function document_check_customer(){
     die();
 }
 
-// Function to add customer to zatcacustomer from redirect from document page:
+// Function to add customer to zatcaCustomer from redirect from document page:
 function document_customer_handle_in_customer_page(){
 
     if (isset($_GET['page']) && $_GET['page'] ==='zatca-documents' &&  isset($_GET['action']) && $_GET['action'] === 'doc-add-customer') {
@@ -1877,21 +1963,21 @@ function document_edit_form(){
 
         // Tables Name:
         $table_name_device = 'zatcadevice';
-        $table_name_document = 'zatcadocument';
+        $table_name_document = 'zatcaDocument';
         $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
         $table_orders = $wpdb->prefix . 'wc_orders';
 
 
-        // get device no From zatcadocument:
+        // get device no From zatcaDocument:
         $deviceNo_from_db = $wpdb->get_var($wpdb->prepare("select deviceNo from $table_name_document WHERE documentNo = $documentNo "));
         
-        // get previousDocumentNo From zatcadocument:
+        // get previousDocumentNo From zatcaDocument:
         $previousDocumentNo_from_db = $wpdb->get_var($wpdb->prepare("select previousDocumentNo from $table_name_document WHERE documentNo = $documentNo "));
         
-        // get previousInvoiceHash From zatcadocument:
+        // get previousInvoiceHash From zatcaDocument:
         $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("select previousInvoiceHash from $table_name_document WHERE documentNo = $documentNo "));
 
-        // Pget UUID From zatcadocument::
+        // Pget UUID From zatcaDocument::
         $uuid_from_db = $wpdb->get_var($wpdb->prepare("select UUID from $table_name_document WHERE documentNo = $documentNo "));
         
         // Get Order Id for Specific Item_Id [ line_item ]:
@@ -1906,99 +1992,99 @@ function document_edit_form(){
         // Get Sub Net Total from woo_order_itemmeta:
         $sub_net_total = wc_get_order_item_meta( $item_id_line_item, '_line_total', true );
         
-        // Get seconde bussiness id type from zatcacompany [ seller ]:
-        $seller_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcacompany"));
+        // Get seconde bussiness id type from zatcaCompany [ seller ]:
+        $seller_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCompany"));
        
-        // Get seconde bussiness id from zatcacompany [ seller ]:
-        $seller_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcacompany"));
+        // Get seconde bussiness id from zatcaCompany [ seller ]:
+        $seller_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCompany"));
         
-        // get buyer_secondBusinessIDType from zatcacustomers:
-        $buyer_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get buyer_secondBusinessIDType from zatcaCustomers:
+        $buyer_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get buyer_secondBusinessID from zatcacustomers:
-        $buyer_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get buyer_secondBusinessID from zatcaCustomers:
+        $buyer_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // Get Seller Vat from zatcacompany [ seller ]:
-        $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcacompany"));
+        // Get Seller Vat from zatcaCompany [ seller ]:
+        $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCompany"));
 
-        // Get Seller apartment from zatcacompany [ seller ]:
-        $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcacompany"));
+        // Get Seller apartment from zatcaCompany [ seller ]:
+        $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCompany"));
         
-        // Get Seller POBoxAdditionalNum from zatcacompany [ seller ]:
-        $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcacompany"));
+        // Get Seller POBoxAdditionalNum from zatcaCompany [ seller ]:
+        $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCompany"));
         
-        // Get Seller POBox from zatcacompany [ seller ]:
-        $seller_POBox_Company = $wpdb->get_var($wpdb->prepare("select POBox from zatcacompany"));
+        // Get Seller POBox from zatcaCompany [ seller ]:
+        $seller_POBox_Company = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCompany"));
         
-        // Get Seller postal code from zatcacompany:
-        $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcacompany"));
+        // Get Seller postal code from zatcaCompany:
+        $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCompany"));
         
 
-        // Get Seller street_Arb from zatcacompany [ seller ]:
-        $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcacompany"));
+        // Get Seller street_Arb from zatcaCompany [ seller ]:
+        $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCompany"));
         
-        // Get Seller street_Eng from zatcacompany [ seller ]:
-        $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcacompany"));
+        // Get Seller street_Eng from zatcaCompany [ seller ]:
+        $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCompany"));
         
-        // Get Seller district_Arb from zatcacompany [ seller ]:
-        $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcacompany"));
+        // Get Seller district_Arb from zatcaCompany [ seller ]:
+        $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCompany"));
         
-        // Get Seller district_Eng from zatcacompany [ seller ]:
-        $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcacompany"));
+        // Get Seller district_Eng from zatcaCompany [ seller ]:
+        $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCompany"));
         
-        // Get Seller city_Arb from zatcacompany [ seller ]:
-        $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcacompany"));
+        // Get Seller city_Arb from zatcaCompany [ seller ]:
+        $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCompany"));
         
-        // Get Seller city_Eng from zatcacompany [ seller ]:
-        $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcacompany"));
+        // Get Seller city_Eng from zatcaCompany [ seller ]:
+        $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCompany"));
         
-        // Get Seller country_Arb from zatcacompany [ seller ]:
-        $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcacompany"));
+        // Get Seller country_Arb from zatcaCompany [ seller ]:
+        $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCompany"));
         
-        // Get Seller country_Eng from zatcacompany [ seller ]:
-        $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcacompany"));
+        // Get Seller country_Eng from zatcaCompany [ seller ]:
+        $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCompany"));
         
-        // Get Seller CountryNo from zatcacompany [ seller ]:
-        $seller_CountryNo_Company = $wpdb->get_var($wpdb->prepare("select countryNo from zatcacompany"));
+        // Get Seller CountryNo from zatcaCompany [ seller ]:
+        $seller_CountryNo_Company = $wpdb->get_var($wpdb->prepare("select countryNo from zatcaCompany"));
         
-        // get aName from zatcacustomers:
-        $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get aName from zatcaCustomers:
+        $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
                 
-        // get eName from zatcacustomers:
-        $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get eName from zatcaCustomers:
+        $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get apartmentNum from zatcacustomers:
-        $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get apartmentNum from zatcaCustomers:
+        $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get POBoxAdditionalNum from zatcacustomers:
-        $buyer_POBoxAdditionalNum_Customer = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get POBoxAdditionalNum from zatcaCustomers:
+        $buyer_POBoxAdditionalNum_Customer = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get PostalCode from zatcacustomers:
-        $buyer_PoCode = $wpdb->get_var($wpdb->prepare("select POBox from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get PostalCode from zatcaCustomers:
+        $buyer_PoCode = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get PostalCode from zatcacustomers:
-        $buyer_PostalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get PostalCode from zatcaCustomers:
+        $buyer_PostalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
         
-        // get street_Arb from zatcacustomers:
-        $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get street_Arb from zatcaCustomers:
+        $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get street_Eng from zatcacustomers:
-        $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get street_Eng from zatcaCustomers:
+        $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get district_Arb from zatcacustomers:
-        $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get district_Arb from zatcaCustomers:
+        $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get district_Eng from zatcacustomers:
-        $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get district_Eng from zatcaCustomers:
+        $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get city_Arb from zatcacustomers:
-        $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get city_Arb from zatcacustomers:
-        $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
-        // get CountryNo from zatcacustomers:
-        $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcacustomer WHERE clientVendorNo = $order_Customer_Id"));
+        // get CountryNo from zatcaCustomers:
+        $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
 
 
         // Variables of data:
@@ -2018,7 +2104,7 @@ function document_edit_form(){
             }
 
 
-        // $table_name_document = 'zatcadocument';
+        // $table_name_document = 'zatcaDocument';
             
         $data = array(
             'deviceNo'                              => $deviceNo_from_db,
@@ -2104,7 +2190,7 @@ function update_zatca($doc_no){
 
     global $wpdb;
 
-    $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcadocument WHERE documentNo = $doc_no") );
+    $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocument WHERE documentNo = $doc_no") );
 
         
 
@@ -2116,7 +2202,7 @@ function update_zatca($doc_no){
 
     $order_Id = 0;
 
-    // Define zatcadocument fields to update:
+    // Define zatcaDocument fields to update:
     $update_seller_sellerName='';
     $update_seller_sellerAdditionalIdType='';
     $update_seller_sellerAdditionalIdNumber='';
@@ -2142,7 +2228,7 @@ function update_zatca($doc_no){
 
 
 
-    // Get Data From zatcadocument:
+    // Get Data From zatcaDocument:
     foreach($documents as $doc){
 
         $order_Id = $doc->invoiceNo;
@@ -2168,8 +2254,8 @@ function update_zatca($doc_no){
     }
 
     
-    // Update Seller Data From zatcacompany:
-    $seller_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcacompany"));
+    // Update Seller Data From zatcaCompany:
+    $seller_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaCompany"));
 
     
     foreach($seller_update as $seller){
@@ -2185,7 +2271,7 @@ function update_zatca($doc_no){
         $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
 
 
-        $sellerName = $seller->aName;
+        $sellerName = $seller->companyName;
         $sellerAdditionalIdType = $seller_codeInfo;
         $sellerAdditionalIdNumber = $seller->secondBusinessID;
         $sellerVatNumber = $seller->VATID;
@@ -2195,7 +2281,7 @@ function update_zatca($doc_no){
             "buildingNumber" => $seller->apartmentNum,
             "city" => $seller->city_Arb,
             "state" => $seller->countrySubdivision_Arb,
-            "zipCode" => $seller->POBox,
+            "zipCode" => $seller->postalCode,
             "district" => $seller->district_Arb,
             "country" => "SA"
         ];
@@ -2222,8 +2308,8 @@ function update_zatca($doc_no){
     $customer_Id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM $table_orders WHERE id = $order_Id") );
 
 
-    // Update Buyer Data From zatcacustomer:
-    $buyer_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcacustomer WHERE clientVendorNo = $customer_Id"));
+    // Update Buyer Data From zatcaCustomer:
+    $buyer_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaCustomer WHERE clientVendorNo = $customer_Id"));
     
 
     foreach($buyer_update as $buyer){
@@ -2262,8 +2348,8 @@ function update_zatca($doc_no){
     }
 
 
-    // Loop On zatcadocumentunit to get data:
-    $documents_unit = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcadocumentunit WHERE documentNo = $doc_no") );
+    // Loop On zatcaDocumentUnit to get data:
+    $documents_unit = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocumentUnit WHERE documentNo = $doc_no") );
 
     $totalAmountWithoutVat = 0;
     $totalLineNetAmount = 0;
@@ -2379,7 +2465,7 @@ function update_zatca($doc_no){
 
     $where = array('documentNo' => $doc_no);
 
-    $update_result = $wpdb->update('zatcadocument', $update_data_document, $where);
+    $update_result = $wpdb->update('zatcaDocument', $update_data_document, $where);
 
     if($update_result === false) {
         // There was an error inserting data:
@@ -2552,6 +2638,7 @@ function send_request_to_zatca_clear(){
         $isZatcaValid = $responseArray['isValidationFromZatca'];
         $clearanceStatus = $responseArray['clearanceStatus'];
         $validationResults = $responseArray['validationResults'];
+        $portalResults = $responseArray['portalResults'];
         $hashed = $responseArray['hash'];
         $qrCode = $responseArray['generatedQR'];
         $response_date = date('Y-m-d H:i:s');
@@ -2561,14 +2648,15 @@ function send_request_to_zatca_clear(){
 
         // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
         $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
-                                                                FROM zatcadocument 
+                                                                FROM zatcaDocument 
                                                                 ORDER BY zatcaResponseDate DESC 
                                                                 LIMIT 1"));
         
         if (isset($responseArray['validationResults']['warningMessages']) && is_array($responseArray['validationResults']['warningMessages'])) {
             foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
                 if (isset($Message['message'])) {
-                    $warningMessage = $Message['message'];
+                    // $warningMessage = $Message['message'];
+                $warningMessage .= $Message['message'] . "\n";
                 }else{
 
                     echo 'WRONG';
@@ -2583,7 +2671,7 @@ function send_request_to_zatca_clear(){
             if($statusCode == '200'){
 
                 //  update zatca document xml fields with response Data:
-                $zatcadocumentxml_update_response_data = [
+                $zatcaDocumentxml_update_response_data = [
     
                     "previousInvoiceHash" => $previousInvoiceHash,
                     "invoiceHash" => $hashed,
@@ -2595,15 +2683,15 @@ function send_request_to_zatca_clear(){
     
                 $where = array('documentNo' => $doc_no);
     
-                $zatcadocumentxml_update_response_result = $wpdb->update('zatcadocumentxml', $zatcadocumentxml_update_response_data, $where);
+                $zatcaDocumentxml_update_response_result = $wpdb->update('zatcaDocumentxml', $zatcaDocumentxml_update_response_data, $where);
     
                 // Check for errors
-                if ($zatcadocumentxml_update_response_result === false) {
+                if ($zatcaDocumentxml_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating on zatcadocumentxml in the field." . $wpdb->last_error;
+                    $msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadocumentxml_update_response_result === 0) {
+                }elseif ($zatcaDocumentxml_update_response_result === 0) {
                     
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -2611,7 +2699,7 @@ function send_request_to_zatca_clear(){
                 }  
     
                 // update zatca document fields with response Data:
-                $zatcadocument_update_response_data = [
+                $zatcaDocument_update_response_data = [
     
                     "zatcaResponseDate" => $response_date,
                     "zatcaSuccessResponse" => 1,
@@ -2619,19 +2707,19 @@ function send_request_to_zatca_clear(){
                 ];
                 $where = array('documentNo' => $doc_no);
     
-                $zatcadocument_update_response_result = $wpdb->update('zatcadocument', $zatcadocument_update_response_data, $where);
+                $zatcaDocument_update_response_result = $wpdb->update('zatcaDocument', $zatcaDocument_update_response_data, $where);
                 
                 // Check for errors
-                if ($zatcadocument_update_response_result === false) {
+                if ($zatcaDocument_update_response_result === false) {
                     // Handle error
-                    $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
-                }elseif ($zatcadocument_update_response_result === 0) {
+                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
+                }elseif ($zatcaDocument_update_response_result === 0) {
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // update zatca device fields with last document submitted:
-                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $doc_no") );
+                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $doc_no") );
 
                 $zatcadevice_update_response_data = [
                     "lastHash" => $hashed,
@@ -2660,7 +2748,7 @@ function send_request_to_zatca_clear(){
             }elseif($statusCode == '202'){
 
                  // update zatca document xml fields with response Data:
-                $zatcadocumentxml_update_response_data = [
+                $zatcaDocumentxml_update_response_data = [
     
                     "previousInvoiceHash" => $previousInvoiceHash,
                     "invoiceHash" => $hashed,
@@ -2672,21 +2760,21 @@ function send_request_to_zatca_clear(){
     
                 $where = array('documentNo' => $doc_no);
     
-                $zatcadocumentxml_update_response_result = $wpdb->update('zatcadocumentxml', $zatcadocumentxml_update_response_data, $where);
+                $zatcaDocumentxml_update_response_result = $wpdb->update('zatcaDocumentxml', $zatcaDocumentxml_update_response_data, $where);
     
                 // Check for errors
-                if ($zatcadocumentxml_update_response_result === false) {
+                if ($zatcaDocumentxml_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating on zatcadocumentxml in the field." . $wpdb->last_error;
+                    $msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadocumentxml_update_response_result === 0) {
+                }elseif ($zatcaDocumentxml_update_response_result === 0) {
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }   
     
                 // update zatca document fields with response Data:
-                $zatcadocument_update_response_data = [
+                $zatcaDocument_update_response_data = [
     
                     "zatcaResponseDate" => $response_date,
                     "zatcaSuccessResponse" => 2,
@@ -2695,22 +2783,22 @@ function send_request_to_zatca_clear(){
                 ];
                 $where = array('documentNo' => $doc_no);
     
-                $zatcadocument_update_response_result = $wpdb->update('zatcadocument', $zatcadocument_update_response_data, $where);
+                $zatcaDocument_update_response_result = $wpdb->update('zatcaDocument', $zatcaDocument_update_response_data, $where);
                 
                 // Check for errors
-                if ($zatcadocument_update_response_result === false) {
+                if ($zatcaDocument_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadocument_update_response_result === 0) {
+                }elseif ($zatcaDocument_update_response_result === 0) {
                    
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // update zatca device fields with last document submitted:
-                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcadocument WHERE documentNo = $doc_no") );
+                $device_no = $wpdb->get_var( $wpdb->prepare( "SELECT deviceNo FROM zatcaDocument WHERE documentNo = $doc_no") );
 
                 $zatcadevice_update_response_data = [
                     "lastHash" => $hashed,
@@ -2744,7 +2832,7 @@ function send_request_to_zatca_clear(){
             {
 
                 // update zatca document fields with response Data:
-                $zatcadocument_error_response_data = [
+                $zatcaDocument_error_response_data = [
 
                     "zatcaResponseDate" => $response_date,
                     "zatcaSuccessResponse" => 3,
@@ -2752,15 +2840,15 @@ function send_request_to_zatca_clear(){
                 ];
                 $where = array('documentNo' => $doc_no);
     
-                $zatcadocument_error_response_result = $wpdb->update('zatcadocument', $zatcadocument_error_response_data, $where);
+                $zatcaDocument_error_response_result = $wpdb->update('zatcaDocument', $zatcaDocument_error_response_data, $where);
                 
                 // Check for errors
-                if ($zatcadocument_error_response_result === false) {
+                if ($zatcaDocument_error_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcadocument on the field." . $wpdb->last_error;
+                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 
-                }elseif ($zatcadocument_error_response_result === 0) {
+                }elseif ($zatcaDocument_error_response_result === 0) {
                     
                     // No rows affected
                     $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
@@ -2782,11 +2870,11 @@ function send_request_to_zatca_clear(){
             else if($http_status == '303')
             {
                 // update zatca document fields with response Data:
-                $zatcadocument_error_response_data = [
+                $zatcaDocument_error_response_data = [
                     "zatcaB2B_isForced_To_B2C" => 1];
                 $where = array('documentNo' => $doc_no);
-                $zatcadocument_error_response_result = $wpdb->update('zatcadocument',
-                $zatcadocument_error_response_data, $where);
+                $zatcaDocument_error_response_result = $wpdb->update('zatcaDocument',
+                $zatcaDocument_error_response_data, $where);
                 $msg = $response;
             }
             else
@@ -2827,8 +2915,8 @@ function get_xml_from_response() {
 
     global $wpdb;
 
-    // Get response from zatcadocumentxml
-    $xmlResponse = $wpdb->get_var($wpdb->prepare("SELECT APIResponse FROM zatcadocumentxml WHERE documentNo = %d", $doc_no));
+    // Get response from zatcaDocumentxml
+    $xmlResponse = $wpdb->get_var($wpdb->prepare("SELECT APIResponse FROM zatcaDocumentxml WHERE documentNo = %d", $doc_no));
 
     if ($xmlResponse === null) {
         wp_send_json_error(['message' => 'No response found for document number ' . $doc_no]);
@@ -3026,7 +3114,7 @@ function insert_user_zatcaUsers(){
         }
 
         // Validation on if user already exist or not:
-        $check = $wpdb->get_var($wpdb->prepare("SELECT personNo FROM zatcauser WHERE personNo = $personNo "));
+        $check = $wpdb->get_var($wpdb->prepare("SELECT personNo FROM zatcaUser WHERE personNo = $personNo "));
 
         if($check != null){
 
@@ -3036,7 +3124,7 @@ function insert_user_zatcaUsers(){
 
             // Insert User to database:
             $insert_user = $wpdb->insert(
-                'zatcauser',
+                'zatcaUser',
                 [
                     'personNo'  => $personNo,
                     'aName' =>$arabicName,
@@ -3051,7 +3139,7 @@ function insert_user_zatcaUsers(){
         }
         
 
-        // Validation of zatcauser:
+        // Validation of zatcaUser:
         if ($insert_user === false) {
 
             // Check For Error:
@@ -3099,7 +3187,7 @@ function edit_user_zatcaUsers(){
         }
 
 
-        $table_name = 'zatcauser';
+        $table_name = 'zatcaUser';
         $data = array(
 
             'aName' =>$arabicName,
@@ -3118,7 +3206,7 @@ function edit_user_zatcaUsers(){
             echo "Error inserting data: $error_message";
         } else {
 
-            echo 'Data Updated';
+            echo __('Data Updated', 'zatca');
         }
        
     }
@@ -3128,5 +3216,211 @@ function edit_user_zatcaUsers(){
 }
 
             
+// check for admin B2C notification:
+    function check_admin_for_B2C_notification(){
+
+        if(isset($_REQUEST)){
+    
+            global $wpdb;
+    
+            // AJax User Id:
+            $user_id = get_current_user_id(); 
+    
+            // check if ZATCA_B2C_NotIssuedDocuments_isRemind is Checked:
+            $isChecked = $wpdb->get_var($wpdb->prepare("SELECT ZATCA_B2C_NotIssuedDocuments_isRemind FROM zatcaUser WHERE personNo = $user_id "));
+            
+            // get ZATCA_B2C_NotIssuedDocumentsReminderInterval if ZATCA_B2C_NotIssuedDocuments_isRemind is Checked:
+            $hours = $wpdb->get_var($wpdb->prepare("SELECT ZATCA_B2C_NotIssuedDocumentsReminderInterval FROM zatcaUser WHERE personNo = $user_id AND ZATCA_B2C_NotIssuedDocuments_isRemind != 0 "));
+            
+            // Get Document No from zatcaDocument Where zatcaresponse=0 & dateG <= current date [ B2C Only]:
+            $document = $wpdb->get_results($wpdb->prepare("SELECT documentNo FROM zatcaDocument WHERE zatcaInvoiceType = 'B2C' AND zatcaSuccessResponse = 0 AND dateG <= DATE_SUB(NOW(), INTERVAL 10 MINUTE) "));
+            
+    
+            // If admin conditions is true:
+            if($isChecked != 0){
+    
+                // if documents conditions is true:
+                if(!empty($document)){
+         
+                    $msg = __('You have unsubmitted documents please review them', 'zatca');
+                }
+    
+            }
+    
+            $response = array('msg' => $msg, 'hours'=> $hours);
+            wp_send_json($response);
+    
+        }
+    
+        die();
+    }
+
+
+    // function to create a checkbox [ checkout page ]:
+function checkbox_function() {
+    ?>
+    <div class="wc-block-components-checkout-step__container" style="display: none;" id="hidden-checkbox-container">
+        <div class="wc-block-components-checkout-step__content">
+            <div class="wc-block-checkout__add-note">
+                <div class="wc-block-components-checkbox">
+                    <label for="checkbox-control-0">
+                        <input 
+                            id="my_checkbox_field" 
+                            class="wc-block-components-checkbox__input" 
+                            type="checkbox" 
+                            aria-invalid="false"
+                        >
+                        <svg 
+                            class="wc-block-components-checkbox__mark" 
+                            aria-hidden="true" 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 24 20">
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path>
+                        </svg>
+                        <span class="wc-block-components-checkbox__label">
+                            <?php _e('Tax Invoice', 'zatca'); ?>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
+// function to view the short code in checkout page [ checkout page ]:
+function add_custom_field_to_checkout_blocks() {
+    ?>
+    <div class="woocommerce-form__row my-custom-checkbox-container m-2" >
+        <?php echo do_shortcode('[checkbox]'); ?>
+                <div id="customForm" style="display: none;">
+                <?php include plugin_dir_path(__FILE__) . 'checkout-page.php';?>
+            </div>
+    </div>
+    <?php
+}
+
+
+// function to insert data from checkout page:
+function edit_checkout_page_function(){
+
+    if(isset($_REQUEST)){
+
+        global $wpdb;
+
+        // AJax Data:
+        $vals = $_REQUEST['edit_form_data_ajax'];
+
+        // Parse Data:
+        // parse_str($vals, $form_array);
+        $form_array = json_decode(stripslashes($vals), true);
+
+        // variables Come from Form:
+        $operationType = $form_array['operationType'];
+        $clientId = $form_array['clientId'];
+        $clientNameAr = $form_array['clientNameAr'];
+        $clientNameEn = $form_array['clientNameEn'];
+        $districtNameAr = $form_array['districtNameAr'];
+        $vatId = $form_array['vatId'];
+        $apartmentNo = $form_array['apartmentNo'];
+        $zatcaInvoiceType = $form_array['zatcaInvoiceType'];
+        $secondBusinessIdType = $form_array['secondBusinessIdType'];
+        $secondBusinessId = $form_array['secondBusinessId'];
+        $addressNameArabic = $form_array['addressNameArabic'];
+        $addressNameEnglish = $form_array['addressNameEnglish'];
+        $cityNameArabic = $form_array['cityNameArabic'];
+        $cityNameEnglish = $form_array['cityNameEnglish'];
+        $postalCode = $form_array['postalCode'];
+        $zatcainvoice = '';
+
+        // Check If vat Id Is Not Empty - zatca invoice type will be B2B - else B2C:
+        if($vatId != ''){
+
+            $zatcainvoice = 'B2B';
+            
+        }else{
+            
+            $zatcainvoice = 'B2C';
+        }
+
+        if($operationType == 'edit'){
+
+            $table_name = 'zatcaCustomer';
+            $data = array(
+                'clientVendorNo'       => $clientId,
+                'aName'                => $clientNameAr,
+                'eName'                => $clientNameEn,
+                'VATID'                 => $vatId,
+                'secondBusinessIDType'  => $secondBusinessIdType,
+                'secondBusinessID'      => $secondBusinessId,
+                'zatcaInvoiceType'      => $zatcainvoice,
+                'apartmentNum'          => $apartmentNo,
+                'postalCode'            => $postalCode,
+                'street_Arb'            => $addressNameArabic,
+                'street_Eng'            => $addressNameEnglish,
+                'district_Arb'          => $districtNameAr,
+                'city_Arb'              => $cityNameArabic,
+                'city_Eng'              => $cityNameEnglish
+            );
+            $where = array('clientVendorNo' => $clientId);
+            $update_result = $wpdb->update($table_name, $data, $where);
+
+            if ($update_result === false) {
+                // There was an error inserting data
+                $error_message = $wpdb->last_error;
+                echo "Error inserting data: $error_message";
+            } else {
+    
+                echo __('Data Updated', 'zatca');
+            }
+            
+        }else{
+            
+            $insert_result = $wpdb->insert(
+                'zatcaCustomer',
+                [
+                    'clientVendorNo'       => $clientId,
+                    'aName'                => $clientNameAr,
+                    'eName'                => $clientNameEn,
+                    'VATID'                 => $vatId,
+                    'secondBusinessIDType'  => $secondBusinessIdType,
+                    'secondBusinessID'      => $secondBusinessId,
+                    'zatcaInvoiceType'      => $zatcainvoice,
+                    'apartmentNum'          => $apartmentNo,
+                    'postalCode'            => $postalCode,
+                    'street_Arb'            => $addressNameArabic,
+                    'street_Eng'            => $addressNameEnglish,
+                    'district_Arb'          => $districtNameAr,
+                    'city_Arb'              => $cityNameArabic,
+                    'city_Eng'              => $cityNameEnglish
+                ]
+            );
+    
+            if ($insert_result === false) {
+                // There was an error inserting data
+                $error_message = $wpdb->last_error;
+                echo "Error inserting data: $error_message";
+            } else {
+    
+                echo __('Data Updated', 'zatca');
+            
+            }
+
+        }
+  
+    }
+
+    die();
+
+}
+
+// Function to check if string arabic or not:
+function is_arabic($string) {
+    if (preg_match('/[\x{0600}-\x{06FF}\x{0750}-\x{077F}\x{08A0}-\x{08FF}\x{FB50}-\x{FDFF}\x{FE70}-\x{FEFF}]/u', $string)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 require_once('btasks.php');

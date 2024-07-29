@@ -18,7 +18,7 @@
     <!-- / Add Btn -->
 
     <!-- Table Of View -->
-    <table id="example" class="table table-striped" width="100%">
+    <table id="scroll_table" class="table table-striped" width="100%">
 
         <thead>
             <tr>
@@ -33,6 +33,14 @@
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('City-AR', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Sub-AR', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Country', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Sec-Business-Id', 'zatca') ?></th class="text-center" style="font-size: 0.7rem;">
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Apart No', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('PO Box', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('PO Box Additional Num', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('St Name - EN', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Dist Name - EN', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('City Name - EN', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Country Sub - EN', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Action', 'zatca') ?></th>
             </tr>
         </thead>
@@ -42,7 +50,7 @@
             global $wpdb;
 
             // Query to retrieve data
-            $resultes = $wpdb->get_results( "SELECT * FROM zatcacustomer");
+            $resultes = $wpdb->get_results( "SELECT * FROM zatcaCustomer");
             
             // Check if there are results
             if ($resultes) {
@@ -62,13 +70,19 @@
                                 }
                             ?>
                         </td>
-                        
                         <td style="font-size: 0.8rem;"><?php echo $result->zatcaInvoiceType ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->street_Arb ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->district_Arb ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->city_Arb ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->countrySubdivision_Arb ?></td>
-
+                        <td style="font-size: 0.8rem;"><?php echo $result->secondBusinessID ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->apartmentNum ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->POBox ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->POBoxAdditionalNum ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->street_Eng ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->district_Eng ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->city_Eng ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->countrySubdivision_Eng ?></td>
                         <td style="font-size: 0.8rem;">
                             <?php 
                                 // echo $result->country_No 
@@ -79,7 +93,7 @@
                                 }
 
                             ?>
-                            </td>
+                        </td>
                         <td style="font-size: 0.8rem;" class="d-flex align-items-center ">
 
                             <!-- Edit Btn -->
@@ -103,67 +117,6 @@
                                 <span class="dashicons dashicons-trash"></span>
                             </a>
                             <!-- /Delete Btn -->
-
-                            <!-- View Btn -->
-                            <button 
-                                type='button' 
-                                class='btn my-plugin-button btn-sm ' data-bs-toggle='modal' 
-                                data-bs-target='#exampleModal-<?php echo $result->clientVendorNo ?>'
-                                data-bs-toggle="tooltip" 
-                                data-bs-placement="top" 
-                                title="<?php echo _e('View Data', 'zatca') ?>">
-                                <span class="dashicons dashicons-welcome-view-site"></span>
-                            </button>
-                            <!-- / View Btn -->
-
-                            <!-- View Modal -->
-                            <div class='modal fade' id='exampleModal-<?php echo $result->clientVendorNo ?>' tabindex='-1' aria-labelledby='exampleModalLabel-<?php echo $result->clientVendorNo ?>' aria-hidden='true'>
-                                <div class='modal-dialog modal-lg'>
-                                    <div class='modal-content' >
-                                    <div class='modal-header'>
-                                        <h5 class='modal-title' id='exampleModalLabel-". $result->ID."'><?php echo _e('Items', 'zatca') ?></h5>
-                                    </div>
-                                    <div class='modal-body'>
-                                        
-                                        <div class="container ">
-                                            <div class="table-responsive">
-                                                <table  class="table table-success table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><?php echo _e('Sec-Business-Id', 'zatca') ?></th>
-                                                            <th><?php echo _e('Apart No', 'zatca') ?></th>
-                                                            <th><?php echo _e('PO Box', 'zatca') ?></th>
-                                                            <th><?php echo _e('PO Box Additional Num', 'zatca') ?></th>
-                                                            <th><?php echo _e('St Name - EN', 'zatca') ?></th>
-                                                            <th><?php echo _e('Dist Name - EN', 'zatca') ?></th>
-                                                            <th><?php echo _e('City Name - EN', 'zatca') ?></th>
-                                                            <th><?php echo _e('Country Sub - EN', 'zatca') ?></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->secondBusinessID ?></td>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->apartmentNum ?></td>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->POBox ?></td>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->POBoxAdditionalNum ?></td>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->street_Eng ?></td>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->district_Eng ?></td>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->city_Eng ?></td>
-                                                            <td style="font-size: 0.8rem;"><?php echo $result->countrySubdivision_Eng ?></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            
-                                        </div> 
-                                    </div>
-                                    <div class='modal-footer'>
-                                        <button type='button' class='btn my-plugin-button' data-bs-dismiss='modal'><?php echo _e('Close', 'zatca') ?></button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- / View Modal -->
 
                         </td>
     

@@ -6,7 +6,7 @@ $clientNo = $_GET['clientno'];
 global $wpdb;
 
 // Assuming your table is named 'wp_custom_table'
-$table_name = 'zatcacustomer';
+$table_name = 'zatcaCustomer';
 
 // Define the condition to identify the row(s) to delete
 $where = array(
@@ -19,7 +19,7 @@ $deleted = $wpdb->delete( $table_name, $where );
 
 if ( $deleted === false ) {
 //     // Deletion failed
-    echo "Failed to delete row.";
+    echo _e('Failed to delete row.', 'zatca');
 } else {
     // Deletion successful
     echo _e('Row deleted successfully.', 'zatca');?>

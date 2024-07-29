@@ -50,12 +50,11 @@
                             <?php
                                 global $wpdb;
 
-                                // Fetch Data From wp_users:
-                                $table_users = $wpdb->prefix . 'users';
-                                $users = $wpdb->get_results("SELECT * FROM $table_users");
+                                // Fetch Data From zatcaUser:
+                                $users = $wpdb->get_results("SELECT * FROM zatcaUser");
                                 foreach ($users as $user) {?>
-                                    <option value="<?php echo $user->user_login?>">
-                                        <?php echo $user->user_nicename ?>
+                                    <option value="<?php echo $user->personNo?>">
+                                        <?php echo $user->aName ?>
                                     </option>
                             <?php }?>
                         </select>
@@ -83,10 +82,10 @@
             <table id="example" class="table table-striped " style="width:100%">
                 <thead>
                     <tr>
-                        <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Log No', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Log No', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Date Time', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('user name', 'zatca') ?></th>
-                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('mac', 'zatca') ?></th>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('MAC Address', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('IP', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Is Success', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Operation', 'zatca') ?></th>
@@ -97,7 +96,7 @@
                     global $wpdb;
 
                     // Query to retrieve data from zatca log:
-                    $resultes = $wpdb->get_results("SELECT * FROM zatcalog");
+                    $resultes = $wpdb->get_results("SELECT * FROM zatcaLog");
 
                     // Check if there are results
                     if ($resultes) {
@@ -154,4 +153,5 @@
         <!-- / Table Of View -->
 
     </div>
+
 </div>

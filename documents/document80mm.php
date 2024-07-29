@@ -13,7 +13,7 @@ function generate_pdf() {
 
         // Query to fetch the invoice numbers within the specified date range for the given branch
         $query = $wpdb->prepare("
-            select zu.*, i.order_item_name from zatcadocumentunit zu, wp_woocommerce_order_items i
+            select zu.*, i.order_item_name from zatcaDocumentUnit zu, wp_woocommerce_order_items i
             where zu.itemNo=i.order_item_id and zu.documentNo = %d", $docNo);
         $results = $wpdb->get_results($query);
 
