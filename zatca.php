@@ -3423,86 +3423,14 @@ function is_arabic($string) {
     }
 }
 
-//require_once('btasks.php');
 
-//////////////////// btasks code after merge ///////////////////////////////////
-
-/**************************MBAUOMY**************************** */
+/****************************************************** */
 
 
-// Add tax_invoice_option checkbox to checkout page
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-function zatca_customer_form() {
-    include_once('customers/insert.php'); // Call the function and return its output
-}
-add_shortcode('zatca_customer_form1', 'zatca_customer_form');
-
-
-
-////////////////////////////////////////////////////////////////////////////
-// Add zatca_customer_form1 after the Order Data section on the order page
-add_action( 'woocommerce_admin_order_data_after_order_details', 'add_custom_section_after_order_data' );
-
-function add_custom_section_after_order_data( $order ) {
-
-    // Add taxInvoiceOption to be used in JavaScript
-    $tax_invoice_option = get_post_meta( $order->get_id(), 'tax_invoice_option', true );
-    woocommerce_wp_checkbox(array(  
-        'id' => 'tax_invoice_option',  
-        'label' => __('Tax Invoice Option'),  
-        'value' => !empty($tax_invoice_option) ? 'yes' : 'no',  
-    ));  
-    
-    echo '</div>'; 
-
-    wp_localize_script( 'custom-script', 'custom_vars', array(
-        'taxInvoiceOption' => $tax_invoice_option
-    ) );
-
-    // Add zatca_customer_form1 for the new section here
-    echo '<div class="custom-section" style="padding-top:250px;width:800px;">';
-
-    echo do_shortcode('[zatca_customer_form1]');
-
-    echo '</div>';
-}
-
-// Save the Tax Invoice Option checkbox value  
-add_action('woocommerce_process_shop_order_meta', 'save_tax_invoice_option_custom_field', 10, 1);  
-function save_tax_invoice_option_custom_field($order_id){  
-    $tax_invoice_option = isset($_POST['tax_invoice_option']) ? 'yes' : 'no';  
-    update_post_meta($order_id, 'tax_invoice_option', $tax_invoice_option);  
-}
-
-// Enqueue custom JavaScript file to show and hide zactaCustomer
-function enqueue_custom_js() {
-    wp_enqueue_script( 'custom-script', plugin_dir_url( __FILE__ ) . 'js/custom-script.js', array(), false, true );
-}
-add_action( 'admin_enqueue_scripts', 'enqueue_custom_js' );
-
-add_action('wp_enqueue_scripts',  'enqueue_custom_js');
-
-
-
-///////////////////////////////////////////////Task2/////////////////////////////////////////////////
-
-// Create admin page
-function invoice_audit_admin_page() {
-    // Add sub-menu pages
-    add_submenu_page(
-        'zatca', // Parent menu slug
-        __( 'Zacta Tampering Detector', 'zatca' ), // Page title
-        __( 'Zacta Tampering Detector', 'zatca' ), // Menu title
-        'manage_options', // Capability required to access menu
-        'invoice-audit-admin-page', // Unique menu slug
-        'invoice_audit_admin_page_content', // Callback function to display page content
-        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
-    );
-}
-add_action('admin_menu', 'invoice_audit_admin_page');
-
-// Admin page content
+// Tampering Detector Code
 function invoice_audit_admin_page_content() {
     echo '<div class="wrap container">';
     echo '<h2 class="text-center">'. __( 'Zacta Tampering Detector', 'zatca' ) .'</h2>';
@@ -3526,7 +3454,7 @@ add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
 
 
 
-//////////////////////////Task 3/////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
 // Action of Send Reporting request to zatca:
 add_action('wp_ajax_zatca_report', 'send_request_to_zatca_report');
@@ -3537,18 +3465,18 @@ add_action('wp_ajax_zatca_reissue', 'send_reissue_request_to_zatca');
 // Action of Return request to zatca:
 add_action('wp_ajax_zatca_return', 'send_return_request_to_zatca');
 
-// Function to insert new encrypted row as base64 to zatcainfo
+// Function to insert new encrypted row as base64 to zatcaInfo
 function insert_encrypted_row($invoiceHash, $documentNo, $deviceNo)
 {
     global $wpdb;
-    $table_name = 'zatcainfo';
+    $table_name = 'zatcaInfo';
 
     // encode invoiceHash and documentNo and deviceNo to Base64
     $invoiceHash = base64_encode($invoiceHash);
     $documentNo = base64_encode($documentNo);
     $deviceNo = base64_encode($deviceNo);
 
-    // insert to zatcainfo the encrypted data
+    // insert to zatcaInfo the encrypted data
     $wpdb->insert(
         $table_name,
         array(
@@ -3644,7 +3572,7 @@ function insert_encrypted_row($invoiceHash, $documentNo, $deviceNo)
             $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
     
     
-            $sellerName = $seller->aName;
+            $sellerName = $seller->companyName;
             $sellerAdditionalIdType = $seller_codeInfo;
             $sellerAdditionalIdNumber = $seller->secondBusinessID;
             $sellerVatNumber = $seller->VATID;
@@ -3714,7 +3642,7 @@ function insert_encrypted_row($invoiceHash, $documentNo, $deviceNo)
             $update_buyer_apartmentNum=$buyer->apartmentNum;
             $update_buyer_city_Arb=$buyer->city_Arb;
             $update_buyer_countrySubdivision_Arb=$buyer->countrySubdivision_Arb;
-            $update_buyer_POBox=$buyer->POBox;
+            $update_buyer_POBox=$buyer->postalCode;
             $update_buyer_district_Arb=$buyer->district_Arb;
             $update_buyer_buyerAdditionalIdNumber=$buyerAdditionalIdNumber;
             $update_buyer_buyerVatNumber=$buyerVatNumber ;
@@ -4761,7 +4689,7 @@ function send_reissue_zatca($docNo)
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                     }
 
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
     
                     $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
@@ -4855,7 +4783,7 @@ function send_reissue_zatca($docNo)
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                     }
     
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
 
                     $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
@@ -5143,7 +5071,7 @@ function send_reissue_zatca($docNo)
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                     }
     
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
 
                     $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
@@ -5237,7 +5165,7 @@ function send_reissue_zatca($docNo)
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                     }
     
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
 
                     $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
@@ -5752,7 +5680,7 @@ function send_return_zatca($docNo)
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                     }
 
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
     
                     $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
@@ -5837,7 +5765,7 @@ function send_return_zatca($docNo)
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                     }
 
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
     
                     $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
@@ -6120,7 +6048,7 @@ function send_return_zatca($docNo)
                     }
     
 
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
                     $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
                 
@@ -6204,7 +6132,7 @@ function send_return_zatca($docNo)
                         $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                     }
     
-                    // insert row to zatcainfo
+                    // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
                     
                     $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;

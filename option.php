@@ -72,6 +72,17 @@ function my_custom_menu() {
         'zatca-users', // Menu slug
         'zatca_users_page' // Callback function to display content
     );
+
+    // Add sub-menu pages
+    add_submenu_page(
+        'zatca', // Parent menu slug
+        __( 'Zacta Tampering Detector', 'zatca' ), // Page title
+        __( 'Zacta Tampering Detector', 'zatca' ), // Menu title
+        'manage_options', // Capability required to access menu
+        'invoice-audit-admin-page', // Unique menu slug
+        'invoice_audit_admin_page_content', // Callback function to display page content
+        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
+    );
 }
 
 // Callback functions to display content for each page

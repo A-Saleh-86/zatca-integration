@@ -1,5 +1,6 @@
-<?php 
-include_once dirname(dirname(__FILE__)) . 'zatca.php'; 
+<?php
+include_once dirname( plugin_basename( __FILE__ ) ) . '.php';  
+//include_once dirname(dirname(__FILE__)) . 'zatca.php'; 
 
 global $wpdb;
 

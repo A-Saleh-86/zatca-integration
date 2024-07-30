@@ -153,14 +153,14 @@ function check_hash_gap1() {
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
 
-    // Define zatcainfo table name  
-    $zacainfo_table = 'zatcainfo';  
+    // Define zatcaInfo table name  
+    $zacainfo_table = 'zatcaInfo';  
 
     $missing_records = [];  
 
-    // Step 1: Select zatcainfo1, zatcainfo2, and zatcainfo3 from zacainfo table  
+    // Step 1: Select zatcaInfo1, zatcaInfo2, and zatcaInfo3 from zacainfo table  
     $zacainfo_query = $wpdb->prepare(  
-        "SELECT zatcainfo1, zatcainfo2, zatcainfo3 FROM $zacainfo_table"  
+        "SELECT zatcaInfo1, zatcaInfo2, zatcaInfo3 FROM $zacainfo_table"  
     );  
     $zacainfo_records = $wpdb->get_results( $zacainfo_query, ARRAY_A );  
 
@@ -185,15 +185,15 @@ function check_hash_gap1() {
     // Step 4: Check for existence of records from zacainfo in zatcaDocument  
     foreach ( $zacainfo_records as $info ) {
         
-        $key = implode('|', [decrypt_data($info['zatcainfo1']), decrypt_data($info['zatcainfo2']), decrypt_data($info['zatcainfo3'])]);  
+        $key = implode('|', [decrypt_data($info['zatcaInfo1']), decrypt_data($info['zatcaInfo2']), decrypt_data($info['zatcaInfo3'])]);  
         
         // Check if the composite key exists in zatcaDocument  
         if ( ! isset( $zatcaDocument_map[ $key ] ) ) {  
             // Push missing record's values to the array  
             $missing_records[] = [  
-                'invoiceHash' => decrypt_data($info['zatcainfo1']),  
-                'documentNo' => decrypt_data($info['zatcainfo2']),  
-                'deviceNo' => decrypt_data($info['zatcainfo3'])  
+                'invoiceHash' => decrypt_data($info['zatcaInfo1']),  
+                'documentNo' => decrypt_data($info['zatcaInfo2']),  
+                'deviceNo' => decrypt_data($info['zatcaInfo3'])  
             ];  
         }  
     }
