@@ -38,7 +38,7 @@
         <tbody>
             <tr>
                 <td><?php echo _e('Unsubmitted /Rejected Documents', 'zatca') ?></td>
-                <td><input type="checkbox" id="failed"></td>
+                <td><input type="checkbox" id="doc-table-failed"></td>
                 <td><?php echo _e('Min Invoice Date', 'zatca') ?></td>
                 <td><input type="text" id="min" name="min"></td>
                 <td><?php echo _e('Max Invoice Date', 'zatca') ?></td>
@@ -48,7 +48,7 @@
         </tbody>
     </table>
     
-    <table id="example" class="table table-striped" width="100%">
+    <table id="document-table" class="table table-striped" width="100%">
 
         <thead>
             

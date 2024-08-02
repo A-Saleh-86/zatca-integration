@@ -236,7 +236,8 @@ function load_assets(){
     wp_localize_script( 'document-js', 'myDoc', array( 
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
-        'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),) 
+        'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),
+        'locale' => get_locale()) 
     );
     wp_enqueue_script('users-js',  plugin_dir_url(__FILE__) . '/js/users.js', array(), false, true);
     wp_localize_script( 'users-js', 'myUser', array( 

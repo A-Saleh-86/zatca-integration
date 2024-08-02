@@ -69,14 +69,14 @@ jQuery(document).ready( function () {
                 style: 'multi'  
             },
     
-            "columnDefs": [
-                { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
-                {
-                    "targets": [ 17, 18 ],
-                    "searchable": true,
-                    "visible": false
-                }
-            ]
+            // "columnDefs": [
+            //     { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
+            //     {
+            //         "targets": [ 17, 18 ],
+            //         "searchable": true,
+            //         "visible": false
+            //     }
+            // ]
         });
     } else {
         $('#example').DataTable({
@@ -85,16 +85,18 @@ jQuery(document).ready( function () {
                 style: 'multi'  
             },
     
-            "columnDefs": [
-                { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
-                {
-                    "targets": [ 17, 18 ],
-                    "searchable": true,
-                    "visible": false
-                }
-            ]
+            // "columnDefs": [
+            //     { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
+            //     {
+            //         "targets": [ 17, 18 ],
+            //         "searchable": true,
+            //         "visible": false
+            //     }
+            // ]
         });
     }
+
+
 
 
 } );
@@ -129,8 +131,9 @@ $(document).ready(function($){
         format: 'MMMM Do YYYY'
     });
      
-    // DataTables initialisation
+    // DataTables initialisation [ zatcaLog]
     let table = new DataTable('#example');
+    
      
     // Refilter the table
     document.querySelectorAll('#min, #max').forEach((el) => {
@@ -162,28 +165,31 @@ $(document).ready(function($){
         table.column(1).search("").draw();
       });
 
-    // checkbox - failed
-      $('#failed').on('change', function() {
-        if (this.checked) {
-            // Filter to show only rows with "Failed" status
-            table.column(17).search('^(0|3)$', true, false).column(18).search('^(NULL)$', true, false).draw();
-        } else {
-            // Clear the filter
-            table.column(17).search('').column(18).search('').draw();
-        }
-    });
+        // checkbox - failed
+        $('#failed').on('change', function() {
+            if (this.checked) {
+                // Filter to show only rows with "Failed" status
+                table.column(5).search('false').draw();
+            } else {
+                // Clear the filter
+                table.column(5).search('').draw();
+            }
+        });
 
     // username filter:
     $('#username').on('change', function() {
         var selectedUsername = $(this).val();
         if (selectedUsername) {
             // Filter the table by the selected username
-            table.column(2).search(selectedUsername).draw();
+            table.column(0).search(selectedUsername).draw();
         } else {
             // Reset the filter if "..." is selected
-            table.column(2).search('').draw();
+            table.column(0).search('').draw();
         }
     });
+
+    
+
 })
 
 
