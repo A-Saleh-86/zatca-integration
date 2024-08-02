@@ -103,6 +103,8 @@
                              data-buyer-aname = "<?php echo $result->buyer_aName ?>"
                              data-buyer-secondbusinesstype = "<?php echo $result->buyer_secondBusinessIDType ?>"
                              data-buyer-secondbusinessid = "<?php echo $result->buyer_secondBusinessID ?>"
+                             data-buyer-vat = "<?php echo $result->buyer_VAT ?>"
+                             data-invoicetransactioncode-isexports = "<?php echo $result->zatcaInvoiceTransactionCode_isExports ?? 1 ?>"
                              data-seller-secondbusinessid = "<?php echo $result->seller_secondBusinessID ?>"
                              data-company-stage = "<?php echo $zatcaCompanySatge1 ?>">
                         </td>
@@ -343,7 +345,7 @@
                                     type="button" 
                                     class="my-plugin-button btn-sm me-1" 
                                     data-bs-toggle="modal" 
-                                    data-bs-target="#warning" 
+                                    data-bs-target="#warning-<?php echo $result->documentNo; ?>" 
                                     data-bs-backdrop="false" 
                                     data-document-no="<?php echo $result->documentNo; ?>" 
                                     data-bs-toggle="tooltip" 
@@ -352,30 +354,30 @@
                                     <span class="dashicons dashicons-welcome-comments"></span>
                                 </button>
                                 <!-- / view warning Btn -->
+                                 
 
-                                <?php
+                            <?php
+                                // get warning msg:
+                                $warningMsg = $wpdb->get_var($wpdb->prepare("SELECT zatcaErrorResponse FROM zatcaDocument Where documentNo = $result->documentNo"));
+                                $modalWarningMsg = $warningMsg;
+                                $doc_no = $result->documentNo;
                             }
-
                             ?>
+
+                            
 
                             <?php
-                            if((((int)$zatcaSuccessResponse === 1 || (int)$zatcaSuccessResponse === 2) && $zatcaInvoiceType == 1) || ((int)$zatcaSuccessResponse > 0 && $zatcaInvoiceType == 0)){
+                                if((((int)$zatcaSuccessResponse === 1 || (int)$zatcaSuccessResponse === 2) && $zatcaInvoiceType == 1) || ((int)$zatcaSuccessResponse > 0 && $zatcaInvoiceType == 0)){
                             ?>
-                            <a href="<?php echo plugin_dir_url(__FILE__) . 'documentA4.php?docno='. $result->documentNo ?>"
-                            target="_blank"
-                            id="create-pdf"
-                            class="my-plugin-button btn-sm me-1"
-                             title="<?php echo __("Print Document", "zatca") ?>">
-                             <?php echo __("Print Document", "zatca") ?> 
-                             <span class="dashicons dashicons-download"></span></a>
-                                <?php } ?>
-                            <?php
-
-                            // get warning msg:
-                            $warningMsg = $wpdb->get_var($wpdb->prepare("SELECT zatcaErrorResponse FROM zatcaDocument Where documentNo = $result->documentNo"));
-                            $modalWarningMsg = $warningMsg;
-                            $doc_no = $result->documentNo;
-                            ?>
+                                <a href="<?php echo plugin_dir_url(__FILE__) . 'documentA4.php?docno='. $result->documentNo ?>"
+                                target="_blank"
+                                id="create-pdf"
+                                class="my-plugin-button btn-sm me-1"
+                                title="<?php echo __("Print Document", "zatca") ?>">
+                                <?php echo __("Print Document", "zatca") ?> 
+                                <span class="dashicons dashicons-download"></span></a>
+                            <?php } ?>
+                            
 
                             <div class="row">
                             <?php
@@ -423,32 +425,36 @@
 
                             </div>
                         </td>
+                        <!-- view warning Modal -->
+                        <div class="modal fade" id="warning-<?php echo $result->documentNo; ?>" tabindex="-1" aria-labelledby="warningLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" >
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewWarningLabel">Warning Message </h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php echo $modalWarningMsg; ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / view warning Modal -->
                     </tr>
 
+                    
                     <?php
-                }
+                } 
             }?>
 
-            <!-- view warning Modal -->
-            <div class="modal fade" id="warning" tabindex="-1" aria-labelledby="warningLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" >
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="viewWarningLabel">Warning Message </h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <?php echo $modalWarningMsg; ?>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- / view warning Modal -->
+
+            
+            
 
             <!-- view request data Modal -->
             <div class="modal fade" id="request" tabindex="-1" aria-labelledby="requestLabel" aria-hidden="true">

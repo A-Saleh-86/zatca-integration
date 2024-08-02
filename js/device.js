@@ -13,9 +13,25 @@ jQuery(document).ready(function($) {
                 "insert_form_ajax_data": formData
             },
             success: function(data){
-                alert(data);
-                localStorage.setItem("deviceCSID", formData1[0].value);
-                window.location.href = myDevice.adminUrl;
+                //console.log(data);
+                if(data.active == true && data.error == false)
+                {
+                    alert(myDevice.device_active);
+
+                    //alert("Not allowed to add more one device active");
+                    return;
+                }
+                else if(data.active == false && data.error == true)
+                {
+                    alert(data.msg);
+                }
+                else if(data.active == false && data.error == false)
+                {
+                    alert(myDevice.device_inserted);
+                    localStorage.setItem("deviceCSID", formData1[0].value);
+                    window.location.href = myDevice.adminUrl;
+                }
+                
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -38,8 +54,21 @@ jQuery(document).ready(function($) {
                 "edit_form_ajax_data": formData
             },
             success: function(data){
-                alert(data);
-                window.location.href = myDevice.adminUrl;
+                //console.log(data);
+                if(data.active == true && data.error == false)
+                {
+                    alert(myDevice.device_active);
+                    return;
+                }
+                else if(data.active == false && data.error == true)
+                {
+                    alert(data.msg);
+                }
+                else if(data.active == false && data.error == false)
+                {
+                    alert(myDevice.device_updated);
+                    window.location.href = myDevice.adminUrl;
+                }
                 
             },
             error: function(xhr, status, error) {

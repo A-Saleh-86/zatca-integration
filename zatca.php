@@ -311,6 +311,47 @@ function load_assets(){
             'user_inserted' => __('User Inserted Successfully', 'zatca'),
             ) 
         );
+
+        //zatcaDevice loalization:
+        wp_enqueue_script('device-js',  plugin_dir_url(__FILE__) . '/js/device.js', array(), false, true);
+        wp_localize_script( 'device-js', 'myDevice', array( 
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'adminUrl' => admin_url('admin.php?page=zatca-devices&action=view'),
+            'device_inserted' => __("New Device Inserted", "zatca"),
+            'device_updated' => __("Device Status Updated", "zatca"),
+            //'device_deleted' => __("Device Deleted Successfully", "zatca"),
+            'device_active' => __("Not allowed to add more one device active", "zatca"),
+            ) 
+        );
+
+        //zatcaDocument localization
+        wp_enqueue_script('document-js',  plugin_dir_url(__FILE__) . '/js/document.js', array(), false, true);
+        wp_localize_script( 'document-js', 'myDoc', array( 
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
+            'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),
+            'document_inserted' => __("Document Created successifly", "zatca"),
+            'document_updated' => __("Data Updated", "zatca"),
+            'document_device_expired' => __("Device CsID_ExpiryDate is Expired", "zatca"),
+            'insert_seller_additional_id' => __("You Muse Insert Seller additional Id Number in zatca Company", "zatca"),
+            'insert_buyer_additional_id' => __("You Muse Insert Buyer additional Number in zatca customer", "zatca"),
+            'no_rows_affected' => __("No rows were affected. Possible reasons: No matching rows or the data is already up to date.", "zatca"),
+            'error_303' => __("Please submit via reporing", "zatca"),
+            'error_401' => __("Unauthorized, Please check authentication certificate and secret and resubmit", "zatca"),
+            'error_413' => __("Please resend with smaller payload(invoice), Decrease invoice details and resubmit", "zatca"),
+            'error_429' => __("Please wait for 1 minute and resubmit", "zatca"),
+            'error_500' => __("Internal Server Error, Please try again later", "zatca"),
+            'error_503' => __("Service Unavailable, Please try again later", "zatca"),
+            'error_504' => __("Gateway Timeout, Please try again later", "zatca"),
+            'buyer_arabic_name' => __("Buyer arabic name is mandatory and the same as his name in his National ID", "zatca"),
+            'buyer_second_business_id_type' => __("Second business type must be National ID, Please edit customer profile", "zatca"),
+            'buyer_second_business_id' => __("Buyer Second business ID must be filled, Please edit customer profile", "zatca"),
+            'seller_second_business_id' => __("Seller Second business ID must be filled, Please edit company profile", "zatca"),
+            'company_stage_2' => __("Company zatca stage must be V2, Please edit company profile", "zatca"),
+            'isexport0_buyervat' => __("Sorry, VAT ID for the client must be empty because the invoice is exports", "zatca"),
+            'isexport1_buyervat' => __("Sorry, VAT ID for the client must be filled because the invoice is not exports", "zatca"),
+            ) 
+        );
     
     }
 
@@ -547,8 +588,14 @@ function insert_form_devices(){
         // check if exist deviceStatus = 0 in zatcaDevice table or not
         $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcaDevice WHERE deviceStatus = 0");
         // if exist deviceStatus = 0 in zatcaDevice table
-        if ($check_deviceStatus) {
-            echo __("Not allowed to add more one device active", "zatca");
+        if ($check_deviceStatus && $deviceStatus == 0) {
+            
+        $send_response = [
+            'active' => true,
+            'msg' => '',
+            'error' => false
+        ];
+            //echo __("Not allowed to add more one device active", "zatca");
         }
         else
         {
@@ -565,14 +612,24 @@ function insert_form_devices(){
             if ($insert_result === false) {
                 // There was an error inserting data
                 $error_message = $wpdb->last_error;
-                echo "Error inserting data: " . $error_message;
+                $send_response = [
+                    'active' => false,
+                    'msg' => 'Error inserting data:' . $error_message,
+                    'error' => true
+                ];
+                //echo "Error inserting data: " . $error_message;
             } else {
     
-                echo __("New Device Inserted", "zatca");
+                $send_response = [
+                    'active' => false,
+                    'msg' => 'New Device Inserted',
+                    'error' => false
+                ];
+                //echo __("New Device Inserted", "zatca");
             }
         }
 
-        
+        wp_send_json($send_response);
 
     }
 
@@ -622,8 +679,13 @@ function edit_form_device(){
                     $dbFinalDate != $formFinalDate ||
                     $data->tokenData != $token_Data )
                 {
+                    $send_response = [
+                        'active' => false,
+                        'msg' => 'Sorry Cant Edit..Please Contact Your System Admin',
+                        'error' => true
+                    ];
 
-                    echo __("Sorry Cant Edit..Please Contact Your System Admin", "zatca");
+                    //echo __("Sorry Cant Edit..Please Contact Your System Admin", "zatca");
                     
                }
                else{ // Update Device Status Only:
@@ -632,7 +694,12 @@ function edit_form_device(){
                     $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcaDevice WHERE deviceStatus = 0");
                     // if exist deviceStatus = 0 in zatcaDevice table
                     if ($check_deviceStatus && $deviceStatus == 0) {
-                        echo __("Not allowed to add more one device active", "zatca");
+                        $send_response = [
+                            'active' => true,
+                            'msg' => 'Not allowed to add more one device active',
+                            'error' => false
+                        ];
+                        //echo __("Not allowed to add more one device active", "zatca");
                     }
                     else
                     { // Update Device Status Only:
@@ -647,10 +714,19 @@ function edit_form_device(){
                         if ($update_result === false) {
                             // There was an error inserting data
                             $error_message = $wpdb->last_error;
-                            echo "Error inserting data: $error_message";
+                            $send_response = [
+                                'active' => false,
+                                'msg' => 'Error inserting data: ' . $error_message,
+                                'error' => true
+                            ];
+                            //echo "Error inserting data: $error_message";
                         } else {
-                
-                            echo __("Device Status Updated", "zatca");
+                            $send_response = [
+                                'active' => false,
+                                'msg' => 'Device Status Updated',
+                                'error' => false
+                            ];
+                            //echo __("Device Status Updated", "zatca");
                         }
                     }
                     
@@ -667,7 +743,12 @@ function edit_form_device(){
             $check_deviceStatus = $wpdb->get_results("SELECT * FROM zatcaDevice WHERE deviceStatus = 0");
             // if exist deviceStatus = 0 in zatcaDevice table
             if (!empty($check_deviceStatus) && $deviceStatus == 0) {
-                echo __("Not allowed to add more one device active", "zatca");
+                $send_response = [
+                    'active' => true,
+                    'msg' => 'Not allowed to add more one device active',
+                    'error' => false
+                ];
+                //echo __("Not allowed to add more one device active", "zatca");
             }
             else
             {
@@ -686,17 +767,27 @@ function edit_form_device(){
                 if ($update_result === false) {
                     // There was an error inserting data
                     $error_message = $wpdb->last_error;
-                    echo "Error inserting data: $error_message";
+                    $send_response = [
+                        'active' => false,
+                        'msg' => 'Error inserting data:' .  $error_message,
+                        'error' => true
+                    ];
+                    //echo "Error inserting data: $error_message";
                 } else {
         
-                    echo __("Data Updated", "zatca");
+                    $send_response = [
+                        'active' => false,
+                        'msg' => 'Data Updated' .  $error_message,
+                        'error' => false
+                    ];
+                    //echo __("Data Updated", "zatca");
                 }
             }
 
             
         }
         
-       
+        wp_send_json($send_response);
     }
 
     die();
@@ -1285,6 +1376,9 @@ function insert_form_documents(){
 
             }else{ // If No Date Valid
 
+                $send_response = [
+                    'status' => 'expired'
+                ];
                 // $msg = "You Must Insert Valid CsID_ExpiryDate";
 
             }
@@ -1450,7 +1544,10 @@ function insert_form_documents(){
 
         if(empty($device_ExpiryDate)){ // If No Date Valid:
 
-            $msg = __("Device CsID_ExpiryDate is Expired","zatca");
+            $send_response = [
+                'status' => 'expired'
+            ];
+            //$msg = __("Device CsID_ExpiryDate is Expired","zatca");
 
         }else{ // If Date Valid
 
@@ -1538,7 +1635,11 @@ function insert_form_documents(){
             if ($insert_doc === false) {
                 // There was an error inserting data:
                 error_log('Insert error: ' . $wpdb->last_error);
-                echo "Error inserting data: " . $wpdb->last_error;
+                $send_response = [
+                    'status' => 'error',
+                    'msg' => 'Error inserting document' . $wpdb->last_error,
+                ];
+                //echo "Error inserting data: " . $wpdb->last_error;
             } else {
     
                 // Get Last DocNo Inserted:
@@ -1548,7 +1649,11 @@ function insert_form_documents(){
     
                     // Check For Error:
                     error_log('Get Last DocNo Error: ' . $wpdb->last_error);
-                    echo "Error Get Last DocNo Inserted: " . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'error',
+                        'msg' => 'Error Get Last DocNo Inserted: ' . $wpdb->last_error,
+                    ];
+                    //echo "Error Get Last DocNo Inserted: " . $wpdb->last_error;
                 }else {
     
                     // Get last DocNo in zatcaDocumentno:
@@ -1578,7 +1683,11 @@ function insert_form_documents(){
     
                             // Check For Error:
                             error_log('documentxml Error: ' . $wpdb->last_error);
-                            echo "Error Inserting DocNo: " . $wpdb->last_error;
+                            $send_response = [
+                                'status' => 'error',
+                                'msg' => 'Error Inserting DocNo: ' . $wpdb->last_error,
+                            ];
+                            //echo "Error Inserting DocNo: " . $wpdb->last_error;
                         }
     
     
@@ -1719,7 +1828,11 @@ function insert_form_documents(){
     
                             // Check For Error:
                             error_log('documentunit Error: ' . $wpdb->last_error);
-                            echo "Error Inserting docunit: " . $wpdb->last_error;
+                            $send_response = [
+                                'status' => 'error',
+                                'msg' => 'Error Inserting doc unit: ' . $wpdb->last_error,
+                            ];
+                            //echo "Error Inserting docunit: " . $wpdb->last_error;
                         }
     
                     }
@@ -1732,12 +1845,17 @@ function insert_form_documents(){
                 }
             }
 
-            $msg = __("Document Created successifly", "zatca");
+            $send_response = [
+                'status' => 'success',
+                'msg' => '',
+            ];
+
+            //$msg = __("Document Created successifly", "zatca");
 
         }
         
-        // wp_send_json($msg);
-        echo $msg;
+        wp_send_json($send_response);
+        //echo $msg;
         
     }
 
@@ -2173,11 +2291,21 @@ function document_edit_form(){
         if ($update_result === false) {
             // There was an error inserting data:
             error_log('Edit error: ' . $wpdb->last_error);
-            echo "Error Editing data: " . $wpdb->last_error;
+            $send_response = [
+    
+                'status' => 'error',
+                'msg' => 'Error Editing data: '. $wpdb->last_error,
+    
+            ];
+            //echo "Error Editing data: " . $wpdb->last_error;
         } else {
-
-            echo __("Data Updated", "zatca");
+            $send_response = [
+                'status' => 'success',
+                'msg' => '',
+            ];
+            //echo __("Data Updated", "zatca");
         }
+        wp_send_json($send_response);
         // print_r($data);
        
     }
@@ -2580,18 +2708,26 @@ function send_request_to_zatca_clear(){
     // validation on seller_additionalIdNumber & buyer_additionalNo:
     if($seller_additionalIdNumber_validation == false){
 
-        $msg = 'You Muse Insert Seller additional Id Number in zatca Company';
+        $send_response = [
+            'status' => 'insert_seller_additional_id',
+            'msg' => ''
+        ];
+        //$msg = 'You Muse Insert Seller additional Id Number in zatca Company';
         // $msg = var_dump($requestArray);
         
       
     }elseif($buyer_additionalNo_validation == false){ // Validation on additionalNo - customer [ buyer ]:
         
-        $msg = 'You Muse Insert Buyer additional Number in zatca customer';
+        $send_response = [
+            'status' => 'insert_buyer_additional_id',
+            'msg' => ''
+        ];
+
+        //$msg = 'You Muse Insert Buyer additional Number in zatca customer';
 
     }
     else{
 
-   
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -2615,7 +2751,11 @@ function send_request_to_zatca_clear(){
         if ($response === false) {
             $error = curl_error($curl);
             $errorCode = curl_errno($curl);
-            echo "cURL Error: $error (Error Code: $errorCode)";
+            $send_response = [
+                'status' => 'error',
+                'msg' => 'cURL Error:' . $error . '(Error Code:'. $errorCode . ')'
+            ];
+            //echo "cURL Error: $error (Error Code: $errorCode)";
         }
         
         $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -2626,7 +2766,11 @@ function send_request_to_zatca_clear(){
         curl_close($curl);
 
         if ($response === false) {
-            echo 'Curl error: ' . curl_error($curl);
+            $send_response = [
+                'status' => 'error',
+                'msg' => 'Curl error: ' . curl_error($curl)
+            ];
+            //echo 'Curl error: ' . curl_error($curl);
         } else {
             // echo 'HTTP status code: ' . $http_status;
             // echo 'Response: ' . $response;
@@ -2689,12 +2833,20 @@ function send_request_to_zatca_clear(){
                 if ($zatcaDocumentxml_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorxml',
+                        'msg' => 'There was an error updating on zatcaDocumentxml in the field ' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocumentxml_update_response_result === 0) {
                     
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 
                 }  
     
@@ -2712,10 +2864,18 @@ function send_request_to_zatca_clear(){
                 // Check for errors
                 if ($zatcaDocument_update_response_result === false) {
                     // Handle error
-                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdateresponse',
+                        'msg' => 'There was an error updating zatcaDocument on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 }elseif ($zatcaDocument_update_response_result === 0) {
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // update zatca device fields with last document submitted:
@@ -2734,16 +2894,28 @@ function send_request_to_zatca_clear(){
                 if ($zatcaDevice_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdatedevice',
+                        'msg' => 'There was an error updating zatcaDevice on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDevice_update_response_result === 0) {
                    
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 insert_encrypted_row($hashed, $doc_no, $device_no);
-                $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                $send_response = [
+                    'status' => 'success',
+                    'msg' => __("Document Submitted Successfully, Zatca Status Code Is ", "zatca") . $statusCode . __(".. Request Is Success", "zatca") . $http_status_msg
+                ];
+                //$msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
             
             }elseif($statusCode == '202'){
 
@@ -2766,11 +2938,19 @@ function send_request_to_zatca_clear(){
                 if ($zatcaDocumentxml_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorxml',
+                        'msg' => 'There was an error updating on zatcaDocumentxml in the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocumentxml_update_response_result === 0) {
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }   
     
                 // update zatca document fields with response Data:
@@ -2789,12 +2969,20 @@ function send_request_to_zatca_clear(){
                 if ($zatcaDocument_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdateresponse',
+                        'msg' => 'There was an error updating zatcaDocument on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocument_update_response_result === 0) {
                    
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // update zatca device fields with last document submitted:
@@ -2813,17 +3001,29 @@ function send_request_to_zatca_clear(){
                 if ($zatcaDevice_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdatedevice',
+                        'msg' => 'There was an error updating zatcaDevice on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDevice_update_response_result === 0) {
                    
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 insert_encrypted_row($hashed, $doc_no, $device_no);
                 
-                $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                $send_response = [
+                    'status' => 'warning',
+                    'msg' => __("Document Submitted with Warning, Zatca Status Code Is ", "zatca") . $statusCode . '......' . $warningMessage
+                ];
+                //$msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
             }
           
         }else{
@@ -2846,22 +3046,37 @@ function send_request_to_zatca_clear(){
                 if ($zatcaDocument_error_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdateresponse',
+                        'msg' => 'There was an error updating zatcaDocument on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocument_error_response_result === 0) {
                     
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // check if have error message or not:
                 if(is_array($validationResults)){
 
-                    $msg = $http_status_msg . ' Error: ' . $errorMessage;
+                    $send_response = [
+                        'status' => 'http_status_msg',
+                        'msg' => $http_status_msg . __(" Error: ", "zatca") . $errorMessage
+                    ];
+                    //$msg = $http_status_msg . ' Error: ' . $errorMessage;
 
                 }else{
-
-                    $msg = $http_status_msg . ' Error: ' . $validationResults;
+                    $send_response = [
+                        'status' => 'http_status_msg',
+                        'msg' => $http_status_msg . __(" Error: ", "zatca") . $validationResults
+                    ];
+                    //$msg = $http_status_msg . ' Error: ' . $validationResults;
                 }
 
                 
@@ -2875,10 +3090,18 @@ function send_request_to_zatca_clear(){
                 $where = array('documentNo' => $doc_no);
                 $zatcaDocument_error_response_result = $wpdb->update('zatcaDocument',
                 $zatcaDocument_error_response_data, $where);
-                $msg = $response;
+                $send_response = [
+                    'status' => '303',
+                    'msg' => $response
+                ];
+                //$msg = $response;
             }
             else
             {
+                $send_response = [
+                    'status' => '',
+                    'msg' => $response
+                ];
                 $msg = $response;
             }
 
@@ -2889,14 +3112,14 @@ function send_request_to_zatca_clear(){
         $user_id = wp_get_current_user()->ID;
         log_send_to_zatca($user_login, $user_id);
 
-        $send_response = [
-            'msg' => $msg,
+        $send_response1 = [
+            'msg' => $send_response,
             'validationResults' => $validationResults,
             'responseArray' => $responseArray,
             'data' => $data
         ];
 
-        wp_send_json($send_response);
+        wp_send_json($send_response1);
       
         
     }
@@ -3879,13 +4102,20 @@ function send_request_to_zatca_report(){
     // validation on seller_additionalIdNumber & buyer_additionalNo:
     if($seller_additionalIdNumber_validation == false){
 
-        $msg = 'You Muse Insert Seller additional Id Number in zatca Company';
+        $send_response = [
+            'status' => 'insert_seller_additional_id',
+            'msg' => ''
+        ];
+        //$msg = 'You Muse Insert Seller additional Id Number in zatca Company';
         // $msg = var_dump($requestArray);
         
       
     }elseif($buyer_additionalNo_validation == false){ // Validation on additionalNo - customer [ buyer ]:
-        
-        $msg = 'You Muse Insert Buyer additional Number in zatca customer';
+        $send_response = [
+            'status' => 'insert_buyer_additional_id',
+            'msg' => ''
+        ];
+        //$msg = 'You Muse Insert Buyer additional Number in zatca customer';
 
     }else{
 
@@ -3913,7 +4143,11 @@ function send_request_to_zatca_report(){
         if ($response === false) {
             $error = curl_error($curl);
             $errorCode = curl_errno($curl);
-            echo "cURL Error: $error (Error Code: $errorCode)";
+            $send_response = [
+                'status' => 'error',
+                'msg' => 'cURL Error:' . $error . '(Error Code:'. $errorCode . ')'
+            ];
+            //echo "cURL Error: $error (Error Code: $errorCode)";
         }
         
         $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -3924,7 +4158,11 @@ function send_request_to_zatca_report(){
         curl_close($curl);
 
         if ($response === false) {
-            echo 'Curl error: ' . curl_error($curl);
+            $send_response = [
+                'status' => 'error',
+                'msg' => 'Curl error: ' . curl_error($curl)
+            ];
+            //echo 'Curl error: ' . curl_error($curl);
         } else {
             // echo 'HTTP status code: ' . $http_status;
             // echo 'Response: ' . $response;
@@ -3952,13 +4190,14 @@ function send_request_to_zatca_report(){
         if (isset($responseArray['validationResults']['warningMessages']) && is_array($responseArray['validationResults']['warningMessages'])) {
             foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
                 if (isset($Message['message'])) {
-                    $warningMessage = $Message['message'];
+                    $warningMessage .= $Message['message'] . "\n";
                 }else{
 
                     echo 'WRONG';
                 }
             }
         }
+
 
         
         // Check If response Valid:
@@ -3984,14 +4223,20 @@ function send_request_to_zatca_report(){
     
                 // Check for errors
                 if ($zatcaDocumentxml_update_response_result === false) {
-                    
+                    $send_response = [
+                        'status' => 'errorxml',
+                        'msg' => 'There was an error updating on zatcaDocumentxml in the field ' . $wpdb->last_error
+                    ];
                     // Handle error
-                    $msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
+                   // $msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocumentxml_update_response_result === 0) {
-                    
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 
                 }  
     
@@ -4009,10 +4254,18 @@ function send_request_to_zatca_report(){
                 // Check for errors
                 if ($zatcaDocument_update_response_result === false) {
                     // Handle error
-                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdateresponse',
+                        'msg' => 'There was an error updating zatcaDocument on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 }elseif ($zatcaDocument_update_response_result === 0) {
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // update zatca device fields with last document submitted:
@@ -4029,19 +4282,29 @@ function send_request_to_zatca_report(){
 
                 // Check for errors
                 if ($zatcaDevice_update_response_result === false) {
-                    
+                    $send_response = [
+                        'status' => 'errorupdatedevice',
+                        'msg' => 'There was an error updating zatcaDevice on the field' . $wpdb->last_error
+                    ];
                     // Handle error
-                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
+                    //$msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDevice_update_response_result === 0) {
-                   
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 insert_encrypted_row($hashed, $doc_no, $device_no);
+                $send_response = [
+                    'status' => 'success',
+                    'msg' => __("Document Submitted Successfully, Zatca Status Code Is ", "zatca") . $statusCode . __(".. Request Is Success", "zatca") . $http_status_msg
+                ];
 
-                $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                //$msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
             
             }elseif($statusCode == '202'){
 
@@ -4062,13 +4325,20 @@ function send_request_to_zatca_report(){
     
                 // Check for errors
                 if ($zatcaDocumentxml_update_response_result === false) {
-                    
+                    $send_response = [
+                        'status' => 'errorxml',
+                        'msg' => 'There was an error updating on zatcaDocumentxml in the field' . $wpdb->last_error
+                    ];
                     // Handle error
-                    $msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
+                    //$msg = "There was an error updating on zatcaDocumentxml in the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocumentxml_update_response_result === 0) {
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }   
     
                 // update zatca document fields with response Data:
@@ -4087,12 +4357,20 @@ function send_request_to_zatca_report(){
                 if ($zatcaDocument_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdateresponse',
+                        'msg' => 'There was an error updating zatcaDocument on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocument_update_response_result === 0) {
                    
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // update zatca device fields with last document submitted:
@@ -4111,19 +4389,33 @@ function send_request_to_zatca_report(){
                 if ($zatcaDevice_update_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdatedevice',
+                        'msg' => 'There was an error updating zatcaDevice on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDevice on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDevice_update_response_result === 0) {
                    
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 insert_encrypted_row($hashed, $doc_no, $device_no);
-                $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                $send_response = [
+                    'status' => 'warning',
+                    'msg' => __("Document Submitted with Warning, Zatca Status Code Is ", "zatca") . $statusCode . '......' . $warningMessage
+                ];
+
+                //$msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
             }
           
-        }else{
+        }
+        else{
 
             if($http_status == '400'){
 
@@ -4142,29 +4434,49 @@ function send_request_to_zatca_report(){
                 if ($zatcaDocument_error_response_result === false) {
                     
                     // Handle error
-                    $msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
+                    $send_response = [
+                        'status' => 'errorupdateresponse',
+                        'msg' => 'There was an error updating zatcaDocument on the field' . $wpdb->last_error
+                    ];
+                    //$msg = "There was an error updating zatcaDocument on the field." . $wpdb->last_error;
                 
                 }elseif ($zatcaDocument_error_response_result === 0) {
                     
                     // No rows affected
-                    $msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
+                    $send_response = [
+                        'status' => 'no_rows_affected',
+                        'msg' => 'No rows were affected. Possible reasons: No matching rows or the data is already up to date'
+                    ];
+                    //$msg = "No rows were affected. Possible reasons: No matching rows or the data is already up to date."; 
                 }
 
                 // check if have error message or not:
                 if(is_array($validationResults)){
 
-                    $msg = $http_status_msg . ' Error: ' . $errorMessage;
+                    $send_response = [
+                        'status' => 'error',
+                        'msg' => $http_status_msg . __(" Error: ", "zatca") . $errorMessage
+                    ];
+                    //$msg = $http_status_msg . ' Error: ' . $errorMessage;
 
                 }else{
-
-                    $msg = $http_status_msg . ' Error: ' . $validationResults;
+                    $send_response = [
+                        'status' => 'error',
+                        'msg' => $http_status_msg . ' Error: ' . $validationResults
+                    ];
+                    //$msg = $http_status_msg . ' Error: ' . $validationResults;
                 }
 
                 
             
-            }else{
+            }
+            else{
 
-                $msg = $response;
+                $send_response = [
+                    'status' => '',
+                    'msg' => $response
+                ];
+                //$msg = $response;
             }
 
         }
@@ -4174,16 +4486,16 @@ function send_request_to_zatca_report(){
         $user_id = wp_get_current_user()->ID;
         log_send_to_zatca($user_login, $user_id);
 
-        $send_response = [
+        $send_response1 = [
 
-            'msg' => $msg,
+            'msg' => $send_response,
             'validationResults' => $validationResults,
             'responseArray' => $responseArray,
             'data' => $data
 
         ];
 
-        wp_send_json($send_response);
+        wp_send_json($send_response1);
       
         
     }
@@ -4591,7 +4903,7 @@ function send_reissue_zatca($docNo)
                 foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
                     if (isset($Message['message'])) 
                     {
-                        $warningMessage = $Message['message'];
+                        $warningMessage .= $Message['message'] . "\n";
                     }
                     else
                     {
@@ -4692,7 +5004,7 @@ function send_reissue_zatca($docNo)
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
     
-                    $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                    $msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
                 
                 }elseif($statusCode == '202'){
     
@@ -4786,7 +5098,7 @@ function send_reissue_zatca($docNo)
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
 
-                    $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                    $msg = 'Document Submitted with Warning, Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
                 }
               
             }else{
@@ -4973,7 +5285,7 @@ function send_reissue_zatca($docNo)
             if (isset($responseArray['validationResults']['warningMessages']) && is_array($responseArray['validationResults']['warningMessages'])) {
                 foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
                     if (isset($Message['message'])) {
-                        $warningMessage = $Message['message'];
+                        $warningMessage .= $Message['message'] . "\n";
                     }else{
                         echo 'WRONG';
                     }
@@ -5074,7 +5386,7 @@ function send_reissue_zatca($docNo)
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
 
-                    $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                    $msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
                 
                 }elseif($statusCode == '202'){
     
@@ -5168,7 +5480,7 @@ function send_reissue_zatca($docNo)
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
 
-                    $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                    $msg = 'Document Submitted with Warning, Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
                 }
               
             }
@@ -5590,7 +5902,7 @@ function send_return_zatca($docNo)
                 foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
                     if (isset($Message['message'])) 
                     {
-                        $warningMessage = $Message['message'];
+                        $warningMessage .= $Message['message'] . "\n";
                     }
                     else
                     {
@@ -5683,7 +5995,7 @@ function send_return_zatca($docNo)
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
     
-                    $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                    $msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
                 
                 }elseif($statusCode == '202'){
     
@@ -5768,7 +6080,7 @@ function send_return_zatca($docNo)
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
     
-                    $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                    $msg = 'Document Submitted with Warning, Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
                 }
               
             }
@@ -5958,7 +6270,7 @@ function send_return_zatca($docNo)
             if (isset($responseArray['validationResults']['warningMessages']) && is_array($responseArray['validationResults']['warningMessages'])) {
                 foreach ($responseArray['validationResults']['warningMessages'] as $Message) {
                     if (isset($Message['message'])) {
-                        $warningMessage = $Message['message'];
+                        $warningMessage .= $Message['message'] . "\n";
                     }else{
                         echo 'WRONG';
                     }
@@ -6050,7 +6362,7 @@ function send_return_zatca($docNo)
 
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
-                    $msg = 'Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
+                    $msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
                 
                 }elseif($statusCode == '202'){
     
@@ -6135,7 +6447,7 @@ function send_return_zatca($docNo)
                     // insert row to zatcaInfo
                     insert_encrypted_row($hashed, $docNo, $device_no);
                     
-                    $msg = 'Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
+                    $msg = 'Document Submitted with Warning, Zatca Status Code Is ' . $statusCode . '.....' . $warningMessage;
                 }
               
             }

@@ -83,11 +83,13 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             </label>
             <div class="col-sm-8 col-md-8">
                 <div class="form-group">
+                    <input type="hidden" name="deviceStatus" value="1"> <!-- Hidden input for unchecked state -->  
                     <input
                         class="form-check-input form-check-input-sm"
                         type="checkbox"
                         name="deviceStatus"
                         class="form-control"
+                        value="0"
                     />
                 </div>
             </div>

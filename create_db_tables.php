@@ -668,11 +668,11 @@ function create_zatcaDocumentxml_table() {
 
 }
 
-// Create zatcainfo table & insert Data:
-function create_zatcainfo_table() {
+// Create zatcaInfo table & insert Data:
+function create_zatcaInfo_table() {
 
     global $wpdb;
-    $table_name = 'zatcainfo';
+    $table_name = 'zatcaInfo';
     $charset_collate = $wpdb->get_charset_collate();
 
     // SQL to create the table
@@ -818,7 +818,7 @@ function create_custom_tables(){
     create_zatcaDocument_table();
     create_zatcaDocumentUnit_table();
     create_zatcaDocumentxml_table();
-    create_zatcainfo_table();
+    create_zatcaInfo_table();
     create_zatcaLog_table();
     create_zatcaUser_table();
     create_zatcaDevice_table();

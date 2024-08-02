@@ -1,9 +1,19 @@
 
 // Confirm Delete:
 jQuery(document).ready(function($) {
-    $('.confirm').click(function () {
+    var currentLang = main.locale;
 
-        return confirm('Are You Sure? - هل أنت متأكد؟');
+    $('.confirm').click(function () {
+        if (currentLang === 'ar') 
+        {
+            return confirm('هل أنت متأكد؟');
+        }
+        else
+        {
+            return confirm('Are you sure?');
+        }
+
+        
     })
 });
 
