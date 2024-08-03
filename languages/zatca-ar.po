@@ -1006,9 +1006,7 @@ msgid "Remind with Late B2C Invoices:"
 msgstr "التنبيه بفواتير B2C المتاخرة"
 
 #: users/edit-user.php:130 users/insert.php:116
-msgid ""
-"Remind with Late B2C Invoices before ZATCA grace period ending with ( number "
-"box ) hours:"
+msgid "Remind with Late B2C Invoices before ZATCA grace period ending with ( number box ) hours:"
 msgstr "ذكرنى بالفواتير المتاخرة (عدد) الساعات"
 
 #: users/edit-user.php:146 users/insert.php:130
@@ -1226,9 +1224,7 @@ msgid "You Muse Insert Buyer additional Number in zatca customer"
 msgstr "يجب ادخال رقم التسجيل الاضافى للعميل"
 
 #: zatca.php:339
-msgid ""
-"No rows were affected. Possible reasons: No matching rows or the data is "
-"already up to date."
+msgid "No rows were affected. Possible reasons: No matching rows or the data is already up to date."
 msgstr "لا يوجد تحديث ربما كل شئ على مايرام"
 
 #: zatca.php:340
