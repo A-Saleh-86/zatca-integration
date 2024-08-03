@@ -1266,8 +1266,7 @@ msgstr "يجب أن يكون اسم المشتري باللغة العربية �
 
 #: zatca.php:348
 msgid "Second business type must be National ID, Please edit customer profile"
-msgstr ""
-"يجب أن يكون نوع التسجيل الثاني هو الهوية الوطنية، يرجى تعديل ملف العميل"
+msgstr "يجب أن يكون نوع التسجيل الثاني هو الهوية الوطنية، يرجى تعديل ملف العميل"
 
 #: zatca.php:349
 msgid "Buyer Second business ID must be filled, Please edit customer profile"
