@@ -231,7 +231,9 @@
                                                                                     WHERE documentNo =  $result->documentNo"));
 
 
-                                
+                            $zatcaCompanySatge = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
+                            FROM zatcaDocument zd, zatcaCompany zc 
+                            WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));    
                             // Check If zatcaSuccessResponse = 0 to show for all documents:
                             if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 0){
                                 
@@ -313,13 +315,23 @@
                                     href="#" 
                                     class="my-plugin-button btn-sm me-1" 
                                     id="send-zatca-reissue" 
-                                    data-doc-no = "<?php echo $result->documentNo ?>" 
+                                    data-doc-no = "<?php echo $result->documentNo ?>"
+                                    data-invoice-type = "<?php echo $result->zatcaInvoiceType ?>"
+                                    data-vatcategorycodesubtypeno = "<?php echo $result->VATCategoryCodeSubTypeNo ?>"
+                                    data-buyer-aname = "<?php echo $result->buyer_aName ?>"
+                                    data-buyer-secondbusinesstype = "<?php echo $result->buyer_secondBusinessIDType ?>"
+                                    data-buyer-secondbusinessid = "<?php echo $result->buyer_secondBusinessID ?>"
+                                    data-company-stage = "<?php echo $zatcaCompanySatge ?>"
+                                    data-seller-secondbusinessid = "<?php echo $result->seller_secondBusinessID ?>"
+                                    data-buyer-vat = "<?php echo $result->buyer_VAT ?>"
+                                    data-invoicetransactioncode-isexports = "<?php echo $result->zatcaInvoiceTransactionCode_isExports ?? 1 ?>"
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
                                     title="<?php echo _e('Reissue', 'zatca') ?>"><?php echo _e('Reissue', 'zatca') ?>
                                     <span class="dashicons dashicons-controls-repeat"></span>
                                 </a>
                                 <!-- / Reissue-->
+                                 
 
                                 <!-- Return -->
                                 <a 
@@ -327,6 +339,15 @@
                                     class="my-plugin-button btn-sm me-1" 
                                     id="send-zatca-return" 
                                     data-doc-no = "<?php echo $result->documentNo ?>" 
+                                    data-invoice-type = "<?php echo $result->zatcaInvoiceType ?>"
+                                    data-vatcategorycodesubtypeno = "<?php echo $result->VATCategoryCodeSubTypeNo ?>"
+                                    data-buyer-aname = "<?php echo $result->buyer_aName ?>"
+                                    data-buyer-secondbusinesstype = "<?php echo $result->buyer_secondBusinessIDType ?>"
+                                    data-buyer-secondbusinessid = "<?php echo $result->buyer_secondBusinessID ?>"
+                                    data-company-stage = "<?php echo $zatcaCompanySatge ?>"
+                                    data-seller-secondbusinessid = "<?php echo $result->seller_secondBusinessID ?>"
+                                    data-buyer-vat = "<?php echo $result->buyer_VAT ?>"
+                                    data-invoicetransactioncode-isexports = "<?php echo $result->zatcaInvoiceTransactionCode_isExports ?? 1 ?>"
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
                                     title="<?php echo _e('Return', 'zatca') ?>"><?php echo _e('Return', 'zatca') ?>
