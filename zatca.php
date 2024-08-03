@@ -763,7 +763,7 @@ function edit_form_device(){
                 );
                 $where = array('deviceNo' => $device_No_id);
                 $update_result = $wpdb->update($table_name, $data, $where);
-            
+                $error_message='';
         
                 if ($update_result === false) {
                     // There was an error inserting data

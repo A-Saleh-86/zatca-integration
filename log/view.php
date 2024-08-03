@@ -82,6 +82,7 @@
             <table id="example" class="table table-striped " style="width:100%">
                 <thead>
                     <tr>
+                        <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('User No', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Log No', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Date Time', 'zatca') ?></th>
                         <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('user name', 'zatca') ?></th>
@@ -104,6 +105,7 @@
 
                             ?>
                             <tr>
+                                <td style="font-size: 0.8rem;"><?php echo $result->login_personNo ?></td>
                                 <td style="font-size: 0.8rem;"><?php echo $result->profilerLogNo ?></td>
                                 <td style="font-size: 0.8rem;"><?php echo date('Y-m-d', strtotime($result->dateG)) ?></td>
                                 <td style="font-size: 0.8rem;"><?php echo $result->login_personName ?></td>
