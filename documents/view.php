@@ -327,7 +327,7 @@
                                     data-invoicetransactioncode-isexports = "<?php echo $result->zatcaInvoiceTransactionCode_isExports ?? 1 ?>"
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
-                                    title="<?php echo _e('Reissue', 'zatca') ?>"><?php echo _e('Reissue', 'zatca') ?>
+                                    title="<?php echo _e('Reissue', 'zatca') ?>">
                                     <span class="dashicons dashicons-controls-repeat"></span>
                                 </a>
                                 <!-- / Reissue-->
@@ -350,7 +350,7 @@
                                     data-invoicetransactioncode-isexports = "<?php echo $result->zatcaInvoiceTransactionCode_isExports ?? 1 ?>"
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
-                                    title="<?php echo _e('Return', 'zatca') ?>"><?php echo _e('Return', 'zatca') ?>
+                                    title="<?php echo _e('Return', 'zatca') ?>">
                                     <span class="dashicons dashicons-dismiss"></span>
                                 </a>
                                 <!-- / Return-->
@@ -395,7 +395,6 @@
                                 id="create-pdf"
                                 class="my-plugin-button btn-sm me-1"
                                 title="<?php echo __("Print Document", "zatca") ?>">
-                                <?php echo __("Print Document", "zatca") ?> 
                                 <span class="dashicons dashicons-download"></span></a>
                             <?php } ?>
                             

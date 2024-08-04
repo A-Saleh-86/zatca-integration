@@ -789,30 +789,29 @@ jQuery(document).ready(function($){
 
 
         if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
-            {
-                alert(myDoc.buyer_arabic_name);
-                return;
-            }
-        else if(buyerSecondbusinesstype != 8)
+        {
+            alert(myDoc.buyer_arabic_name);
+            if(buyerSecondbusinesstype != 8)
             {
                 alert(myDoc.buyer_second_business_id_type);
-                return;
             }
-        else if(buyerSecondbusinessid == '')
+            else if(buyerSecondbusinessid == '')
             {
                 alert(myDoc.buyer_second_business_id);
-                return;
             }
+            return;
+        }
+
         else if(companyStage == 2 && sellerSecondbusinessid == '')
-            {
-                alert(myDoc.seller_second_business_id);
-                return;
-            }
+        {
+            alert(myDoc.seller_second_business_id);
+            return;
+        }
         else if(companyStage != 2)
-            {
-                alert(myDoc.company_stage_2);
-                return;
-            }
+        {
+            alert(myDoc.company_stage_2);
+            return;
+        }
         else
             {
                 //ajax code here to send zatca B2C document
@@ -1206,18 +1205,18 @@ jQuery(document).ready(function($){
                 if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
                     {
                         alert(documentNo + " - " + myDoc.buyer_arabic_name);
+                        if(buyerSecondbusinesstype != 8)
+                        {
+                            alert(documentNo + " - " + myDoc.buyer_second_business_id_type);
+                        }
+                        else if(buyerSecondbusinessid == '')
+                        {
+                            alert(documentNo + " - " + myDoc.buyer_second_business_id);
+                        }
+
                         return; // Stop process, do not send an AJAX request  
                     }
-                else if(buyerSecondbusinesstype != 8)
-                    {
-                        alert(documentNo + " - " + myDoc.buyer_second_business_id_type);
-                        return; // Stop process, do not send an AJAX request  
-                    }
-                else if(buyerSecondbusinessid == '')
-                    {
-                        alert(documentNo + " - " + myDoc.buyer_second_business_id);
-                        return; // Stop process, do not send an AJAX request  
-                    }
+                
                 else if(companyStage == 2 && sellerSecondbusinessid == '')
                     {
                         alert(documentNo + " - " + myDoc.seller_second_business_id);
@@ -1769,18 +1768,17 @@ jQuery(document).ready(function($){
                     if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
                     {
                         alert(myDoc.buyer_arabic_name);
+                        if(buyerSecondbusinesstype != 8)
+                        {
+                            alert(myDoc.buyer_second_business_id_type);
+                        }
+                        else if(buyerSecondbusinessid == '')
+                        {
+                            alert(myDoc.buyer_second_business_id);
+                        }
                         return;
                     }
-                    else if(buyerSecondbusinesstype != 8)
-                    {
-                        alert(myDoc.buyer_second_business_id_type);
-                        return;
-                    }
-                    else if(buyerSecondbusinessid == '')
-                    {
-                        alert(myDoc.buyer_second_business_id);
-                        return;
-                    }
+                    
                     else if(companyStage == 2 && sellerSecondbusinessid == '')
                     {
                         alert(myDoc.seller_second_business_id);
@@ -2490,18 +2488,18 @@ jQuery(document).ready(function($){
             if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
             {
                 alert(myDoc.buyer_arabic_name);
+                if(buyerSecondbusinesstype != 8)
+                {
+                    alert(myDoc.buyer_second_business_id_type);
+                }
+                else if(buyerSecondbusinessid == '')
+                {
+                    alert(myDoc.buyer_second_business_id);
+                }
+
                 return;
             }
-            else if(buyerSecondbusinesstype != 8)
-            {
-                alert(myDoc.buyer_second_business_id_type);
-                return;
-            }
-            else if(buyerSecondbusinessid == '')
-            {
-                alert(myDoc.buyer_second_business_id);
-                return;
-            }
+            
             else if(companyStage == 2 && sellerSecondbusinessid == '')
             {
                 alert(myDoc.seller_second_business_id);
@@ -3194,18 +3192,18 @@ jQuery(document).ready(function($){
             if((vatCategoryCodeSubTypeNo == 13 || vatCategoryCodeSubTypeNo == 14) && buyeraName == '')
             {
                 alert(myDoc.buyer_arabic_name);
+                if(buyerSecondbusinesstype != 8)
+                {
+                    alert(myDoc.buyer_second_business_id_type);
+                }
+                else if(buyerSecondbusinessid == '')
+                {
+                    alert(myDoc.buyer_second_business_id);
+                }
+
                 return;
             }
-            else if(buyerSecondbusinesstype != 8)
-            {
-                alert(myDoc.buyer_second_business_id_type);
-                return;
-            }
-            else if(buyerSecondbusinessid == '')
-            {
-                alert(myDoc.buyer_second_business_id);
-                return;
-            }
+            
             else if(companyStage == 2 && sellerSecondbusinessid == '')
             {
                 alert(myDoc.seller_second_business_id);
