@@ -59,7 +59,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e($docNo, 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -204,7 +204,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo date('d M Y') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -251,7 +251,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Payed (Cash)', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -268,7 +268,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Payed (Visa)', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -285,7 +285,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Payed (Bank)', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -302,7 +302,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Total Payed', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -319,7 +319,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Invoice Total', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -336,7 +336,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Total Discount', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -353,7 +353,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Tax Total', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -370,7 +370,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Invoice Net', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -387,7 +387,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Subnet Total plus tax', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -485,7 +485,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <div class="col-md-6">
                 <label class="form-label"><?php echo _e('Tax Percentage :', 'zatca') ?></label>
                 <div class="form-group">
-                    <select class="form-select select2"  name="taxRate1_Percentage" disabled>
+                    <select class="form-select select2"  name="taxRate1_Percentage" readonly>
                         <option value=""> ...</option>
                         <option value="0">0</option>
                         <option value="5">5</option>
@@ -507,7 +507,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Left Amount', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>

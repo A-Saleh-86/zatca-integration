@@ -89,6 +89,11 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before, table
   left: 65px!important;
 }
 
+.action_btns
+{
+  display: flex!important;
+}
+
 @media (max-width: 767.98px) {
     .dt-length, .dt-search {
         flex-direction: column;

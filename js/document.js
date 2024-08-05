@@ -248,14 +248,14 @@ $('#search-invoices-data').on('click', function(event) {
                         if(data.order_status == 'wc-refunded')
                         {
                             // set span text
-                            $('#statusOrderSpan').html('Return Sell Invoice');
+                            $('#statusOrderSpan').html(myDoc.sell_return_invoice);
                             wooInvoiceOrderStatus.value = 23;
                             $('#returnReasonType').show();
                         }
                         else
                         {
                             // set span text
-                            $('#statusOrderSpan').html('Sell Invoice');
+                            $('#statusOrderSpan').html(myDoc.sell_invoice);
                             wooInvoiceOrderStatus.value = 33;
                             $('#returnReasonType').hide();
                         }
@@ -359,7 +359,7 @@ jQuery(document).ready(function($) {
         event.preventDefault();
 
         // Enable the inputs fields temporarily:
-        $("#woo-invoice-no").prop("disabled", false);
+        /*$("#woo-invoice-no").prop("disabled", false);
         $("#payed-input").prop("disabled", false);
         $("#payed_visa").prop("disabled", false);
         $("#payed_bank").prop("disabled", false);
@@ -369,7 +369,7 @@ jQuery(document).ready(function($) {
         $("#invoice-net-input").prop("disabled", false);
         $("#subnet-total-plus-tax-input").prop("disabled", false);
         $("#discount-input").prop("disabled", false);
-        $("#left-amount-input").prop("disabled", false);
+        $("#left-amount-input").prop("disabled", false);*/
         
         var formData = $(this).serialize();
         // console.log(formData)
@@ -473,7 +473,7 @@ $(document).ready(function($){
             "columnDefs": [
                 { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
                 {
-                    "targets": [ 17, 18 ],
+                    "targets": [ 11, 12 ],
                     "searchable": true,
                     "visible": false
                 }
@@ -489,7 +489,7 @@ $(document).ready(function($){
             "columnDefs": [
                 { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
                 {
-                    "targets": [ 17, 18 ],
+                    "targets": [ 11, 12 ],
                     "searchable": true,
                     "visible": false
                 }
@@ -562,10 +562,10 @@ $(document).ready(function($){
     $('#doc-table-failed').on('change', function() {
         if (this.checked) {
             // Filter to show only rows with "Failed" status
-            table.column(17).search('^(0|3)$', true, false).column(18).search('^(NULL)$', true, false).draw();
+            table.column(11).search('^(0|3)$', true, false).column(12).search('^(NULL)$', true, false).draw();
         } else {
             // Clear the filter
-            table.column(17).search('').column(18).search('').draw();
+            table.column(11).search('').column(12).search('').draw();
         }
     });
 

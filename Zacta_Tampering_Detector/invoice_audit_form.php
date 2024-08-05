@@ -8,17 +8,16 @@
 <body>
     <form action="" method="post" class="container">
         <div class="row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <label for="from_date"><?php echo _e('From Date', 'zatca') ?> </label>
                 <input type="date" name="from_date" id="from_date" class="form-control" required>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <label for="to_date"><?php echo _e('To Date', 'zatca') ?> </label>
                 <input type="date" name="to_date" id="to_date" class="form-control" required>
             </div>
-            <div class="form-group col-md-4">
-                <label for="Branch"> <?php echo _e('Branch', 'zatca') ?> </label>
-                <select name="BuildingNo" id="Branch" class="form-control">
+            <div class="form-group col-md-12">
+                <select name="BuildingNo" id="Branch" class="form-control" hidden>
                     <option value=""><?php echo _e('Branch', 'zatca') ?></option>
                     <?php
                         global $wpdb;

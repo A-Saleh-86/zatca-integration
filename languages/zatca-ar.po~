@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-08-05T15:50:31+02:00\n"
+"POT-Creation-Date: 2024-08-05T15:38:51+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -462,7 +462,7 @@ msgstr "المدينة بالانجليزيه"
 msgid "Country Sub - EN"
 msgstr "محافظة بالانجليزية"
 
-#: customers/view.php:44 devices/view.php:29 documents/view.php:69
+#: customers/view.php:44 devices/view.php:29 documents/view.php:75
 msgid "Action"
 msgstr "الاعدادات"
 
@@ -559,7 +559,7 @@ msgid "Edit Document"
 msgstr "تعديل بيانات الفاتوره"
 
 #: documents/edit-document.php:47 documents/insert.php:53
-#: documents/view.php:391 documents/view.php:409
+#: documents/view.php:429 documents/view.php:447
 msgid "Invoice No:"
 msgstr "رقم الفاتورة"
 
@@ -688,7 +688,7 @@ msgid "Quantity"
 msgstr "الكمية"
 
 #: documents/edit-document.php:591 documents/insert.php:605
-#: documents/view.php:62
+#: documents/view.php:64
 msgid "Discount"
 msgstr "اجمالي الخصم"
 
@@ -720,11 +720,11 @@ msgstr "رقم فاتورة النظام "
 msgid "Search Invoices"
 msgstr "البحث في الفواتير"
 
-#: documents/insert.php:198 documents/view.php:392 documents/view.php:410
+#: documents/insert.php:198 documents/view.php:430 documents/view.php:448
 msgid "Invoice Date:"
 msgstr "تاريخ الفاتورة"
 
-#: documents/insert.php:222
+#: documents/insert.php:222 documents/view.php:60
 msgid "Delivery Date"
 msgstr "تاريخ التوصيل"
 
@@ -768,11 +768,11 @@ msgstr "اجمالي الخصم"
 msgid "Tax Total"
 msgstr "اجمالي الضريبه"
 
-#: documents/insert.php:372 documents/view.php:63
+#: documents/insert.php:372 documents/view.php:65
 msgid "Invoice Net"
 msgstr "الصافي"
 
-#: documents/insert.php:389 documents/view.php:65
+#: documents/insert.php:389 documents/view.php:66
 msgid "Subnet Total plus tax"
 msgstr "الاجمالي بالضريبه"
 
@@ -828,83 +828,111 @@ msgstr "رقم الفاتورة "
 msgid "Invoice Date"
 msgstr "تاريخ الفاتورة"
 
-#: documents/view.php:60
+#: documents/view.php:61
+msgid "Maximum Delivery Date"
+msgstr "اقصي تاريخ للتوصيل"
+
+#: documents/view.php:62
 msgid "Invoice Type"
 msgstr "نوع الفاتورة "
 
-#: documents/view.php:61
+#: documents/view.php:63
 msgid "Payed"
 msgstr "المدفوع"
 
-#: documents/view.php:64
-msgid "Invoice Tax"
-msgstr "قيمة الضريبة"
+#: documents/view.php:67
+msgid "VAT Category Code"
+msgstr "فئة الضريبة الرئيسية"
 
-#: documents/view.php:66
+#: documents/view.php:68
+msgid "VAT Category SubType Code"
+msgstr "فئة الضريبة الفرعية"
+
+#: documents/view.php:69
+msgid "isNominal"
+msgstr "هل عينه؟"
+
+#: documents/view.php:70
+msgid "isExports"
+msgstr "هل صادرات؟"
+
+#: documents/view.php:71
+msgid "isSummary"
+msgstr "هل ملخص فترة"
+
+#: documents/view.php:72
 msgid "Invoice Status"
 msgstr "حاله الفاتورة"
 
-#: documents/view.php:67
+#: documents/view.php:73
 msgid "zatcaSuccessResponse"
 msgstr "حاله ارسال الطلب"
 
-#: documents/view.php:68
+#: documents/view.php:74
 msgid "zatcaAcceptedReissueInvoiceNo"
 msgstr "رقم الفاتورة المعاد ارسالها"
 
-#: documents/view.php:134
+#: documents/view.php:155 documents/view.php:161 documents/view.php:167
+msgid "Yes"
+msgstr "نعم"
+
+#: documents/view.php:155 documents/view.php:161 documents/view.php:167
+msgid "No"
+msgstr "لا"
+
+#: documents/view.php:172
 msgid "Accepted Invoice"
 msgstr "فاتورة مقبولة"
 
-#: documents/view.php:135
+#: documents/view.php:173
 msgid "Accepted With Warning Invoice"
 msgstr "فاتورة مقبولة مع تحذيرات"
 
-#: documents/view.php:136
+#: documents/view.php:174
 msgid "Rejected Invoice"
 msgstr "فاتورة مرفوضة"
 
-#: documents/view.php:172
+#: documents/view.php:210
 msgid "Edit-Document"
 msgstr "تعديل بيانات الفاتورة"
 
-#: documents/view.php:187
+#: documents/view.php:225
 msgid "View Request Data"
 msgstr "اظهار بيانات الطلب"
 
-#: documents/view.php:234 documents/view.php:257
+#: documents/view.php:272 documents/view.php:295
 msgid "Send To Zatca"
 msgstr "ارسال الي زاتكا"
 
-#: documents/view.php:276
+#: documents/view.php:314
 msgid "Download XML"
 msgstr "تحميل المستند"
 
-#: documents/view.php:304
+#: documents/view.php:342
 msgid "Reissue"
 msgstr "اعاده ارسال"
 
-#: documents/view.php:327
+#: documents/view.php:365
 msgid "Return"
 msgstr "ارجاع"
 
-#: documents/view.php:348
+#: documents/view.php:386
 msgid "View Warning MSG"
 msgstr "اظهار رسالة الخطأ"
 
-#: documents/view.php:371
+#: documents/view.php:409
 msgid "Print Document"
 msgstr "طباعة الفاتوره"
 
-#: documents/view.php:390
+#: documents/view.php:428
 msgid "Reissued Invoice"
 msgstr "الفاتورة المعاد ارسالها"
 
-#: documents/view.php:408
+#: documents/view.php:446
 msgid "Original of Reissued Invoice"
 msgstr "أصل الفاتورة المعاد ارسالها"
 
-#: documents/view.php:458
+#: documents/view.php:496
 msgid "Request Data"
 msgstr "بيانات الطلب"
 
@@ -1330,30 +1358,6 @@ msgstr "لديك فواتير غير مرسلة الرجاء مراجعتها"
 #: zatca.php:3533
 msgid "Tax Invoice"
 msgstr "ضريبة الفاتورة"
-
-#~ msgid "Maximum Delivery Date"
-#~ msgstr "اقصي تاريخ للتوصيل"
-
-#~ msgid "VAT Category Code"
-#~ msgstr "فئة الضريبة الرئيسية"
-
-#~ msgid "VAT Category SubType Code"
-#~ msgstr "فئة الضريبة الفرعية"
-
-#~ msgid "isNominal"
-#~ msgstr "هل عينه؟"
-
-#~ msgid "isExports"
-#~ msgstr "هل صادرات؟"
-
-#~ msgid "isSummary"
-#~ msgstr "هل ملخص فترة"
-
-#~ msgid "Yes"
-#~ msgstr "نعم"
-
-#~ msgid "No"
-#~ msgstr "لا"
 
 #~ msgid "Sorry Cant Edit..Please Contact Your System Admin"
 #~ msgstr "نأسف لا يمكنك التعديل .. الرجاء التواصل مع مسئول النظام"

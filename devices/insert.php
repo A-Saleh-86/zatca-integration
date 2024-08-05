@@ -90,6 +90,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         name="deviceStatus"
                         class="form-control"
                         value="0"
+                        checked
                     />
                 </div>
             </div>

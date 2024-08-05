@@ -57,19 +57,13 @@
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice No', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('System Invoice No', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Date', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Delivery Date', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Maximum Delivery Date', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Type', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Payed', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Discount', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Net', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Tax', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Subnet Total plus tax', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('VAT Category Code', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('VAT Category SubType Code', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('isNominal', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('isExports', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('isSummary', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Notes', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Invoice Status', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('zatcaSuccessResponse', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('zatcaAcceptedReissueInvoiceNo', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Action', 'zatca') ?></th>
@@ -91,8 +85,16 @@
                         $zatcaCompanySatge1 = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
                         FROM zatcaDocument zd, zatcaCompany zc 
                         WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));
+
+                        $zatcaStatus = $wpdb->get_var($wpdb->prepare("SELECT zatcaSuccessResponse 
+                        FROM zatcaDocument 
+                        WHERE documentNo =  $result->documentNo"));
                     ?>
-                    <tr>
+                    <tr 
+                    <?php if($zatcaStatus == 1) {?> style="background-color: #00800085" <?php } ?>
+                    <?php if($zatcaStatus == 2) {?> style="background-color: #ffff0082" <?php } ?>
+                    <?php if($zatcaStatus == 3) {?> style="background-color: #ff00007d" <?php } ?>
+                    >
                         <td>
                             <input type="checkbox"
                              class="rowCheckbox"
@@ -111,8 +113,6 @@
                         <td style="font-size: 0.8rem;"><?php echo $result->documentNo ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->invoiceNo ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->dateG ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->deliveryDate ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->gaztLatestDeliveryDate ?></td>
                         <td style="font-size: 0.8rem;">
                             <?php 
                             // Get Invoice Type Name:
@@ -127,46 +127,20 @@
                         <td style="font-size: 0.8rem;"><?php echo $result->amountCalculatedPayed ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->subTotalDiscount ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->subNetTotal ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->taxRate1_Total ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->subNetTotalPlusTax ?></td>
-                        <td style="font-size: 10px;">
-                            <?php
-                            $vatcategoryName = $wpdb->get_var($wpdb->prepare("SELECT aName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $result->VATCategoryCodeNo")); 
-                            echo $vatcategoryName;
-                            ?>
-                        </td>
-                        <td style="font-size: 10px;">
-                            <?php 
-                            $vatcategorySubTypeName = $wpdb->get_var($wpdb->prepare("SELECT aName FROM met_vatcategorycodesubtype WHERE VATCategoryCodeSubTypeNo = $result->VATCategoryCodeSubTypeNo")); 
-                            echo $vatcategorySubTypeName;
-                            ?>
-                        </td>
-                        <!-- <td style="font-size: 0.8rem;"><?php //echo mb_substr($result->zatca_TaxExemptionReason, 0, 29, "UTF-8");  ?></td> -->
                         
-                        <!-- Is Nominal -->
                         <td style="font-size: 0.8rem;">
-                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isNominal) && $result->zatcaInvoiceTransactionCode_isNominal==0) ? __("Yes", "zatca") : __("No", "zatca"); ?>
+                            <?php if($zatcaStatus == 1){ echo __("Accepted Invoice", "zatca"); } ?>
+                            <?php if($zatcaStatus == 2){ echo __("Accepted With Warning Invoice", "zatca"); } ?>
+                            <?php if($zatcaStatus == 3){ echo __("Rejected Invoice", "zatca"); } ?>
                         </td>
-                        <!--/ Is Nominal -->
-
-                        <!-- Is Exports -->
-                        <td style="font-size: 0.8rem;">
-                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isExports) && $result->zatcaInvoiceTransactionCode_isExports==0) ? __("Yes", "zatca") : __("No", "zatca"); ?>
-                        </td>
-                        <!--/ Is Exports -->
-
-                        <!-- Is Summary -->
-                        <td style="font-size: 0.8rem;">
-                            <?php echo (isset($result->zatcaInvoiceTransactionCode_isSummary) && $result->zatcaInvoiceTransactionCode_isSummary==0) ? __("Yes", "zatca") : __("No", "zatca"); ?>
-                        </td>
-                        <!--/ Is Summary -->
-
-                        <td style="font-size: 0.8rem;"><?php echo __("Notes", "zatca") ?></td>
 
                         <td style="font-size: 0.8rem;"><?php echo $result->zatcaSuccessResponse ?></td>
                         <td style="font-size: 0.8rem;"><?php if($result->zatcaAcceptedReissueInvoiceNo == NULL){echo "NULL";} ?></td>
 
 
-                        <td style="font-size: 0.8rem;" class="">
+                        <td style="font-size: 0.8rem;" class="action_btns">
                             <?php
                             // validation in zatcasuccessresponse - if 2  disable edit btn:
                             global $wpdb;
@@ -398,9 +372,10 @@
                                 <span class="dashicons dashicons-download"></span></a>
                             <?php } ?>
                             
-
+                            <!--Reissued Invoice Card Link-->
+                            <!--
                             <div class="row">
-                            <?php
+                                <?php
                                 global $wpdb;
 
                                 // Fetch Data From Database [ met_vatcategorycode table ]:
@@ -421,7 +396,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            <?php
+                                <?php
                                 }
                             
                                 foreach($originalInvoices as $original) {?>
@@ -439,11 +414,12 @@
                                             </div>
                                         </div>
                                     </div>
-                            <?php
+                                <?php
                                 }
-                            ?>
+                                ?>
 
                             </div>
+                            -->
                         </td>
                         <!-- view warning Modal -->
                         <div class="modal fade" id="warning-<?php echo $result->documentNo; ?>" tabindex="-1" aria-labelledby="warningLabel" aria-hidden="true">

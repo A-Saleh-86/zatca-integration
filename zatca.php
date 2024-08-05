@@ -351,6 +351,8 @@ function load_assets(){
             'company_stage_2' => __("Company zatca stage must be V2, Please edit company profile", "zatca"),
             'isexport0_buyervat' => __("Sorry, VAT ID for the client must be empty because the invoice is exports", "zatca"),
             'isexport1_buyervat' => __("Sorry, VAT ID for the client must be filled because the invoice is not exports", "zatca"),
+            'sell_invoice' => __("Sell Invoice", "zatca"),
+            'sell_return_invoice' => __("Return Sell Invoice", "zatca")
             ) 
         );
     
@@ -2713,6 +2715,16 @@ function send_request_to_zatca_clear(){
 
     $requestArray = json_decode($data, true);
 
+    // get deviceCSID and tokenData from zatcaDevice table
+    $deviceCSID = $wpdb->get_var("SELECT zd.deviceCSID 
+    FROM zatcaDevice zd, zatcaDocument z 
+    WHERE z.documentNo = '$doc_no' and z.deviceNo=zd.deviceNo");
+
+    $tokenData = $wpdb->get_var("SELECT zd.tokenData 
+    FROM zatcaDevice zd, zatcaDocument z 
+    WHERE z.documentNo = '$doc_no' and z.deviceNo=zd.deviceNo");
+
+
     $msg = '';
 
     // Validation Fields:
@@ -2748,7 +2760,7 @@ function send_request_to_zatca_clear(){
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Clear?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+            CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Clear?deviceID='. $deviceCSID .'&skipPortalValidation=false',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -2759,7 +2771,7 @@ function send_request_to_zatca_clear(){
             CURLOPT_POSTFIELDS =>$data,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                'Authorization: Bearer ' . $tokenData
             ),
         ));
 
@@ -4118,6 +4130,15 @@ function send_request_to_zatca_report(){
 
     $requestArray = json_decode($data, true);
 
+    // get deviceCSID and tokenData from zatcaDevice table
+    $deviceCSID = $wpdb->get_var("SELECT zd.deviceCSID 
+    FROM zatcaDevice zd, zatcaDocument z 
+    WHERE z.documentNo = '$doc_no' and z.deviceNo=zd.deviceNo");
+
+    $tokenData = $wpdb->get_var("SELECT zd.tokenData 
+    FROM zatcaDevice zd, zatcaDocument z 
+    WHERE z.documentNo = '$doc_no' and z.deviceNo=zd.deviceNo");
+
     $msg = '';
 
     // Validation Fields:
@@ -4147,11 +4168,10 @@ function send_request_to_zatca_report(){
 
     }else{
 
-   
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Report?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+            CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Report?deviceID='. $deviceCSID .'&skipPortalValidation=false',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -4162,7 +4182,7 @@ function send_request_to_zatca_report(){
             CURLOPT_POSTFIELDS =>$data,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                'Authorization: Bearer ' . $tokenData
             ),
         ));
 
@@ -4846,6 +4866,15 @@ function send_reissue_zatca($docNo)
 
         $requestArray = json_decode($data, true);
 
+        // get deviceCSID and tokenData from zatcaDevice table
+        $deviceCSID = $wpdb->get_var("SELECT zd.deviceCSID 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
+        $tokenData = $wpdb->get_var("SELECT zd.tokenData 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
         $msg = '';
 
         // Validation Fields:
@@ -4879,7 +4908,7 @@ function send_reissue_zatca($docNo)
             $curl = curl_init();
     
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Clear?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Clear?deviceID='. $deviceCSID .'&skipPortalValidation=false',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -4890,7 +4919,7 @@ function send_reissue_zatca($docNo)
                 CURLOPT_POSTFIELDS =>$data,
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                    'Authorization: Bearer ' . $tokenData
                 ),
             ));
     
@@ -5318,6 +5347,15 @@ function send_reissue_zatca($docNo)
 
         $requestArray = json_decode($data, true);
 
+        // get deviceCSID and tokenData from zatcaDevice table
+        $deviceCSID = $wpdb->get_var("SELECT zd.deviceCSID 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
+        $tokenData = $wpdb->get_var("SELECT zd.tokenData 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
         $msg = '';
 
         // Validation Fields:
@@ -5350,7 +5388,7 @@ function send_reissue_zatca($docNo)
             $curl = curl_init();
     
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Report?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Report?deviceID='. $deviceCSID .'&skipPortalValidation=false',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -5361,7 +5399,7 @@ function send_reissue_zatca($docNo)
                 CURLOPT_POSTFIELDS =>$data,
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                    'Authorization: Bearer ' . $tokenData
                 ),
             ));
     
@@ -6005,6 +6043,15 @@ function send_return_zatca($docNo)
 
         $requestArray = json_decode($data, true);
 
+        // get deviceCSID and tokenData from zatcaDevice table
+        $deviceCSID = $wpdb->get_var("SELECT zd.deviceCSID 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
+        $tokenData = $wpdb->get_var("SELECT zd.tokenData 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
         $msg = '';
 
         // Validation Fields:
@@ -6037,7 +6084,7 @@ function send_return_zatca($docNo)
             $curl = curl_init();
     
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Clear?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Clear?deviceID='. $deviceCSID .'&skipPortalValidation=false',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -6048,7 +6095,7 @@ function send_return_zatca($docNo)
                 CURLOPT_POSTFIELDS =>$data,
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                    'Authorization: Bearer ' . $tokenData
                 ),
             ));
     
@@ -6446,6 +6493,15 @@ function send_return_zatca($docNo)
 
         $requestArray = json_decode($data, true);
 
+        // get deviceCSID and tokenData from zatcaDevice table
+        $deviceCSID = $wpdb->get_var("SELECT zd.deviceCSID 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
+        $tokenData = $wpdb->get_var("SELECT zd.tokenData 
+        FROM zatcaDevice zd, zatcaDocument z 
+        WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
+
         $msg = '';
 
         // Validation Fields:
@@ -6478,7 +6534,7 @@ function send_return_zatca($docNo)
             $curl = curl_init();
     
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Report?deviceID=faf911aa-ad52-498c-8d85-e8ed4ee26f83&skipPortalValidation=false',
+                CURLOPT_URL => 'https://api-sandbox.cpusfatoora.com/v1/Invoice/Report?deviceID='. $deviceCSID .'&skipPortalValidation=false',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -6489,7 +6545,7 @@ function send_return_zatca($docNo)
                 CURLOPT_POSTFIELDS =>$data,
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE4MDMxMzY2ODYsIlVzZXJJZCI6MzYsIlV1aWQiOiIzMTRmNDRlMC1mNGI4LTRiY2MtYTgwOS03MTgwYTBiMjE1YjAiLCJSZWFkIjp0cnVlLCJXcml0ZSI6dHJ1ZSwiV2hpdGVMaXN0SXAiOm51bGwsIklzc3VlZEF0IjoiMjAyNC0wNS0yNlQxNToxODowNi41NjQ0NTE5KzAwOjAwIn0.najUbWm0ME1aRJQrDrUINr2ztM4zYkcuhzsyfERFOAI'
+                    'Authorization: Bearer ' . $tokenData
                 ),
             ));
     
