@@ -41,7 +41,7 @@
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Client No.', 'zatca') ?>"
-                        disabled
+                        readonly
                     />
 
                     <div class="mx-1"></div>
@@ -232,10 +232,10 @@
             <div class="col-md-4">
                 <label class="form-label"><?php echo _e('ZATCA Invoices Type :', 'zatca') ?></label>
                 <select class="form-select select2"  name="zatca-invoice-type">
-                    <option value=""> ...</option>
-                    <option value="B2B">B2B</option>
+                    <!-- <option value=""> ...</option> -->
+                    <option value="Both"><?php echo _e('Both', 'zatca') ?></option>
                     <option value="B2C">B2C</option>
-                    <option value="Both">Both</option>
+                    <option value="B2B">B2B</option>
                 </select>
             </div>
             <!-- /  ZATCA Invoices Type  field -->
@@ -262,7 +262,7 @@
             <div class="col-md-4">
                 <label class="form-label"><?php echo _e('Country Name:', 'zatca') ?></label>
                 <select class="form-select select2"  name="country">
-                    <option value=""> ...</option>
+                    <!-- <option value=""> ...</option> -->
                     <?php 
                     global $wpdb;
                     

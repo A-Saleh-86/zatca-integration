@@ -46,55 +46,60 @@ jQuery(document).ready(function($) {
 
 
         // validation on postalCode input:
-        if (postal_Code.value == '' ) {
-            // alert("Postal Code Cant be Null");
-            alert(myCustomer.postal_null);
-            return;
-        }
+        // if (postal_Code.value == '' ) {
+        //     // alert("Postal Code Cant be Null");
+        //     alert(myCustomer.postal_null);
+        //     return;
+        // }
        
 
         // validation on postalCode input:
-        if (postal_Code.value.length != 5 ) {
-            // alert("Postal Code Must be 5 Digits.");
-            alert(myCustomer.postal_digits);
-            return;
-        }
-
-        // validation on addressArabicInput :
-        if (addressArabicInput.value == '' ) {
-            // alert("Street Arabic Name Cant be Null.");
-            alert(myCustomer.street);
-            return;
-        }
-
-        // validation on second_bus_id_input :
-        if (second_bus_id_input.value == '' ) {
-            // alert("second business id Cant be Null.");
-            alert(myCustomer.second_id);
-            return;
-        }
-
-        // validation on dist_ar_input input:
-        if (dist_ar_input.value == '' ) {
-            // alert("District Arabic Name Cant be Null.");
-            alert(myCustomer.district);
-            return;
-        }
-
-        // validation on cityArabicInput :
-        if (cityArabicInput.value == '' ) {
-            // alert("City Arabic Name Cant be Null.");
-            alert(myCustomer.city);
-            return;
-        }
-
-        // validation on second_bus_id_input:
-        // if (second_bus_id_input.value.length != 10 ) {
-        //     alert("second business id Must be 10 Digits.");
+        // if (postal_Code.value.length != 5 ) {
+        //     // alert("Postal Code Must be 5 Digits.");
+        //     alert(myCustomer.postal_digits);
         //     return;
         // }
 
+        // validation on addressArabicInput :
+        // if (addressArabicInput.value == '' ) {
+        //     // alert("Street Arabic Name Cant be Null.");
+        //     alert(myCustomer.street);
+        //     return;
+        // }
+
+        // validation on second_bus_id_input :
+        // if (second_bus_id_input.value == '' ) {
+        //     // alert("second business id Cant be Null.");
+        //     alert(myCustomer.second_id);
+        //     return;
+        // }
+
+        // validation on dist_ar_input input:
+        // if (dist_ar_input.value == '' ) {
+        //     // alert("District Arabic Name Cant be Null.");
+        //     alert(myCustomer.district);
+        //     return;
+        // }
+
+        // validation on cityArabicInput :
+        // if (cityArabicInput.value == '' ) {
+        //     // alert("City Arabic Name Cant be Null.");
+        //     alert(myCustomer.city);
+        //     return;
+        // }
+
+        // validation on aName :
+        if (clientNameArabicInput.value == '' ) {
+            // alert("City Arabic Name Cant be Null.");
+            alert(myCustomer.arabic_name);
+            return;
+        }
+
+
+
         var formData = $(this).serialize();
+
+        // console.log(formData)
 
         $.ajax({
             url: myCustomer.ajaxUrl,
@@ -263,48 +268,55 @@ jQuery(document).ready(function($) {
     // Edit customer Form:
     $("#edit_customer_form").submit(function(event){
         event.preventDefault();
-        clientVendorNoInput.disabled = false
+        // clientVendorNoInput.disabled = false
         var formData = $(this).serialize();
 
         // validation on postalCode input:
-        if (postal_Code.value == '' ) {
-            // alert("Postal Code Cant be Null.");
-            alert(myCustomer.postal_null);
-            return;
-        }
+        // if (postal_Code.value == '' ) {
+        //     // alert("Postal Code Cant be Null.");
+        //     alert(myCustomer.postal_null);
+        //     return;
+        // }
 
         // validation on postalCode input:
-        if (postal_Code.value.length != 5 ) {
-            // alert("Postal Code Must be 5 Digits.");
-            alert(myCustomer.postal_digits);
-            return;
-        }
+        // if (postal_Code.value.length != 5 ) {
+        //     // alert("Postal Code Must be 5 Digits.");
+        //     alert(myCustomer.postal_digits);
+        //     return;
+        // }
 
         // validation on addressArabicInput :
-        if (addressArabicInput.value == '' ) {
-            // alert("Street Arabic Name Cant be Null.");
-            alert(myCustomer.street);
-            return;
-        }
+        // if (addressArabicInput.value == '' ) {
+        //     // alert("Street Arabic Name Cant be Null.");
+        //     alert(myCustomer.street);
+        //     return;
+        // }
 
         // validation on second_bus_id_input :
-        if (second_bus_id_input.value == '' ) {
-            // alert("second business id Cant be Null.");
-            alert(myCustomer.second_id);
-            return;
-        }
+        // if (second_bus_id_input.value == '' ) {
+        //     // alert("second business id Cant be Null.");
+        //     alert(myCustomer.second_id);
+        //     return;
+        // }
 
         // validation on dist_ar_input :
-        if (dist_ar_input.value == '' ) {
-            // alert("District Arabic Name Cant be Null.");
-            alert(myCustomer.district);
-            return;
-        }
+        // if (dist_ar_input.value == '' ) {
+        //     // alert("District Arabic Name Cant be Null.");
+        //     alert(myCustomer.district);
+        //     return;
+        // }
 
         // validation on cityArabicInput :
-        if (cityArabicInput.value == '' ) {
+        // if (cityArabicInput.value == '' ) {
+        //     // alert("City Arabic Name Cant be Null.");
+        //     alert(myCustomer.city);
+        //     return;
+        // }
+
+        // validation on aName :
+        if (clientNameArabicInput.value == '' ) {
             // alert("City Arabic Name Cant be Null.");
-            alert(myCustomer.city);
+            alert(myCustomer.arabic_name);
             return;
         }
 

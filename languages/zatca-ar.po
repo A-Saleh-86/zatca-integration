@@ -19,12 +19,12 @@ msgstr ""
 #. Plugin Name of the plugin
 #: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
 msgid "zatca"
-msgstr "زاتكا"
+msgstr "هيئه الذكاه"
 
 #. Description of the plugin
 #: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
 msgid "Zatca Integration"
-msgstr "التكامل مع زاتكا"
+msgstr "التكامل مع هيئه الذكاه"
 
 #. Author of the plugin
 #: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php

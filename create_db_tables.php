@@ -54,7 +54,7 @@ function create_zatca_country_table() {
     // Data to be inserted:
     $data = [
         [
-            'country_id' => 1,
+            'country_id' => 2,
             'english_name' => 'Egypt',
             'arabic_name' => 'مصر',
             'french_name' => NULL,
@@ -89,7 +89,7 @@ function create_zatca_country_table() {
             'row_timestamp' => '2024-05-04 14:24:50'
         ],
         [
-            'country_id' => 2,
+            'country_id' => 1,
             'english_name' => 'Sauid Arabia',
             'arabic_name' => 'السعوديه',
             'french_name' => NULL,

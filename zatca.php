@@ -283,6 +283,7 @@ function load_assets(){
             'city' => __('City Arabic Name Cant be Null', 'zatca'),
             'customer_inserted' => __('Customer Inserted Success', 'zatca'),
             'select_customer' => __('Please select a customer first', 'zatca'),
+            'arabic_name' => __('Please Insert Customer Aarabic Name', 'zatca'),
         ));
     
         // zatcaCompany localization:

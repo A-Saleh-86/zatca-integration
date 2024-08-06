@@ -31,16 +31,16 @@
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Street Name(Ar)', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Dist-AR', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('City-AR', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Sub-AR', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Country', 'zatca') ?></th>
+                <!-- <th class="text-center" style="font-size: 0.7rem;"><?php //echo _e('Sub-AR', 'zatca') ?></th> -->
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Sec-Business-Id', 'zatca') ?></th class="text-center" style="font-size: 0.7rem;">
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Apart No', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('PO Box', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Postal Code', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('PO Box Additional Num', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('St Name - EN', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Dist Name - EN', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('City Name - EN', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Country Sub - EN', 'zatca') ?></th>
+                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Country', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Action', 'zatca') ?></th>
             </tr>
         </thead>
@@ -74,10 +74,10 @@
                         <td style="font-size: 0.8rem;"><?php echo $result->street_Arb ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->district_Arb ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->city_Arb ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->countrySubdivision_Arb ?></td>
+                        <!-- <td style="font-size: 0.8rem;"><?php //echo $result->countrySubdivision_Arb ?></td> -->
                         <td style="font-size: 0.8rem;"><?php echo $result->secondBusinessID ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->apartmentNum ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->POBox ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $result->postalCode ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->POBoxAdditionalNum ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->street_Eng ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->district_Eng ?></td>

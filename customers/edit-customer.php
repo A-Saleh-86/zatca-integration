@@ -56,7 +56,7 @@ if (!empty($results)) {
                                 class="form-control" 
                                 autocomplete="off"
                                 value="<?php echo $result->clientVendorNo  ?>"
-                                disabled
+                                readonly
                             />
 
                             <div class="mx-1"></div>
