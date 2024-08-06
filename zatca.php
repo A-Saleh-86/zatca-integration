@@ -129,6 +129,7 @@ add_shortcode('checkbox', 'checkbox_function');
 // Hook of woo to insert checkbox in checkout page [ checkout page ]:
 add_action('woocommerce_blocks_checkout_enqueue_data', 'add_custom_field_to_checkout_blocks');
     
+add_action('wp_ajax_handle_form_tampering', 'handle_form_tampering');
 
 // Function to run Text Domain:
 function my_plugin_load_textdomain() {
@@ -228,6 +229,13 @@ function load_assets(){
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         ) 
     );
+
+    wp_enqueue_script('tampering-script', plugin_dir_url(__FILE__) . '/js/tampering-detector.js', array(), false, true);  
+
+    // Localize the script with new data  
+    wp_localize_script('tampering-script', 'ajax_object', array(  
+        'ajax_url' => admin_url('admin-ajax.php')  
+    ));  
     
     wp_localize_script( 'main-js', 'main', array( 
         'dtLoc' => plugin_dir_url(__FILE__) . '/js/datatable-localization.json',
@@ -357,6 +365,158 @@ function load_assets(){
             ) 
         );
     
+    }
+
+
+    function handle_form_tampering() {  
+        
+        // Check if the form is submitted
+        if ($_POST['check_type'] == 'check_counter_gap') 
+        {
+            // Call the counter gap function
+            $content = '';
+            
+            global $wpdb;
+
+            // Get the necessary POST data
+            $BuildingNo = $_POST['buildingNo']; // branch id
+            $from_date = $_POST['from_date'];
+            $to_date = $_POST['to_date'];
+
+            
+            // Query to fetch the invoice numbers within the specified date range for the given branch
+            $query = $wpdb->prepare("
+                SELECT z1.documentNo
+                FROM zatcaDocument z1
+                INNER JOIN zatcaDevice zd ON zd.deviceNo = z1.deviceNo
+                INNER JOIN zatcaBranch zb ON z1.buildingNo = zb.buildingNo
+                WHERE zb.buildingNo = %d
+                AND z1.dateG BETWEEN %s AND %s
+                ORDER BY z1.documentNo
+            ", $BuildingNo, $from_date, $to_date);
+
+            $results = $wpdb->get_results($query);
+
+            
+            // Initialize variables
+            $missing_numbers = [];
+            $prev_number = null;
+
+            // Check for missing invoice numbers
+            foreach ($results as $result) {
+                $current_number = $result->documentNo;
+
+                if ($prev_number !== null && $current_number - $prev_number > 1) {
+                    // Gap detected, add missing numbers to the array
+                    for ($i = $prev_number + 1; $i < $current_number; $i++) {
+                        $missing_numbers[] = $i;
+                    }
+                }
+
+                $prev_number = $current_number;
+            }
+
+            // Prepare the response data
+            $response = array(
+                'missing_numbers' => $missing_numbers,
+            );
+
+            
+            // Display the results in a grid table
+            $content .= '<div class="container"><table id="example" class="table table-striped" width="100%">';
+            $content .= '<thead><tr><th class="text-center">' . __("Missing Invoice Numbers", "zatca") . '</th></tr></thead>';
+            $content .= '<tbody class="text-center">';
+
+            foreach ($response['missing_numbers'] as $missing_number) {
+                $content .= '<tr><td>' . $missing_number . '</td></tr>';
+            }
+
+            $content .= '</tbody></table></div>';
+
+            echo $content;
+        }
+
+        // Check if the form is submitted
+        if ($_POST['check_type'] == 'check_hash_gap') 
+        {
+            // Call the hash gap function
+            global $wpdb;
+
+            // Get the necessary POST data
+            $BuildingNo = $_POST['buildingNo']; // branch id
+            $from_date = $_POST['from_date'];
+            $to_date = $_POST['to_date'];
+
+            // Define zatcaInfo table name  
+            $zacainfo_table = 'zatcaInfo';  
+
+            $missing_records = [];  
+
+            // Step 1: Select zatcaInfo1, zatcaInfo2, and zatcaInfo3 from zacainfo table  
+            $zacainfo_query = $wpdb->prepare(  
+                "SELECT zatcaInfo1, zatcaInfo2, zatcaInfo3 FROM $zacainfo_table"  
+            );  
+            $zacainfo_records = $wpdb->get_results( $zacainfo_query, ARRAY_A );  
+
+            // Step 2: Select documentNo, deviceNo, and invoiceHash from zatcaDocument & zatcaDocumentxml tables
+            // within the given date range  
+            $zatcaDocument_query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
+            FROM zatcaDocument z, zatcaDocumentxml z1 
+            WHERE z.BuildingNo= %d 
+            AND z.dateG BETWEEN %s AND %s 
+            AND z.documentNo=z1.documentNo",
+            $BuildingNo, $from_date, $to_date);
+
+            $zatcaDocument_records = $wpdb->get_results( $zatcaDocument_query, ARRAY_A );  
+
+            // Step 3: Create an associative array for zatcaDocument records for quick lookup  
+            $zatcaDocument_map = [];  
+            foreach ( $zatcaDocument_records as $document ) {  
+                $key = implode('|', [$document['invoiceHash'], $document['documentNo'], $document['deviceNo']]);  
+                $zatcaDocument_map[ $key ] = $document;  
+            }  
+
+            // Step 4: Check for existence of records from zacainfo in zatcaDocument  
+            foreach ( $zacainfo_records as $info ) {
+                
+                $key = implode('|', [decrypt_data($info['zatcaInfo1']), decrypt_data($info['zatcaInfo2']), decrypt_data($info['zatcaInfo3'])]);  
+                
+                // Check if the composite key exists in zatcaDocument  
+                if ( ! isset( $zatcaDocument_map[ $key ] ) ) {  
+                    // Push missing record's values to the array  
+                    $missing_records[] = [  
+                        'invoiceHash' => decrypt_data($info['zatcaInfo1']),  
+                        'documentNo' => decrypt_data($info['zatcaInfo2']),  
+                        'deviceNo' => decrypt_data($info['zatcaInfo3'])  
+                    ];  
+                }  
+            }
+
+            // Display the results in a grid table
+            echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
+            echo '<thead><tr><th class="text-center">'. __("Document No", "zatca") .'</th><th class="text-center">'. __("Device No", "zatca") .'</th><th class="text-center">'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody class="text-center">';
+
+            foreach ($missing_records as $document1) {
+                echo '<tr>';
+                echo '<td>' . $document1['documentNo'] . '</td>';
+                echo '<td>' . $document1['deviceNo'] . '</td>';
+                echo '<td>' . $document1['invoiceHash'] . '</td>';
+                echo '</tr>';
+            }
+
+            echo '</tbody></table></div>';
+        }
+    
+        wp_die(); // terminate immediately and return a proper response  
+    }
+
+    // Function to encrypt data
+    function decrypt_data($data) {
+        // Make sure to use the same encryption method for encryption and decryption
+        // Decoding the previously encoded text  
+        $decodedText  = base64_decode($data);
+
+        return $decodedText ;
     }
 
 // AJax Insert_Data to DB - customers [ Insert-page]:
@@ -3700,7 +3860,7 @@ function invoice_audit_form_shortcode()
     require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/invoice_audit_form.php');
     
     // Database Operations Here>> check_gap.php
-    require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/check_gap.php');
+    //require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/check_gap.php');
     return ob_get_clean();
 }
 add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');

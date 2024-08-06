@@ -266,6 +266,17 @@
                             // check for if zatca success reponse > 0 - show download xml:
                             if((int)$zatcaSuccessResponse > 0){?>
 
+                            <!-- View Btn -->
+                                <a 
+                                    href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$result->documentNo.'')  ?>" 
+                                    class="my-plugin-button  me-1" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    title="<?php echo _e('View Document', 'zatca') ?>">
+                                    <span class="dashicons dashicons-editor-table"></span>
+                                </a>
+                                <!-- / View Btn -->
+
                                 <!--  Download XML Btn -->
                                 <button 
                                     type="button" 
