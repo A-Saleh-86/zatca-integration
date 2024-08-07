@@ -7,6 +7,7 @@
     <title>Tampering Detector</title>
 </head>
 <body>
+<?php echo 'asd'; ?>
     <form id="myForm" method="post" class="container">
         <div class="row">
             <div class="form-group col-md-6">
