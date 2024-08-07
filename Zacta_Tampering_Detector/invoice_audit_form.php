@@ -1,4 +1,4 @@
-<?php echo 'test now again'; ?>
+<?php echo 'test now again-2'; ?>
 <!DOCTYPE html>
 <html>
 <head>
