@@ -6,7 +6,7 @@
     <title>Tampering Detector</title>
 </head>
 <body>
-    <form action="" method="post" class="container">
+    <form id="myForm" method="post" class="container">
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="from_date"><?php echo _e('From Date', 'zatca') ?> </label>
@@ -35,7 +35,7 @@
                                 $Building_No = $branch->buildingNo;
 
                                 // Output an option for each branch
-                                echo '<option value="' . esc_attr($branch->buildingNo) . '">' . esc_html($Building_No) . '</option>';
+                                echo '<option value="' . esc_attr($branch->buildingNo) . '" selected>' . esc_html($Building_No) . '</option>';
                                 
                             
                             }
@@ -46,10 +46,11 @@
         </div>
         <div class="row m-3">
             <div class="form-group col-md-12 m-3" style="display: flex;justify-content: center;">
-                <button class="btn btn-sm btn-primary m-2" name="check_counter_gap" type="submit"><?php echo _e('Check Counter Gap', 'zatca') ?> </button>
-                <button class="btn btn-sm btn-primary m-2" name="check_hash_gap" type="submit"><?php echo _e('Check Hash Gap', 'zatca') ?> </button>
+                <button class="btn btn-sm btn-primary m-2" id="check_counter_gap"><?php echo _e('Check Counter Gap', 'zatca') ?> </button>
+                <button class="btn btn-sm btn-primary m-2" id="check_hash_gap"><?php echo _e('Check Hash Gap', 'zatca') ?> </button>
             </div>
         </div>
     </form>
+    <div id="response"></div> <!-- This div will display the response -->
 </body>
 </html>

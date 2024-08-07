@@ -33,7 +33,11 @@ if (!empty($results)) {
 
     <!-- Header -->
     <div class="col-xl-9 mx-auto mt-3">
+        <?php if($result->zatcaSuccessResponse == 0){ ?>
         <h5 class="mb-3 text-uppercase text-center"><?php echo _e('Edit Document', 'zatca')?></h5>
+        <?php } else{ ?>
+            <h5 class="mb-3 text-uppercase text-center"><?php echo _e('View Document','zatca')?></h5>
+        <?php } ?>
     </div>
     <!-- / Header -->
 
@@ -53,7 +57,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo $result->documentNo ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -70,7 +74,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e($result->invoiceNo, 'zatca') ?>"
-                        disabled
+                        readonly
                     />
 
                     <div class="mx-1"></div>
@@ -186,6 +190,7 @@ if (!empty($results)) {
                             class="form-control" 
                             autocomplete="off"
                             value="<?php echo _e($result->deliveryDate, 'zatca') ?>"
+                            <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
                         />
                     </div>
             </div>
@@ -201,6 +206,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e($result->gaztLatestDeliveryDate, 'zatca') ?>"
+                        <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
                     />
                 </div>
             </div>
@@ -219,7 +225,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->amountPayed01,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -236,7 +242,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->amountPayed02,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -253,7 +259,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->amountPayed03,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -272,7 +278,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->amountCalculatedPayed,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -289,7 +295,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->subTotal,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -306,7 +312,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->subTotalDiscount,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -325,7 +331,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->taxRate1_Total,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -342,7 +348,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e($result->subNetTotal, 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -359,7 +365,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->subNetTotalPlusTax,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -381,7 +387,11 @@ if (!empty($results)) {
             <div class="col-md-4">
                 <label class="form-label"><?php echo _e('VAT Category Code:', 'zatca') ?></label>
                 <div class="form-group">
-                    <select class="form-select select2"  name="edit-vat-cat-code" id="vat-cat-code">
+                    <select class="form-select select2"
+                     name="edit-vat-cat-code" 
+                     id="vat-cat-code"
+                    <?php if($result->zatcaSuccessResponse != 0){ ?>disabled<?php } ?>
+                    >
                         <option value="">...</option>
                         <?php
                             global $wpdb;
@@ -403,7 +413,11 @@ if (!empty($results)) {
             <div class="col-md-4">
                 <label class="form-label"><?php echo _e('VAT Category SubType Code:', 'zatca') ?></label>
                 <div class="form-group">
-                    <select class="form-select select2"  name="vat-cat-code-sub-no" id="vat-cat-code-sub">
+                    <select class="form-select select2"
+                    name="vat-cat-code-sub-no" 
+                    id="vat-cat-code-sub"
+                    <?php if($result->zatcaSuccessResponse != 0){ ?>disabled<?php } ?>
+                    >
                         <option value="">...</option>
                         <?php
                             global $wpdb;
@@ -436,6 +450,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e($result->zatca_TaxExemptionReason, 'zatca') ?>"
+                        <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
                     />
                 </div>
             </div>
@@ -448,7 +463,10 @@ if (!empty($results)) {
             <div class="col-md-6">
                 <label class="form-label"><?php echo _e('Invoices Type :', 'zatca') ?></label>
                 <div class="form-group">
-                    <select class="form-select select2"  name="zatcaInvoiceType">
+                    <select class="form-select select2"
+                    name="zatcaInvoiceType"
+                    <?php if($result->zatcaSuccessResponse != 0){ ?>disabled<?php } ?>
+                    >
                         <option value="1" <?php if($result->zatcaInvoiceType  == '1'){ echo 'selected';}?>>B2B</option>
                         <option value="0" <?php if($result->zatcaInvoiceType  == '0'){ echo 'selected';}?> >B2C</option>
                     </select>
@@ -482,7 +500,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         value="<?php echo _e(round($result->amountLeft,2), 'zatca') ?>"
-                        disabled
+                        readonly
                     />
                 </div>
             </div>
@@ -498,6 +516,7 @@ if (!empty($results)) {
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Notes', 'zatca') ?>"
+                        <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
                     />
                 </div>
             </div>
@@ -521,8 +540,8 @@ if (!empty($results)) {
                             <?php
                             // check if checked or not:
                             echo (isset($result->zatcaInvoiceTransactionCode_isNominal) && $result->zatcaInvoiceTransactionCode_isNominal==0) ? 'checked' : '';
-
-                            ?> 
+                            ?>
+                            <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
                             >
                         <label class="form-check-label ms-1 mb-1" for="isNominal">
                             <?php echo _e('Is Nominal', 'zatca'); ?>
@@ -540,8 +559,9 @@ if (!empty($results)) {
                             <?php
                             // check if checked or not:
                             echo  (isset($result->zatcaInvoiceTransactionCode_isExports) && $result->zatcaInvoiceTransactionCode_isExports==0) ? 'checked' : '';
-
-                            ?> >
+                            ?>
+                            <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
+                            >
                         <label class="form-check-label ms-1 mb-1" for="isExports">
                             <?php echo _e('Is Export', 'zatca') ?>
                         </label>
@@ -559,7 +579,9 @@ if (!empty($results)) {
                             // check if checked or not:
                             echo (isset($result->zatcaInvoiceTransactionCode_isSummary) && $result->zatcaInvoiceTransactionCode_isSummary==0) ? 'checked' : '';
 
-                            ?> >
+                            ?>
+                            <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
+                            >
                         <label class="form-check-label ms-1 mb-1" for="isSummary">
                             <?php echo _e('Is Summary', 'zatca') ?>
                         </label>
@@ -617,16 +639,70 @@ if (!empty($results)) {
             <!--invoice lines-->
 
             <!-- Submit Btn -->
+            <?php if($result->zatcaSuccessResponse == 0){ ?>
             <div class="col-md-7">
                 <div class="d-grid gap-2 md-flex justify-content-md-end">
                     <input type="submit" value="<?php echo _e('Edit Document', 'zatca') ?>" class="my-plugin-button " />
                 </div>
             </div>
             <!-- / Submit Btn -->
+            <?php } ?>
 
         </div>
 
+        <div class="row">
+            <?php
+            global $wpdb;
+
+            // Fetch Data From Database [ met_vatcategorycode table ]:
+            $reissuanceInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaRejectedInvoiceNo='$result->documentNo' and isZatcaReissued=0" );
+            $originalInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaAcceptedReissueInvoiceNo='$result->documentNo'" );
+            foreach($reissuanceInvoices as $reissuance) {?>
+                
+                <div class="col-md-12">
+                    <div class="card border-0 shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="card-title"><?php echo _e('Reissued Invoice', 'zatca') ?></h5>
+                                    <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?>
+                                        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$reissuance->documentNo.'')  ?>">
+                                            <span class="badge bg-primary"><?php echo $reissuance->documentNo ?></span>
+                                        </a>
+                                    </p>
+                                    <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $reissuance->dateG ?></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            }
         
+            foreach($originalInvoices as $original) {?>
+                
+                <div class="col-md-12">
+                    <div class="card border-0 shadow-sm mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="card-title"><?php echo _e('Original of Reissued Invoice', 'zatca') ?></h5>
+                                    <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?> 
+                                        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$original->documentNo.'') ?>">
+                                            <span class="badge bg-primary"><?php echo $original->documentNo ?></span>
+                                        </a>
+                                    </p>
+                                    <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $original->dateG ?></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+
+        </div>
 
     </form>
     <!--  /Form Of Inputes -->
