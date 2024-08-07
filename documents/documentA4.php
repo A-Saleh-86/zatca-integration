@@ -63,7 +63,27 @@ function generate_A4pdf()
 
         // Add a page  
         $pdf->AddPage();  
+        /**  
+         * Custom function to rotate text  
+         */  
+        function RotatedText($pdf, $x, $y, $txt, $angle) {  
+            // Save the current state  
+            $pdf->StartTransform();  
+            $pdf->Rotate($angle, $x, $y);  
+            // Output the text at the specified position  
+            $pdf->Text($x, $y, $txt);  
+            // Restore the state  
+            $pdf->StopTransform();  
+        }  
 
+        // Set the watermark text  
+        $watermark = 'نسخة غير نهائية';  
+        $pdf->SetFont('aealarabiya', 'B', 100);  
+        //$pdf->SetTextColor(255, 192, 203); // Light pink color 
+        $pdf->SetAlpha(0.3); // Set transparency for the watermark 
+        RotatedText($pdf, 45, 200, $watermark, 55); // Add rotated text  
+
+        $pdf->SetAlpha(1); // Set transparency for the watermark
         // Set font  
         $pdf->SetFont('aealarabiya', '', 12);
 
