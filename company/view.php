@@ -252,7 +252,7 @@
                         <input 
                             type="text" 
                             name="postal-code"
-                            id="postal_code"
+                            id="company_postal_code"
                             class="form-control"
                             value="<?php echo $result->postalCode ?>"
                             
@@ -337,7 +337,7 @@
                         <input 
                             type="text" 
                             name="city-name-ar"
-                            id="city_ar"
+                            id="company_city_ar"
                             class="form-control"
                             value="<?php echo $result->city_Arb ?>"
                         />
@@ -350,7 +350,7 @@
                         <input 
                         type="text" 
                         name="city-name-en"
-                        id="city_en"
+                        id="company_city_en"
                         class="form-control"
                         value="<?php echo $result->city_Eng ?>"
                         />
@@ -790,7 +790,7 @@
                     <input 
                         type="text" 
                         name="city-name-ar" 
-                        id="city_ar"
+                        id="company_city_ar"
                         class="form-control"
                         placeholder="<?php echo _e('City Name - AR :', 'zatca') ?>"
                     />
@@ -803,7 +803,7 @@
                     <input 
                     type="text" 
                     name="city-name-en"
-                    id="city_en"
+                    id="company_city_en"
                     class="form-control"
                     placeholder="<?php echo _e('City Name - EN :', 'zatca') ?>"
                     />

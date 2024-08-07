@@ -5,13 +5,13 @@ jQuery(document).ready(function($) {
     const secondBusIdInput = document.getElementById('second-id-company');
     const vatCatCodeSubInput = document.getElementById('vat-cat-code-sub');
     var po = document.getElementById("po-company");
-    var cityAr = document.getElementById("city_ar");
+    var cityAr = document.getElementById("company_city_ar");
     const copyBtn = document.getElementById('copy-company-data');
     const streetNameArInput = document.getElementById('street_name_ar');
     const streetNameEnInput = document.getElementById('street_name_en');
-    const cityArInput = document.getElementById('city_ar');
-    const cityEnInput = document.getElementById('city_en');
-    const postalCodeInput = document.getElementById('postal_code');
+    const cityArInput = document.getElementById('company_city_ar');
+    const cityEnInput = document.getElementById('company_city_en');
+    const postalCodeInput = document.getElementById('company_postal_code');
     const districtNameArInput = document.getElementById('district_name_ar');
     const companyNameInput = document.getElementById('company_name');
     const appartmentNoInput = document.getElementById('appartment_no');
@@ -177,10 +177,10 @@ jQuery(document).ready(function($) {
         // console.log(formData)
 
         // validation on second Bussiness Id input:
-        if (secondBusIdInput.value.length != 10 ) {
-            alert(myCompany.second_bus);
-            return;
-        }
+        // if (secondBusIdInput.value.length != 10 ) {
+        //     alert(myCompany.second_bus);
+        //     return;
+        // }
 
         // validation on city arabic name input:
         if (cityArInput.value == null || cityAr.value === '' ) {
@@ -248,10 +248,10 @@ jQuery(document).ready(function($) {
         var formData = $(this).serialize();
 
         // validation on second Bussiness Id input:
-        if (secondBusIdInput.value.length != 10 ) {
-            alert(myCompany.second_bus);
-            return;
-        }
+        // if (secondBusIdInput.value.length != 10 ) {
+        //     alert(myCompany.second_bus);
+        //     return;
+        // }
 
         // validation on city arabic name input:
         if (cityArInput.value == null || cityAr.value === '' ) {

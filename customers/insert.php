@@ -179,7 +179,7 @@
                 <label class="form-label"><?php echo _e('Client Name( English ):', 'zatca') ?></label>
                 <input 
                     type="text"
-                    id="client_name_en"
+                    id="customer_client_name_en"
                     name="client-name-en" 
                     class="form-control" 
                     autocomplete="off"
@@ -320,7 +320,7 @@
                 <input 
                     type="text" 
                     name="postal-code"
-                    id="postal_code"
+                    id="customer_postal_code"
                     class="form-control" 
                     autocomplete="off"
                     placeholder="<?php echo _e('Postal Code', 'zatca') ?>"

@@ -1,5 +1,4 @@
 
-
 // function to select all displayed rows in datatables
 function checkAll(source) {  
     var checkboxes = document.querySelectorAll('.rowCheckbox');  

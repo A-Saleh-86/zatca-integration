@@ -359,7 +359,8 @@ function create_zatcaBranch_table() {
             `postalCode` varchar(18) DEFAULT NULL,
             `row_timestamp` timestamp NULL DEFAULT current_timestamp(),
             `ZATCA_B2C_SendingIntervalType` int(11) DEFAULT NULL,
-            PRIMARY KEY (`buildingNo`,`VendorId`) USING BTREE
+            PRIMARY KEY (`buildingNo`,`VendorId`) USING BTREE,
+            FOREIGN KEY (buildingNo) REFERENCES zatcaCompany(companyNo) ON DELETE CASCADE
         ) ENGINE=InnoDB $charset_collate;
     ";
 

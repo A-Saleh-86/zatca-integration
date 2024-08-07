@@ -1,6 +1,9 @@
 <?php
 include_once dirname(dirname(__FILE__)) . '/zatca.php';
 
+$clientNo = $_GET['customerId'];
+echo $clientNo;
+
 ?>
 
 
@@ -168,7 +171,8 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 <label class="form-label"><?php echo _e('Client Name ( Arabic ):', 'zatca') ?></label>
                 <input 
                     type="text"
-                    name="client-name-ar" 
+                    name="client-name-ar"
+                    id="client_name_ar"
                     class="form-control" 
                     autocomplete="off"
                     placeholder="<?php echo _e('Client Name ( Arabic )', 'zatca') ?>"
@@ -181,7 +185,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 <label class="form-label"><?php echo _e('Client Name( English ):', 'zatca') ?></label>
                 <input 
                     type="text"
-                    id="client-name"
+                    id="customer_client_name_en"
                     name="client-name-en" 
                     class="form-control" 
                     autocomplete="off"
@@ -215,7 +219,8 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 <label class="form-label"><?php echo _e('Second Business ID :', 'zatca') ?></label>
                 <input 
                     type="text" 
-                    name="second-business-id" 
+                    name="second-business-id"
+                    id="second_bus_id"
                     class="form-control" 
                     autocomplete="off"
                     placeholder="<?php echo _e('Second Business ID', 'zatca') ?>"
@@ -233,7 +238,8 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <div class="col-md-4">
                 <label class="form-label"><?php echo _e('ZATCA Invoices Type :', 'zatca') ?></label>
                 <select class="form-select select2"  name="zatca-invoice-type">
-                    <option value="Both">Both</option>
+                    <!-- <option value=""> ...</option> -->
+                    <option value="Both"><?php echo _e('Both', 'zatca') ?></option>
                     <option value="B2C">B2C</option>
                     <option value="B2B">B2B</option>
                 </select>
@@ -262,6 +268,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <div class="col-md-4">
                 <label class="form-label"><?php echo _e('Country Name:', 'zatca') ?></label>
                 <select class="form-select select2"  name="country">
+                    <!-- <option value=""> ...</option> -->
                     <?php 
                     global $wpdb;
                     
@@ -319,7 +326,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 <input 
                     type="text" 
                     name="postal-code"
-                    id="postal_code"
+                    id="customer_postal_code"
                     class="form-control" 
                     autocomplete="off"
                     placeholder="<?php echo _e('Postal Code', 'zatca') ?>"
@@ -387,7 +394,8 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 <label class="form-label"><?php echo _e('District Name (Arabic):', 'zatca') ?></label>
                 <input 
                     type="text" 
-                    name="district-name-ar" 
+                    name="district-name-ar"
+                    id="dist_ar"
                     class="form-control" 
                     autocomplete="off"
                     placeholder="<?php echo _e('District Name (Arabic)', 'zatca') ?>"

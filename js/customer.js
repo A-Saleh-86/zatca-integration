@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
     const clientNameArabicInput = document.getElementById('client_name_ar');
 
     // Get the client-name-ar input element to populate with fetched data
-    const clientNameEnglishInput = document.getElementById('client_name_en');
+    const clientNameEnglishInput = document.getElementById('customer_client_name_en');
 
     // Get the client-name-eng input element to populate with fetched data
     // const clientNameInput = document.getElementById('client-name');
@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
     const cityEnglishInput = document.getElementById('city-en');
 
     // Get Postal Code Input element:
-    var postal_Code = document.getElementById("postal_code");
+    var postal_Code = document.getElementById("customer_postal_code");
     
     // Get second_bus_id Input element:
     var second_bus_id_input = document.getElementById("second_bus_id");
@@ -206,6 +206,8 @@ jQuery(document).ready(function($) {
                     addressEnglishInput.value = '';
                     cityArabicInput.value = '';
                     cityEnglishInput.value = '';
+                    clientNameArabicInput.value = '';
+                    clientNameEnglishInput.value = '';
             
                     // Check For address arabic or english:
                     if (containsArabic(address)) {

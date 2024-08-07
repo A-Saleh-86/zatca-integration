@@ -1915,25 +1915,37 @@ function document_customer_handle_in_customer_page(){
                 const customerId = urlParams.get('customerId');
                 
                 // Get the clientVendorNo input element
-                const clientVendorNoInput = document.getElementById('doc-cust-client-no');
+                    const clientVendorNoInput = document.getElementById('client-no');
 
-                // Get the client-name-ar input element to populate with fetched data
-                const clientNameArabicInput = document.getElementById('client-name-ar');
-                
-                // Get the client-name-eng input element to populate with fetched data
-                const clientNameInput = document.getElementById('client-name-en');
+                    // Get the client-name-ar input element to populate with fetched data
+                    const clientNameArabicInput = document.getElementById('client_name_ar');
 
-                // Get the address input element to populate with fetched data
-                const addressArabicInput = document.getElementById('address-ar');
+                    // Get the client-name-ar input element to populate with fetched data
+                    const clientNameEnglishInput = document.getElementById('customer_client_name_en');
 
-                // Get the address input element to populate with fetched data
-                const addressEnglishInput = document.getElementById('address-en');
+                    // Get the client-name-eng input element to populate with fetched data
+                    // const clientNameInput = document.getElementById('client-name');
 
-                // Get the Arabic city input element to populate with fetched data
-                const cityArabicInput = document.getElementById('city-ar');
+                    // Get the address input element to populate with fetched data
+                    const addressArabicInput = document.getElementById('address-ar');
 
-                // Get the English city input element to populate with fetched data
-                const cityEnglishInput = document.getElementById('city-en');
+                    // Get the address input element to populate with fetched data
+                    const addressEnglishInput = document.getElementById('address-en');
+
+                    // Get the Arabic city input element to populate with fetched data
+                    const cityArabicInput = document.getElementById('city-ar');
+
+                    // Get the English city input element to populate with fetched data
+                    const cityEnglishInput = document.getElementById('city-en');
+
+                    // Get Postal Code Input element:
+                    var postal_Code = document.getElementById('customer_postal_code');
+                    
+                    // Get second_bus_id Input element:
+                    var second_bus_id_input = document.getElementById('second_bus_id');
+
+                    // Get dist_ar Input element:
+                    var dist_ar_input = document.getElementById('dist_ar');
 
                 // Get CustomerId Data From URL to ClientNo Input:
                 clientVendorNoInput.value = customerId;
@@ -1950,68 +1962,88 @@ function document_customer_handle_in_customer_page(){
                     success: function(data) {
 
                         
-                        // Variables Come From Ajax:
-                        var first_name = data.first_name;
-                        var last_name = data.last_name;
+                    // Variables Come From Ajax:
+                    var postalCode = data.postalCode;
+                    var first_name = data.first_name;
+                    var last_name = data.last_name;
+                    var address = data.address;
+                    var city = data.city;
+                    
+                    
+                    // change values of inputs:
+                    postal_Code.value = postalCode;
+                    
+
+                    function containsArabic(text) {
+                        var arabicRegex = /[\u0600-\u06FF]/;
+                        return arabicRegex.test(text);
+                    }
+            
+                    function containsEnglish(text) {
+                        var englishRegex = /^[a-zA-Z0-9\s]*$/;
+                        return englishRegex.test(text);
+                    }
+                    
+                    if (!addressArabicInput || !addressEnglishInput || !cityArabicInput || !cityEnglishInput) {
+                        console.error('Address input elements not found.');
+                        return;
+                    }
+
+                    // Empty the inputs if have data:
+                    addressArabicInput.value = '';
+                    addressEnglishInput.value = '';
+                    cityArabicInput.value = '';
+                    cityEnglishInput.value = '';
+                    clientNameArabicInput.value = '';
+                    clientNameEnglishInput.value = '';
+            
+                    // Check For address arabic or english:
+                    if (containsArabic(address)) {
                         
+                        // Insert New Value
+                        addressArabicInput.value = address;
+
+                    } else if (containsEnglish(address)) {
+
+                        // Insert New Value
+                        addressEnglishInput.value = address;
+
+                    } else {
+
+                        console.log('Unable to determine the language of the address.');
+                    }
+
+                    // Check For client name arabic or english:
+                    if (containsArabic(first_name) && containsArabic(last_name)  ) {
                         
-                        // change values of inputs:
-                        clientNameInput.value = first_name + ' ' + last_name;
-                        
-                        // Check For Input Language [ Arabic - English ]
-                        var address = data.address;
-                        var city = data.city;
+                        // Insert New Value
+                        clientNameArabicInput.value = first_name + ' ' + last_name;
 
-                        function containsArabic(text) {
-                            var arabicRegex = /[\u0600-\u06FF]/;
-                            return arabicRegex.test(text);
-                        }
-                
-                        function containsEnglish(text) {
-                            var englishRegex = /^[a-zA-Z0-9\s]*$/;
-                            return englishRegex.test(text);
-                        }
-                        
-                        if (!addressArabicInput || !addressEnglishInput || !cityArabicInput || !cityEnglishInput) {
-                            console.error('Address input elements not found.');
-                            return;
-                        }
+                    } else if (containsEnglish(first_name) && containsEnglish(last_name)) {
 
-                        // Empty the inputs if have data:
-                        addressArabicInput.value = '';
-                        addressEnglishInput.value = '';
-                        cityArabicInput.value = '';
-                        cityEnglishInput.value = '';
-                
-                        if (containsArabic(address)) {
-                            
-                            // Insert New Value
-                            addressArabicInput.value = address;
+                        // Insert New Value
+                        clientNameEnglishInput.value = first_name + ' ' + last_name;
 
-                        } else if (containsEnglish(address)) {
+                    } else {
 
-                            // Insert New Value
-                            addressEnglishInput.value = address;
+                        console.log('Unable to determine the language of the client name.');
+                    }
 
-                        } else {
+                    // Check For city arabic or english:
+                    if (containsArabic(city)) {
 
-                            console.log('Unable to determine the language of the address.');
-                        }
+                        // Insert New Value
+                        cityArabicInput.value = city;
 
-                        if (containsArabic(city)) {
+                    } else if (containsEnglish(city)) {
 
-                            // Insert New Value
-                            cityArabicInput.value = city;
+                        // Insert New Value
+                        cityEnglishInput.value = city;
 
-                        } else if (containsEnglish(city)) {
+                    } else {
 
-                            // Insert New Value
-                            cityEnglishInput.value = city;
-
-                        } else {
-
-                            console.log('Unable to determine the language of the city.');
-                        }
+                        console.log('Unable to determine the language of the city.');
+                    }
 
                     },
                     error: function(xhr, status, error) {
@@ -2047,6 +2079,7 @@ function doc_customer_Get_data_ajax(){
         $last_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_last_name' and user_id = $customerId"));
         $address = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_address_1' and user_id = $customerId"));
         $city = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_city' and user_id = $customerId"));
+        $postalCode = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_postcode' and user_id = $customerId"));
 
       
         // Return the fetched data
@@ -2055,7 +2088,8 @@ function doc_customer_Get_data_ajax(){
             'first_name'    => $first_name,
             'last_name'     => $last_name,
             'address'       => $address,
-            'city'          => $city
+            'city'          => $city,
+            'postalCode'    => $postalCode
         );
 
         // Return the array as JSON
