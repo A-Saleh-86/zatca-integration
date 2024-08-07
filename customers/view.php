@@ -1,4 +1,4 @@
-
+<?php echo 'test' ?>
 <div class="container">
     <div class="col-xl-12 mx-auto mt-3">
         <h4 class="mb-0 text-uppercase text-center"><?php echo _e('Customers', 'zatca') ?></h4>
