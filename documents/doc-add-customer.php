@@ -1,8 +1,7 @@
 <?php
 include_once dirname(dirname(__FILE__)) . '/zatca.php';
 
-$clientNo = $_GET['customerId'];
-echo $clientNo;
+
 
 ?>
 
