@@ -55,7 +55,7 @@ if(!empty($results)){
                         name="district-name-ar"
                         id="dist_ar"
                         value="<?php echo $result->district_Arb ?>"
-                        required="">
+                        >
                     <label for="client_name_ar" class="floating-label"><?php echo _e('District Name (Arabic)', 'zatca') ?></label>
                     <div class="error-message" ></div>
                 </div>
@@ -69,7 +69,7 @@ if(!empty($results)){
                         name="address-name-ar"
                         id="address_ar"
                         value="<?php echo $result->street_Arb ?>"
-                        required="">
+                        >
                     <label for="client_name_ar" class="floating-label"><?php echo _e('Address Name (Arabic)', 'zatca') ?></label>
                     <div class="error-message" ></div>
                 </div>
@@ -87,7 +87,7 @@ if(!empty($results)){
                         name="city-name-ar"
                         id="city_ar"
                         value="<?php echo $result->city_Arb ?>"
-                        required="">
+                        >
                     <label for="client_name_ar" class="floating-label"><?php echo _e('City Name (Arabic)', 'zatca') ?></label>
                     <div class="error-message" ></div>
                 </div>
@@ -118,7 +118,7 @@ if(!empty($results)){
                         name="apartment-no"
                         id="apartment-no"
                         value="<?php echo $result->apartmentNum ?>"
-                        required="">
+                        >
                     <label for="client_name_ar" class="floating-label"><?php echo _e('Apartment No', 'zatca') ?></label>
                     <div class="error-message" ></div>
                 </div>
@@ -132,7 +132,7 @@ if(!empty($results)){
                         name="postal-code"
                         id="postal_code"
                         value="<?php echo $result->postalCode ?>"
-                        required="">
+                        >
                     <label for="postal-code" class="floating-label"><?php echo _e('Postal Code', 'zatca') ?></label>
                     <div class="error-message" ></div>
                 </div>
@@ -176,7 +176,7 @@ if(!empty($results)){
                         name="second-business-id"
                         id="second-business-id"
                         value="<?php echo $result->secondBusinessID ?>"
-                        required="">
+                        >
                     <label for="client_name_ar" class="floating-label"><?php echo _e('Second Business ID', 'zatca') ?></label>
                     <div class="error-message" ></div>
                 </div>
@@ -230,7 +230,7 @@ if(!empty($results)){
                     class="district-name-ar-input"
                     name="district-name-ar"
                     id="dist_ar"
-                    required="">
+                    >
                 <label for="client_name_ar" class="floating-label"><?php echo _e('District Name (Arabic)', 'zatca') ?></label>
                 <div class="error-message" ></div>
             </div>
@@ -243,7 +243,7 @@ if(!empty($results)){
                     class="address-name-ar-input"
                     name="address-name-ar"
                     id="address_ar"
-                    required="">
+                    >
                 <label for="client_name_ar" class="floating-label"><?php echo _e('Address Name (Arabic)', 'zatca') ?></label>
                 <div class="error-message" ></div>
             </div>
@@ -260,7 +260,7 @@ if(!empty($results)){
                     class="city-name-ar-input"
                     name="city-name-ar"
                     id="city_ar"
-                    required="">
+                    >
                 <label for="client_name_ar" class="floating-label"><?php echo _e('City Name (Arabic)', 'zatca') ?></label>
                 <div class="error-message" ></div>
             </div>
@@ -288,7 +288,7 @@ if(!empty($results)){
                     class="apartment-no-input"
                     name="apartment-no"
                     id="apartment-no"
-                    required="">
+                    >
                 <label for="client_name_ar" class="floating-label"><?php echo _e('Apartment No', 'zatca') ?></label>
                 <div class="error-message" ></div>
             </div>
@@ -301,8 +301,7 @@ if(!empty($results)){
                     class="postal-code"
                     name="postal-code"
                     id="postal_code"
-                    value="<?php echo $result->postalCode ?>"
-                    required="">
+                    >
                 <label for="postal-code" class="floating-label"><?php echo _e('Postal Code', 'zatca') ?></label>
                 <div class="error-message" ></div>
             </div>
@@ -345,7 +344,7 @@ if(!empty($results)){
                     class="second-bussiness-id"
                     name="second-business-id"
                     id="second-business-id"
-                    required="">
+                    >
                 <label for="client_name_ar" class="floating-label"><?php echo _e('Second Business ID', 'zatca') ?></label>
                 <div class="error-message" ></div>
             </div>
