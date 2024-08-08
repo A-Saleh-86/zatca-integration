@@ -599,7 +599,7 @@ function create_zatcaDocumentUnit_table() {
             `netAmount` float DEFAULT NULL,
             `amountWithVAT` float DEFAULT NULL,
             PRIMARY KEY (`id`),
-            KEY `asd` (`documentNo`)
+            FOREIGN KEY (documentNo) REFERENCES zatcaDocument(documentNo) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB $charset_collate;
     ";
 
@@ -659,7 +659,7 @@ function create_zatcaDocumentxml_table() {
             `typeClearanceOrReporting` int(11) DEFAULT NULL,
             `qrCode` text DEFAULT NULL,
             PRIMARY KEY (`id`),
-            KEY `doc` (`documentNo`)
+            FOREIGN KEY (`documentNo`) REFERENCES `zatcaDocument`(`documentNo`) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB $charset_collate;
     ";
 

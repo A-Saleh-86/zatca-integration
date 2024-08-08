@@ -3849,7 +3849,7 @@ function edit_checkout_page_function(){
                 echo "Error inserting data: $error_message";
             } else {
     
-                echo __('Data Updated', 'zatca');
+                echo __('Data Inserted', 'zatca');
             
             }
 

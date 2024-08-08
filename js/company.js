@@ -17,6 +17,15 @@ jQuery(document).ready(function($) {
     const appartmentNoInput = document.getElementById('appartment_no');
     const additionalNoInput = document.getElementById('additional_no');
 
+    // Notification Function:
+    const popup = Notification({
+        position: 'center',
+        duration: 50000,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+    });
+
     // Change Vat_Category_Code_Sub_Type Depend On Vat_Category_Code Selected:
     $('select#vat-cat-code').on('change', function(event) {
         
@@ -173,14 +182,7 @@ jQuery(document).ready(function($) {
         $("#branch_id").prop("disabled", false);
 
         var formData = $(this).serialize();
-
         // console.log(formData)
-
-        // validation on second Bussiness Id input:
-        // if (secondBusIdInput.value.length != 10 ) {
-        //     alert(myCompany.second_bus);
-        //     return;
-        // }
 
         // validation on city arabic name input:
         if (cityArInput.value == null || cityAr.value === '' ) {
@@ -229,8 +231,18 @@ jQuery(document).ready(function($) {
             },
             success: function(data){
                 // console.log(data);
-                alert(data);
-                window.location.reload();
+                // alert(data);
+                // window.location.reload();
+
+                // success notification:
+                popup.success({
+                    title: 'Success',
+                    message: data
+                });
+
+                setTimeout(function() {
+                    window.location.reload();
+                }, 3000); 
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -246,12 +258,6 @@ jQuery(document).ready(function($) {
         $("#branch_id").prop("disabled", false);
 
         var formData = $(this).serialize();
-
-        // validation on second Bussiness Id input:
-        // if (secondBusIdInput.value.length != 10 ) {
-        //     alert(myCompany.second_bus);
-        //     return;
-        // }
 
         // validation on city arabic name input:
         if (cityArInput.value == null || cityAr.value === '' ) {
@@ -300,9 +306,15 @@ jQuery(document).ready(function($) {
             },
             success: function(data){
 
-                // console.log(data);
-                alert(data);
-                window.location.reload();
+                // success notification:
+                popup.success({
+                    title: 'Success',
+                    message: data
+                });
+
+                setTimeout(function() {
+                    window.location.reload();
+                }, 3000); 
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);

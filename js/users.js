@@ -1,6 +1,15 @@
 // user insert page - checkbox:
 $(document).ready(function() {
 
+    // Notification Function:
+    const popup = Notification({
+        position: 'center',
+        duration: 50000,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+    });
+
     // user insert page - checkbox:
     $('#is-remind').change(function() {
         if ($(this).is(':checked')) {
@@ -54,8 +63,14 @@ $(document).ready(function() {
 
         // validation on person-no input:
         if ($('#person-no').val() === '' ) {
-            // alert("person-no Cant be Null");
-            alert(myUser.person_no_validation);
+            // alert(myUser.person_no_validation);
+
+            // error notification:
+            popup.error({
+                title: 'error',
+                message: myUser.person_no_validation
+            });
+
             return;
         }
 
@@ -64,13 +79,28 @@ $(document).ready(function() {
 
             // if value = 0 OR Null:
             if($('#remindInterval').val() == 0 || $('#remindInterval').val() == ''){
-                alert(myUser.reminder_hours_validation);
+
+                // alert(myUser.reminder_hours_validation);
+
+                // error notification:
+                popup.error({
+                    title: 'error',
+                    message: myUser.reminder_hours_validation
+                });
                 return;
             }
 
             // if 0 > value < 23 :
             if($('#remindInterval').val() < 0 || $('#remindInterval').val() > 23){
-                alert(myUser.reminder_hours_validation_number);
+
+                // alert(myUser.reminder_hours_validation_number);
+
+                // error notification:
+                popup.error({
+                    title: 'error',
+                    message: myUser.reminder_hours_validation_number
+                });
+
                 return;
             }
             
@@ -90,13 +120,29 @@ $(document).ready(function() {
 
                 if(data == 'denied'){
 
-                    alert(myUser.user_exist);
+                    // alert(myUser.user_exist);
+
+                    // error notification:
+                    popup.error({
+                        title: 'error',
+                        message: myUser.user_exist
+                    });
                     
                 }else{
                     
-                    alert(myUser.user_inserted);
-    
-                    window.location.href = myUser.adminUrl;
+                    // alert(myUser.user_inserted);
+                    // window.location.href = myUser.adminUrl;
+
+                    // success notification:
+                    popup.success({
+                        title: 'Success',
+                        message: myUser.user_inserted
+                    });
+
+                    setTimeout(function() {
+                        window.location.href = myUser.adminUrl;
+                    }, 3000); 
+
                 }
                 
             },
@@ -114,7 +160,14 @@ $(document).ready(function() {
         // validation on person-no input:
         if ($('#person-no').val() === '' ) {
             // alert("person-no Cant be Null");
-            alert(myUser.person_no_validation);
+            // alert(myUser.person_no_validation);
+
+            // Error notification:
+            popup.error({
+                title: 'error',
+                message: myUser.person_no_validation
+            });
+
             return;
         }
 
@@ -122,13 +175,27 @@ $(document).ready(function() {
         if ($('#is-remind').is(':checked')){
 
             if($('#remindInterval').val() == 0 || $('#remindInterval').val() == ''){
-                alert(myUser.reminder_hours_validation);
+
+                // alert(myUser.reminder_hours_validation);
+
+
+                // Error notification:
+                popup.error({
+                    title: 'error',
+                    message: myUser.reminder_hours_validation
+                });
                 return;
             }
 
             // if 0 > value < 23 :
             if($('#remindInterval').val() < 0 || $('#remindInterval').val() > 23){
-                alert(myUser.reminder_hours_validation_number);
+                // alert(myUser.reminder_hours_validation_number);
+
+                  // Error notification:
+                  popup.error({
+                    title: 'error',
+                    message: myUser.reminder_hours_validation_number
+                });
                 return;
             }
             
@@ -145,9 +212,18 @@ $(document).ready(function() {
             },
             success: function(data){
 
-                alert(data);
+                // alert(data);
+                // window.location.href = myUser.adminUrl;
 
-                window.location.href = myUser.adminUrl;
+                // success notification:
+                popup.success({
+                    title: 'Success',
+                    message: data
+                });
+
+                setTimeout(function() {
+                    window.location.href = myUser.adminUrl;
+                }, 3000); 
                 
             },
             error: function(xhr, status, error) {
@@ -167,7 +243,6 @@ function checkConditions() {
     if (myUser.isAdmin === 'true'){
 
     
-        // Add your specific conditions here
         $.ajax({
             url: myUser.ajaxUrl,
             method: "POST",
@@ -177,7 +252,13 @@ function checkConditions() {
             success: function(response) {
 
                 if (response.msg !== null && response.msg !== undefined) {
-                    alert(response.msg);
+                    // alert(response.msg);
+
+                    // warning notification:
+                    popup.warning({
+                        title: 'Success',
+                        message: response.msg
+                    });
                 }
                 
                 // Calculate the interval time based on the response value

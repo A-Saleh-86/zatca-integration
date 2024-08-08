@@ -15,9 +15,6 @@ jQuery(document).ready(function($) {
     // Get the client-name-ar input element to populate with fetched data
     const clientNameEnglishInput = document.getElementById('customer_client_name_en');
 
-    // Get the client-name-eng input element to populate with fetched data
-    // const clientNameInput = document.getElementById('client-name');
-
     // Get the address input element to populate with fetched data
     const addressArabicInput = document.getElementById('address-ar');
 
@@ -39,54 +36,18 @@ jQuery(document).ready(function($) {
     // Get dist_ar Input element:
     var dist_ar_input = document.getElementById("dist_ar");
 
+    const popup = Notification({
+        position: 'center',
+        duration: 50000,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+    });
 
     // Insert New Customer Form:
     $("#insert_customer_form").submit(function(event){
+        
         event.preventDefault();
-
-
-        // validation on postalCode input:
-        // if (postal_Code.value == '' ) {
-        //     // alert("Postal Code Cant be Null");
-        //     alert(myCustomer.postal_null);
-        //     return;
-        // }
-       
-
-        // validation on postalCode input:
-        // if (postal_Code.value.length != 5 ) {
-        //     // alert("Postal Code Must be 5 Digits.");
-        //     alert(myCustomer.postal_digits);
-        //     return;
-        // }
-
-        // validation on addressArabicInput :
-        // if (addressArabicInput.value == '' ) {
-        //     // alert("Street Arabic Name Cant be Null.");
-        //     alert(myCustomer.street);
-        //     return;
-        // }
-
-        // validation on second_bus_id_input :
-        // if (second_bus_id_input.value == '' ) {
-        //     // alert("second business id Cant be Null.");
-        //     alert(myCustomer.second_id);
-        //     return;
-        // }
-
-        // validation on dist_ar_input input:
-        // if (dist_ar_input.value == '' ) {
-        //     // alert("District Arabic Name Cant be Null.");
-        //     alert(myCustomer.district);
-        //     return;
-        // }
-
-        // validation on cityArabicInput :
-        // if (cityArabicInput.value == '' ) {
-        //     // alert("City Arabic Name Cant be Null.");
-        //     alert(myCustomer.city);
-        //     return;
-        // }
 
         // validation on aName :
         if (clientNameArabicInput.value == '' ) {
@@ -96,9 +57,7 @@ jQuery(document).ready(function($) {
         }
 
 
-
         var formData = $(this).serialize();
-
         // console.log(formData)
 
         $.ajax({
@@ -115,15 +74,28 @@ jQuery(document).ready(function($) {
                 // Check for Which Page client come from:
                 if(data == "customers"){ // if from customers page:
                     
-                    // alert('Customer Inserted Success')
-                    alert(myCustomer.customer_inserted);
-                    window.location.href = myCustomer.adminUrl;
+                    // success notification:
+                    popup.success({
+                        title: 'Success',
+                        message: myCustomer.customer_inserted
+                    });
+
+                    setTimeout(function() {
+                        window.location.href = myCustomer.adminUrl;
+                    }, 3000); 
                     
                 }else{ // if from document insert customer
-                    
-                    // alert('Customer Inserted Success')
-                    alert(myCustomer.customer_inserted);
-                    window.location.href = myCustomer.document;
+
+                    // success notification:
+                    popup.success({
+                        title: 'Success',
+                        message: myCustomer.customer_inserted
+                    });
+
+                    setTimeout(function() {
+                        window.location.href = myCustomer.document;
+                    }, 3000);
+
                 }
             },
             error: function(xhr, status, error) {
@@ -146,14 +118,20 @@ jQuery(document).ready(function($) {
     
     // on click the customer selected element data:
     if(searchBtn){
+
         $('#search-customer-data').on('click', function() {
 
             const selectedRow = tableRows.filter('.selected');
 
             // If Client Not Choose a Customer:
             if (!selectedRow.length) {
-                // alert('Please select a customer first.');
-                alert(myCustomer.select_customer);
+
+                // success notification:
+                popup.warning({
+                    title: 'Success',
+                    message: myCustomer.select_customer
+                });
+
                 return;
             }
 
@@ -269,51 +247,11 @@ jQuery(document).ready(function($) {
 
     // Edit customer Form:
     $("#edit_customer_form").submit(function(event){
+
         event.preventDefault();
-        // clientVendorNoInput.disabled = false
+        
         var formData = $(this).serialize();
 
-        // validation on postalCode input:
-        // if (postal_Code.value == '' ) {
-        //     // alert("Postal Code Cant be Null.");
-        //     alert(myCustomer.postal_null);
-        //     return;
-        // }
-
-        // validation on postalCode input:
-        // if (postal_Code.value.length != 5 ) {
-        //     // alert("Postal Code Must be 5 Digits.");
-        //     alert(myCustomer.postal_digits);
-        //     return;
-        // }
-
-        // validation on addressArabicInput :
-        // if (addressArabicInput.value == '' ) {
-        //     // alert("Street Arabic Name Cant be Null.");
-        //     alert(myCustomer.street);
-        //     return;
-        // }
-
-        // validation on second_bus_id_input :
-        // if (second_bus_id_input.value == '' ) {
-        //     // alert("second business id Cant be Null.");
-        //     alert(myCustomer.second_id);
-        //     return;
-        // }
-
-        // validation on dist_ar_input :
-        // if (dist_ar_input.value == '' ) {
-        //     // alert("District Arabic Name Cant be Null.");
-        //     alert(myCustomer.district);
-        //     return;
-        // }
-
-        // validation on cityArabicInput :
-        // if (cityArabicInput.value == '' ) {
-        //     // alert("City Arabic Name Cant be Null.");
-        //     alert(myCustomer.city);
-        //     return;
-        // }
 
         // validation on aName :
         if (clientNameArabicInput.value == '' ) {
@@ -331,8 +269,18 @@ jQuery(document).ready(function($) {
             },
             success: function(data){
                 
-                alert(data);
-                window.location.href = myCustomer.adminUrl;
+                // alert(data);
+                // window.location.href = myCustomer.adminUrl;
+
+                // success notification:
+                popup.success({
+                    title: 'Success',
+                    message: data
+                });
+
+                setTimeout(function() {
+                    window.location.href = myCustomer.adminUrl;
+                }, 3000); 
                 
             },
             error: function(xhr, status, error) {

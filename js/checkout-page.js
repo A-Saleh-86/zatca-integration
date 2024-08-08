@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+
+
   const customCheckboxContainer = document.querySelector('.my-custom-checkbox-container');
   const hiddenCheckboxContainer = document.getElementById('hidden-checkbox-container');
   const formElement = document.getElementById('customForm');
@@ -167,6 +169,15 @@ function isArabic(string) {
 
 jQuery(document).ready(function($) {
 
+  // Notification Function:
+  const popup = Notification({
+    position: 'center',
+    duration: 50000,
+    isHidePrev: false,
+    isHideTitle: false,
+    maxOpened: 3,
+  });
+
   // Check If woo fields have arabic inputs use in zatcaCustomer form :
 
   // If come with data stored before [ first name input ]:
@@ -267,8 +278,13 @@ jQuery(document).ready(function($) {
             "edit_form_data_ajax": JSON.stringify(formData)
         },
         success: function(data){
-            
-            console.log(data);
+
+
+          // success notification:
+          popup.success({
+            title: 'Success',
+            message: data
+          });
             
         },
         error: function(xhr, status, error) {
