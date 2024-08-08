@@ -357,7 +357,7 @@ msgstr "اسم العميل بالانجليزية"
 
 #: customers/insert.php:236 documents/doc-add-customer.php:240
 msgid "Both"
-msgstr ""
+msgstr "كلاهما"
 
 #: customers/insert.php:307 documents/doc-add-customer.php:311
 msgid "PO Box Additional Number"
