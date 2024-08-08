@@ -23,24 +23,6 @@ jQuery(document).ready( function () {
     
     $('.select2').select2();
 
-   
-    // $('#scroll_table').DataTable( {
-    //     scrollX: true,
-    //     // deferLoading: true,
-    //     language: {
-    //         // url: '//cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json',
-    //         url: main.dtLoc,
-    //     },
-    // });
-
-    // // For All Table:
-    // $('#example').DataTable({
-    //     responsive:true,
-    //     language: {
-    //         // url: '//cdn.datatables.net/plug-ins/2.0.8/i18n/ar.json',
-    //         // url: plugin_url + '/js/datatable-localization.json',
-    //     },
-    // });
 
     var currentLang = main.locale;
 
@@ -68,15 +50,6 @@ jQuery(document).ready( function () {
             select: {  
                 style: 'multi'  
             },
-    
-            // "columnDefs": [
-            //     { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
-            //     {
-            //         "targets": [ 17, 18 ],
-            //         "searchable": true,
-            //         "visible": false
-            //     }
-            // ]
         });
     } else {
         $('#example').DataTable({
@@ -84,15 +57,6 @@ jQuery(document).ready( function () {
             select: {  
                 style: 'multi'  
             },
-    
-            // "columnDefs": [
-            //     { "orderable": false, "targets": 0 }, // Disables sorting for the first column (index 0)  
-            //     {
-            //         "targets": [ 17, 18 ],
-            //         "searchable": true,
-            //         "visible": false
-            //     }
-            // ]
         });
     }
 

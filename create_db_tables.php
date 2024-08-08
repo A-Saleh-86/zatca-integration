@@ -359,8 +359,7 @@ function create_zatcaBranch_table() {
             `postalCode` varchar(18) DEFAULT NULL,
             `row_timestamp` timestamp NULL DEFAULT current_timestamp(),
             `ZATCA_B2C_SendingIntervalType` int(11) DEFAULT NULL,
-            PRIMARY KEY (`buildingNo`,`VendorId`) USING BTREE,
-            FOREIGN KEY (buildingNo) REFERENCES zatcaCompany(companyNo) ON DELETE CASCADE
+            PRIMARY KEY (`buildingNo`,`VendorId`) USING BTREE
         ) ENGINE=InnoDB $charset_collate;
     ";
 
@@ -599,7 +598,7 @@ function create_zatcaDocumentUnit_table() {
             `netAmount` float DEFAULT NULL,
             `amountWithVAT` float DEFAULT NULL,
             PRIMARY KEY (`id`),
-            KEY `asd` (`documentNo`)
+            FOREIGN KEY (documentNo) REFERENCES zatcaDocument(documentNo) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB $charset_collate;
     ";
 
@@ -659,7 +658,7 @@ function create_zatcaDocumentxml_table() {
             `typeClearanceOrReporting` int(11) DEFAULT NULL,
             `qrCode` text DEFAULT NULL,
             PRIMARY KEY (`id`),
-            KEY `doc` (`documentNo`)
+            FOREIGN KEY (`documentNo`) REFERENCES `zatcaDocument`(`documentNo`) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB $charset_collate;
     ";
 
@@ -812,9 +811,9 @@ function create_custom_tables(){
     create_zatca_country_table();
     create_zatca_met_vatcategorycode_table();
     create_zatca_met_vatcategorycodesubtype_table();
+    create_zatcaCompany_table();
     create_zatcaBranch_table();
     create_zatcabusinessidtype_table();
-    create_zatcaCompany_table();
     create_zatcaCustomer_table();
     create_zatcaDocument_table();
     create_zatcaDocumentUnit_table();

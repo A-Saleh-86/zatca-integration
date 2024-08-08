@@ -105,13 +105,13 @@
 
                             ?>
                             <tr>
-                                <td style="font-size: 0.8rem;"><?php echo $result->login_personNo ?></td>
-                                <td style="font-size: 0.8rem;"><?php echo $result->profilerLogNo ?></td>
-                                <td style="font-size: 0.8rem;"><?php echo date('Y-m-d', strtotime($result->dateG)) ?></td>
-                                <td style="font-size: 0.8rem;"><?php echo $result->login_personName ?></td>
-                                <td style="font-size: 0.8rem;"><?php echo $result->macAddress ?></td>
-                                <td style="font-size: 0.8rem;"><?php echo $result->IP ?></td>
-                                <td style="font-size: 0.8rem;">
+                                <td style="font-size: 0.8rem;" class="text-center"><?php echo $result->login_personNo ?></td>
+                                <td style="font-size: 0.8rem;" class="text-center"><?php echo $result->profilerLogNo ?></td>
+                                <td style="font-size: 0.8rem;" class="text-center"><?php echo $result->dateG ?></td>
+                                <td style="font-size: 0.8rem;" class="text-center"><?php echo $result->login_personName ?></td>
+                                <td style="font-size: 0.8rem;" class="text-center"><?php echo $result->macAddress ?></td>
+                                <td style="font-size: 0.8rem;" class="text-center"><?php echo $result->IP ?></td>
+                                <td style="font-size: 0.8rem;" class="text-center">
                                     <?php
                                     // check if isSuccess 1 => true - else => false:
                                     if ($result->isSuccess == 1) {
@@ -123,7 +123,7 @@
                                     }
                                     ?>
                                 </td>
-                                <td style="font-size: 0.8rem;">
+                                <td style="font-size: 0.8rem;" class="text-center">
                                     <?php
 
                                     // check for operation value:

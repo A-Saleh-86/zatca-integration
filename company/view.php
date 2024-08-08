@@ -560,16 +560,31 @@
                     <select class="form-select select2"  name="vat-cat-code-sub-no" id="vat-cat-code-sub">
                         <option value="">...</option>
                         <?php
-                            global $wpdb;
+                        global $wpdb;
+
+                        // Assuming $result is set somewhere before this code
+                        // If $result is potentially not an object or could be null, handle it
+
+                        if (isset($result) && is_object($result)) {
+                            $vatCatCode = $result->VATCategoryCode;
 
                             // Fetch Data From Database:
-                            $subCategories = $wpdb->get_results( "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = $result->VATCategoryCode" );
-                            foreach($subCategories as $subCat) {?>
-                                
-                                <option value="<?php echo $subCat->VATCategoryCodeSubTypeNo ?>"><?php echo $subCat->aName. ' - ' . $subCat->eName ?></option>
-                                <?php
-                            }
+                            $subCategories = $wpdb->get_results($wpdb->prepare(
+                                "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = %d",
+                                $vatCatCode
+                            ));
+
+                            foreach ($subCategories as $subCat) { ?>
+                                <option value="<?php echo esc_attr($subCat->VATCategoryCodeSubTypeNo); ?>">
+                                    <?php echo esc_html($subCat->aName . ' - ' . $subCat->eName); ?>
+                                </option>
+                            <?php }
+                        } else {
+                            // Handle the case where $result is not set or not an object
+                            echo '<option value="">Invalid VAT Category Code</option>';
+                        }
                         ?>
+
                     </select>
                 </div>
                 <!-- /  VATCategoryCodeSubTypeNo field -->

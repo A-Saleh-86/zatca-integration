@@ -3703,7 +3703,7 @@ function edit_user_zatcaUsers(){
     }
 
 
-    // function to create a checkbox [ checkout page ]:
+// function to create a checkbox [ checkout page ]:
 function checkbox_function() {
     ?>
     <div class="wc-block-components-checkout-step__container" style="display: none;" id="hidden-checkbox-container">
@@ -3849,7 +3849,7 @@ function edit_checkout_page_function(){
                 echo "Error inserting data: $error_message";
             } else {
     
-                echo __('Data Updated', 'zatca');
+                echo __('Data Inserted', 'zatca');
             
             }
 
