@@ -3703,7 +3703,7 @@ function edit_user_zatcaUsers(){
     }
 
 
-    // function to create a checkbox [ checkout page ]:
+// function to create a checkbox [ checkout page ]:
 function checkbox_function() {
     ?>
     <div class="wc-block-components-checkout-step__container" style="display: none;" id="hidden-checkbox-container">

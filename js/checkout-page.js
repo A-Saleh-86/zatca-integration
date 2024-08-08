@@ -169,6 +169,7 @@ function isArabic(string) {
 
 jQuery(document).ready(function($) {
 
+
   // Notification Function:
   const popup = Notification({
     position: 'center',
