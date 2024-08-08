@@ -373,7 +373,7 @@
                             
 
                             <?php
-                                if((((int)$zatcaSuccessResponse === 1 || (int)$zatcaSuccessResponse === 2) && $zatcaInvoiceType == 1) || ((int)$zatcaSuccessResponse > 0 && $zatcaInvoiceType == 0)){
+                            //    if((((int)$zatcaSuccessResponse === 1 || (int)$zatcaSuccessResponse === 2) && $zatcaInvoiceType == 1) || ((int)$zatcaSuccessResponse > 0 && $zatcaInvoiceType == 0)){
                             ?>
                                 <a href="<?php echo plugin_dir_url(__FILE__) . 'documentA4.php?docno='. $result->documentNo ?>"
                                 target="_blank"
@@ -381,7 +381,7 @@
                                 class="my-plugin-button btn-sm me-1"
                                 title="<?php echo __("Print Document", "zatca") ?>">
                                 <span class="dashicons dashicons-download"></span></a>
-                            <?php } ?>
+                            <?php // } ?>
                             
                             <!--Reissued Invoice Card Link-->
                             <!--

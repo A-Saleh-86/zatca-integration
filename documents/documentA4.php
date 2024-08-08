@@ -13,6 +13,66 @@ function generate_A4pdf()
         $docNo = $_GET['docno'];
         global $wpdb;
 
+        // get zatcaSuccessResponse code from zatcaDocument table using getVar
+        $zatcaSuccessResponse = $wpdb->get_var("SELECT zatcaSuccessResponse FROM zatcaDocument WHERE documentNo = '$docNo'");
+
+        $zatcaDocumentData = $wpdb->get_results(
+            $wpdb->prepare("select * from zatcaDocument where documentNo = '$docNo'")
+        );
+
+        $zatcaCompanyData = $wpdb->get_results(
+            $wpdb->prepare("select * from zatcaCompany")
+        );
+
+        // company info
+        foreach ($zatcaCompanyData as $company)
+        {
+            $companyName = $company->companyName;
+            $CompanyVATID = $company->VATID;
+            $country_Eng = $company->country_Eng;
+        }
+
+        // seller and buyer data and header invoice data
+        foreach ($zatcaDocumentData as $doc)
+        {
+            // header invoice data
+            $dateG = $doc->dateG;
+            $amountCalculatedPayed = number_format($doc->amountCalculatedPayed , 2, '.', '');
+
+
+            // seller information
+            $seller_aName = $doc->seller_aName;
+            $seller_eName = $doc->seller_eName;
+            $seller_apartmentNum = $doc->seller_apartmentNum;
+            $seller_street_Arb = $doc->seller_street_Arb;
+            $seller_street_Eng = $doc->seller_street_Eng;
+            $seller_district_Arb = $doc->seller_district_Arb;
+            $seller_district_Eng = $doc->seller_district_Eng;
+            $seller_city_Arb = $doc->seller_city_Arb;
+            $seller_city_Eng = $doc->seller_city_Eng;
+            $seller_PostalCode = $doc->seller_PostalCode;
+            $seller_POBoxAdditionalNum = $doc->seller_POBoxAdditionalNum;
+            $seller_country_Arb = $doc->seller_country_Arb;
+            $seller_country_Eng = $doc->seller_country_Eng;
+            $seller_VAT = $doc->seller_VAT;
+
+            // buyer information
+            $buyer_aName = $doc->buyer_aName;
+            $buyer_eName = $doc->buyer_eName;
+            $buyer_apartmentNum = $doc->buyer_apartmentNum;
+            $buyer_street_Arb = $doc->buyer_street_Arb;
+            $buyer_street_Eng = $doc->buyer_street_Eng;
+            $buyer_district_Arb = $doc->buyer_district_Arb;
+            $buyer_district_Eng = $doc->buyer_district_Eng;
+            $buyer_city_Arb = $doc->buyer_city_Arb;
+            $buyer_city_Eng = $doc->buyer_city_Eng;
+            $buyer_PostalCode = $doc->buyer_PostalCode;
+            $buyer_country_Arb = $doc->buyer_country_Arb;
+            $buyer_country_Eng = $doc->buyer_country_Eng;
+            $buyer_POBoxAdditionalNum = $doc->buyer_POBoxAdditionalNum;
+            $buyer_VAT = $doc->buyer_VAT;
+        }
+
         // Query to fetch the invoice numbers within the specified date range for the given branch
         $query = $wpdb->prepare("
             select zu.*, i.order_item_name from zatcaDocumentUnit zu, wp_woocommerce_order_items i
@@ -33,6 +93,10 @@ function generate_A4pdf()
             $price += $result->price;
             $amountWithVAT += $result->amountWithVAT;
             }
+            $discount = number_format($discount , 2, '.', '');
+            $vatAmount = number_format($vatAmount , 2, '.', '');
+            $price = number_format($price , 2, '.', '');
+            $amountWithVAT = number_format($amountWithVAT , 2, '.', '');
 
         // Include the TCPDF class  
         if ( ! class_exists('TCPDF') ) {  
@@ -76,12 +140,15 @@ function generate_A4pdf()
             $pdf->StopTransform();  
         }  
 
-        // Set the watermark text  
-        $watermark = 'نسخة غير نهائية';  
-        $pdf->SetFont('aealarabiya', 'B', 100);  
-        //$pdf->SetTextColor(255, 192, 203); // Light pink color 
-        $pdf->SetAlpha(0.3); // Set transparency for the watermark 
-        RotatedText($pdf, 45, 200, $watermark, 55); // Add rotated text  
+        if($zatcaSuccessResponse == 0)
+        {
+            // Set the watermark text  
+            $watermark = 'نسخة غير نهائية';  
+            $pdf->SetFont('aealarabiya', 'B', 100);  
+            //$pdf->SetTextColor(255, 192, 203); // Light pink color 
+            $pdf->SetAlpha(0.3); // Set transparency for the watermark 
+            RotatedText($pdf, 45, 200, $watermark, 55); // Add rotated text
+        }  
 
         $pdf->SetAlpha(1); // Set transparency for the watermark
         // Set font  
@@ -89,13 +156,13 @@ function generate_A4pdf()
 
         // Add text cell
         $pdf->SetXY(15, 10); // set X Y coordinates
-        $pdf->Cell(0, 10, 'Nasaem Nada Trading Est', 0, 1, 'L'); // 0 = no border, 1 = new line, 'C'
+        $pdf->Cell(0, 10, $companyName, 0, 1, 'L'); // 0 = no border, 1 = new line, 'C'
 
         $pdf->SetXY(15, 15);
-        $pdf->Cell(0,10, 'الرقم الضريبي: 30012345678901', 0, 1, 'L');
+        $pdf->Cell(0,10, 'الرقم الضريبي: ' . $CompanyVATID, 0, 1, 'L');
 
         $pdf->Setxy(0, 10);
-        $pdf->Cell(0, 10, 'مؤسسة نسائم الندى', 0, 1, 'R');
+        $pdf->Cell(0, 10, $companyName, 0, 1, 'R');
 
         $pdf->SetXY(0, 15);
         $pdf->Cell(0,10,'هاتف: 0552491111 س.ت.:11',0,1,'R');
@@ -111,7 +178,7 @@ function generate_A4pdf()
         $pdf->Cell(0,1,'المخزن: 1 - مباني المؤسسة1',0,1,'L');
 
         $pdf->SetXY(15, 60);
-        $pdf->Cell(0,1,'رقم العميل الضريبي: 12345678',0,1,'L');
+        $pdf->Cell(0,1,'رقم العميل الضريبي: ' . $buyer_VAT,0,1,'L');
 
         $pdf->SetXY(15, 70);
         $pdf->Cell(0,1,'80',0,1,'L');
@@ -122,7 +189,7 @@ function generate_A4pdf()
         $pdf->Cell(0,1,'الفرع: 1 - مباني المؤسسة1',0,1,'R');
 
         $pdf->SetXY(0, 40);
-        $pdf->Cell(0,1,'Egypt',0,1,'R');
+        $pdf->Cell(0,1,$country_Eng,0,1,'R');
         $pdf->SetXY(0, 45);
         $pdf->Cell(0,1,'نص أسفل الرأس -عربي1',0,1,'R');
 
@@ -130,7 +197,7 @@ function generate_A4pdf()
         $pdf->Cell(0,1,'رقم الفاتورة:', 0, 1, 'R');
 
         $pdf->SetXY($pdf->GetPageWidth() - 200, 55);
-        $pdf->Cell(150,1,'452',0,1,'R');
+        $pdf->Cell(157,1, $docNo,0,1,'R');
 
         $pdf->SetXY(115, 55);
         $pdf->Cell(0,1,'Invoice Number:',0,1,'L');
@@ -139,13 +206,13 @@ function generate_A4pdf()
         $pdf->Cell(0,1,'الاسم:',0,1,'R');
 
         $pdf->SetXY($pdf->GetPageWidth() - 200, 65);
-        $pdf->Cell(150,1,'testclientnw',0,1,'R');
+        $pdf->Cell(150,1, $buyer_aName,0,1,'R');
 
         $pdf->SetXY(0, 75);
         $pdf->Cell(0,1,'تاريخ اصدار الفاتورة:',0,1,'R');
 
         $pdf->SetXY($pdf->GetPageWidth() - 200, 75);
-        $pdf->Cell(155,1,'2024-05-29 21:01',0,1,'R');
+        $pdf->Cell(150,1, $dateG,0,1,'R');
 
         $pdf->SetXY(90, 75);
         $pdf->Cell(0,1,'Invoice Issue Date:',0,1,'L');
@@ -172,56 +239,56 @@ function generate_A4pdf()
 
         // Data  
         $pdf->Cell($tableWidth * 0.1, 5, 'Name', 1,0,'L');  
-        $pdf->Cell($tableWidth * 0.4, 5, 'Nasaem Nada Trading Est', 1,0,'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'مؤسسة نسائم الندى', 1,0,'R');
+        $pdf->Cell($tableWidth * 0.4, 5, $seller_eName, 1,0,'L');
+        $pdf->Cell($tableWidth * 0.4, 5, $seller_aName, 1,0,'R');
         $pdf->Cell($tableWidth * 0.1, 5, 'الاسم', 1,0,'R');
         $pdf->Ln(); // Move to the next line
         
         $pdf->Cell($tableWidth * 0.2, 5, 'Building No', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '7426000000', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '7426000000', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_apartmentNum, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_apartmentNum, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'رقم المبنى', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.2, 5, 'Street Name', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, 'street', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, 'شارع الستين', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_street_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_street_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'اسم الشارع', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.1, 5, 'District', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'shehabia222', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'الشهابية', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.4, 5, $seller_district_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.4, 5, $seller_district_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.1, 5, 'الحي', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.1, 5, 'City', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'ALHASA 23', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'الاحساء', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.4, 5, $seller_city_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.4, 5, $seller_city_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.1, 5, 'المدينة', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.1, 5 , 'Country', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5 , 'Kingdom Of Saudia Arabia23', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5 , 'المملكة العربية السعودية', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.4, 5 , $seller_country_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.4, 5 , $seller_country_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.1, 5 , 'البلد', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.25, 5, 'Postal Code', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123450000', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123450000', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.25, 5, $seller_PostalCode, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.25, 5, $seller_PostalCode, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.25, 5, 'الرمز البريدي', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.2, 5, 'Additional No.', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '234730062000032323', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '234730062000032323', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_POBoxAdditionalNum, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_POBoxAdditionalNum, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'الرقم الاضافي للعنوان', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.2, 5, 'VAT Number', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '300123456789012', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '300123456789012', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_VAT, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $seller_VAT, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'رقم تسجيل الضريبى', 1, 0, 'R');
         $pdf->Ln();
 
@@ -242,64 +309,64 @@ function generate_A4pdf()
         // Data 
         $pdf->SetXY(105, 100.5); 
         $pdf->Cell($tableWidth * 0.1, 5, 'Name', 1,0,'L');  
-        $pdf->Cell($tableWidth * 0.4, 5, 'testclientnwen', 1,0,'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'testclientnw', 1,0,'R');
+        $pdf->Cell($tableWidth * 0.4, 5, $buyer_eName, 1,0,'L');
+        $pdf->Cell($tableWidth * 0.4, 5, $buyer_aName, 1,0,'R');
         $pdf->Cell($tableWidth * 0.1, 5, 'الاسم', 1,0,'R');
         $pdf->Ln(); // Move to the next line
 
         $pdf->SetXY(105, 105.5);
         $pdf->Cell($tableWidth * 0.2, 5, 'Building No', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '7426000000', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '7426000000', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_apartmentNum, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_apartmentNum, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'رقم المبنى', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->SetXY(105, 110.5);
         $pdf->Cell($tableWidth * 0.2, 5, 'Street Name', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, 'street', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, 'شارع الستين', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_street_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_street_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'اسم الشارع', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->SetXY(105, 115.5);
         $pdf->Cell($tableWidth * 0.1, 5, 'District', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'shehabia222', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'الشهابية', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.4, 5, $buyer_district_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.4, 5, $buyer_district_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.1, 5, 'الحي', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->SetXY(105, 120.5);
         $pdf->Cell($tableWidth * 0.1, 5, 'City', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'ALHASA 23', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5, 'الاحساء', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.4, 5, $buyer_city_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.4, 5, $buyer_city_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.1, 5, 'المدينة', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->SetXY(105, 125.5);
         $pdf->Cell($tableWidth * 0.1, 5 , 'Country', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5 , 'Kingdom Of Saudia Arabia23', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.4, 5 , 'المملكة العربية السعودية', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.4, 5 , $buyer_country_Eng, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.4, 5 , $buyer_country_Arb, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.1, 5 , 'البلد', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->SetXY(105, 130.5);
         $pdf->Cell($tableWidth * 0.25, 5, 'Postal Code', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123450000', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123450000', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.25, 5, $buyer_PostalCode, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.25, 5, $buyer_PostalCode, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.25, 5, 'الرمز البريدي', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->SetXY(105, 135.5);
         $pdf->Cell($tableWidth * 0.2, 5, 'Additional No.', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '234730062000032323', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '234730062000032323', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_POBoxAdditionalNum, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_POBoxAdditionalNum, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'الرقم الاضافي للعنوان', 1, 0, 'R');
         $pdf->Ln();
 
         $pdf->SetXY(105, 140.5);
         $pdf->Cell($tableWidth * 0.2, 5, 'VAT Number', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '12345678', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.3, 5, '12345678', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_VAT, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.3, 5, $buyer_VAT, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.2, 5, 'رقم تسجيل الضريبى', 1, 0, 'R');
         $pdf->Ln();
 
@@ -352,30 +419,37 @@ function generate_A4pdf()
         ]; 
 
         // Output the data  
-        foreach ($data as $row) {  
+        /*foreach ($data as $row) {  
             foreach ($row as $i => $col) {  
                 $pdf->MultiCell($w[$i], 5, $col, 1, 'C', 0, 0, '', '', true);  
             }  
             $pdf->Ln(); // Move to the next line after each data row  
+        }*/
+
+        $i = 1;
+        foreach ($results as $result)
+        {
+            $pdf->MultiCell(28, 5, $result->amountWithVAT, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(15, 5, $result->vatAmount, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(15, 5, $result->vatRate . '%', 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(18, 5, $result->netAmount, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(15, 5, $result->discount, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(15, 5, $result->quantity, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(15, 5, $result->price, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(13, 5, $result->unitNo, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(40, 5, $result->order_item_name, 1, 'C', 0, 0, '', '', true);
+            $pdf->MultiCell(5, 5, $i, 1, 'C', 0, 0, '', '', true);
+            $pdf->Ln(); // Move to the next line after each data row
+
+            $i = $i + 1;
         }
 
-        // Set the line style for a solid line  
-        /*$solidStyle  = array(  
-            'width' => 0.3, // Line width  
-            'cap' => 'round', // Line cap  
-            'join' => 'round', // Line join  
-            'dash' => '0,0', // Dash pattern (3 mm on, 3 mm off)
-            'color' => array(0, 0, 0) // Line color (RGB)  
-        );
-
-        $pdf->setLineStyle($solidStyle );
-        */
 
         $y1 = $pdf->GetY(); // get the current Y position
 
         // Add text left and center and right in one cell
         $pdf->SetXY(15, $y1 + 5); // set X Y coordinates
-        $pdf->Cell(0, 5, '1,021.20', 0, 1, 'LRC');
+        $pdf->Cell(0, 5, $amountCalculatedPayed, 0, 1, 'LRC');
 
         // Add text left and center and right in one cell
         $pdf->SetXY(35, $y1 + 5); // set X Y coordinates
@@ -419,7 +493,7 @@ function generate_A4pdf()
 
         // Add text left and center and right in one cell
         $pdf->SetXY(0, $y2); // set X Y coordinates
-        $pdf->Cell(0, 5, '888.00 SAR', 0, 1, 'R');
+        $pdf->Cell(0, 5, $price . ' SAR', 0, 1, 'R');
         // Draw a dashed line from point (10, 50) to (70, 50)  
         $pdf->Line(175, $y2+5, 195, $y2+5);
 
@@ -433,7 +507,7 @@ function generate_A4pdf()
 
         $y3 = $pdf->GetY();
         $pdf->SetXY(0, $y3);
-        $pdf->Cell(0,5,'0.00 SAR',0,1,'R');
+        $pdf->Cell(0,5, $discount . ' SAR',0,1,'R');
         $pdf->Line(175, $y3+5, 195, $y3+5);
 
         $pdf->SetXY(132, $y3);
@@ -444,7 +518,7 @@ function generate_A4pdf()
 
         $y4 = $pdf->GetY();
         $pdf->SetXY(0, $y4+1);
-        $pdf->Cell(0,5,'888.00 SAR',0,1,'R');
+        $pdf->Cell(0,5, $vatAmount . ' SAR',0,1,'R');
         $pdf->Line(175, $y4+6, 195, $y4+6);
 
         $pdf->SetXY(101, $y4+1);
@@ -456,7 +530,7 @@ function generate_A4pdf()
 
         $y5 = $pdf->GetY() + 1;
         $pdf->SetXY(0, $y5);
-        $pdf->Cell(0,5,'133.20 SAR',0,1,'R');
+        $pdf->Cell(0,5, $vatAmount . ' SAR',0,1,'R');
         $pdf->Line(175, $y5+5, 195, $y5+5);
 
         $pdf->SetXY(137, $y5);
@@ -467,7 +541,7 @@ function generate_A4pdf()
 
         $y6 = $pdf->GetY() + 1;
         $pdf->SetXY(0,$y6);
-        $pdf->Cell(0,1,'1,021.20 SAR',0,1,'R');
+        $pdf->Cell(0,1, $amountWithVAT . ' SAR',0,1,'R');
         $pdf->Line(175, $y6+5, 195, $y6+5);
 
         $pdf->SetXY(130, $y6);
@@ -476,9 +550,91 @@ function generate_A4pdf()
         $pdf->Cell(0,1,'Total Amount Due with VAT 15%',0,1,'L');  
         $pdf->Line(78, $y6+5, 172, $y6+5);
 
+
+        function convertNumberToWords($number) {  
+            $ones = [  
+                0 => 'صفر', 1 => 'واحد', 2 => 'اثنان', 3 => 'ثلاثة', 4 => 'أربعة',  
+                5 => 'خمسة', 6 => 'ستة', 7 => 'سبعة', 8 => 'ثمانية', 9 => 'تسعة'  
+            ];  
+        
+            $teens = [  
+                10 => 'عشرة', 11 => 'أحد عشر', 12 => 'اثنا عشر',  
+                13 => 'ثلاثة عشر', 14 => 'أربعة عشر', 15 => 'خمسة عشر',  
+                16 => 'ستة عشر', 17 => 'سبعة عشر', 18 => 'ثمانية عشر', 19 => 'تسعة عشر'  
+            ];  
+            
+            $tens = [  
+                2 => 'عشرون', 3 => 'ثلاثون', 4 => 'أربعون', 5 => 'خمسون',  
+                6 => 'ستون', 7 => 'سبعون', 8 => 'ثمانون', 9 => 'تسعون'  
+            ];  
+            
+            $hundreds = [  
+                1 => 'مئة', 2 => 'مئتان', 3 => 'ثلاثمئة', 4 => 'أربعمئة',  
+                5 => 'خمسمئة', 6 => 'ستمئة', 7 => 'سبعمئة', 8 => 'ثمانمئة', 9 => 'تسعمئة'  
+            ];  
+        
+            $thousands = [  
+                1 => 'ألف', 2 => 'ألفان', 3 => 'ثلاثة آلاف', 4 => 'أربعة آلاف',  
+                5 => 'خمسة آلاف', 6 => 'ستة آلاف', 7 => 'سبعة آلاف', 8 => 'ثمانية آلاف', 9 => 'تسعة آلاف'  
+            ];  
+        
+            if ($number < 0) {  
+                return 'سالب ' . convertNumberToWords(-$number);  
+            }  
+            if ($number == 0) {  
+                return $ones[0];  
+            }  
+        
+            $result = '';  
+        
+            // Handle thousands  
+            $thousandPart = intval($number / 1000);  
+            if ($thousandPart > 0) {  
+                $result .= $thousands[$thousandPart] . ' و ';  
+            }  
+            
+            // Handle hundreds  
+            $hundredPart = intval(($number % 1000) / 100);  
+            if ($hundredPart > 0) {  
+                $result .= $hundreds[$hundredPart] . ' و ';  
+            }  
+        
+            // Handle tens  
+            $tenPart = intval(($number % 100) / 10);  
+            if ($tenPart == 1 && ($number % 10) > 0) {  
+                // For numbers between 11 and 19  
+                $result .= $teens[$number % 100] . ' ';  
+            } elseif ($tenPart > 1) {  
+                $result .= $tens[$tenPart] . ' ';  
+            }  
+        
+            // Handle ones  
+            $onePart = $number % 10;  
+            if ($tenPart != 1) { // if tenPart is not one, append ones  
+                if ($onePart > 0) {  
+                    $result .= $ones[$onePart] . ' ';  
+                }  
+            }  
+        
+            return trim($result);  
+        }
+
+        function formatPriceToArabic($total) {  
+            $total = round($total, 2);  
+            $parts = explode('.', number_format($total, 2, '.', ''));  
+            $riyals = intval($parts[0]);  
+            $halalas = intval($parts[1]);  
+        
+            $riyalsInWords = convertNumberToWords($riyals) . ' ريال';  
+            $halalasInWords = convertNumberToWords($halalas) . ' هللة';  
+        
+            return $riyalsInWords . ' و ' . $halalasInWords;  
+        } 
+
+        $arabic_price = formatPriceToArabic($amountWithVAT);
         $y7 = $pdf->GetY() + 1;
         $pdf->SetXY(0, $y7);
-        $pdf->Cell(0,10,'ألف و واحد و عشرون ريال - و عشرون هللة',0,1,'R');
+        $pdf->Cell(0,10, $arabic_price,0,1,'R');
 
 
         // Set the QR code content  
