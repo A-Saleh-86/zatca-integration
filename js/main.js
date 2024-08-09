@@ -15,6 +15,24 @@ jQuery(document).ready(function($) {
 
         
     })
+
+    // Normal Notification
+    window.popup = Notification({
+        position: 'center',
+        duration: 5000,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+    });
+
+    // Notification cant Hide:
+    window.popupValidation = Notification({
+        position: 'center',
+        duration: 0,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+    });
 });
 
 
