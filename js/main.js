@@ -1,21 +1,11 @@
 
-// Confirm Delete:
+// Notification Global Functions:
 jQuery(document).ready(function($) {
+
+    // Current Language:
     var currentLang = main.locale;
 
-    // $('.confirm').click(function () {
-    //     if (currentLang === 'ar') 
-    //     {
-    //         return confirm('هل أنت متأكد؟');
-    //     }
-    //     else
-    //     {
-    //         return confirm('Are you sure?');
-    //     }
-
-        
-    // })
-
+    // notification on delete:
     $('.confirm').click(function (event) {
         // Prevent the default action immediately
         event.preventDefault();
@@ -23,7 +13,7 @@ jQuery(document).ready(function($) {
         // Store the current element reference
         const currentElement = $(this);
     
-        // Determine the message based on the current language
+        // Determine the message & title based on the current language
         let message = currentLang === 'ar' ? 'هل أنت متأكد؟' : 'Are you sure?';
         let title = currentLang === 'ar' ? 'حذف' : 'Delete';
 
@@ -39,14 +29,12 @@ jQuery(document).ready(function($) {
                 }
             }
         });
-    
-        // Return false to ensure that the default action does not continue
+
         return false;
     });
     
     
-
-    // Normal Notification
+    // Global Normal Notification
     window.popup = Notification({
         position: 'center',
         duration: 5000,
@@ -55,7 +43,7 @@ jQuery(document).ready(function($) {
         maxOpened: 3,
     });
 
-    // Notification cant Hide:
+    // Global Notification cant Hide:
     window.popupValidation = Notification({
         position: 'center',
         duration: 0,
@@ -63,6 +51,7 @@ jQuery(document).ready(function($) {
         isHideTitle: false,
         maxOpened: 3,
     });
+
 });
 
 
@@ -107,9 +96,6 @@ jQuery(document).ready( function () {
             },
         });
     }
-
-
-
 
 } );
 
