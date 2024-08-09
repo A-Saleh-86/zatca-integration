@@ -236,8 +236,11 @@ $(document).ready(function() {
    
 });
 
+
 // Function to check conditions to show notifications:
 function checkConditions() {
+
+
 
     // run this function in admin panel only:
     if (myUser.isAdmin === 'true'){
@@ -252,13 +255,13 @@ function checkConditions() {
             success: function(response) {
 
                 if (response.msg !== null && response.msg !== undefined) {
-                    // alert(response.msg);
+                    alert(response.msg);
 
                     // warning notification:
-                    popup.warning({
-                        title: 'Success',
-                        message: response.msg
-                    });
+                    // popup.warning({
+                    //     title: 'Success',
+                    //     message: response.msg
+                    // });
                 }
                 
                 // Calculate the interval time based on the response value
