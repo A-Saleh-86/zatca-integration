@@ -3,18 +3,48 @@
 jQuery(document).ready(function($) {
     var currentLang = main.locale;
 
-    $('.confirm').click(function () {
-        if (currentLang === 'ar') 
-        {
-            return confirm('هل أنت متأكد؟');
-        }
-        else
-        {
-            return confirm('Are you sure?');
-        }
+    // $('.confirm').click(function () {
+    //     if (currentLang === 'ar') 
+    //     {
+    //         return confirm('هل أنت متأكد؟');
+    //     }
+    //     else
+    //     {
+    //         return confirm('Are you sure?');
+    //     }
 
         
-    })
+    // })
+
+    $('.confirm').click(function (event) {
+        // Prevent the default action immediately
+        event.preventDefault();
+    
+        // Store the current element reference
+        const currentElement = $(this);
+    
+        // Determine the message based on the current language
+        let message = currentLang === 'ar' ? 'هل أنت متأكد؟' : 'Are you sure?';
+        let title = currentLang === 'ar' ? 'حذف' : 'Delete';
+
+    
+        // Use the custom dialog
+        popup.dialog({
+            title: title,
+            message: message,
+            callback: (result) => {
+                if (result != 'cancel') {
+                    // User confirmed: Proceed with the action
+                    window.location.href = currentElement.attr('href');
+                }
+            }
+        });
+    
+        // Return false to ensure that the default action does not continue
+        return false;
+    });
+    
+    
 
     // Normal Notification
     window.popup = Notification({
