@@ -49,10 +49,14 @@ jQuery(document).ready(function($) {
         
         event.preventDefault();
 
-        // validation on aName :
+        // validation on aName [ Cant be null]:
         if (clientNameArabicInput.value == '' ) {
-            // alert("City Arabic Name Cant be Null.");
-            alert(myCustomer.arabic_name);
+
+            // Error notification:
+            popup.error({
+                title: 'Error',
+                message: myCustomer.arabic_name
+            });
             return;
         }
 
