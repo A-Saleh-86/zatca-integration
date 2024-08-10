@@ -481,20 +481,6 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             </div>
             <!-- /  ZATCA Invoices Type  field -->
 
-            <!--  taxRate1_Percentage  field -->
-            <div class="col-md-6">
-                <label class="form-label"><?php echo _e('Tax Percentage :', 'zatca') ?></label>
-                <div class="form-group">
-                    <select class="form-select select2"  name="taxRate1_Percentage" readonly>
-                        <option value=""> ...</option>
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="15">15</option>
-                    </select>
-                </div>
-            </div>
-            <!-- /  taxRate1_Percentage  field -->
-
 
             <!--  amountLeft field -->
             <div class="col-md-6">
@@ -512,21 +498,6 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                 </div>
             </div>
             <!-- /  amountLeft field -->
-
-             <!--  note field -->
-             <div class="col-md-6">
-                <label class="form-label"><?php echo _e('Notes:', 'zatca') ?></label>
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="note"
-                        class="form-control" 
-                        autocomplete="off"
-                        placeholder="<?php echo _e('Notes', 'zatca') ?>"
-                    />
-                </div>
-            </div>
-            <!-- /  note field -->
 
             
             <!--Retrive all aName from zatcaReturnReason table from database-->

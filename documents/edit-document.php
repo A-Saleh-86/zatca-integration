@@ -474,20 +474,6 @@ if (!empty($results)) {
             </div>
             <!-- /  ZATCA Invoices Type  field -->
 
-            <!--  taxRate1_Percentage  field -->
-            <div class="col-md-6">
-                <label class="form-label"><?php echo _e('Tax Percentage :', 'zatca') ?></label>
-                <div class="form-group">
-                    <select class="form-select select2"  name="taxRate1_Percentage" disabled>
-                        <option value=""> ...</option>
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="15">15</option>
-                    </select>
-                </div>
-            </div>
-            <!-- /  taxRate1_Percentage  field -->
-
 
             <!--  amountLeft field -->
             <div class="col-md-6">
@@ -506,27 +492,10 @@ if (!empty($results)) {
             </div>
             <!-- /  amountLeft field -->
 
-            <!--  note field -->
-            <div class="col-md-6">
-                <label class="form-label"><?php echo _e('Notes:', 'zatca') ?></label>
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="note"
-                        class="form-control" 
-                        autocomplete="off"
-                        placeholder="<?php echo _e('Notes', 'zatca') ?>"
-                        <?php if($result->zatcaSuccessResponse != 0){ ?>readonly<?php } ?>
-                    />
-                </div>
-            </div>
-            <!-- /  note field -->
-
-            
 
 
             <!-- CheckBox [ isNominal ] -->
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <br>
                 <div class="row">
                     <div class="col-md-4">
