@@ -2919,36 +2919,66 @@ function send_request_to_zatca_clear(){
     FROM zatcaDevice zd, zatcaDocument z 
     WHERE z.documentNo = '$doc_no' and z.deviceNo=zd.deviceNo");
 
+    $company_stage = $wpdb->get_var("SELECT zatcaStage 
+    FROM zatcaCompany");
 
     $msg = '';
 
     // Validation Fields:
     $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
     $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
-    
+    $seller_secondBusinessId_companyStage_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber ==null && $company_stage == 2) ? true : false;
+
     $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
     $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+    // Validate buyer vat number
+    $buyer_vatNo = $requestArray['buyer']['vatNumber'];
+    $invoicetransactioncode_isexports = $wpdb->get_var("SELECT zatcaInvoiceTransactionCode_isExports FROM zatcaDocument Where documentNo = '$doc_no'");
+    
+    $buyer_vatNo_validation1 = (
+        $buyer_vatNo == null && 
+        ($invoicetransactioncode_isexports == null)) ? true : false;
+    
+    $buyer_vatNo_validation0 = ($buyer_vatNo == 0) ? true : false;
+    
+    
     // validation on seller_additionalIdNumber & buyer_additionalNo:
-    if($seller_additionalIdNumber_validation == false){
-
+    if($seller_additionalIdNumber_validation == false)
+    {
         $send_response = [
             'status' => 'insert_seller_additional_id',
             'msg' => ''
         ];
-        //$msg = 'You Muse Insert Seller additional Id Number in zatca Company';
-        // $msg = var_dump($requestArray);
-        
-      
-    }elseif($buyer_additionalNo_validation == false){ // Validation on additionalNo - customer [ buyer ]:
-        
+    }
+    elseif($buyer_additionalNo_validation == false)
+    { 
+      // Validation on additionalNo - customer [ buyer ]:  
         $send_response = [
             'status' => 'insert_buyer_additional_id',
             'msg' => ''
         ];
-
-        //$msg = 'You Muse Insert Buyer additional Number in zatca customer';
-
+    }
+    else if($buyer_vatNo_validation1 == true)
+    {
+        $send_response = [
+            'status' => 'isexport1_buyervat',
+            'msg' => $buyer_vatNo
+        ];
+        
+    }
+    else if($buyer_vatNo_validation0 == true)
+    {
+        $send_response = [
+            'status' => 'isexport0_buyervat',
+            'msg' => $requestArray['buyer']['vatNumber']
+        ];
+    }
+    else if($seller_secondBusinessId_companyStage_validation == true)
+    {
+        $send_response = [
+            'status' => 'seller_second_business_id',
+            'msg' => ''];
     }
     else{
 
@@ -3336,17 +3366,15 @@ function send_request_to_zatca_clear(){
         $user_id = wp_get_current_user()->ID;
         log_send_to_zatca($user_login, $user_id);
 
-        $send_response1 = [
-            'msg' => $send_response,
-            'validationResults' => $validationResults,
-            'responseArray' => $responseArray,
-            'data' => $data
-        ];
-
-        wp_send_json($send_response1);
-      
-        
     }
+    $send_response1 = [
+        'msg' => $send_response,
+        'validationResults' => $validationResults,
+        'responseArray' => $responseArray,
+        'data' => $data
+    ];
+
+    wp_send_json($send_response1);
         
     die();
 }
@@ -4334,34 +4362,47 @@ function send_request_to_zatca_report(){
     FROM zatcaDevice zd, zatcaDocument z 
     WHERE z.documentNo = '$doc_no' and z.deviceNo=zd.deviceNo");
 
+    $company_stage = $wpdb->get_var("SELECT zatcaStage 
+    FROM zatcaCompany");
+
+    $VATCategoryCodeSubTypeNo = $wpdb->get_var("SELECT VATCategoryCodeSubTypeNo 
+    FROM zatcaCompany");
+
     $msg = '';
 
     // Validation Fields:
     $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
-    $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
+
+    $seller_secondBusinessId_companyStage_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber == null && $company_stage == 2) ? true : false;
     
     $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
     $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
-    // validation on seller_additionalIdNumber & buyer_additionalNo:
-    if($seller_additionalIdNumber_validation == false){
+    $buyer_arabic_name = $requestArray['buyer']['name'];
 
-        $send_response = [
-            'status' => 'insert_seller_additional_id',
-            'msg' => ''
-        ];
-        //$msg = 'You Muse Insert Seller additional Id Number in zatca Company';
-        // $msg = var_dump($requestArray);
-        
-      
-    }elseif($buyer_additionalNo_validation == false){ // Validation on additionalNo - customer [ buyer ]:
+    $buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
+
+    if($buyer_additionalNo_validation == false){ 
+        // Validation on additionalNo - customer [ buyer ]:
         $send_response = [
             'status' => 'insert_buyer_additional_id',
             'msg' => ''
         ];
-        //$msg = 'You Muse Insert Buyer additional Number in zatca customer';
 
-    }else{
+    }
+    else if($seller_secondBusinessId_companyStage_validation == true)
+    {
+        $send_response = [
+            'status' => 'seller_second_business_id',
+            'msg' => ''];
+    }
+    else if($buyerArabicName_validation == true)
+    {
+        $send_response = [
+            'status' => 'buyer_arabic_name',
+            'msg' => $buyer_arabic_name];
+    }
+    else{
 
         $curl = curl_init();
 
@@ -4406,7 +4447,8 @@ function send_request_to_zatca_report(){
                 'msg' => 'Curl error: ' . curl_error($curl)
             ];
             //echo 'Curl error: ' . curl_error($curl);
-        } else {
+        } 
+        else {
             // echo 'HTTP status code: ' . $http_status;
             // echo 'Response: ' . $response;
         }
@@ -4728,20 +4770,19 @@ function send_request_to_zatca_report(){
         $user_login = wp_get_current_user()->user_login;
         $user_id = wp_get_current_user()->ID;
         log_send_to_zatca($user_login, $user_id);
-
-        $send_response1 = [
-
-            'msg' => $send_response,
-            'validationResults' => $validationResults,
-            'responseArray' => $responseArray,
-            'data' => $data
-
-        ];
-
-        wp_send_json($send_response1);
-      
         
     }
+
+    $send_response1 = [
+
+        'msg' => $send_response,
+        'validationResults' => $validationResults,
+        'responseArray' => $responseArray,
+        'data' => $data
+
+    ];
+
+    wp_send_json($send_response1);
         
     die();
 }
@@ -5070,14 +5111,28 @@ function send_reissue_zatca($docNo)
         FROM zatcaDevice zd, zatcaDocument z 
         WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
 
+        $company_stage = $wpdb->get_var("SELECT zatcaStage 
+            FROM zatcaCompany");
+
         $msg = '';
 
         // Validation Fields:
         $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
         $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
-        
+        $seller_secondBusinessId_companyStage_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber ==null && $company_stage == 2) ? true : false;
+
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
+
+        // Validate buyer vat number
+        $buyer_vatNo = $requestArray['buyer']['vatNumber'];
+        $invoicetransactioncode_isexports = $wpdb->get_var("SELECT zatcaInvoiceTransactionCode_isExports FROM zatcaDocument Where documentNo = '$docNo'");
+        
+        $buyer_vatNo_validation1 = (
+            $buyer_vatNo == null && 
+            ($invoicetransactioncode_isexports == null)) ? true : false;
+        
+        $buyer_vatNo_validation0 = ($buyer_vatNo == 0) ? true : false;
 
         // validation on seller_additionalIdNumber & buyer_additionalNo:
         if($seller_additionalIdNumber_validation == false)
@@ -5086,16 +5141,35 @@ function send_reissue_zatca($docNo)
                 'status' => 'insert_seller_additional_id',
                 'msg' => ''
             ];
-            //$msg = 'You Muse Insert Seller additional Id Number in zatca Company';
-            // $msg = var_dump($requestArray);
         }
         elseif($buyer_additionalNo_validation == false)
-        { // Validation on additionalNo - customer [ buyer ]:
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
             $send_response = [
                 'status' => 'insert_buyer_additional_id',
                 'msg' => ''
             ];
-            //$msg = 'You Muse Insert Buyer additional Number in zatca customer';
+        }
+        else if($buyer_vatNo_validation1 == true)
+        {
+            $send_response = [
+                'status' => 'isexport1_buyervat',
+                'msg' => $buyer_vatNo
+            ];
+            
+        }
+        else if($buyer_vatNo_validation0 == true)
+        {
+            $send_response = [
+                'status' => 'isexport0_buyervat',
+                'msg' => $requestArray['buyer']['vatNumber']
+            ];
+        }
+        else if($seller_secondBusinessId_companyStage_validation == true)
+        {
+            $send_response = [
+                'status' => 'seller_second_business_id',
+                'msg' => ''];
         }
 
         else{
@@ -5518,19 +5592,17 @@ function send_reissue_zatca($docNo)
             $user_id = wp_get_current_user()->ID;
             log_send_to_zatca($user_login, $user_id);
     
-            $send_response1 = [
-    
-                'msg' => $send_response,
-                'validationResults' => $validationResults,
-                'responseArray' => $responseArray,
-                'data' => $data
-    
-            ];
-    
-            wp_send_json($send_response1);
-          
-            
         }
+        $send_response1 = [
+    
+            'msg' => $send_response,
+            'validationResults' => $validationResults,
+            'responseArray' => $responseArray,
+            'data' => $data
+
+        ];
+
+        wp_send_json($send_response1);
 
 
         //end if
@@ -5551,32 +5623,47 @@ function send_reissue_zatca($docNo)
         FROM zatcaDevice zd, zatcaDocument z 
         WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
 
+        $company_stage = $wpdb->get_var("SELECT zatcaStage 
+        FROM zatcaCompany");
+
+        $VATCategoryCodeSubTypeNo = $wpdb->get_var("SELECT VATCategoryCodeSubTypeNo 
+        FROM zatcaCompany");
+
         $msg = '';
 
         // Validation Fields:
         $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
-        $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
-        
+
+        $seller_secondBusinessId_companyStage_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber == null && $company_stage == 2) ? true : false;
+    
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+        $buyer_arabic_name = $requestArray['buyer']['name'];
+
+        $buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
+
         // validation on seller_additionalIdNumber & buyer_additionalNo:
-        if($seller_additionalIdNumber_validation == false)
-        {
-            $send_response = [
-                'status' => 'insert_seller_additional_id',
-                'msg' => ''
-            ];
-            // $msg = var_dump($requestArray);
-        }
-        elseif($buyer_additionalNo_validation == false)
-        { // Validation on additionalNo - customer [ buyer ]:
+        if($buyer_additionalNo_validation == false){ 
+            // Validation on additionalNo - customer [ buyer ]:
             $send_response = [
                 'status' => 'insert_buyer_additional_id',
                 'msg' => ''
             ];
+    
         }
-
+        else if($seller_secondBusinessId_companyStage_validation == true)
+        {
+            $send_response = [
+                'status' => 'seller_second_business_id',
+                'msg' => ''];
+        }
+        else if($buyerArabicName_validation == true)
+        {
+            $send_response = [
+                'status' => 'buyer_arabic_name',
+                'msg' => $buyer_arabic_name];
+        }
         else
         {
    
@@ -5970,18 +6057,17 @@ function send_reissue_zatca($docNo)
             $user_id = wp_get_current_user()->ID;
             log_send_to_zatca($user_login, $user_id);
     
-            $send_response1 = [
-    
-                'msg' => $send_response,
-                'validationResults' => $validationResults,
-                'responseArray' => $responseArray,
-                'data' => $data
-    
-            ];
-    
-            wp_send_json($send_response1);
-            
         }
+        $send_response1 = [
+    
+            'msg' => $send_response,
+            'validationResults' => $validationResults,
+            'responseArray' => $responseArray,
+            'data' => $data
+
+        ];
+
+        wp_send_json($send_response1);
     }
 }
 
@@ -6247,31 +6333,65 @@ function send_return_zatca($docNo)
         FROM zatcaDevice zd, zatcaDocument z 
         WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
 
+        $company_stage = $wpdb->get_var("SELECT zatcaStage 
+            FROM zatcaCompany");
+
         $msg = '';
 
         // Validation Fields:
         $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
         $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
-        
+        $seller_secondBusinessId_companyStage_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber ==null && $company_stage == 2) ? true : false;
+
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
-        // validation on seller_additionalIdNumber & buyer_additionalNo:
+        // Validate buyer vat number
+        $buyer_vatNo = $requestArray['buyer']['vatNumber'];
+        $invoicetransactioncode_isexports = $wpdb->get_var("SELECT zatcaInvoiceTransactionCode_isExports FROM zatcaDocument Where documentNo = '$docNo'");
+        
+        $buyer_vatNo_validation1 = (
+            $buyer_vatNo == null && 
+            ($invoicetransactioncode_isexports == null)) ? true : false;
+        
+        $buyer_vatNo_validation0 = ($buyer_vatNo == 0) ? true : false;
+
+       // validation on seller_additionalIdNumber & buyer_additionalNo:
         if($seller_additionalIdNumber_validation == false)
         {
-
             $send_response = [
                 'status' => 'insert_seller_additional_id',
                 'msg' => ''
             ];
-            // $msg = var_dump($requestArray);
         }
         elseif($buyer_additionalNo_validation == false)
-        { // Validation on additionalNo - customer [ buyer ]:
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
             $send_response = [
                 'status' => 'insert_buyer_additional_id',
                 'msg' => ''
             ];
+        }
+        else if($buyer_vatNo_validation1 == true)
+        {
+            $send_response = [
+                'status' => 'isexport1_buyervat',
+                'msg' => $buyer_vatNo
+            ];
+            
+        }
+        else if($buyer_vatNo_validation0 == true)
+        {
+            $send_response = [
+                'status' => 'isexport0_buyervat',
+                'msg' => $requestArray['buyer']['vatNumber']
+            ];
+        }
+        else if($seller_secondBusinessId_companyStage_validation == true)
+        {
+            $send_response = [
+                'status' => 'seller_second_business_id',
+                'msg' => ''];
         }
 
         else{
@@ -6663,21 +6783,17 @@ function send_return_zatca($docNo)
             $user_login = wp_get_current_user()->user_login;
             $user_id = wp_get_current_user()->ID;
             log_send_to_zatca($user_login, $user_id);
-    
-            $send_response1 = [
-    
-                'msg' => $send_response,
-                'validationResults' => $validationResults,
-                'responseArray' => $responseArray,
-                'data' => $data
-    
-            ];
-    
-            wp_send_json($send_response1);
-          
-            
         }
+        $send_response1 = [
+    
+            'msg' => $send_response,
+            'validationResults' => $validationResults,
+            'responseArray' => $responseArray,
+            'data' => $data
 
+        ];
+
+        wp_send_json($send_response1);
 
         //end if
     }
@@ -6697,30 +6813,45 @@ function send_return_zatca($docNo)
         FROM zatcaDevice zd, zatcaDocument z 
         WHERE z.documentNo = '$docNo' and z.deviceNo=zd.deviceNo");
 
+        $company_stage = $wpdb->get_var("SELECT zatcaStage 
+        FROM zatcaCompany");
+
+        $VATCategoryCodeSubTypeNo = $wpdb->get_var("SELECT VATCategoryCodeSubTypeNo 
+        FROM zatcaCompany");
+
         $msg = '';
 
-        // Validation Fields:
+       // Validation Fields:
         $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
-        $seller_additionalIdNumber_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber !=null) ? true : false;
-        
+
+        $seller_secondBusinessId_companyStage_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber == null && $company_stage == 2) ? true : false;
+    
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
-        // validation on seller_additionalIdNumber & buyer_additionalNo:
-        if($seller_additionalIdNumber_validation == false)
-        {
-            $send_response = [
-                'status' => 'insert_seller_additional_id',
-                'msg' => ''
-            ];
-            // $msg = var_dump($requestArray);
-        }
-        elseif($buyer_additionalNo_validation == false)
-        { // Validation on additionalNo - customer [ buyer ]:
+        $buyer_arabic_name = $requestArray['buyer']['name'];
+
+        $buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
+
+        if($buyer_additionalNo_validation == false){ 
+            // Validation on additionalNo - customer [ buyer ]:
             $send_response = [
                 'status' => 'insert_buyer_additional_id',
                 'msg' => ''
             ];
+
+        }
+        else if($seller_secondBusinessId_companyStage_validation == true)
+        {
+            $send_response = [
+                'status' => 'seller_second_business_id',
+                'msg' => ''];
+        }
+        else if($buyerArabicName_validation == true)
+        {
+            $send_response = [
+                'status' => 'buyer_arabic_name',
+                'msg' => $buyer_arabic_name];
         }
 
         else
@@ -7099,19 +7230,19 @@ function send_return_zatca($docNo)
             $user_login = wp_get_current_user()->user_login;
             $user_id = wp_get_current_user()->ID;
             log_send_to_zatca($user_login, $user_id);
-    
-            $send_response1 = [
-    
-                'msg' => $send_response,
-                'validationResults' => $validationResults,
-                'responseArray' => $responseArray,
-                'data' => $data
-    
-            ];
-    
-            wp_send_json($send_response1);
             
         }
+        
+        $send_response1 = [
+    
+            'msg' => $send_response,
+            'validationResults' => $validationResults,
+            'responseArray' => $responseArray,
+            'data' => $data
+
+        ];
+
+        wp_send_json($send_response1);
     }
 }
 

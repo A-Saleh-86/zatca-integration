@@ -3,10 +3,18 @@
 $path = preg_replace( '/wp-content(?!.*wp-content).*/', '', __DIR__ );
 require_once($path . 'wp-load.php');
 
+// require plugin file
+require_once('../zatca.php');
+
 // Add this function in your theme's functions.php or a custom plugin 
 
 function generate_A4pdf() 
 {
+    // Log the download xml:
+    $user_login = wp_get_current_user()->user_login;
+    $user_id = wp_get_current_user()->ID;
+    log_download_doc_xml($user_login, $user_id);
+    
     // Check if the form is submitted
     if (isset($_GET['docno'])) 
     {
