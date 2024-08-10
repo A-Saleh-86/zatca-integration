@@ -308,6 +308,8 @@ function localization() {
         'appartment_no' => __('Please Insert Appartment No.', 'zatca'),
         'po_box_additional' => __('Please Insert Po Box Additional No.', 'zatca'),
         'street_ar' => __('Please Insert Street Arabic Name', 'zatca'),
+        'notification_error_title' => __("Error", "zatca"),
+        'notification_success_title' => __("Success", "zatca"),
     ));
 
     // zatcaUser localization:
@@ -323,6 +325,7 @@ function localization() {
         'user_inserted' => __('User Inserted Successfully', 'zatca'),
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
+        'notification_warning_title' => __("Warning", "zatca"),
         ) 
     );
 
@@ -366,7 +369,11 @@ function localization() {
         'isexport0_buyervat' => __("Sorry, VAT ID for the client must be empty because the invoice is exports", "zatca"),
         'isexport1_buyervat' => __("Sorry, VAT ID for the client must be filled because the invoice is not exports", "zatca"),
         'sell_invoice' => __("Sell Invoice", "zatca"),
-        'sell_return_invoice' => __("Return Sell Invoice", "zatca")
+        'sell_return_invoice' => __("Return Sell Invoice", "zatca"),
+        'choose_customer_td' => __("Please select a Order first", "zatca"),
+        'notification_error_title' => __("Error", "zatca"),
+        'notification_success_title' => __("Success", "zatca"),
+        'notification_warning_title' => __("Warning", "zatca"),
         ) 
     );
 

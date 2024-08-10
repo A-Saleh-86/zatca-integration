@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-08-10T08:26:20+00:00\n"
+"POT-Creation-Date: 2024-08-10T10:35:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -529,7 +529,7 @@ msgstr "اضافه جهاز جديد"
 msgid "Devices"
 msgstr "الاجهزة"
 
-#: devices/view.php:24 zatca.php:508
+#: devices/view.php:24 zatca.php:513
 msgid "Device No"
 msgstr "رقم الجهاز"
 
@@ -969,7 +969,7 @@ msgstr "زاتكا"
 msgid "Users"
 msgstr "المستخدمين"
 
-#: option.php:79 option.php:80 zatca.php:3894
+#: option.php:79 option.php:80 zatca.php:3899
 msgid "Zacta Tampering Detector"
 msgstr "فحص خلل الفواتير"
 
@@ -1127,11 +1127,11 @@ msgstr "من فضلك اختر العميل أولا"
 msgid "Please Insert Customer Aarabic Name"
 msgstr "من فضلك أدخل اسم العميل باللغة العربية"
 
-#: zatca.php:295 zatca.php:335
+#: zatca.php:295 zatca.php:311 zatca.php:326 zatca.php:340
 msgid "Error"
 msgstr "عمليه خاطئه"
 
-#: zatca.php:296 zatca.php:336
+#: zatca.php:296 zatca.php:312 zatca.php:327 zatca.php:341
 msgid "Success"
 msgstr "عمليه ناجحه"
 
@@ -1163,178 +1163,183 @@ msgstr "من فضلك ادخل صندوق بريد إضافي"
 msgid "Please Insert Street Arabic Name"
 msgstr "من فضلك ادخل اسم الشارع باللغة العربية"
 
-#: zatca.php:319
+#: zatca.php:321
 msgid "Person No Cant be Null"
 msgstr "رقم الشخص لا يمكن ان يكون فارغ"
 
-#: zatca.php:320
+#: zatca.php:322
 msgid "Please insert reminder hours"
 msgstr "من فضلك ادخل ساعات النبيه"
 
-#: zatca.php:321
+#: zatca.php:323
 msgid "Reminder hours must be between 1-23 Hours"
 msgstr "ساعات التنبيه يجب ان تكون بين 1 و 23 ساعة"
 
-#: zatca.php:322
+#: zatca.php:324
 msgid "User Already Exist"
 msgstr "المستخدم موجود بالفعل"
 
-#: zatca.php:323
+#: zatca.php:325
 msgid "User Inserted Successfully"
 msgstr "تم اضافة المستخدم بنجاح"
 
-#: zatca.php:332
+#: zatca.php:328
+msgid "Warning"
+msgstr "رساله تحذيريه"
+
+#: zatca.php:337
 msgid "New Device Inserted"
 msgstr "تم اضافة جهاز جديد"
 
-#: zatca.php:333
+#: zatca.php:338
 msgid "Device Status Updated"
 msgstr "تم تعديل حالة الجهاز"
 
-#: zatca.php:334
+#: zatca.php:339
 msgid "Not allowed to add more one device active"
 msgstr "غير مسموح باضافة اكثر من جهاز واحد نشط"
 
-#: zatca.php:346
+#: zatca.php:351
 msgid "Document Created successifly"
 msgstr "تم ادخال الفاتورة بنجاح"
 
-#: zatca.php:347 zatca.php:735 zatca.php:1184 zatca.php:3667 zatca.php:3832
+#: zatca.php:352 zatca.php:740 zatca.php:1189 zatca.php:3672 zatca.php:3837
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
 
-#: zatca.php:348
+#: zatca.php:353
 msgid "Device CsID_ExpiryDate is Expired"
 msgstr "تاريخ صلاحية الجهاز انتهت"
 
-#: zatca.php:349
+#: zatca.php:354
 msgid "You Muse Insert Seller additional Id Number in zatca Company"
 msgstr "يجب ادخال رقم التسجيل الاضافى للشركة"
 
-#: zatca.php:350
+#: zatca.php:355
 msgid "You Muse Insert Buyer additional Number in zatca customer"
 msgstr "يجب ادخال رقم التسجيل الاضافى للعميل"
 
-#: zatca.php:351
+#: zatca.php:356
 msgid ""
 "No rows were affected. Possible reasons: No matching rows or the data is "
 "already up to date."
 msgstr "لا يوجد تحديث ربما كل شئ على مايرام"
 
-#: zatca.php:352
+#: zatca.php:357
 msgid "Please submit via reporing"
 msgstr "الرجاء الارسال باستخدام الB2C"
 
-#: zatca.php:353
+#: zatca.php:358
 msgid ""
 "Unauthorized, Please check authentication certificate and secret and resubmit"
 msgstr "غير مصرح به، يرجى التحقق من شهادة المصادقة والسرية وإعادة الإرسال"
 
-#: zatca.php:354
+#: zatca.php:359
 msgid "Please resend with smaller payload(invoice), Decrease invoice details and resubmit"
 msgstr "يرجى إعادة الإرسال بحمولة أصغر (فاتورة)، وتقليل تفاصيل الفاتورة وإعادة الإرسال"
 
-#: zatca.php:355
+#: zatca.php:360
 msgid "Please wait for 1 minute and resubmit"
 msgstr "الرجاء الانتظار لمدة دقيقة واحدة ثم إعادة الإرسال"
 
-#: zatca.php:356
+#: zatca.php:361
 msgid "Internal Server Error, Please try again later"
 msgstr "خطأ داخلي في الخادم، يرجى المحاولة مرة أخرى لاحقًا"
 
-#: zatca.php:357
+#: zatca.php:362
 msgid "Service Unavailable, Please try again later"
 msgstr "الخدمة غير متاحة، يرجى المحاولة مرة أخرى لاحقًا"
 
-#: zatca.php:358
+#: zatca.php:363
 msgid "Gateway Timeout, Please try again later"
 msgstr "انتهت المهلة يرجى المحاولة مرة أخرى لاحقًا"
 
-#: zatca.php:359
+#: zatca.php:364
 msgid "Buyer arabic name is mandatory and the same as his name in his National ID"
 msgstr "يجب أن يكون اسم المشتري باللغة العربية وأن يكون مطابقًا لاسمه الموجود في البطاقة الوطنية"
 
-#: zatca.php:360
+#: zatca.php:365
 msgid "Second business type must be National ID, Please edit customer profile"
 msgstr "يجب أن يكون نوع التسجيل الثاني هو الهوية الوطنية، يرجى تعديل ملف العميل"
 
-#: zatca.php:361
+#: zatca.php:366
 msgid "Buyer Second business ID must be filled, Please edit customer profile"
 msgstr "يجب ملء رقم التسجيل الثاني للمشتري، يرجى تعديل ملف تعريف العميل"
 
-#: zatca.php:362
+#: zatca.php:367
 msgid "Seller Second business ID must be filled, Please edit company profile"
 msgstr "يجب ملء رقم التسجيل الثاني للشركة يرجى تعديل ملف تعريف الشركة"
 
-#: zatca.php:363
+#: zatca.php:368
 msgid "Company zatca stage must be V2, Please edit company profile"
 msgstr "يجب أن تكون مرحلة زاتكا الخاصة بالشركة مرحلة ثانية، يرجى تعديل ملف تعريف الشركة"
 
-#: zatca.php:364
-msgid "Sorry, VAT ID for the client must be empty because the invoice is exports"
+#: zatca.php:369
+msgid ""
+"Sorry, VAT ID for the client must be empty because the invoice is exports"
 msgstr "عذرا، يجب أن يكون رقم ضريبة القيمة المضافة للعميل فارغًا لأن الفاتورة يتم تصديرها"
 
-#: zatca.php:365
+#: zatca.php:370
 msgid "Sorry, VAT ID for the client must be filled because the invoice is not exports"
 msgstr "عذرا، يجب ملء رقم ضريبة القيمة المضافة للعميل لأن الفاتورة غير قابلة للتصدير"
 
-#: zatca.php:366
+#: zatca.php:371
 msgid "Sell Invoice"
 msgstr "فاتورة مبيعات"
 
-#: zatca.php:367
+#: zatca.php:372
 msgid "Return Sell Invoice"
 msgstr "إرجاع فاتورة مبيعات"
 
-#: zatca.php:374
+#: zatca.php:379
 msgid "Are You Sure?"
 msgstr "هل انت متاكد ؟"
 
-#: zatca.php:375
+#: zatca.php:380
 msgid "Delete"
 msgstr "حذف "
 
-#: zatca.php:438
+#: zatca.php:443
 msgid "Missing Invoice Numbers"
 msgstr "مسلسل الفواتير المفقودة"
 
-#: zatca.php:508
+#: zatca.php:513
 msgid "Document No"
 msgstr "رقم الفاتورة"
 
-#: zatca.php:508
+#: zatca.php:513
 msgid "Invoice Hash"
 msgstr " هاش الفاتورة "
 
-#: zatca.php:1112 zatca.php:3863
+#: zatca.php:1117 zatca.php:3868
 msgid "Data Inserted"
 msgstr "تم بنجاح"
 
-#: zatca.php:3151 zatca.php:4558 zatca.php:5308 zatca.php:5783 zatca.php:6471
-#: zatca.php:6920
+#: zatca.php:3156 zatca.php:4563 zatca.php:5313 zatca.php:5788 zatca.php:6476
+#: zatca.php:6925
 msgid "Document Submitted Successfully, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة بنجاح كود زاتكا هو "
 
-#: zatca.php:3151 zatca.php:4558 zatca.php:5308 zatca.php:5783 zatca.php:6471
-#: zatca.php:6920
+#: zatca.php:3156 zatca.php:4563 zatca.php:5313 zatca.php:5788 zatca.php:6476
+#: zatca.php:6925
 msgid ".. Request Is Success"
 msgstr "عمليه ناجحه"
 
-#: zatca.php:3259 zatca.php:4665 zatca.php:5431 zatca.php:5898 zatca.php:6577
-#: zatca.php:7026
+#: zatca.php:3264 zatca.php:4670 zatca.php:5436 zatca.php:5903 zatca.php:6582
+#: zatca.php:7031
 msgid "Document Submitted with Warning, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة لكن يوجد تنبيه كود زاتكا هو "
 
-#: zatca.php:3305 zatca.php:3312 zatca.php:4712 zatca.php:5490 zatca.php:5497
-#: zatca.php:5955 zatca.php:6636 zatca.php:6643 zatca.php:7085
+#: zatca.php:3310 zatca.php:3317 zatca.php:4717 zatca.php:5495 zatca.php:5502
+#: zatca.php:5960 zatca.php:6641 zatca.php:6648 zatca.php:7090
 msgid " Error: "
 msgstr "خطأ"
 
-#: zatca.php:3703
+#: zatca.php:3708
 msgid "You have unsubmitted documents please review them"
 msgstr "لديك فواتير غير مرسلة الرجاء مراجعتها"
 
-#: zatca.php:3739
+#: zatca.php:3744
 msgid "Tax Invoice"
 msgstr " عمل فاتورة ضريبيه"
 

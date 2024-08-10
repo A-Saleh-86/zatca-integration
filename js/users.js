@@ -250,7 +250,7 @@ function checkConditions() {
 
                     // warning notification:
                     popupValidation.warning({
-                        title: myUser.notification_error_title,
+                        title: myUser.notification_warning_title,
                         message: response.msg
                     });
                 }

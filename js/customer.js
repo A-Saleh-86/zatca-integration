@@ -251,6 +251,7 @@ jQuery(document).ready(function($) {
                 title: myCustomer.notification_error_title,
                 message: myCustomer.arabic_name
             });
+            
             return;
         }
 

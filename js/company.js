@@ -179,7 +179,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.city_ar
             });
 
@@ -191,7 +191,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.street_ar
             });
 
@@ -203,7 +203,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.dist_ar
             });
 
@@ -215,7 +215,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.company_name
             });
 
@@ -227,7 +227,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.appartment_no
             });
 
@@ -239,7 +239,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.po_box_additional
             });
 
@@ -259,7 +259,7 @@ jQuery(document).ready(function($) {
 
                 // success notification:
                 popup.success({
-                    title: 'Success',
+                    title: myCompany.notification_success_title,
                     message: data
                 });
 
@@ -287,7 +287,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.city_ar
             });
 
@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.street_ar
             });
 
@@ -311,7 +311,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.dist_ar
             });
 
@@ -323,7 +323,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.company_name
             });
 
@@ -335,7 +335,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.appartment_no
             });
 
@@ -347,7 +347,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCompany.notification_error_title,
                 message: myCompany.po_box_additional
             });
 
@@ -367,7 +367,7 @@ jQuery(document).ready(function($) {
 
                 // success notification:
                 popup.success({
-                    title: 'Success',
+                    title: myCompany.notification_success_title,
                     message: data
                 });
 
