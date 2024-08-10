@@ -1,20 +1,53 @@
 
-// Confirm Delete:
+// Notification Global Functions:
 jQuery(document).ready(function($) {
+
+    // Current Language:
     var currentLang = main.locale;
 
-    $('.confirm').click(function () {
-        if (currentLang === 'ar') 
-        {
-            return confirm('هل أنت متأكد؟');
-        }
-        else
-        {
-            return confirm('Are you sure?');
-        }
+    // notification on delete:
+    $('.confirm').click(function (event) {
+        // Prevent the default action immediately
+        event.preventDefault();
+    
+        // Store the current element reference
+        const currentElement = $(this);
 
-        
-    })
+    
+        // Use the custom dialog
+        popup.dialog({
+            title: main.delete_title,
+            message: main.delete_msg,
+            callback: (result) => {
+                if (result != 'cancel') {
+                    // User confirmed: Proceed with the action
+                    window.location.href = currentElement.attr('href');
+                }
+            }
+        });
+
+        return false;
+    });
+    
+    
+    // Global Normal Notification
+    window.popup = Notification({
+        position: 'center',
+        duration: 5000,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+    });
+
+    // Global Notification cant Hide:
+    window.popupValidation = Notification({
+        position: 'center',
+        duration: 0,
+        isHidePrev: false,
+        isHideTitle: false,
+        maxOpened: 3,
+    });
+
 });
 
 
@@ -59,9 +92,6 @@ jQuery(document).ready( function () {
             },
         });
     }
-
-
-
 
 } );
 

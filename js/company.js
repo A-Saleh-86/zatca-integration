@@ -1,10 +1,8 @@
-// Script For Company Details For First time:
+// Company Details:
 jQuery(document).ready(function($) {
 
     // Second Bussiness Id Input:
-    const secondBusIdInput = document.getElementById('second-id-company');
     const vatCatCodeSubInput = document.getElementById('vat-cat-code-sub');
-    var po = document.getElementById("po-company");
     var cityAr = document.getElementById("company_city_ar");
     const copyBtn = document.getElementById('copy-company-data');
     const streetNameArInput = document.getElementById('street_name_ar');
@@ -17,14 +15,6 @@ jQuery(document).ready(function($) {
     const appartmentNoInput = document.getElementById('appartment_no');
     const additionalNoInput = document.getElementById('additional_no');
 
-    // Notification Function:
-    const popup = Notification({
-        position: 'center',
-        duration: 50000,
-        isHidePrev: false,
-        isHideTitle: false,
-        maxOpened: 3,
-    });
 
     // Change Vat_Category_Code_Sub_Type Depend On Vat_Category_Code Selected:
     $('select#vat-cat-code').on('change', function(event) {
@@ -186,37 +176,73 @@ jQuery(document).ready(function($) {
 
         // validation on city arabic name input:
         if (cityArInput.value == null || cityAr.value === '' ) {
-            alert(myCompany.city_ar);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.city_ar
+            });
+
             return;
         }
 
         // validation on street arabic name input:
         if (streetNameArInput.value == null || streetNameArInput.value === '' ) {
-            alert(myCompany.street_ar);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.street_ar
+            });
+
             return;
         }
 
         // validation on district arabic name input:
         if (districtNameArInput.value == null || districtNameArInput.value === '' ) {
-            alert(myCompany.dist_ar);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.dist_ar
+            });
+
             return;
         }
 
         // validation on company name input:
         if (companyNameInput.value == null || companyNameInput.value === '' ) {
-            alert(myCompany.company_name);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.company_name
+            });
+
             return;
         }
 
         // validation on appartment No input:
         if (appartmentNoInput.value == null || appartmentNoInput.value === '' ) {
-            alert(myCompany.appartment_no);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.appartment_no
+            });
+
             return;
         }
 
         // validation on additional No input:
         if (additionalNoInput.value == null || additionalNoInput.value === '' ) {
-            alert(myCompany.po_box_additional);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.po_box_additional
+            });
+
             return;
         }
 
@@ -230,9 +256,6 @@ jQuery(document).ready(function($) {
                 "Status":"Insert"
             },
             success: function(data){
-                // console.log(data);
-                // alert(data);
-                // window.location.reload();
 
                 // success notification:
                 popup.success({
@@ -261,37 +284,73 @@ jQuery(document).ready(function($) {
 
         // validation on city arabic name input:
         if (cityArInput.value == null || cityAr.value === '' ) {
-            alert(myCompany.city_ar);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.city_ar
+            });
+
             return;
         }
 
         // validation on street arabic name input:
         if (streetNameArInput.value == null || streetNameArInput.value === '' ) {
-            alert(myCompany.street_ar);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.street_ar
+            });
+
             return;
         }
 
         // validation on district arabic name input:
         if (districtNameArInput.value == null || districtNameArInput.value === '' ) {
-            alert(myCompany.dist_ar);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.dist_ar
+            });
+
             return;
         }
 
         // validation on company name input:
         if (companyNameInput.value == null || companyNameInput.value === '' ) {
-            alert(myCompany.company_name);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.company_name
+            });
+
             return;
         }
 
         // validation on appartment No input:
         if (appartmentNoInput.value == null || appartmentNoInput.value === '' ) {
-            alert(myCompany.appartment_no);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.appartment_no
+            });
+
             return;
         }
 
         // validation on additional No input:
         if (additionalNoInput.value == null || additionalNoInput.value === '' ) {
-            alert(myCompany.po_box_additional);
+
+            // Error notification:
+            popupValidation.error({
+                title: 'Error',
+                message: myCompany.po_box_additional
+            });
+
             return;
         }
 

@@ -81,9 +81,10 @@ xgettext -o languages/ar.po languages/zatca.pot => po
 wp i18n make-mo languages/ar.po languages => mo
 
 <!-- Add New String to po file -->
-<!-- Create new POT file -->
 
+<!-- Create new POT file -->
 wp i18n make-pot . 'new_string.pot'
+
 <!-- wp i18n make-pot . new_string.pot --debug -->
 
 <!-- Merge New POT With Old PO File -->

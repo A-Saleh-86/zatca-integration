@@ -29,30 +29,22 @@ jQuery(document).ready(function($) {
 
     // Get Postal Code Input element:
     var postal_Code = document.getElementById("customer_postal_code");
-    
-    // Get second_bus_id Input element:
-    var second_bus_id_input = document.getElementById("second_bus_id");
 
-    // Get dist_ar Input element:
-    var dist_ar_input = document.getElementById("dist_ar");
-
-    const popup = Notification({
-        position: 'center',
-        duration: 50000,
-        isHidePrev: false,
-        isHideTitle: false,
-        maxOpened: 3,
-    });
 
     // Insert New Customer Form:
     $("#insert_customer_form").submit(function(event){
         
         event.preventDefault();
 
-        // validation on aName :
+        // validation on aName [ Cant be null]:
         if (clientNameArabicInput.value == '' ) {
-            // alert("City Arabic Name Cant be Null.");
-            alert(myCustomer.arabic_name);
+
+            // Error notification:
+            popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.arabic_name
+            });
+
             return;
         }
 
@@ -68,15 +60,13 @@ jQuery(document).ready(function($) {
                 "customer_data_ajax": formData
             },
             success: function(data){
-                // console.log(data);
-                // alert(data);
 
                 // Check for Which Page client come from:
                 if(data == "customers"){ // if from customers page:
                     
                     // success notification:
                     popup.success({
-                        title: 'Success',
+                        title: myCustomer.notification_success_title,
                         message: myCustomer.customer_inserted
                     });
 
@@ -88,7 +78,7 @@ jQuery(document).ready(function($) {
 
                     // success notification:
                     popup.success({
-                        title: 'Success',
+                        title: myCustomer.notification_success_title,
                         message: myCustomer.customer_inserted
                     });
 
@@ -126,9 +116,9 @@ jQuery(document).ready(function($) {
             // If Client Not Choose a Customer:
             if (!selectedRow.length) {
 
-                // success notification:
-                popup.warning({
-                    title: 'Success',
+                // Error notification:
+                popupValidation.error({
+                    title: myCustomer.notification_error_title,
                     message: myCustomer.select_customer
                 });
 
@@ -255,8 +245,12 @@ jQuery(document).ready(function($) {
 
         // validation on aName :
         if (clientNameArabicInput.value == '' ) {
-            // alert("City Arabic Name Cant be Null.");
-            alert(myCustomer.arabic_name);
+
+            // Error notification:
+            popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.arabic_name
+            });
             return;
         }
 
@@ -268,13 +262,10 @@ jQuery(document).ready(function($) {
                 "edit_form_data_ajax": formData
             },
             success: function(data){
-                
-                // alert(data);
-                // window.location.href = myCustomer.adminUrl;
 
                 // success notification:
                 popup.success({
-                    title: 'Success',
+                    title: myCustomer.notification_success_title,
                     message: data
                 });
 

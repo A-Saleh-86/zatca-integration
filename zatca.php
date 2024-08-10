@@ -274,250 +274,263 @@ function load_assets(){
 
 }
 
-    // Function to javascript localization:
-    function localization() {
+// Function to javascript localization:
+function localization() {
 
-        // zatcaCustomer Localization:
-        wp_enqueue_script('customer-js', plugin_dir_url(__FILE__) . 'js/customer.js', array(), false, true);
-        wp_localize_script('customer-js', 'myCustomer', array( 
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'adminUrl' => admin_url('admin.php?page=zatca-customers&action=view'),
-            'document' => admin_url('admin.php?page=zatca-documents&action=insert'),
-            'postal_null' => __('Postal Code Cant be Null', 'zatca'),
-            'postal_digits' => __('Postal Code Must be 5 Digits', 'zatca'),
-            'street' => __('Street Arabic Name Cant be Null', 'zatca'),
-            'second_id' => __('second business id Cant be Null', 'zatca'),
-            'district' => __('District Arabic Name Cant be Null', 'zatca'),
-            'city' => __('City Arabic Name Cant be Null', 'zatca'),
-            'customer_inserted' => __('Customer Inserted Success', 'zatca'),
-            'select_customer' => __('Please select a customer first', 'zatca'),
-            'arabic_name' => __('Please Insert Customer Aarabic Name', 'zatca'),
-        ));
+    // zatcaCustomer Localization:
+    wp_enqueue_script('customer-js', plugin_dir_url(__FILE__) . 'js/customer.js', array(), false, true);
+    wp_localize_script('customer-js', 'myCustomer', array( 
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'adminUrl' => admin_url('admin.php?page=zatca-customers&action=view'),
+        'document' => admin_url('admin.php?page=zatca-documents&action=insert'),
+        'postal_null' => __('Postal Code Cant be Null', 'zatca'),
+        'postal_digits' => __('Postal Code Must be 5 Digits', 'zatca'),
+        'street' => __('Street Arabic Name Cant be Null', 'zatca'),
+        'second_id' => __('second business id Cant be Null', 'zatca'),
+        'district' => __('District Arabic Name Cant be Null', 'zatca'),
+        'city' => __('City Arabic Name Cant be Null', 'zatca'),
+        'customer_inserted' => __('Customer Inserted Success', 'zatca'),
+        'select_customer' => __('Please select a customer first', 'zatca'),
+        'arabic_name' => __('Please Insert Customer Aarabic Name', 'zatca'),
+        'notification_error_title' => __("Error", "zatca"),
+        'notification_success_title' => __("Success", "zatca"),
+    ));
+
+    // zatcaCompany localization:
+    wp_enqueue_script('company-js',  plugin_dir_url(__FILE__) . '/js/company.js', array(), false, true);
+    wp_localize_script( 'company-js', 'myCompany', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-company&action=view'),
+        'second_bus' => __('Second Business Id Must be 10 Digits', 'zatca'),
+        'city_ar' => __('Please Insert City Arabic Name', 'zatca'),
+        'dist_ar' => __('Please Insert District Arabic Name', 'zatca'),
+        'company_name' => __('Please Insert Company Name', 'zatca'),
+        'appartment_no' => __('Please Insert Appartment No.', 'zatca'),
+        'po_box_additional' => __('Please Insert Po Box Additional No.', 'zatca'),
+        'street_ar' => __('Please Insert Street Arabic Name', 'zatca'),
+    ));
+
+    // zatcaUser localization:
+    wp_enqueue_script('users-js',  plugin_dir_url(__FILE__) . '/js/users.js', array(), false, true);
+    wp_localize_script( 'users-js', 'myUser', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-users&action=view'),
+        'isAdmin' => is_admin() ? 'true' : 'false',
+        'person_no_validation' => __('Person No Cant be Null', 'zatca'),
+        'reminder_hours_validation' => __('Please insert reminder hours', 'zatca'),
+        'reminder_hours_validation_number' => __('Reminder hours must be between 1-23 Hours', 'zatca'),
+        'user_exist' => __('User Already Exist', 'zatca'),
+        'user_inserted' => __('User Inserted Successfully', 'zatca'),
+        'notification_error_title' => __("Error", "zatca"),
+        'notification_success_title' => __("Success", "zatca"),
+        ) 
+    );
+
+    //zatcaDevice loalization:
+    wp_enqueue_script('device-js',  plugin_dir_url(__FILE__) . '/js/device.js', array(), false, true);
+    wp_localize_script( 'device-js', 'myDevice', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-devices&action=view'),
+        'device_inserted' => __("New Device Inserted", "zatca"),
+        'device_updated' => __("Device Status Updated", "zatca"),
+        'device_active' => __("Not allowed to add more one device active", "zatca"),
+        'notification_error_title' => __("Error", "zatca"),
+        'notification_success_title' => __("Success", "zatca"),
+        ) 
+    );
+
+    //zatcaDocument localization
+    wp_enqueue_script('document-js',  plugin_dir_url(__FILE__) . '/js/document.js', array(), false, true);
+    wp_localize_script( 'document-js', 'myDoc', array( 
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
+        'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),
+        'document_inserted' => __("Document Created successifly", "zatca"),
+        'document_updated' => __("Data Updated", "zatca"),
+        'document_device_expired' => __("Device CsID_ExpiryDate is Expired", "zatca"),
+        'insert_seller_additional_id' => __("You Muse Insert Seller additional Id Number in zatca Company", "zatca"),
+        'insert_buyer_additional_id' => __("You Muse Insert Buyer additional Number in zatca customer", "zatca"),
+        'no_rows_affected' => __("No rows were affected. Possible reasons: No matching rows or the data is already up to date.", "zatca"),
+        'error_303' => __("Please submit via reporing", "zatca"),
+        'error_401' => __("Unauthorized, Please check authentication certificate and secret and resubmit", "zatca"),
+        'error_413' => __("Please resend with smaller payload(invoice), Decrease invoice details and resubmit", "zatca"),
+        'error_429' => __("Please wait for 1 minute and resubmit", "zatca"),
+        'error_500' => __("Internal Server Error, Please try again later", "zatca"),
+        'error_503' => __("Service Unavailable, Please try again later", "zatca"),
+        'error_504' => __("Gateway Timeout, Please try again later", "zatca"),
+        'buyer_arabic_name' => __("Buyer arabic name is mandatory and the same as his name in his National ID", "zatca"),
+        'buyer_second_business_id_type' => __("Second business type must be National ID, Please edit customer profile", "zatca"),
+        'buyer_second_business_id' => __("Buyer Second business ID must be filled, Please edit customer profile", "zatca"),
+        'seller_second_business_id' => __("Seller Second business ID must be filled, Please edit company profile", "zatca"),
+        'company_stage_2' => __("Company zatca stage must be V2, Please edit company profile", "zatca"),
+        'isexport0_buyervat' => __("Sorry, VAT ID for the client must be empty because the invoice is exports", "zatca"),
+        'isexport1_buyervat' => __("Sorry, VAT ID for the client must be filled because the invoice is not exports", "zatca"),
+        'sell_invoice' => __("Sell Invoice", "zatca"),
+        'sell_return_invoice' => __("Return Sell Invoice", "zatca")
+        ) 
+    );
+
+    // main.js localization:
+    wp_enqueue_script('main-js',  plugin_dir_url(__FILE__) . '/js/main.js', array(), false, true);
+    wp_localize_script( 'main-js', 'main', array( 
+        'delete_msg' => __("Are You Sure?", "zatca"),
+        'delete_title' => __("Delete", "zatca"),
+        )
+    );
+
+}
+
+
+function handle_form_tampering() {  
     
-        // zatcaCompany localization:
-        wp_enqueue_script('company-js',  plugin_dir_url(__FILE__) . '/js/company.js', array(), false, true);
-        wp_localize_script( 'company-js', 'myCompany', array( 
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'adminUrl' => admin_url('admin.php?page=zatca-company&action=view'),
-            'second_bus' => __('Second Business Id Must be 10 Digits', 'zatca'),
-            'city_ar' => __('Please Insert City Arabic Name', 'zatca'),
-            'dist_ar' => __('Please Insert District Arabic Name', 'zatca'),
-            'company_name' => __('Please Insert Company Name', 'zatca'),
-            'appartment_no' => __('Please Insert Appartment No.', 'zatca'),
-            'po_box_additional' => __('Please Insert Po Box Additional No.', 'zatca'),
-            'street_ar' => __('Please Insert Street Arabic Name', 'zatca'),
-        ));
-    
-        // zatcaUser localization:
-        wp_enqueue_script('users-js',  plugin_dir_url(__FILE__) . '/js/users.js', array(), false, true);
-        wp_localize_script( 'users-js', 'myUser', array( 
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'adminUrl' => admin_url('admin.php?page=zatca-users&action=view'),
-            'isAdmin' => is_admin() ? 'true' : 'false',
-            'person_no_validation' => __('Person No Cant be Null', 'zatca'),
-            'reminder_hours_validation' => __('Please insert reminder hours', 'zatca'),
-            'reminder_hours_validation_number' => __('Reminder hours must be between 1-23 Hours', 'zatca'),
-            'user_exist' => __('User Already Exist', 'zatca'),
-            'user_inserted' => __('User Inserted Successfully', 'zatca'),
-            ) 
-        );
-
-        //zatcaDevice loalization:
-        wp_enqueue_script('device-js',  plugin_dir_url(__FILE__) . '/js/device.js', array(), false, true);
-        wp_localize_script( 'device-js', 'myDevice', array( 
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'adminUrl' => admin_url('admin.php?page=zatca-devices&action=view'),
-            'device_inserted' => __("New Device Inserted", "zatca"),
-            'device_updated' => __("Device Status Updated", "zatca"),
-            //'device_deleted' => __("Device Deleted Successfully", "zatca"),
-            'device_active' => __("Not allowed to add more one device active", "zatca"),
-            ) 
-        );
-
-        //zatcaDocument localization
-        wp_enqueue_script('document-js',  plugin_dir_url(__FILE__) . '/js/document.js', array(), false, true);
-        wp_localize_script( 'document-js', 'myDoc', array( 
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
-            'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),
-            'document_inserted' => __("Document Created successifly", "zatca"),
-            'document_updated' => __("Data Updated", "zatca"),
-            'document_device_expired' => __("Device CsID_ExpiryDate is Expired", "zatca"),
-            'insert_seller_additional_id' => __("You Muse Insert Seller additional Id Number in zatca Company", "zatca"),
-            'insert_buyer_additional_id' => __("You Muse Insert Buyer additional Number in zatca customer", "zatca"),
-            'no_rows_affected' => __("No rows were affected. Possible reasons: No matching rows or the data is already up to date.", "zatca"),
-            'error_303' => __("Please submit via reporing", "zatca"),
-            'error_401' => __("Unauthorized, Please check authentication certificate and secret and resubmit", "zatca"),
-            'error_413' => __("Please resend with smaller payload(invoice), Decrease invoice details and resubmit", "zatca"),
-            'error_429' => __("Please wait for 1 minute and resubmit", "zatca"),
-            'error_500' => __("Internal Server Error, Please try again later", "zatca"),
-            'error_503' => __("Service Unavailable, Please try again later", "zatca"),
-            'error_504' => __("Gateway Timeout, Please try again later", "zatca"),
-            'buyer_arabic_name' => __("Buyer arabic name is mandatory and the same as his name in his National ID", "zatca"),
-            'buyer_second_business_id_type' => __("Second business type must be National ID, Please edit customer profile", "zatca"),
-            'buyer_second_business_id' => __("Buyer Second business ID must be filled, Please edit customer profile", "zatca"),
-            'seller_second_business_id' => __("Seller Second business ID must be filled, Please edit company profile", "zatca"),
-            'company_stage_2' => __("Company zatca stage must be V2, Please edit company profile", "zatca"),
-            'isexport0_buyervat' => __("Sorry, VAT ID for the client must be empty because the invoice is exports", "zatca"),
-            'isexport1_buyervat' => __("Sorry, VAT ID for the client must be filled because the invoice is not exports", "zatca"),
-            'sell_invoice' => __("Sell Invoice", "zatca"),
-            'sell_return_invoice' => __("Return Sell Invoice", "zatca")
-            ) 
-        );
-    
-    }
-
-
-    function handle_form_tampering() {  
+    // Check if the form is submitted
+    if ($_POST['check_type'] == 'check_counter_gap') 
+    {
+        // Call the counter gap function
+        $content = '';
         
-        // Check if the form is submitted
-        if ($_POST['check_type'] == 'check_counter_gap') 
-        {
-            // Call the counter gap function
-            $content = '';
-            
-            global $wpdb;
+        global $wpdb;
 
-            // Get the necessary POST data
-            $BuildingNo = $_POST['buildingNo']; // branch id
-            $from_date = $_POST['from_date'];
-            $to_date = $_POST['to_date'];
+        // Get the necessary POST data
+        $BuildingNo = $_POST['buildingNo']; // branch id
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
 
-            
-            // Query to fetch the invoice numbers within the specified date range for the given branch
-            $query = $wpdb->prepare("
-                SELECT z1.documentNo
-                FROM zatcaDocument z1
-                INNER JOIN zatcaDevice zd ON zd.deviceNo = z1.deviceNo
-                INNER JOIN zatcaBranch zb ON z1.buildingNo = zb.buildingNo
-                WHERE zb.buildingNo = %d
-                AND z1.dateG BETWEEN %s AND %s
-                ORDER BY z1.documentNo
-            ", $BuildingNo, $from_date, $to_date);
+        
+        // Query to fetch the invoice numbers within the specified date range for the given branch
+        $query = $wpdb->prepare("
+            SELECT z1.documentNo
+            FROM zatcaDocument z1
+            INNER JOIN zatcaDevice zd ON zd.deviceNo = z1.deviceNo
+            INNER JOIN zatcaBranch zb ON z1.buildingNo = zb.buildingNo
+            WHERE zb.buildingNo = %d
+            AND z1.dateG BETWEEN %s AND %s
+            ORDER BY z1.documentNo
+        ", $BuildingNo, $from_date, $to_date);
 
-            $results = $wpdb->get_results($query);
+        $results = $wpdb->get_results($query);
 
-            
-            // Initialize variables
-            $missing_numbers = [];
-            $prev_number = null;
+        
+        // Initialize variables
+        $missing_numbers = [];
+        $prev_number = null;
 
-            // Check for missing invoice numbers
-            foreach ($results as $result) {
-                $current_number = $result->documentNo;
+        // Check for missing invoice numbers
+        foreach ($results as $result) {
+            $current_number = $result->documentNo;
 
-                if ($prev_number !== null && $current_number - $prev_number > 1) {
-                    // Gap detected, add missing numbers to the array
-                    for ($i = $prev_number + 1; $i < $current_number; $i++) {
-                        $missing_numbers[] = $i;
-                    }
+            if ($prev_number !== null && $current_number - $prev_number > 1) {
+                // Gap detected, add missing numbers to the array
+                for ($i = $prev_number + 1; $i < $current_number; $i++) {
+                    $missing_numbers[] = $i;
                 }
-
-                $prev_number = $current_number;
             }
 
-            // Prepare the response data
-            $response = array(
-                'missing_numbers' => $missing_numbers,
-            );
+            $prev_number = $current_number;
+        }
 
+        // Prepare the response data
+        $response = array(
+            'missing_numbers' => $missing_numbers,
+        );
+
+        
+        // Display the results in a grid table
+        $content .= '<div class="container"><table id="example" class="table table-striped" width="100%">';
+        $content .= '<thead><tr><th class="text-center">' . __("Missing Invoice Numbers", "zatca") . '</th></tr></thead>';
+        $content .= '<tbody class="text-center">';
+
+        foreach ($response['missing_numbers'] as $missing_number) {
+            $content .= '<tr><td>' . $missing_number . '</td></tr>';
+        }
+
+        $content .= '</tbody></table></div>';
+
+        echo $content;
+    }
+
+    // Check if the form is submitted
+    if ($_POST['check_type'] == 'check_hash_gap') 
+    {
+        // Call the hash gap function
+        global $wpdb;
+
+        // Get the necessary POST data
+        $BuildingNo = $_POST['buildingNo']; // branch id
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        // Define zatcaInfo table name  
+        $zacainfo_table = 'zatcaInfo';  
+
+        $missing_records = [];  
+
+        // Step 1: Select zatcaInfo1, zatcaInfo2, and zatcaInfo3 from zacainfo table  
+        $zacainfo_query = $wpdb->prepare(  
+            "SELECT zatcaInfo1, zatcaInfo2, zatcaInfo3 FROM $zacainfo_table"  
+        );  
+        $zacainfo_records = $wpdb->get_results( $zacainfo_query, ARRAY_A );  
+
+        // Step 2: Select documentNo, deviceNo, and invoiceHash from zatcaDocument & zatcaDocumentxml tables
+        // within the given date range  
+        $zatcaDocument_query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
+        FROM zatcaDocument z, zatcaDocumentxml z1 
+        WHERE z.BuildingNo= %d 
+        AND z.dateG BETWEEN %s AND %s 
+        AND z.documentNo=z1.documentNo",
+        $BuildingNo, $from_date, $to_date);
+
+        $zatcaDocument_records = $wpdb->get_results( $zatcaDocument_query, ARRAY_A );  
+
+        // Step 3: Create an associative array for zatcaDocument records for quick lookup  
+        $zatcaDocument_map = [];  
+        foreach ( $zatcaDocument_records as $document ) {  
+            $key = implode('|', [$document['invoiceHash'], $document['documentNo'], $document['deviceNo']]);  
+            $zatcaDocument_map[ $key ] = $document;  
+        }  
+
+        // Step 4: Check for existence of records from zacainfo in zatcaDocument  
+        foreach ( $zacainfo_records as $info ) {
             
-            // Display the results in a grid table
-            $content .= '<div class="container"><table id="example" class="table table-striped" width="100%">';
-            $content .= '<thead><tr><th class="text-center">' . __("Missing Invoice Numbers", "zatca") . '</th></tr></thead>';
-            $content .= '<tbody class="text-center">';
-
-            foreach ($response['missing_numbers'] as $missing_number) {
-                $content .= '<tr><td>' . $missing_number . '</td></tr>';
-            }
-
-            $content .= '</tbody></table></div>';
-
-            echo $content;
-        }
-
-        // Check if the form is submitted
-        if ($_POST['check_type'] == 'check_hash_gap') 
-        {
-            // Call the hash gap function
-            global $wpdb;
-
-            // Get the necessary POST data
-            $BuildingNo = $_POST['buildingNo']; // branch id
-            $from_date = $_POST['from_date'];
-            $to_date = $_POST['to_date'];
-
-            // Define zatcaInfo table name  
-            $zacainfo_table = 'zatcaInfo';  
-
-            $missing_records = [];  
-
-            // Step 1: Select zatcaInfo1, zatcaInfo2, and zatcaInfo3 from zacainfo table  
-            $zacainfo_query = $wpdb->prepare(  
-                "SELECT zatcaInfo1, zatcaInfo2, zatcaInfo3 FROM $zacainfo_table"  
-            );  
-            $zacainfo_records = $wpdb->get_results( $zacainfo_query, ARRAY_A );  
-
-            // Step 2: Select documentNo, deviceNo, and invoiceHash from zatcaDocument & zatcaDocumentxml tables
-            // within the given date range  
-            $zatcaDocument_query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
-            FROM zatcaDocument z, zatcaDocumentxml z1 
-            WHERE z.BuildingNo= %d 
-            AND z.dateG BETWEEN %s AND %s 
-            AND z.documentNo=z1.documentNo",
-            $BuildingNo, $from_date, $to_date);
-
-            $zatcaDocument_records = $wpdb->get_results( $zatcaDocument_query, ARRAY_A );  
-
-            // Step 3: Create an associative array for zatcaDocument records for quick lookup  
-            $zatcaDocument_map = [];  
-            foreach ( $zatcaDocument_records as $document ) {  
-                $key = implode('|', [$document['invoiceHash'], $document['documentNo'], $document['deviceNo']]);  
-                $zatcaDocument_map[ $key ] = $document;  
+            $key = implode('|', [decrypt_data($info['zatcaInfo1']), decrypt_data($info['zatcaInfo2']), decrypt_data($info['zatcaInfo3'])]);  
+            
+            // Check if the composite key exists in zatcaDocument  
+            if ( ! isset( $zatcaDocument_map[ $key ] ) ) {  
+                // Push missing record's values to the array  
+                $missing_records[] = [  
+                    'invoiceHash' => decrypt_data($info['zatcaInfo1']),  
+                    'documentNo' => decrypt_data($info['zatcaInfo2']),  
+                    'deviceNo' => decrypt_data($info['zatcaInfo3'])  
+                ];  
             }  
-
-            // Step 4: Check for existence of records from zacainfo in zatcaDocument  
-            foreach ( $zacainfo_records as $info ) {
-                
-                $key = implode('|', [decrypt_data($info['zatcaInfo1']), decrypt_data($info['zatcaInfo2']), decrypt_data($info['zatcaInfo3'])]);  
-                
-                // Check if the composite key exists in zatcaDocument  
-                if ( ! isset( $zatcaDocument_map[ $key ] ) ) {  
-                    // Push missing record's values to the array  
-                    $missing_records[] = [  
-                        'invoiceHash' => decrypt_data($info['zatcaInfo1']),  
-                        'documentNo' => decrypt_data($info['zatcaInfo2']),  
-                        'deviceNo' => decrypt_data($info['zatcaInfo3'])  
-                    ];  
-                }  
-            }
-
-            // Display the results in a grid table
-            echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
-            echo '<thead><tr><th class="text-center">'. __("Document No", "zatca") .'</th><th class="text-center">'. __("Device No", "zatca") .'</th><th class="text-center">'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody class="text-center">';
-
-            foreach ($missing_records as $document1) {
-                echo '<tr>';
-                echo '<td>' . $document1['documentNo'] . '</td>';
-                echo '<td>' . $document1['deviceNo'] . '</td>';
-                echo '<td>' . $document1['invoiceHash'] . '</td>';
-                echo '</tr>';
-            }
-
-            echo '</tbody></table></div>';
         }
-    
-        wp_die(); // terminate immediately and return a proper response  
+
+        // Display the results in a grid table
+        echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
+        echo '<thead><tr><th class="text-center">'. __("Document No", "zatca") .'</th><th class="text-center">'. __("Device No", "zatca") .'</th><th class="text-center">'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody class="text-center">';
+
+        foreach ($missing_records as $document1) {
+            echo '<tr>';
+            echo '<td>' . $document1['documentNo'] . '</td>';
+            echo '<td>' . $document1['deviceNo'] . '</td>';
+            echo '<td>' . $document1['invoiceHash'] . '</td>';
+            echo '</tr>';
+        }
+
+        echo '</tbody></table></div>';
     }
 
-    // Function to encrypt data
-    function decrypt_data($data) {
-        // Make sure to use the same encryption method for encryption and decryption
-        // Decoding the previously encoded text  
-        $decodedText  = base64_decode($data);
+    wp_die(); // terminate immediately and return a proper response  
+}
 
-        return $decodedText ;
-    }
+// Function to encrypt data
+function decrypt_data($data) {
+    // Make sure to use the same encryption method for encryption and decryption
+    // Decoding the previously encoded text  
+    $decodedText  = base64_decode($data);
+
+    return $decodedText ;
+}
 
 // AJax Insert_Data to DB - customers [ Insert-page]:
 function submit_customer_form(){

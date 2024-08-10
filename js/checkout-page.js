@@ -169,16 +169,6 @@ function isArabic(string) {
 
 jQuery(document).ready(function($) {
 
-
-  // Notification Function:
-  const popup = Notification({
-    position: 'center',
-    duration: 50000,
-    isHidePrev: false,
-    isHideTitle: false,
-    maxOpened: 3,
-  });
-
   // Check If woo fields have arabic inputs use in zatcaCustomer form :
 
   // If come with data stored before [ first name input ]:
