@@ -1,15 +1,6 @@
 // user insert page - checkbox:
 $(document).ready(function() {
 
-    // Notification Function:
-    const popup = Notification({
-        position: 'center',
-        duration: 50000,
-        isHidePrev: false,
-        isHideTitle: false,
-        maxOpened: 3,
-    });
-
     // user insert page - checkbox:
     $('#is-remind').change(function() {
         if ($(this).is(':checked')) {
@@ -67,7 +58,7 @@ $(document).ready(function() {
 
             // error notification:
             popup.error({
-                title: 'error',
+                title: myUser.notification_error_title,
                 message: myUser.person_no_validation
             });
 
@@ -84,7 +75,7 @@ $(document).ready(function() {
 
                 // error notification:
                 popup.error({
-                    title: 'error',
+                    title: myUser.notification_error_title,
                     message: myUser.reminder_hours_validation
                 });
                 return;
@@ -97,7 +88,7 @@ $(document).ready(function() {
 
                 // error notification:
                 popup.error({
-                    title: 'error',
+                    title: myUser.notification_error_title,
                     message: myUser.reminder_hours_validation_number
                 });
 
@@ -135,7 +126,7 @@ $(document).ready(function() {
 
                     // success notification:
                     popup.success({
-                        title: 'Success',
+                        title: myUser.notification_success_title,
                         message: myUser.user_inserted
                     });
 
@@ -164,7 +155,7 @@ $(document).ready(function() {
 
             // Error notification:
             popup.error({
-                title: 'error',
+                title: myUser.notification_error_title,
                 message: myUser.person_no_validation
             });
 
@@ -181,7 +172,7 @@ $(document).ready(function() {
 
                 // Error notification:
                 popup.error({
-                    title: 'error',
+                    title: myUser.notification_error_title,
                     message: myUser.reminder_hours_validation
                 });
                 return;
@@ -193,7 +184,7 @@ $(document).ready(function() {
 
                   // Error notification:
                   popup.error({
-                    title: 'error',
+                    title: myUser.notification_error_title,
                     message: myUser.reminder_hours_validation_number
                 });
                 return;
@@ -217,7 +208,7 @@ $(document).ready(function() {
 
                 // success notification:
                 popup.success({
-                    title: 'Success',
+                    title: myUser.notification_success_title,
                     message: data
                 });
 
@@ -255,13 +246,13 @@ function checkConditions() {
             success: function(response) {
 
                 if (response.msg !== null && response.msg !== undefined) {
-                    alert(response.msg);
+                    // alert(response.msg);
 
                     // warning notification:
-                    // popup.warning({
-                    //     title: 'Success',
-                    //     message: response.msg
-                    // });
+                    popupValidation.warning({
+                        title: myUser.notification_error_title,
+                        message: response.msg
+                    });
                 }
                 
                 // Calculate the interval time based on the response value

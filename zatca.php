@@ -321,6 +321,8 @@ function localization() {
         'reminder_hours_validation_number' => __('Reminder hours must be between 1-23 Hours', 'zatca'),
         'user_exist' => __('User Already Exist', 'zatca'),
         'user_inserted' => __('User Inserted Successfully', 'zatca'),
+        'notification_error_title' => __("Error", "zatca"),
+        'notification_success_title' => __("Success", "zatca"),
         ) 
     );
 
