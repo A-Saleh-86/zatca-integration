@@ -1,6 +1,7 @@
-// Get Data from insert page and return it as ajax data to db:
 jQuery(document).ready(function($) {
+
     $("#device_insert_form").submit(function(event){
+
         event.preventDefault();
         var formData = $(this).serialize();
         var formData1 = $(this).serializeArray();
@@ -14,22 +15,45 @@ jQuery(document).ready(function($) {
             },
             success: function(data){
                 //console.log(data);
-                if(data.active == true && data.error == false)
-                {
-                    alert(myDevice.device_active);
+                if(data.active == true && data.error == false){
 
-                    //alert("Not allowed to add more one device active");
+                    // Error notification:
+                    popupValidation.error({
+                        title: myDevice.notification_error_title,
+                        message: myDevice.device_active
+                    });
+
                     return;
-                }
-                else if(data.active == false && data.error == true)
-                {
-                    alert(data.msg);
-                }
-                else if(data.active == false && data.error == false)
-                {
-                    alert(myDevice.device_inserted);
+
+                }else if(data.active == false && data.error == true){
+                    // alert(data.msg);
+                    
+                    // Error notification:
+                    popupValidation.error({
+                        title: myDevice.notification_error_title,
+                        message: data.msg
+                    });
+
+                    return;
+
+                }else if(data.active == false && data.error == false){
+                   
+                    // alert(myDevice.device_inserted);
+                    // localStorage.setItem("deviceCSID", formData1[0].value);
+                    // window.location.href = myDevice.adminUrl;
+
+                    // success notification:
+                    popup.success({
+                        title: myDevice.notification_success_title,
+                        message: myDevice.device_inserted
+                    });
+
                     localStorage.setItem("deviceCSID", formData1[0].value);
-                    window.location.href = myDevice.adminUrl;
+
+                    setTimeout(function() {
+                        window.location.href = myDevice.adminUrl;
+                    }, 3000); 
+
                 }
                 
             },
@@ -38,11 +62,9 @@ jQuery(document).ready(function($) {
             }
         });
     });
-});
 
-// Get Data from Edit page and return it as ajax data to db:
-jQuery(document).ready(function($) {
     $("#device_edit_form").submit(function(event){
+
         event.preventDefault();
         var formData = $(this).serialize();
         
@@ -54,20 +76,41 @@ jQuery(document).ready(function($) {
                 "edit_form_ajax_data": formData
             },
             success: function(data){
-                //console.log(data);
-                if(data.active == true && data.error == false)
-                {
-                    alert(myDevice.device_active);
+
+                if(data.active == true && data.error == false){
+
+                    // Error notification:
+                    popupValidation.error({
+                        title: myDevice.notification_error_title,
+                        message: myDevice.device_active
+                    });
+
                     return;
-                }
-                else if(data.active == false && data.error == true)
-                {
-                    alert(data.msg);
-                }
-                else if(data.active == false && data.error == false)
-                {
-                    alert(myDevice.device_updated);
-                    window.location.href = myDevice.adminUrl;
+
+                }else if(data.active == false && data.error == true){
+
+                    // Error notification:
+                    popupValidation.error({
+                        title: myDevice.notification_error_title,
+                        message: data.msg
+                    });
+
+                    return;
+
+                }else if(data.active == false && data.error == false){
+
+                    // alert(myDevice.device_updated);
+                    // window.location.href = myDevice.adminUrl;
+
+                    // success notification:
+                    popup.success({
+                        title: myDevice.notification_success_title,
+                        message: myDevice.device_updated
+                    });
+
+                    setTimeout(function() {
+                        window.location.href = myDevice.adminUrl;
+                    }, 3000); 
                 }
                 
             },
@@ -76,4 +119,5 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
 });

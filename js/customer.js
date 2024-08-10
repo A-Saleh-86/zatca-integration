@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCustomer.notification_error_title,
                 message: myCustomer.arabic_name
             });
 
@@ -66,7 +66,7 @@ jQuery(document).ready(function($) {
                     
                     // success notification:
                     popup.success({
-                        title: 'Success',
+                        title: myCustomer.notification_success_title,
                         message: myCustomer.customer_inserted
                     });
 
@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
 
                     // success notification:
                     popup.success({
-                        title: 'Success',
+                        title: myCustomer.notification_success_title,
                         message: myCustomer.customer_inserted
                     });
 
@@ -118,7 +118,7 @@ jQuery(document).ready(function($) {
 
                 // Error notification:
                 popupValidation.error({
-                    title: 'Error',
+                    title: myCustomer.notification_error_title,
                     message: myCustomer.select_customer
                 });
 
@@ -248,7 +248,7 @@ jQuery(document).ready(function($) {
 
             // Error notification:
             popupValidation.error({
-                title: 'Error',
+                title: myCustomer.notification_error_title,
                 message: myCustomer.arabic_name
             });
             return;
@@ -265,7 +265,7 @@ jQuery(document).ready(function($) {
 
                 // success notification:
                 popup.success({
-                    title: 'Success',
+                    title: myCustomer.notification_success_title,
                     message: data
                 });
 

@@ -12,16 +12,12 @@ jQuery(document).ready(function($) {
     
         // Store the current element reference
         const currentElement = $(this);
-    
-        // Determine the message & title based on the current language
-        let message = currentLang === 'ar' ? 'هل أنت متأكد؟' : 'Are you sure?';
-        let title = currentLang === 'ar' ? 'حذف' : 'Delete';
 
     
         // Use the custom dialog
         popup.dialog({
-            title: title,
-            message: message,
+            title: main.delete_title,
+            message: main.delete_msg,
             callback: (result) => {
                 if (result != 'cancel') {
                     // User confirmed: Proceed with the action
