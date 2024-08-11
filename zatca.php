@@ -245,7 +245,7 @@ function load_assets(){
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
         'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),
-        'locale' => get_locale()) 
+        ) 
     );
     wp_enqueue_script('users-js',  plugin_dir_url(__FILE__) . '/js/users.js', array(), false, true);
     wp_localize_script( 'users-js', 'myUser', array( 
@@ -383,6 +383,7 @@ function localization() {
     wp_localize_script( 'main-js', 'main', array( 
         'delete_msg' => __("Are You Sure?", "zatca"),
         'delete_title' => __("Delete", "zatca"),
+        'locale' => get_locale()
         )
     );
 

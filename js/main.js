@@ -29,24 +29,47 @@ jQuery(document).ready(function($) {
         return false;
     });
     
-    
-    // Global Normal Notification
-    window.popup = Notification({
-        position: 'center',
-        duration: 5000,
-        isHidePrev: false,
-        isHideTitle: false,
-        maxOpened: 3,
-    });
+    // Condition for notification place depend on language:
+    if(currentLang === 'ar'){
 
-    // Global Notification cant Hide:
-    window.popupValidation = Notification({
-        position: 'center',
-        duration: 0,
-        isHidePrev: false,
-        isHideTitle: false,
-        maxOpened: 3,
-    });
+        // Global Normal Notification
+        window.popup = Notification({
+            position: 'bottom-left',
+            duration: 5000,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
+    
+        // Global Notification cant Hide:
+        window.popupValidation = Notification({
+            position: 'bottom-left',
+            duration: 0,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
+
+    }else{
+
+        // Global Normal Notification
+        window.popup = Notification({
+            position: 'bottom-right',
+            duration: 5000,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
+
+        // Global Notification cant Hide:
+        window.popupValidation = Notification({
+            position: 'bottom-right',
+            duration: 0,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
+    }
 
 });
 
