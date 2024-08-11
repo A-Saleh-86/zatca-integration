@@ -363,11 +363,12 @@
                                  
 
                             <?php
+                            }
                                 // get warning msg:
                                 $warningMsg = $wpdb->get_var($wpdb->prepare("SELECT zatcaErrorResponse FROM zatcaDocument Where documentNo = $result->documentNo"));
                                 $modalWarningMsg = $warningMsg;
                                 $doc_no = $result->documentNo;
-                            }
+                            
                             ?>
 
                             

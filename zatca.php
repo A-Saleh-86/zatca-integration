@@ -352,6 +352,7 @@ function localization() {
         'document_updated' => __("Data Updated", "zatca"),
         'document_device_expired' => __("Device CsID_ExpiryDate is Expired", "zatca"),
         'insert_seller_additional_id' => __("You Muse Insert Seller additional Id Number in zatca Company", "zatca"),
+        'insert_buyer_poBox_additionalNo' => __("You Muse Insert Buyer po box additional number in zatca customer", "zatca"),
         'insert_buyer_additional_id' => __("You Muse Insert Buyer additional Number in zatca customer", "zatca"),
         'no_rows_affected' => __("No rows were affected. Possible reasons: No matching rows or the data is already up to date.", "zatca"),
         'error_303' => __("Please submit via reporing", "zatca"),
@@ -2952,13 +2953,14 @@ function send_request_to_zatca_clear(){
     $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
     $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+    $buyer_additional_id = $requestArray['buyer']['additionalIdNumber'];
+    $buyer_additional_id_validation = (isset($buyer_additional_id ) && $buyer_additional_id !=null) ? true : false;
+
     // Validate buyer vat number
     $buyer_vatNo = $requestArray['buyer']['vatNumber'];
     $invoicetransactioncode_isexports = $wpdb->get_var("SELECT zatcaInvoiceTransactionCode_isExports FROM zatcaDocument Where documentNo = '$doc_no'");
     
-    $buyer_vatNo_validation1 = (
-        $buyer_vatNo == null && 
-        ($invoicetransactioncode_isexports == null)) ? true : false;
+    $buyer_vatNo_validation1 = ($buyer_vatNo == null && ($invoicetransactioncode_isexports == null)) ? true : false;
     
     $buyer_vatNo_validation0 = ($buyer_vatNo == 0) ? true : false;
     
@@ -2975,8 +2977,16 @@ function send_request_to_zatca_clear(){
     { 
       // Validation on additionalNo - customer [ buyer ]:  
         $send_response = [
+            'status' => 'insert_buyer_poBox_additionalNo',
+            'msg' => $buyer_additionalNo
+        ];
+    }
+    elseif($buyer_additional_id_validation == false)
+    { 
+      // Validation on additionalNo - customer [ buyer ]:  
+        $send_response = [
             'status' => 'insert_buyer_additional_id',
-            'msg' => ''
+            'msg' => $buyer_additional_id
         ];
     }
     else if($buyer_vatNo_validation1 == true)
@@ -3062,7 +3072,14 @@ function send_request_to_zatca_clear(){
         $response_date = date('Y-m-d H:i:s');
         $warningMessage='';
         $clearedInvoice = $responseArray['clearedInvoice'];
+
         $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+
+        if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
+        {
+            $errorMessage = $responseArray['portalResults'];
+        }
+        
 
         // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
         $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
@@ -3307,7 +3324,6 @@ function send_request_to_zatca_clear(){
 
                 // update zatca document fields with response Data:
                 $zatcaDocument_error_response_data = [
-
                     "zatcaResponseDate" => $response_date,
                     "zatcaSuccessResponse" => 3,
                     "zatcaErrorResponse" => $errorMessage
@@ -4398,17 +4414,28 @@ function send_request_to_zatca_report(){
     $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
     $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+    $buyer_additional_id = $requestArray['buyer']['additionalIdNumber'];
+    $buyer_additional_id_validation = (isset($buyer_additional_id ) && $buyer_additional_id !=null) ? true : false;
+
     $buyer_arabic_name = $requestArray['buyer']['name'];
 
     $buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
 
-    if($buyer_additionalNo_validation == false){ 
-        // Validation on additionalNo - customer [ buyer ]:
+    if($buyer_additionalNo_validation == false)
+    { 
+      // Validation on additionalNo - customer [ buyer ]:  
+        $send_response = [
+            'status' => 'insert_buyer_poBox_additionalNo',
+            'msg' => $buyer_additionalNo
+        ];
+    }
+    elseif($buyer_additional_id_validation == false)
+    { 
+      // Validation on additionalNo - customer [ buyer ]:  
         $send_response = [
             'status' => 'insert_buyer_additional_id',
-            'msg' => ''
+            'msg' => $buyer_additional_id
         ];
-
     }
     else if($seller_secondBusinessId_companyStage_validation == true)
     {
@@ -4485,6 +4512,10 @@ function send_request_to_zatca_report(){
         $warningMessage='';
         $clearedInvoice = $responseArray['clearedInvoice'];
         $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+        if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
+        {
+            $errorMessage = $responseArray['portalResults'];
+        }
 
         // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
         $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
@@ -5144,6 +5175,9 @@ function send_reissue_zatca($docNo)
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+        $buyer_additional_id = $requestArray['buyer']['additionalIdNumber'];
+        $buyer_additional_id_validation = (isset($buyer_additional_id ) && $buyer_additional_id !=null) ? true : false;
+
         // Validate buyer vat number
         $buyer_vatNo = $requestArray['buyer']['vatNumber'];
         $invoicetransactioncode_isexports = $wpdb->get_var("SELECT zatcaInvoiceTransactionCode_isExports FROM zatcaDocument Where documentNo = '$docNo'");
@@ -5166,8 +5200,16 @@ function send_reissue_zatca($docNo)
         { 
         // Validation on additionalNo - customer [ buyer ]:  
             $send_response = [
+                'status' => 'insert_buyer_poBox_additionalNo',
+                'msg' => $buyer_additionalNo
+            ];
+        }
+        elseif($buyer_additional_id_validation == false)
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
+            $send_response = [
                 'status' => 'insert_buyer_additional_id',
-                'msg' => ''
+                'msg' => $buyer_additional_id
             ];
         }
         else if($buyer_vatNo_validation1 == true)
@@ -5253,6 +5295,10 @@ function send_reissue_zatca($docNo)
             $warningMessage='';
             $clearedInvoice = $responseArray['clearedInvoice'];
             $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+            if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
     
             // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
             $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
@@ -5659,18 +5705,29 @@ function send_reissue_zatca($docNo)
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+        $buyer_additional_id = $requestArray['buyer']['additionalIdNumber'];
+        $buyer_additional_id_validation = (isset($buyer_additional_id ) && $buyer_additional_id !=null) ? true : false;
+
         $buyer_arabic_name = $requestArray['buyer']['name'];
 
         $buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
 
         // validation on seller_additionalIdNumber & buyer_additionalNo:
-        if($buyer_additionalNo_validation == false){ 
-            // Validation on additionalNo - customer [ buyer ]:
+        if($buyer_additionalNo_validation == false)
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
+            $send_response = [
+                'status' => 'insert_buyer_poBox_additionalNo',
+                'msg' => $buyer_additionalNo
+            ];
+        }
+        elseif($buyer_additional_id_validation == false)
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
             $send_response = [
                 'status' => 'insert_buyer_additional_id',
-                'msg' => ''
+                'msg' => $buyer_additional_id
             ];
-    
         }
         else if($seller_secondBusinessId_companyStage_validation == true)
         {
@@ -5745,6 +5802,10 @@ function send_reissue_zatca($docNo)
             $warningMessage='';
             $clearedInvoice = $responseArray['clearedInvoice'];
             $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+            if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
     
             // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
             $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
@@ -6366,6 +6427,9 @@ function send_return_zatca($docNo)
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+        $buyer_additional_id = $requestArray['buyer']['additionalIdNumber'];
+        $buyer_additional_id_validation = (isset($buyer_additional_id ) && $buyer_additional_id !=null) ? true : false;
+
         // Validate buyer vat number
         $buyer_vatNo = $requestArray['buyer']['vatNumber'];
         $invoicetransactioncode_isexports = $wpdb->get_var("SELECT zatcaInvoiceTransactionCode_isExports FROM zatcaDocument Where documentNo = '$docNo'");
@@ -6388,8 +6452,16 @@ function send_return_zatca($docNo)
         { 
         // Validation on additionalNo - customer [ buyer ]:  
             $send_response = [
+                'status' => 'insert_buyer_poBox_additionalNo',
+                'msg' => $buyer_additionalNo
+            ];
+        }
+        elseif($buyer_additional_id_validation == false)
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
+            $send_response = [
                 'status' => 'insert_buyer_additional_id',
-                'msg' => ''
+                'msg' => $buyer_additional_id
             ];
         }
         else if($buyer_vatNo_validation1 == true)
@@ -6473,6 +6545,10 @@ function send_return_zatca($docNo)
             $warningMessage='';
             $clearedInvoice = $responseArray['clearedInvoice'];
             $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+            if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
     
             // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
             $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
@@ -6849,17 +6925,28 @@ function send_return_zatca($docNo)
         $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
         $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
 
+        $buyer_additional_id = $requestArray['buyer']['additionalIdNumber'];
+        $buyer_additional_id_validation = (isset($buyer_additional_id ) && $buyer_additional_id !=null) ? true : false;
+
         $buyer_arabic_name = $requestArray['buyer']['name'];
 
         $buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
 
-        if($buyer_additionalNo_validation == false){ 
-            // Validation on additionalNo - customer [ buyer ]:
+        if($buyer_additionalNo_validation == false)
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
+            $send_response = [
+                'status' => 'insert_buyer_poBox_additionalNo',
+                'msg' => $buyer_additionalNo
+            ];
+        }
+        elseif($buyer_additional_id_validation == false)
+        { 
+        // Validation on additionalNo - customer [ buyer ]:  
             $send_response = [
                 'status' => 'insert_buyer_additional_id',
-                'msg' => ''
+                'msg' => $buyer_additional_id
             ];
-
         }
         else if($seller_secondBusinessId_companyStage_validation == true)
         {
@@ -6935,6 +7022,10 @@ function send_return_zatca($docNo)
             $warningMessage='';
             $clearedInvoice = $responseArray['clearedInvoice'];
             $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
+            if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
     
             // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:
             $previousInvoiceHash = $wpdb->get_var($wpdb->prepare("SELECT previousInvoiceHash 
