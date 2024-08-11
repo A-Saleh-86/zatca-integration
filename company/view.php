@@ -448,7 +448,7 @@
                             <select class="form-select select2"  name="zatca-invoice-type">
                                 <option  value="0" <?php if($branch->zatcaInvoiceType == 0){echo 'selected';} ?> >B2C</option>
                                 <option  value="1" <?php if($branch->zatcaInvoiceType == 1){echo 'selected';} ?>>B2B</option>
-                                <option  value="2" <?php if($branch->zatcaInvoiceType == 2){echo 'selected';} ?>>Both</option>
+                                <option  value="2" <?php if($branch->zatcaInvoiceType == 2){echo 'selected';} ?>><?php echo _e('Both', 'zatca') ?></option>
                             </select>
                         </div>
                         <!-- /  ZATCA Invoice Type field -->
@@ -913,7 +913,7 @@
                         <option value=""> ...</option>
                         <option  value="0">B2C</option>
                         <option  value="1">B2B</option>
-                        <option  value="2">Both</option>
+                        <option  value="2"><?php echo _e('Both', 'zatca') ?></option>
                     </select>
                 </div>
                 <!-- /  ZATCA Invoice Type field -->

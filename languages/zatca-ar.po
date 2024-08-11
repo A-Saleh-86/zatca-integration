@@ -19,12 +19,12 @@ msgstr ""
 #. Plugin Name of the plugin
 #: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
 msgid "zatca"
-msgstr "هيئه الذكاه"
+msgstr "هيئه الزكاة"
 
 #. Description of the plugin
 #: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
 msgid "Zatca Integration"
-msgstr "التكامل مع هيئه الذكاه"
+msgstr "التكامل مع هيئه الزكاة"
 
 #. Author of the plugin
 #: C:\xampp\htdocs\zatca\wp-content\plugins\zatca\zatca.php
@@ -951,7 +951,7 @@ msgstr "العمليه"
 
 #: option.php:11 option.php:12 option.php:93
 msgid "ZATCA"
-msgstr "زاتكا"
+msgstr "هيئة الزكاة"
 
 #: option.php:69 option.php:70 users/view.php:7
 msgid "Users"

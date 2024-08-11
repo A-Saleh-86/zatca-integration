@@ -130,8 +130,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.addEventListener('mouseup', function(event) {
-          if (!comboboxInput.contains(event.target) &&!suggestionList.contains(event.target) &&!label.contains(event.target)) {
-            suggestionList.style.display = 'none';
+          if (comboboxInput && suggestionList && label) {
+            if (!comboboxInput.contains(event.target) &&!suggestionList.contains(event.target) &&!label.contains(event.target)) {
+              suggestionList.style.display = 'none';
+            }
           }
         });
       
