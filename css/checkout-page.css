@@ -9,7 +9,7 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%;
+  width: 50%;
   box-sizing: border-box;
   position: relative;
 }
@@ -46,7 +46,7 @@
 .address-name-ar-input:focus + .floating-label,
 .city-name-ar-input:focus + .floating-label,
 .postal-code:focus + .floating-label {
-  top: 10px;
+  top: -10px;
   font-size: 12px;
   color: #666;
 }
@@ -63,6 +63,8 @@
   font-size: 12px;
   color: #666;
 }
+
+
 
 .error-message {
   color: red;
@@ -94,7 +96,7 @@
   font-size: 1em;
   font-weight: 400;
   line-height: 1em;
-  max-height: 52px;
+  max-height: 58px;
   padding: 1.5em .5em .5em;
   text-align: left;
   text-overflow: ellipsis;
@@ -118,4 +120,3 @@
 #new-combobox .wc-block-components-combobox-control label.components-base-control__label {
   top: -12px; /* Adjust this value as needed */
 }
-
