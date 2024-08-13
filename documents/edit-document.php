@@ -4,8 +4,6 @@ $docNo = $_GET['doc-no'];
 
 global $wpdb;
 
-
-
 // Table Name:
 $table_name = 'zatcaDocument';
 
@@ -14,7 +12,102 @@ $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE 
 
 // Check if there are results
 if (!empty($results)) {
-    foreach ($results as $result) { ?>
+    foreach ($results as $result) {
+        // Prifix of wp_wc_orders:
+        $table_orders = $wpdb->prefix . 'wc_orders';
+        // get customer id from order table:
+        $orderId = $result->invoiceNo;
+        $order_Customer_Id = $wpdb->get_var($wpdb->prepare("select customer_id from $table_orders WHERE id = $orderId"));
+
+        ///////////////Buyer Info//////////////////////
+        // get aName from zatcaCustomers:
+        $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get eName from zatcaCustomers:
+        $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+       
+        // get apartmentNum from zatcaCustomers:
+        $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get street_Arb from zatcaCustomers:
+        $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get street_Eng from zatcaCustomers:
+        $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get district_Arb from zatcaCustomers:
+        $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get district_Eng from zatcaCustomers:
+        $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get CountryNo from zatcaCustomers:
+        $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get buyer vat from zatcaCustomer
+        $buyer_Postal_Code = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get buyer vat from zatcaCustomer
+        $buyer_POBoxAdditionalNum = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get buyer vat from zatcaCustomer
+        $buyer_VAT = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get buyer vat from zatcaCustomer
+        $buyer_SecondBusinessID = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        ///////////////Seller Info/////////////////////////////
+
+        // Get Seller Vat from zatcaCompany [ seller ]:
+        $seller_Name = $wpdb->get_var($wpdb->prepare("select companyName from zatcaCompany"));
+
+        // Get Seller apartment from zatcaCompany [ seller ]:
+        $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCompany"));
+
+        // Get Seller street_Arb from zatcaCompany [ seller ]:
+        $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCompany"));
+        
+        // Get Seller street_Eng from zatcaCompany [ seller ]:
+        $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCompany"));
+
+        // Get Seller district_Arb from zatcaCompany [ seller ]:
+        $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCompany"));
+        
+        // Get Seller district_Eng from zatcaCompany [ seller ]:
+        $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCompany"));
+
+        // Get Seller city_Arb from zatcaCompany [ seller ]:
+        $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCompany"));
+        
+        // Get Seller city_Eng from zatcaCompany [ seller ]:
+        $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCompany"));
+
+        // Get Seller country_Arb from zatcaCompany [ seller ]:
+        $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCompany"));
+        
+        // Get Seller country_Eng from zatcaCompany [ seller ]:
+        $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCompany"));
+
+        // Get Seller postal code from zatcaCompany:
+        $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCompany"));
+
+        // Get Seller POBoxAdditionalNum from zatcaCompany [ seller ]:
+        $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCompany"));
+
+        // Get Seller Vat from zatcaCompany [ seller ]:
+        $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCompany"));
+        
+        
+        // Get Seller POBox from zatcaCompany [ seller ]:
+        $seller_secondBusinessID = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCompany"));
+        
+        ?>
 
 <div class="container">
 
@@ -44,6 +137,199 @@ if (!empty($results)) {
     <!-- Form Of Inputes -->
     <form class="form-horizontal main-form mt-1" id="edit_document_form">
         
+        <!--Start Seller and Buyer Tables-->
+        <div class="row seller_buyer">
+            <!-- Seller Table-->
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered text-center">
+                    <tbody>
+                        <tr>
+                            <th>Buyer</th>
+                            <th>المشترى</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>الاسم</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_aName_Customer; ?></td>
+                            <td><?php echo $buyer_aName_Customer; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Building No</th>
+                            <th>رقم المبنى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_apartmentNum_Customer; ?></td>
+                            <td><?php echo $buyer_apartmentNum_Customer; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Street Name</th>
+                            <th>اسم الشارع</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_street_Eng_Customer; ?></td>
+                            <td><?php echo $buyer_street_Arb_Customer; ?></td>
+                        </tr>
+                        <tr>
+                            <th>District</th>
+                            <th>الحى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_district_Eng_Customer; ?></td>
+                            <td><?php echo $buyer_district_Arb_Customer; ?></td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <th>المدينة</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_city_Eng_Customer; ?></td>
+                            <td><?php echo $buyer_city_Arb_Customer; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Country</th>
+                            <th>الدولة</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_CountryNo_Customer; ?></td>
+                            <td><?php echo $buyer_CountryNo_Customer; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Postal Code</th>
+                            <th>الرمز البريدى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_Postal_Code; ?></td>
+                            <td><?php echo $buyer_Postal_Code; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Additional No.</th>
+                            <th>الرقم الاضافى للعنوان</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_POBoxAdditionalNum; ?></td>
+                            <td><?php echo $buyer_POBoxAdditionalNum; ?></td>
+                        </tr>
+                        <tr>
+                            <th>VAT Number</th>
+                            <th>الرقم الضريبى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_VAT; ?></td>
+                            <td><?php echo $buyer_VAT; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Other Seller ID</th>
+                            <th>معرف آخر</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $buyer_SecondBusinessID; ?></td>
+                            <td><?php echo $buyer_SecondBusinessID; ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Seller Table-->
+             <!-- Buyer Table-->
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered text-center">
+                    <tbody>
+                        <tr>
+                            <th>Seller</th>
+                            <th>البائع</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>الاسم</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_Name; ?></td>
+                            <td><?php echo $seller_Name; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Building No</th>
+                            <th>رقم المبنى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_apartmentNum_Company; ?></td>
+                            <td><?php echo $seller_apartmentNum_Company; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Street Name</th>
+                            <th>اسم الشارع</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_street_Eng_Company; ?></td>
+                            <td><?php echo $seller_street_Arb_Company; ?></td>
+                        </tr>
+                        <tr>
+                            <th>District</th>
+                            <th>الحى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_district_Eng_Company; ?></td>
+                            <td><?php echo $seller_district_Arb_Company; ?></td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <th>المدينة</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_city_Eng_Company; ?></td>
+                            <td><?php echo $seller_city_Arb_Company; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Country</th>
+                            <th>الدولة</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_country_Eng_Company; ?></td>
+                            <td><?php echo $seller_country_Arb_Company; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Postal Code</th>
+                            <th>الرمز البريدى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_postalCode; ?></td>
+                            <td><?php echo $seller_postalCode; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Additional No.</th>
+                            <th>الرقم الاضافى للعنوان</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_POBoxAdditionalNum_Company; ?></td>
+                            <td><?php echo $seller_POBoxAdditionalNum_Company; ?></td>
+                        </tr>
+                        <tr>
+                            <th>VAT Number</th>
+                            <th>الرقم الضريبى</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_VAT_Company; ?></td>
+                            <td><?php echo $seller_VAT_Company; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Other Seller ID</th>
+                            <th>معرف آخر</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $seller_secondBusinessID; ?></td>
+                            <td><?php echo $seller_secondBusinessID; ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Buyer Table-->
+
+        </div>
+        <!--End Seller and Buyer Tables-->
+
+        <hr>
+        
+        <!--Start Invoice Form-->
         <div class="row">
 
             <!--  documentNo field -->
@@ -65,7 +351,13 @@ if (!empty($results)) {
 
             <!--  System Invoice No field -->
             <div class="col-md-6">
-                <label class="form-label "><?php echo _e('System Invoice No:', 'zatca') ?></label>
+                <?php
+                    // Get the site's URL  
+                    $site_url = get_site_url(); // or use home_url() if you prefer
+                    // Construct the WooCommerce Orders URL  
+                    $orders_url = $site_url . '/wp-admin/admin.php?page=wc-orders&action=edit&id=' . $result->invoiceNo;
+                ?>
+                <a href="<?php echo $orders_url; ?>" target="_blank"><label class="form-label" style="cursor:pointer"><?php echo _e('System Invoice No:', 'zatca') ?></label></a>
                 <div class="input-group">
                     <input 
                         type="text"
@@ -400,7 +692,7 @@ if (!empty($results)) {
                             $categories = $wpdb->get_results( "SELECT * FROM met_vatcategorycode" );
                             foreach($categories as $category) {?>
                                 
-                                <option value="<?php echo $category->VATCategoryCodeNo ?>" <?php if($company->VATCategoryCode == $category->VATCategoryCodeNo){ echo 'selected';} ?> ><?php echo $category->aName. ' - ' . $category->eName ?></option>
+                                <option value="<?php echo $category->VATCategoryCodeNo ?>" <?php if($result->VATCategoryCodeNo == $category->VATCategoryCodeNo){ ?>selected<?php } ?> ><?php echo $category->aName. ' - ' . $category->eName ?></option>
                                 <?php
                             }
                         ?>
@@ -423,10 +715,10 @@ if (!empty($results)) {
                             global $wpdb;
 
                             // Fetch Data From Database [ met_vatcategorycodesubtype table depend on VATCategoryCodeNo ]:
-                            $subCategories = $wpdb->get_results( "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = $company->VATCategoryCode" );
+                            $subCategories = $wpdb->get_results( "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = $result->VATCategoryCodeNo" );
                             foreach($subCategories as $subCat) {?>
                                 
-                                <option value="<?php echo $subCat->VATCategoryCodeSubTypeNo ?>" <?php if($company->VATCategoryCodeSubTypeNo == $subCat->VATCategoryCodeSubTypeNo){ echo 'selected';} ?> ><?php echo $subCat->aName. ' - ' . $subCat->eName ?></option>
+                                <option value="<?php echo $subCat->VATCategoryCodeSubTypeNo ?>" <?php if($result->VATCategoryCodeSubTypeNo == $subCat->VATCategoryCodeSubTypeNo){ echo 'selected';} ?> ><?php echo $subCat->aName. ' - ' . $subCat->eName ?></option>
                                 <?php
                             }
                         ?>
@@ -618,7 +910,9 @@ if (!empty($results)) {
             <?php } ?>
 
         </div>
+        <!--End Invoice Form-->
 
+        <!--Start Invoice Details-->
         <div class="row">
             <?php
             global $wpdb;
@@ -672,6 +966,7 @@ if (!empty($results)) {
             ?>
 
         </div>
+        <!--End Invoice Details-->
 
     </form>
     <!--  /Form Of Inputes -->
