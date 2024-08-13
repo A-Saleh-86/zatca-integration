@@ -71,15 +71,27 @@
                                 <!-- / Edit Btn -->
 
                                 <!-- Delete Btn -->
-                                <a 
-                                    href="<?php echo admin_url('admin.php?page=zatca-users&action=delete&personNo='.$result->personNo.'') ?>" 
+                                <!-- <a 
+                                    href="<?php //echo admin_url('admin.php?page=zatca-users&action=delete&personNo='.$result->personNo.'') ?>" 
                                     id="delete" 
                                     class="my-plugin-button btn-sm me-1 confirm"
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
+                                    title="<?php //echo _e('Delete User', 'zatca') ?>">
+                                    <span class="dashicons dashicons-trash"></span>
+                                </a> -->
+                                <!-- /Delete Btn -->
+
+                                <!-- Delete Btn -->
+                                <button 
+                                    type='button' 
+                                    class='btn my-plugin-button me-1'
+                                    id="delete_user"
+                                    data-user-no='<?php echo $result->personNo ?>'
+                                    data-bs-placement="top" 
                                     title="<?php echo _e('Delete User', 'zatca') ?>">
                                     <span class="dashicons dashicons-trash"></span>
-                                </a>
+                                </button>
                                 <!-- /Delete Btn -->
 
                             </div>

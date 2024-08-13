@@ -66,17 +66,19 @@
                             </a>
                             <!-- / Edit Btn -->
     
+                            
                             <!-- Delete Btn -->
-                            <a 
-                                href="<?php echo admin_url('admin.php?page=zatca-devices&action=delete&deviceNo='.$result->deviceNo.'')  ?>" 
-                                id="delete" 
-                                class="my-plugin-button btn-sm me-1 confirm"
-                                data-bs-toggle="tooltip" 
+                            <button 
+                                type='button' 
+                                class='btn my-plugin-button me-1'
+                                id="delete_device"
+                                data-device-no='<?php echo $result->deviceNo ?>'
                                 data-bs-placement="top" 
                                 title="<?php echo _e('Delete Device', 'zatca') ?>">
                                 <span class="dashicons dashicons-trash"></span>
-                            </a>
+                            </button>
                             <!-- /Delete Btn -->
+
                         </td>
     
                     </tr>

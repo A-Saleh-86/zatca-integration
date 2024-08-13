@@ -224,7 +224,61 @@ $(document).ready(function() {
 
     })
 
-   
+    // Delete Device:
+    $(document).on('click', '#delete_user', function(event){
+    
+        event.preventDefault();
+
+        const userNo = $(this).data('user-no');
+
+        // Global Normal Notification for delete dialog:
+        window.popupDialog = Notification({
+            position: 'center',
+            duration: 5000,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
+
+        // Use the delete dialog:
+        popupDialog.dialog({
+            title: myUser.delete_title,
+            message: myUser.delete_msg,
+            callback: (result) => {
+                if (result != 'cancel') {
+
+                    $.ajax({
+                        url: myUser.ajaxUrl,
+                        method: "POST",
+                        data: {
+                            "action": "delete_user",
+                            "user-no": userNo
+                        },
+                        success: function(data){
+            
+                            // success notification:
+                            popup.success({
+                                title: myUser.notification_success_title,
+                                message: data
+                            });
+            
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2000); 
+
+                            
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+
+                }
+            }
+        });
+
+    });
+
 });
 
 

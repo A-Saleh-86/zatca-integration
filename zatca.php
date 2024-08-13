@@ -54,14 +54,21 @@ add_action('wp_ajax_insert_device', 'insert_form_devices');
 // ajax action - insert - documents:
 add_action('wp_ajax_insert-documents', 'insert_form_documents');
 
-// ajax action - edit - customers:
+// ajax action - delete - customers:
 add_action('wp_ajax_edit_customer', 'edit_customer_form');
+
+// ajax action - edit - customers:
+add_action('wp_ajax_delete_customer', 'delete_customer_form');
+
 
 // ajax action - edit - checkout Page:
 add_action('wp_ajax_edit_checkout_page', 'edit_checkout_page_function');
 
 // ajax action - edit - devices:
 add_action('wp_ajax_edit_device', 'edit_form_device');
+
+// ajax action - edit - customers:
+add_action('wp_ajax_delete_device', 'delete_device_form');
 
 // ajax action - edit - company:
 add_action('wp_ajax_submit_company', 'submit_form_company');
@@ -119,6 +126,9 @@ add_action('wp_ajax_insert_user', 'insert_user_zatcaUsers');
 
 // Action to Edit Users data - zatcaUsers:
 add_action('wp_ajax_edit_user', 'edit_user_zatcaUsers');
+
+// ajax action - edit - customers:
+add_action('wp_ajax_delete_user', 'delete_user_form');
 
 // Action to check Users Notification - zatcaUsers:
 add_action('wp_ajax_check_admin_notification', 'check_admin_for_B2C_notification');
@@ -294,6 +304,8 @@ function localization() {
         'arabic_name' => __('Please Insert Customer Aarabic Name', 'zatca'),
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
+        'delete_msg' => __("Are You Sure?", "zatca"),
+        'delete_title' => __("Delete", "zatca"),
     ));
 
     // zatcaCompany localization:
@@ -326,6 +338,8 @@ function localization() {
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
         'notification_warning_title' => __("Warning", "zatca"),
+        'delete_msg' => __("Are You Sure?", "zatca"),
+        'delete_title' => __("Delete", "zatca"),
         ) 
     );
 
@@ -339,6 +353,8 @@ function localization() {
         'device_active' => __("Not allowed to add more one device active", "zatca"),
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
+        'delete_msg' => __("Are You Sure?", "zatca"),
+        'delete_title' => __("Delete", "zatca"),
         ) 
     );
 
@@ -375,6 +391,8 @@ function localization() {
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
         'notification_warning_title' => __("Warning", "zatca"),
+        'error_word' => __("Error", "zatca"),
+        'document_word' => __("Document", "zatca"),
         ) 
     );
 
@@ -761,6 +779,43 @@ function edit_customer_form(){
     die();
 }
 
+// AJax Delete From DB - customers:
+function delete_customer_form(){
+
+    if(isset($_REQUEST)){
+
+        global $wpdb;
+
+        // AJax Data:
+        $clientNo = $_REQUEST['client_no'];
+
+        // Assuming your table is named 'wp_custom_table'
+        $table_name = 'zatcaCustomer';
+
+        // Define the condition to identify the row(s) to delete
+        $where = array(
+            'clientVendorNo' => $clientNo 
+        );
+        
+        // Execute the delete query
+        $deleted = $wpdb->delete( $table_name, $where );
+
+        if ( $deleted === false ) {
+
+            // Deletion failed
+            echo _e('Failed to delete Customer.', 'zatca');
+
+        }else{
+
+            // Deletion successful
+            echo _e('Customer deleted successfully.', 'zatca');
+ 
+        }
+    }
+
+    die();
+}
+
 // AJax Insert_Data to DB - Devices:
 function insert_form_devices(){
 
@@ -988,6 +1043,81 @@ function edit_form_device(){
 
     die();
 }
+
+// AJax Delete From DB - device:
+function delete_device_form(){
+
+    if(isset($_REQUEST)){
+
+        global $wpdb;
+
+        // AJax Data:
+        $deviceNo = $_REQUEST['device-no'];
+
+       // Assuming your table is named 'wp_custom_table'
+        $table_name = 'zatcaDevice';
+
+        // Define the condition to identify the row(s) to delete
+        $where = array(
+            'deviceNo' => $deviceNo 
+        );
+
+
+        // Execute the delete query
+        $deleted = $wpdb->delete( $table_name, $where );
+
+        if ( $deleted === false ) {
+
+            // Deletion failed
+            echo __("Failed to delete device.","zatca");
+
+        } else {
+
+            // Deletion successful
+            echo __("Device deleted successfully.","zatca");
+ 
+        }
+    }
+
+    die();
+}
+
+// AJax Delete From DB - user:
+function delete_user_form(){
+
+    if(isset($_REQUEST)){
+
+        global $wpdb;
+
+        // AJax Data:
+        $userNo = $_REQUEST['user-no'];
+
+        $table_name = 'zatcaUser';
+
+        // Define the condition to identify the row(s) to delete
+        $where = array(
+            'personNo' => $userNo
+        );
+        
+        
+        // Execute the delete query
+        $deleted = $wpdb->delete( $table_name, $where );
+        
+        if ( $deleted === false ) {
+
+            // Deletion failed:
+            echo __("Failed to delete User","zatca");
+
+        } else {
+
+            // Deletion successful
+            echo __("User deleted successfully","zatca");
+        }
+    }
+
+    die();
+}
+
 
 // Recived the vat cat code data and get name from database - company:
 function company_vat_cat_code_form(){
@@ -1417,6 +1547,7 @@ function woo_document(){
     
     // get CountryNo from zatcaCustomers:
     $buyer_arCountry_Customer = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
     $buyer_enCountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
     
     // get buyer vat from zatcaCustomer
@@ -1446,7 +1577,7 @@ function woo_document(){
         'buyer_city_Arb_Customer' => $buyer_city_Arb_Customer,
         'buyer_city_Eng_Customer' => $buyer_city_Eng_Customer,
         'buyer_arCountry_Customer' => $buyer_arCountry_Customer,
-        'buyer_enCountry_Customer' => $buyer_enCountry_Customer,
+        'buyer_enCountry_Customer' => $buyer_enCountryNo_Customer,
         'buyer_Postal_Code' => $buyer_Postal_Code,
         'buyer_POBoxAdditionalNum' => $buyer_POBoxAdditionalNum,
         'buyer_VAT' => $buyer_VAT,
