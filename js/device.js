@@ -120,4 +120,59 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Delete Device:
+    $(document).on('click', '#delete_device', function(event) {
+       
+        event.preventDefault();
+
+        const deviceNo = $(this).data('device-no');
+    
+        // Global Normal Notification for delete dialog:
+        window.popupDialog = Notification({
+            position: 'center',
+            duration: 5000,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
+    
+        // Use the delete dialog:
+        popupDialog.dialog({
+            title: myDevice.delete_title,
+            message: myDevice.delete_msg,
+            callback: (result) => {
+                if (result != 'cancel') {
+
+                    $.ajax({
+                        url: myDevice.ajaxUrl,
+                        method: "POST",
+                        data: {
+                            "action": "delete_device",
+                            "device-no": deviceNo
+                        },
+                        success: function(data){
+            
+                            // success notification:
+                            popup.success({
+                                title: myDevice.notification_success_title,
+                                message: data
+                            });
+            
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2000); 
+
+                            
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+
+                }
+            }
+        });
+
+    });
+
 });

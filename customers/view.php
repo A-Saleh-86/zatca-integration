@@ -31,7 +31,6 @@
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Street Name(Ar)', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Dist-AR', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('City-AR', 'zatca') ?></th>
-                <!-- <th class="text-center" style="font-size: 0.7rem;"><?php //echo _e('Sub-AR', 'zatca') ?></th> -->
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Sec-Business-Id', 'zatca') ?></th class="text-center" style="font-size: 0.7rem;">
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Apart No', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Postal Code', 'zatca') ?></th>
@@ -74,7 +73,6 @@
                         <td style="font-size: 0.8rem;"><?php echo $result->street_Arb ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->district_Arb ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->city_Arb ?></td>
-                        <!-- <td style="font-size: 0.8rem;"><?php //echo $result->countrySubdivision_Arb ?></td> -->
                         <td style="font-size: 0.8rem;"><?php echo $result->secondBusinessID ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->apartmentNum ?></td>
                         <td style="font-size: 0.8rem;"><?php echo $result->postalCode ?></td>
@@ -108,14 +106,15 @@
                             <!-- / Edit Btn -->
     
                             <!-- Delete Btn -->
-                            <a 
-                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=delete&clientno='.$result->clientVendorNo.'')  ?>" 
-                                id="delete" class="my-plugin-button btn-sm me-1 confirm"
-                                data-bs-toggle="tooltip" 
+                            <button 
+                                type='button' 
+                                class='btn my-plugin-button me-1'
+                                id="delete_customer"
+                                data-client-no='<?php echo $result->clientVendorNo ?>'
                                 data-bs-placement="top" 
                                 title="<?php echo _e('Delete Customer', 'zatca') ?>">
                                 <span class="dashicons dashicons-trash"></span>
-                            </a>
+                            </button>
                             <!-- /Delete Btn -->
 
                         </td>

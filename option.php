@@ -114,9 +114,6 @@ function zatca_devices_page() {
         case 'insert-device':
             include 'devices/insert.php';
             break;
-        case 'delete':
-            include 'devices/delete.php';
-            break;
         default:
             // Handle invalid actions (optional)
             break;
@@ -139,9 +136,6 @@ function zatca_customers_page() {
             break;
         case 'insert':
             include 'customers/insert.php';
-            break;
-        case 'delete':
-            include 'customers/delete.php';
             break;
         default:
             // Handle invalid actions (optional)
@@ -206,9 +200,6 @@ function zatca_users_page() {
              break;
          case 'insert':
              include 'users/insert.php';
-             break;
-         case 'delete':
-             include 'users/delete.php';
              break;
          default:
              // Handle invalid actions (optional)

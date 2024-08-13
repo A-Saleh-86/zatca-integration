@@ -48,9 +48,8 @@ jQuery(document).ready(function($) {
             return;
         }
 
-
+        // Define the form data:
         var formData = $(this).serialize();
-        // console.log(formData)
 
         $.ajax({
             url: myCustomer.ajaxUrl,
@@ -279,6 +278,62 @@ jQuery(document).ready(function($) {
                 console.error(xhr.responseText);
             }
         });
+    });
+
+    // Delete Customer:
+    $(document).on('click', '#delete_customer', function(event) {
+        event.preventDefault();
+
+        const clientNo = $(this).data('client-no');
+    
+        // Global Normal Notification for delete dialog:
+        window.popupDialog = Notification({
+            position: 'center',
+            duration: 5000,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
+    
+        // Use the delete dialog:
+        popupDialog.dialog({
+            title: myCustomer.delete_title,
+            message: myCustomer.delete_msg,
+            callback: (result) => {
+                if (result != 'cancel') {
+
+                    $.ajax({
+                        url: myCustomer.ajaxUrl,
+                        method: "POST",
+                        data: {
+                            "action": "delete_customer",
+                            "client_no": clientNo
+                        },
+                        success: function(data){
+            
+                            // success notification:
+                            popup.success({
+                                title: myCustomer.notification_success_title,
+                                message: data
+                            });
+            
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2000); 
+
+                            
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+
+                }
+            }
+        });
+
+        return false;
+
     });
 
 })
