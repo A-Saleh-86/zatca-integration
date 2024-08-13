@@ -1,9 +1,11 @@
-
 <div class="container">
+
     <div class="col-xl-12 mx-auto mt-3">
         <h4 class="mb-3 text-uppercase text-center"><?php echo _e('Company', 'zatca') ?></h4>
     </div>
+
     <?php
+    
     global $wpdb;
 
     // Table Name:
