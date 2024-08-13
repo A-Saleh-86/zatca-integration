@@ -47,6 +47,15 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         $docNo = $docNo + 1;
         ?>
 
+         <!--Start Seller and Buyer Tables-->
+         <div class="row seller_buyer">
+            <!-- Seller Table-->
+            <div class="col-md-6 seller"></div>
+            <div class="col-md-6 buyer"></div>
+        </div>
+        <!--End Seller and Buyer Tables-->
+        <hr>
+
         <div class="row">
             <!--  documentNo field -->
             <div class="col-md-6">

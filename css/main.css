@@ -164,6 +164,17 @@ body.wp-core-ui.colors-blue .my-plugin-button {
     }
     /* End Insert Page */
 
+    .seller_buyer table tr:nth-child(1)
+    {
+      background-color: cornflowerblue;
+    }
+    .seller_buyer table tr th,
+    .seller_buyer table tr td
+    {
+      padding: 1px;
+      font-size: 13px;
+    }
+
 /* End Documents */
 
 

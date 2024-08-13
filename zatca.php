@@ -26,10 +26,10 @@ include 'option.php';
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
 // Include the file that contains the create_custom_table function
-require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+//require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
 
 // Create Tables when Plugin run:
-register_activation_hook( __FILE__, 'create_custom_tables' );
+//register_activation_hook( __FILE__, 'create_custom_tables' );
 
 // Add [CSS, JS, Bootstrap ] to admin panel:
 add_action('admin_enqueue_scripts', 'load_assets');
@@ -427,7 +427,7 @@ function handle_form_tampering() {
         global $wpdb;
 
         // Get the necessary POST data
-        $BuildingNo = $_POST['buildingNo']; // branch id
+        $buildingNo = $_POST['buildingNo']; // branch id
         $from_date = $_POST['from_date'];
         $to_date = $_POST['to_date'];
 
@@ -441,7 +441,7 @@ function handle_form_tampering() {
             WHERE zb.buildingNo = %d
             AND z1.dateG BETWEEN %s AND %s
             ORDER BY z1.documentNo
-        ", $BuildingNo, $from_date, $to_date);
+        ", $buildingNo, $from_date, $to_date);
 
         $results = $wpdb->get_results($query);
 
@@ -491,7 +491,7 @@ function handle_form_tampering() {
         global $wpdb;
 
         // Get the necessary POST data
-        $BuildingNo = $_POST['buildingNo']; // branch id
+        $buildingNo = $_POST['buildingNo']; // branch id
         $from_date = $_POST['from_date'];
         $to_date = $_POST['to_date'];
 
@@ -513,7 +513,7 @@ function handle_form_tampering() {
         WHERE z.BuildingNo= %d 
         AND z.dateG BETWEEN %s AND %s 
         AND z.documentNo=z1.documentNo",
-        $BuildingNo, $from_date, $to_date);
+        $buildingNo, $from_date, $to_date);
 
         $zatcaDocument_records = $wpdb->get_results( $zatcaDocument_query, ARRAY_A );  
 
@@ -1506,7 +1506,144 @@ function woo_document(){
 
     // Initialize an empty array to store zatcaDocumentUnit data  
     $zatcaDocumentUnit_array = [];
+    $zatcaSeller_array = [];
+    $zatcaBuyer_array = [];
 
+    // Prifix of wp_wc_orders:
+    $table_orders = $wpdb->prefix . 'wc_orders';
+        
+    // get customer id from order table:
+    $order_Customer_Id = $wpdb->get_var($wpdb->prepare("select customer_id from $table_orders WHERE id = $orderId"));
+
+    ///////////////Buyer Info//////////////////////
+    // get aName from zatcaCustomers:
+    $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get eName from zatcaCustomers:
+    $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get apartmentNum from zatcaCustomers:
+    $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get street_Arb from zatcaCustomers:
+    $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get street_Eng from zatcaCustomers:
+    $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get district_Arb from zatcaCustomers:
+    $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get district_Eng from zatcaCustomers:
+    $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get city_Arb from zatcaCustomers:
+    $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get city_Arb from zatcaCustomers:
+    $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get CountryNo from zatcaCustomers:
+    $buyer_arCountry_Customer = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    $buyer_enCountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get buyer vat from zatcaCustomer
+    $buyer_Postal_Code = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get buyer vat from zatcaCustomer
+    $buyer_POBoxAdditionalNum = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get buyer vat from zatcaCustomer
+    $buyer_VAT = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get buyer vat from zatcaCustomer
+    $buyer_SecondBusinessID = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    
+    $zatcaBuyer_array = [];
+
+    $zatcaBuyer_array = 
+    [
+        'buyer_aName_Customer' => $buyer_aName_Customer,
+        'buyer_eName_Customer' => $buyer_eName_Customer,
+        'buyer_apartmentNum_Customer' => $buyer_apartmentNum_Customer,
+        'buyer_street_Arb_Customer' => $buyer_street_Arb_Customer,
+        'buyer_street_Eng_Customer' => $buyer_street_Eng_Customer,
+        'buyer_district_Arb_Customer' => $buyer_district_Arb_Customer,
+        'buyer_district_Eng_Customer' => $buyer_district_Eng_Customer,
+        'buyer_city_Arb_Customer' => $buyer_city_Arb_Customer,
+        'buyer_city_Eng_Customer' => $buyer_city_Eng_Customer,
+        'buyer_arCountry_Customer' => $buyer_arCountry_Customer,
+        'buyer_enCountry_Customer' => $buyer_enCountry_Customer,
+        'buyer_Postal_Code' => $buyer_Postal_Code,
+        'buyer_POBoxAdditionalNum' => $buyer_POBoxAdditionalNum,
+        'buyer_VAT' => $buyer_VAT,
+        'buyer_SecondBusinessID' => $buyer_SecondBusinessID
+    ];
+    ///////////////Seller Info/////////////////////////////
+
+    // Get Seller Vat from zatcaCompany [ seller ]:
+    $seller_Name = $wpdb->get_var($wpdb->prepare("select companyName from zatcaCompany"));
+
+    // Get Seller apartment from zatcaCompany [ seller ]:
+    $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCompany"));
+
+    // Get Seller street_Arb from zatcaCompany [ seller ]:
+    $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCompany"));
+    
+    // Get Seller street_Eng from zatcaCompany [ seller ]:
+    $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCompany"));
+
+    // Get Seller district_Arb from zatcaCompany [ seller ]:
+    $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCompany"));
+    
+    // Get Seller district_Eng from zatcaCompany [ seller ]:
+    $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCompany"));
+
+    // Get Seller city_Arb from zatcaCompany [ seller ]:
+    $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCompany"));
+    
+    // Get Seller city_Eng from zatcaCompany [ seller ]:
+    $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCompany"));
+
+    // Get Seller country_Arb from zatcaCompany [ seller ]:
+    $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCompany"));
+    
+    // Get Seller country_Eng from zatcaCompany [ seller ]:
+    $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCompany"));
+
+    // Get Seller postal code from zatcaCompany:
+    $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCompany"));
+
+    // Get Seller POBoxAdditionalNum from zatcaCompany [ seller ]:
+    $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCompany"));
+
+    // Get Seller Vat from zatcaCompany [ seller ]:
+    $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCompany"));
+    
+    // Get Seller POBox from zatcaCompany [ seller ]:
+    $seller_secondBusinessID = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCompany"));
+
+    $zatcaSeller_array = [];
+    $zatcaSeller_array = 
+    [
+        'seller_Name' => $seller_Name,
+        'seller_apartmentNum_Company' => $seller_apartmentNum_Company,
+        'seller_street_Arb_Company' => $seller_street_Arb_Company,
+        'seller_street_Eng_Company' => $seller_street_Eng_Company,
+        'seller_district_Arb_Company' => $seller_district_Arb_Company,
+        'seller_district_Eng_Company' => $seller_district_Eng_Company,
+        'seller_city_Arb_Company' => $seller_city_Arb_Company,
+        'seller_city_Eng_Company' => $seller_city_Eng_Company,
+        'seller_country_Arb_Company' => $seller_country_Arb_Company,
+        'seller_country_Eng_Company' => $seller_country_Eng_Company,
+        'seller_postalCode' => $seller_postalCode,
+        'seller_POBoxAdditionalNum_Company' => $seller_POBoxAdditionalNum_Company,
+        'seller_VAT_Company' => $seller_VAT_Company,
+        'seller_secondBusinessID' => $seller_secondBusinessID
+    ];
+
+    
     // get item id for item [ line_item ]:
     $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
 
@@ -1661,6 +1798,8 @@ function woo_document(){
         'totalTax' => $totalTax,
         'leftAmount' =>$leftAmount,
         'zatca_document_unit_lines' => $zatcaDocumentUnit_array,
+        'zatcaBuyer_array' => $zatcaBuyer_array,
+        'zatcaSeller_array' => $zatcaSeller_array,
         'order_status' => $order_status
     );
 
@@ -1886,6 +2025,8 @@ function insert_form_documents(){
             $docNo = $wpdb->get_var($query);
             $docNo = $docNo + 1;
 
+            $branchNo = $wpdb->get_var($wpdb->prepare("SELECT buildingNo FROM zatcaBranch"));
+
             $returnReason = $form_array['returnReason'];
             $reason = $form_array['returnReasonType'];
             // #################################
@@ -1898,6 +2039,7 @@ function insert_form_documents(){
                     'documentNo'                            => $docNo,
                     'deviceNo'                              => $deviceNo,
                     'invoiceNo'                             => $form_array['invoice-no'],
+                    'buildingNo'                             => $branchNo,
                     'billTypeNo'                             => $form_array['billTypeNo'],
                     'deliveryDate'                          => $delivery_Date,
                     'gaztLatestDeliveryDate'                => $latest_Delivery_Date,
@@ -3244,6 +3386,20 @@ function send_request_to_zatca_clear(){
 
             if($statusCode == '200'){
 
+                // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $doc_no"));
+
+                if($originalDocNo != NULL)
+                {
+                    // update zatca document fields with response Data:
+                    $zatcaDocument_original_update_data = [
+                    "zatcaAcceptedReissueInvoiceNo" => $doc_no];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+    
+                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
+                }
+
+                
                 //  update zatca document xml fields with response Data:
                 $zatcaDocumentxml_update_response_data = [
     
@@ -3348,6 +3504,19 @@ function send_request_to_zatca_clear(){
                 //$msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
             
             }elseif($statusCode == '202'){
+
+                // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $doc_no"));
+
+                if($originalDocNo != NULL)
+                {
+                    // update zatca document fields with response Data:
+                    $zatcaDocument_original_update_data = [
+                    "zatcaAcceptedReissueInvoiceNo" => $doc_no];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+    
+                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
+                }
 
                  // update zatca document xml fields with response Data:
                 $zatcaDocumentxml_update_response_data = [
@@ -3573,8 +3742,9 @@ function get_xml_from_response() {
     }
 
     $responseArray = json_decode($xmlResponse, true);
-    $clearedInvoice = $responseArray['clearedInvoice'];
-
+    //$clearedInvoice = $responseArray['clearedInvoice'];
+    $clearedInvoice = $responseArray['clearedInvoice'] ?? $responseArray['xml'];
+    //$clearedInvoice = isset($responseArray['clearedInvoice']) ? $responseArray['clearedInvoice'] : $responseArray['reportedInvoice'];
     // Decode cleared hash:
     $decoded_data = base64_decode($clearedInvoice);
 
@@ -3584,6 +3754,7 @@ function get_xml_from_response() {
 
     // Parse XML:
     $xml = simplexml_load_string($decoded_data);
+    //$xml = simplexml_load_string($decoded_data, 'SimpleXMLElement', LIBXML_NOCDATA);
 
     if ($xml === false) {
         wp_send_json_error(['message' => 'Failed to parse XML']);
@@ -3615,9 +3786,9 @@ function get_xml_from_response() {
     }
 
     // Log the download xml:
-    $user_login = wp_get_current_user()->user_login;
-    $user_id = wp_get_current_user()->ID;
-    log_download_doc_xml($user_login, $user_id);
+    //$user_login = wp_get_current_user()->user_login;
+    //$user_id = wp_get_current_user()->ID;
+    //log_download_doc_xml($user_login, $user_id);
 
     $send_response = [
         'xml' => $xml->asXML(),
@@ -4138,385 +4309,385 @@ function insert_encrypted_row($invoiceHash, $documentNo, $deviceNo)
 }
 
 // Function to update Seller - Buyer Data Before Send:
-    function update_zatca1($doc_no){
+function update_zatca1($doc_no){
 
-        global $wpdb;
-    
-        $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocument WHERE documentNo = $doc_no") );
-    
-            
-    
-        $zatca_TaxExemptionReason = '';
-        $nominalInvoice = '';
-        $exportsInvoice = '';
-        $summaryInvoice = '';
-        $taxSchemeId = '';
-    
-        $order_Id = 0;
-    
-        // Define zatcaDocument fields to update:
-        $update_seller_sellerName='';
-        $update_seller_sellerAdditionalIdType='';
-        $update_seller_sellerAdditionalIdNumber='';
-        $update_seller_sellerVatNumber='';
-        $update_seller_street_Arb='';
-        $update_seller_POBoxAdditionalNum='';
-        $update_seller_apartmentNum='';
-        $update_seller_city_Arb='';
-        $update_seller_countrySubdivision_Arb='';
-        $update_seller_POBox='';
-        $update_seller_district_Arb='';
-        $update_buyer_aName='';
-        $update_buyer_street_Arb='';
-        $update_buyer_POBoxAdditionalNum='';
-        $update_buyer_apartmentNum='';
-        $update_buyer_city_Arb='';
-        $update_buyer_countrySubdivision_Arb='';
-        $update_buyer_POBox='';
-        $update_buyer_district_Arb='';
-        $update_buyer_buyerAdditionalIdNumber='';
-        $update_buyer_buyerVatNumber='';
-    
-    
-    
-    
-        // Get Data From zatcaDocument:
-        foreach($documents as $doc){
-    
-            $order_Id = $doc->invoiceNo;
+    global $wpdb;
 
-            $billTypeNo = $doc->billTypeNo;
-            $reason = $doc->reason;
-            $zatcaRejectedInvoiceNo = $doc->zatcaRejectedInvoiceNo;
+    $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocument WHERE documentNo = $doc_no") );
 
-            $invoiceType = "TAX_INVOICE";
-            $invoiceTypeCode = "Simplified";
-            $id =  $doc->documentNo;
-            $icvIncrementalValue = (int)$doc->documentNo;
-            $referenceId = $doc->UUID;
-            $issueDate = date("Y-m-d", strtotime($doc->dateG));
-            $issueTime = date("H:i:s", strtotime($doc->dateG));
-            $previousHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
-            
-            $zatca_TaxExemptionReason = $doc->zatca_TaxExemptionReason;
-            // Validation for zatcaInvoiceTransactionCode If 0 = true - if Null = False:
-            $nominalInvoice = (isset($doc->zatcaInvoiceTransactionCode_isNominal) && $doc->zatcaInvoiceTransactionCode_isNominal==0) ? true : false;
-            $exportsInvoice = (isset($doc->zatcaInvoiceTransactionCode_isExports) && $doc->zatcaInvoiceTransactionCode_isExports==0) ? true : false;
-            $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
-            
-        }
-    
         
-        // Update Seller Data From zatcaCompany:
-        $seller_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaCompany"));
-    
-        
-        foreach($seller_update as $seller){
-            
-            $company_VATCategoryCode =$seller->VATCategoryCode;
-    
-            $company_VATCategoryCodeSubTypeNo=$seller->VATCategoryCodeSubTypeNo;
-    
-            // Get code info from zatcabusinessidtype Table:
-        
-            $seller_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype     WHERE codeNumber = $seller->secondBusinessIDType") );
-            
-            $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
-    
-    
-            $sellerName = $seller->companyName;
-            $sellerAdditionalIdType = $seller_codeInfo;
-            $sellerAdditionalIdNumber = $seller->secondBusinessID;
-            $sellerVatNumber = $seller->VATID;
-            $sellerAddress = [
-                "streetName" => $seller->street_Arb,
-                "additionalNo" => $seller->POBoxAdditionalNum,
-                "buildingNumber" => $seller->apartmentNum,
-                "city" => $seller->city_Arb,
-                "state" => $seller->countrySubdivision_Arb,
-                "zipCode" => $seller->POBox,
-                "district" => $seller->district_Arb,
-                "country" => "SA"
-            ];
-    
-            // Fields Of Update zatca document [ seller ]:
-            $update_seller_sellerName=$sellerName;
-            $update_seller_sellerAdditionalIdType=$sellerAdditionalIdType;
-            $update_seller_sellerAdditionalIdNumber=$sellerAdditionalIdNumber;
-            $update_seller_sellerVatNumber=$sellerVatNumber;
-            $update_seller_street_Arb=$seller->street_Arb;
-            $update_seller_POBoxAdditionalNum=$seller->POBoxAdditionalNum;
-            $update_seller_apartmentNum=$seller->apartmentNum;
-            $update_seller_city_Arb=$seller->city_Arb;
-            $update_seller_countrySubdivision_Arb=$seller->countrySubdivision_Arb;
-            $update_seller_POBox=$seller->POBox;
-            $update_seller_district_Arb=$seller->district_Arb;
-    
-        }
-    
-        
-        // Get Customer Id from Order Table:
-        $table_orders = $wpdb->prefix . 'wc_orders';
-    
-        $customer_Id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM $table_orders WHERE id = $order_Id") );
-    
-    
-        // Update Buyer Data From zatcaCustomer:
-        $buyer_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaCustomer WHERE clientVendorNo = $customer_Id"));
-        
-    
-        foreach($buyer_update as $buyer){
-    
-            $buyer_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype WHERE codeNumber = $buyer->secondBusinessIDType") );
-    
-            // "groupVatNumber"=> "NONE"
-    
-            $buyerName = $buyer->aName;
-            $buyerAddress = [
-                "streetName" => $buyer->street_Arb,
-                "additionalNo" => $buyer->POBoxAdditionalNum,
-                "buildingNumber" => $buyer->apartmentNum,
-                "city" => $buyer->city_Arb,
-                "state" => $buyer->countrySubdivision_Arb,
-                "zipCode" => $buyer->POBox,
-                "district" => $buyer->district_Arb,
-                "country" => "SA"
-            ];
-            $buyerAdditionalIdType = $buyer_codeInfo;
-            $buyerAdditionalIdNumber = $buyer->secondBusinessID;
-            $buyerVatNumber = $buyer->VATID;
-            
-    
-            // fields to update zatca document [ buyer ]:
-            $update_buyer_aName=$buyerName;
-            $update_buyer_street_Arb=$buyer->street_Arb;
-            $update_buyer_POBoxAdditionalNum=$buyer->POBoxAdditionalNum;
-            $update_buyer_apartmentNum=$buyer->apartmentNum;
-            $update_buyer_city_Arb=$buyer->city_Arb;
-            $update_buyer_countrySubdivision_Arb=$buyer->countrySubdivision_Arb;
-            $update_buyer_POBox=$buyer->postalCode;
-            $update_buyer_district_Arb=$buyer->district_Arb;
-            $update_buyer_buyerAdditionalIdNumber=$buyerAdditionalIdNumber;
-            $update_buyer_buyerVatNumber=$buyerVatNumber ;
-        }
-    
-    
-        // Loop On zatcaDocumentUnit to get data:
-        $documents_unit = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocumentUnit WHERE documentNo = $doc_no") );
-    
-        $totalAmountWithoutVat = 0;
-        $totalLineNetAmount = 0;
-        $totalVatAmount = 0;
-        $totalAmountWithVat = 0;
-        $totalDiscountAmount = 0;
-        $taxPercent = 0;
-        
-        $lineItems =[];
-        foreach($documents_unit as $unit){
-    
-            $lineItems[] = [
-                
-                    "id" => $unit->itemNo,
-                    "description" => $unit->eName . ' - ' . $unit->aName, // Must be aName Only [ but didint insert aName],
-                    "linePrice" => [
-                        "currencyCode" => "SAR",
-                        "amount" => (int)number_format((float)$unit->price, 2, '.', '')  
-                    ],
-                    "lineQuantity" => $unit->quantity,
-                    "lineNetAmount" => [
-                        "currencyCode" => "SAR",
-                        "amount" =>  (int)number_format((float)$unit->netAmount, 2, '.', '')  
-                    ],
-                    "lineDiscountAmount" => [
-                        "currencyCode" => "SAR",
-                        "amount" => (int)number_format((float)$unit->discount, 2, '.', '') 
-                    ],
-                    "lineVatRate" => number_format((float)$unit->vatRate, 2, '.', '') , //$unit->vatRate,
-                    "lineVatAmount" => [
-                        "currencyCode" => "SAR",
-                        "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
-                    ],
-                    "lineAmountWithVat" => [
-                        "currencyCode" => "SAR",
-                        "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
-                    ],
-                    "taxScheme" => "VAT",
-                    "taxSchemeId" => $taxSchemeId
-                
-            ];
-    
-            $netAmount = (float)$unit->netAmount;
-            $vatAmount = (float)$unit->vatAmount;
-            $amountWithVAT = (float)$unit->amountWithVAT;
-            $discount = (float)$unit->discount;
-        
-            $totalAmountWithoutVat += $netAmount;
-            $totalLineNetAmount += $netAmount;
-            $totalVatAmount += $vatAmount;
-            $totalAmountWithVat += $amountWithVAT;
-            $totalDiscountAmount += $discount;
-    
-        }
-    
-        $totalAmountWithoutVat = number_format($totalAmountWithoutVat, 2, '.', '');
-        $totalLineNetAmount = number_format($totalLineNetAmount, 2, '.', '');
-        $totalVatAmount = number_format($totalVatAmount, 2, '.', '');
-        $totalAmountWithVat = number_format($totalAmountWithVat, 2, '.', '');
-        $totalDiscountAmount = number_format($totalDiscountAmount, 2, '.', '');
-        $taxPercent = number_format((float)$unit->vatRate, 2, '.', ''); //$unit->vatRate;
-    
-    
-        $totalAmountWithoutVat = ["currencyCode" => "SAR", "amount" => $totalAmountWithoutVat];
-        $totalLineNetAmount = ["currencyCode" => "SAR", "amount" => $totalLineNetAmount];
-        $totalVatAmount = ["currencyCode" => "SAR", "amount" => $totalVatAmount];
-        $totalAmountWithVat = ["currencyCode" => "SAR", "amount" => $totalAmountWithVat];
-        $totalDiscountAmount = ["currencyCode" => "SAR", "amount" => $totalDiscountAmount];
 
-        if($taxSchemeId == 'S')
-        {
-            $taxCategory = "S";
-            $taxPercent = "15.0";
-        }
-        else
-        {
-            $taxCategory = "E";
-            $taxPercent = "00.0";
-        }
+    $zatca_TaxExemptionReason = '';
+    $nominalInvoice = '';
+    $exportsInvoice = '';
+    $summaryInvoice = '';
+    $taxSchemeId = '';
 
-        $supplyDate = "2024-04-29";
-        $lastestSupplyDate = "2024-04-29";
-        $invoiceCurrencyCode = "SAR";
-        $taxCurrencyCode = "SAR";
-        $prePaidAmount = ["currencyCode" => "SAR", "amount" => 0];
-        $invoiceTypeTransactionCode = [
-            "thirdPartyInvoice" => false,
-            "nominalInvoice" => $nominalInvoice,
-            "exportsInvoice" => $exportsInvoice,
-            "summaryInvoice" => $summaryInvoice,
-            "selfBilledInvoice" => false
-        ];
-    
-    
-    
-    
-    
-        // update zatca dpcument:
-        $update_data_document = array(
-    
-            'seller_aName' =>                   $update_seller_sellerName,
-            'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
-            'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
-            'VATCategoryCodeNo' =>              $update_seller_sellerVatNumber,
-            'seller_street_Arb' =>              $update_seller_street_Arb,
-            'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
-            'seller_apartmentNum' =>            $update_seller_apartmentNum,
-            'seller_city_Arb' =>                $update_seller_city_Arb,
-            'seller_countrySubdivision_Arb' =>  $update_seller_countrySubdivision_Arb,
-            'seller_POBox' =>                   $update_seller_POBox,
-            'seller_district_Arb' =>            $update_seller_district_Arb,
-            'buyer_aName' =>                    $update_buyer_aName,
-            'buyer_street_Arb' =>               $update_buyer_street_Arb,
-            'buyer_POBoxAdditionalNum' =>       $update_buyer_POBoxAdditionalNum,
-            'buyer_apartmentNum' =>             $update_buyer_apartmentNum,
-            'buyer_city_Arb' =>                 $update_buyer_city_Arb,
-            'buyer_countrySubdivision_Arb' =>   $update_buyer_countrySubdivision_Arb,
-            'buyer_POBox' =>                    $update_buyer_POBox,
-            'buyer_district_Arb' =>             $update_buyer_district_Arb,
-            'buyer_secondBusinessID' =>         $update_buyer_buyerAdditionalIdNumber,
-            'buyer_VAT' =>                      $update_buyer_buyerVatNumber
-        );
-    
-        $where = array('documentNo' => $doc_no);
-    
-        $update_result = $wpdb->update('zatcaDocument', $update_data_document, $where);
-    
-        if($update_result === false) {
-            // There was an error inserting data:
-            error_log('Update error: ' . $wpdb->last_error);
-            echo "Error Update data: " . $wpdb->last_error;
-        }
-    
-    
-        /* Validation On Vat Id - 
-        if “zatcaInvoiceTransactionCode_isExport” then VAT ID for the client must be empty:
-        */
-        if($exportsInvoice == true){
-    
-            $buyerVatNumber = 0;
-    
-        }
-    
-        // original document number if returned bill
-        $originalDoc =  "";
-        // reason of return
-        $returnReason = "";
-        // check if billTypeNo is 23
-        if($billTypeNo == 23)
-        {
-            $originalDoc =  $zatcaRejectedInvoiceNo;
-            $returnReason = $reason;
-        }
-        // check if billTypeNo is 33
-        else if($billTypeNo == 33)
-        {
-            $originalDoc =  "";
-            $returnReason = "";
-        }
+    $order_Id = 0;
 
-        // Build the array Of Request:
-        $data = [
-            "invoiceType" => $invoiceType,
-            "invoiceTypeCode" => $invoiceTypeCode,
-            "id" => $id,
-            "issueDate" => $issueDate,
-            "issueTime" => $issueTime,
-            "icvIncrementalValue" => $icvIncrementalValue,
-            "previousHash" => $previousHash,
-            "seller" => [
-                "name" => $sellerName,
-                "additionalIdType" => "OTH",//$sellerAdditionalIdType,
-                "additionalIdNumber" => $sellerAdditionalIdNumber,
-                "vatNumber" => $sellerVatNumber,
-                "groupVatNumber" => "",
-                "address" => $sellerAddress
-            ],
-            "buyer" => [
-                "name" => $buyerName,
-                "address" => $buyerAddress,
-                "additionalIdType" =>"OTH", 
-                "additionalIdNumber" => $buyerAdditionalIdNumber,
-                "vatNumber" => $buyerVatNumber,
-                "groupVatNumber" => ""
-            ],
-            "lineItems" => $lineItems,
-            "totalLineNetAmount" => $totalLineNetAmount,
-            "totalAmountWithoutVat" => $totalAmountWithoutVat,
-            "totalVatAmount" => $totalVatAmount,
-            "totalAmountWithVat" => $totalAmountWithVat,
-            "totalDiscountAmount" => ["currencyCode" => "SAR", "amount" => 0],
-            "taxCategory" => $taxCategory,
-            "taxPercent" => $taxPercent,
-            "supplyDate" => $supplyDate,
-            "lastestSupplyDate" => $lastestSupplyDate,
-            "invoiceCurrencyCode" => $invoiceCurrencyCode,
-            "taxCurrencyCode" => $taxCurrencyCode,
-            "note" => [
-                "reason" => $returnReason,
-                "invoiceNo" => $originalDoc
-            ],
-            "taxExemptionReasonCode" => "",
-            "taxExemptionReason" => $zatca_TaxExemptionReason,
-            "invoiceNote" => "",
-            "prePaidAmount" => $prePaidAmount,
-            "invoiceTypeTransactionCode" => $invoiceTypeTransactionCode
-        ];
-    
-       
-        // Encode the array to JSON
-        $jsonData = json_encode($data);
-    
-        return $jsonData;
+    // Define zatcaDocument fields to update:
+    $update_seller_sellerName='';
+    $update_seller_sellerAdditionalIdType='';
+    $update_seller_sellerAdditionalIdNumber='';
+    $update_seller_sellerVatNumber='';
+    $update_seller_street_Arb='';
+    $update_seller_POBoxAdditionalNum='';
+    $update_seller_apartmentNum='';
+    $update_seller_city_Arb='';
+    $update_seller_countrySubdivision_Arb='';
+    $update_seller_POBox='';
+    $update_seller_district_Arb='';
+    $update_buyer_aName='';
+    $update_buyer_street_Arb='';
+    $update_buyer_POBoxAdditionalNum='';
+    $update_buyer_apartmentNum='';
+    $update_buyer_city_Arb='';
+    $update_buyer_countrySubdivision_Arb='';
+    $update_buyer_POBox='';
+    $update_buyer_district_Arb='';
+    $update_buyer_buyerAdditionalIdNumber='';
+    $update_buyer_buyerVatNumber='';
+
+
+
+
+    // Get Data From zatcaDocument:
+    foreach($documents as $doc){
+
+        $order_Id = $doc->invoiceNo;
+
+        $billTypeNo = $doc->billTypeNo;
+        $reason = $doc->reason;
+        $zatcaRejectedInvoiceNo = $doc->zatcaRejectedInvoiceNo;
+
+        $invoiceType = "TAX_INVOICE";
+        $invoiceTypeCode = "Simplified";
+        $id =  $doc->documentNo;
+        $icvIncrementalValue = (int)$doc->documentNo;
+        $referenceId = $doc->UUID;
+        $issueDate = date("Y-m-d", strtotime($doc->dateG));
+        $issueTime = date("H:i:s", strtotime($doc->dateG));
+        $previousHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
+        
+        $zatca_TaxExemptionReason = $doc->zatca_TaxExemptionReason;
+        // Validation for zatcaInvoiceTransactionCode If 0 = true - if Null = False:
+        $nominalInvoice = (isset($doc->zatcaInvoiceTransactionCode_isNominal) && $doc->zatcaInvoiceTransactionCode_isNominal==0) ? true : false;
+        $exportsInvoice = (isset($doc->zatcaInvoiceTransactionCode_isExports) && $doc->zatcaInvoiceTransactionCode_isExports==0) ? true : false;
+        $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
+        
     }
+
+    
+    // Update Seller Data From zatcaCompany:
+    $seller_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaCompany"));
+
+    
+    foreach($seller_update as $seller){
+        
+        $company_VATCategoryCode =$seller->VATCategoryCode;
+
+        $company_VATCategoryCodeSubTypeNo=$seller->VATCategoryCodeSubTypeNo;
+
+        // Get code info from zatcabusinessidtype Table:
+    
+        $seller_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype     WHERE codeNumber = $seller->secondBusinessIDType") );
+        
+        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
+
+
+        $sellerName = $seller->companyName;
+        $sellerAdditionalIdType = $seller_codeInfo;
+        $sellerAdditionalIdNumber = $seller->secondBusinessID;
+        $sellerVatNumber = $seller->VATID;
+        $sellerAddress = [
+            "streetName" => $seller->street_Arb,
+            "additionalNo" => $seller->POBoxAdditionalNum,
+            "buildingNumber" => $seller->apartmentNum,
+            "city" => $seller->city_Arb,
+            "state" => $seller->countrySubdivision_Arb,
+            "zipCode" => $seller->POBox,
+            "district" => $seller->district_Arb,
+            "country" => "SA"
+        ];
+
+        // Fields Of Update zatca document [ seller ]:
+        $update_seller_sellerName=$sellerName;
+        $update_seller_sellerAdditionalIdType=$sellerAdditionalIdType;
+        $update_seller_sellerAdditionalIdNumber=$sellerAdditionalIdNumber;
+        $update_seller_sellerVatNumber=$sellerVatNumber;
+        $update_seller_street_Arb=$seller->street_Arb;
+        $update_seller_POBoxAdditionalNum=$seller->POBoxAdditionalNum;
+        $update_seller_apartmentNum=$seller->apartmentNum;
+        $update_seller_city_Arb=$seller->city_Arb;
+        $update_seller_countrySubdivision_Arb=$seller->countrySubdivision_Arb;
+        $update_seller_POBox=$seller->POBox;
+        $update_seller_district_Arb=$seller->district_Arb;
+
+    }
+
+    
+    // Get Customer Id from Order Table:
+    $table_orders = $wpdb->prefix . 'wc_orders';
+
+    $customer_Id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM $table_orders WHERE id = $order_Id") );
+
+
+    // Update Buyer Data From zatcaCustomer:
+    $buyer_update = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaCustomer WHERE clientVendorNo = $customer_Id"));
+    
+
+    foreach($buyer_update as $buyer){
+
+        $buyer_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype WHERE codeNumber = $buyer->secondBusinessIDType") );
+
+        // "groupVatNumber"=> "NONE"
+
+        $buyerName = $buyer->aName;
+        $buyerAddress = [
+            "streetName" => $buyer->street_Arb,
+            "additionalNo" => $buyer->POBoxAdditionalNum,
+            "buildingNumber" => $buyer->apartmentNum,
+            "city" => $buyer->city_Arb,
+            "state" => $buyer->countrySubdivision_Arb,
+            "zipCode" => $buyer->POBox,
+            "district" => $buyer->district_Arb,
+            "country" => "SA"
+        ];
+        $buyerAdditionalIdType = $buyer_codeInfo;
+        $buyerAdditionalIdNumber = $buyer->secondBusinessID;
+        $buyerVatNumber = $buyer->VATID;
+        
+
+        // fields to update zatca document [ buyer ]:
+        $update_buyer_aName=$buyerName;
+        $update_buyer_street_Arb=$buyer->street_Arb;
+        $update_buyer_POBoxAdditionalNum=$buyer->POBoxAdditionalNum;
+        $update_buyer_apartmentNum=$buyer->apartmentNum;
+        $update_buyer_city_Arb=$buyer->city_Arb;
+        $update_buyer_countrySubdivision_Arb=$buyer->countrySubdivision_Arb;
+        $update_buyer_POBox=$buyer->postalCode;
+        $update_buyer_district_Arb=$buyer->district_Arb;
+        $update_buyer_buyerAdditionalIdNumber=$buyerAdditionalIdNumber;
+        $update_buyer_buyerVatNumber=$buyerVatNumber ;
+    }
+
+
+    // Loop On zatcaDocumentUnit to get data:
+    $documents_unit = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocumentUnit WHERE documentNo = $doc_no") );
+
+    $totalAmountWithoutVat = 0;
+    $totalLineNetAmount = 0;
+    $totalVatAmount = 0;
+    $totalAmountWithVat = 0;
+    $totalDiscountAmount = 0;
+    $taxPercent = 0;
+    
+    $lineItems =[];
+    foreach($documents_unit as $unit){
+
+        $lineItems[] = [
+            
+                "id" => $unit->itemNo,
+                "description" => $unit->eName . ' - ' . $unit->aName, // Must be aName Only [ but didint insert aName],
+                "linePrice" => [
+                    "currencyCode" => "SAR",
+                    "amount" => (int)number_format((float)$unit->price, 2, '.', '')  
+                ],
+                "lineQuantity" => $unit->quantity,
+                "lineNetAmount" => [
+                    "currencyCode" => "SAR",
+                    "amount" =>  (int)number_format((float)$unit->netAmount, 2, '.', '')  
+                ],
+                "lineDiscountAmount" => [
+                    "currencyCode" => "SAR",
+                    "amount" => (int)number_format((float)$unit->discount, 2, '.', '') 
+                ],
+                "lineVatRate" => number_format((float)$unit->vatRate, 2, '.', '') , //$unit->vatRate,
+                "lineVatAmount" => [
+                    "currencyCode" => "SAR",
+                    "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
+                ],
+                "lineAmountWithVat" => [
+                    "currencyCode" => "SAR",
+                    "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
+                ],
+                "taxScheme" => "VAT",
+                "taxSchemeId" => $taxSchemeId
+            
+        ];
+
+        $netAmount = (float)$unit->netAmount;
+        $vatAmount = (float)$unit->vatAmount;
+        $amountWithVAT = (float)$unit->amountWithVAT;
+        $discount = (float)$unit->discount;
+    
+        $totalAmountWithoutVat += $netAmount;
+        $totalLineNetAmount += $netAmount;
+        $totalVatAmount += $vatAmount;
+        $totalAmountWithVat += $amountWithVAT;
+        $totalDiscountAmount += $discount;
+
+    }
+
+    $totalAmountWithoutVat = number_format($totalAmountWithoutVat, 2, '.', '');
+    $totalLineNetAmount = number_format($totalLineNetAmount, 2, '.', '');
+    $totalVatAmount = number_format($totalVatAmount, 2, '.', '');
+    $totalAmountWithVat = number_format($totalAmountWithVat, 2, '.', '');
+    $totalDiscountAmount = number_format($totalDiscountAmount, 2, '.', '');
+    $taxPercent = number_format((float)$unit->vatRate, 2, '.', ''); //$unit->vatRate;
+
+
+    $totalAmountWithoutVat = ["currencyCode" => "SAR", "amount" => $totalAmountWithoutVat];
+    $totalLineNetAmount = ["currencyCode" => "SAR", "amount" => $totalLineNetAmount];
+    $totalVatAmount = ["currencyCode" => "SAR", "amount" => $totalVatAmount];
+    $totalAmountWithVat = ["currencyCode" => "SAR", "amount" => $totalAmountWithVat];
+    $totalDiscountAmount = ["currencyCode" => "SAR", "amount" => $totalDiscountAmount];
+
+    if($taxSchemeId == 'S')
+    {
+        $taxCategory = "S";
+        $taxPercent = "15.0";
+    }
+    else
+    {
+        $taxCategory = "E";
+        $taxPercent = "00.0";
+    }
+
+    $supplyDate = "2024-04-29";
+    $lastestSupplyDate = "2024-04-29";
+    $invoiceCurrencyCode = "SAR";
+    $taxCurrencyCode = "SAR";
+    $prePaidAmount = ["currencyCode" => "SAR", "amount" => 0];
+    $invoiceTypeTransactionCode = [
+        "thirdPartyInvoice" => false,
+        "nominalInvoice" => $nominalInvoice,
+        "exportsInvoice" => $exportsInvoice,
+        "summaryInvoice" => $summaryInvoice,
+        "selfBilledInvoice" => false
+    ];
+
+
+
+
+
+    // update zatca dpcument:
+    $update_data_document = array(
+
+        'seller_aName' =>                   $update_seller_sellerName,
+        'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
+        'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
+        'VATCategoryCodeNo' =>              $update_seller_sellerVatNumber,
+        'seller_street_Arb' =>              $update_seller_street_Arb,
+        'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
+        'seller_apartmentNum' =>            $update_seller_apartmentNum,
+        'seller_city_Arb' =>                $update_seller_city_Arb,
+        'seller_countrySubdivision_Arb' =>  $update_seller_countrySubdivision_Arb,
+        'seller_POBox' =>                   $update_seller_POBox,
+        'seller_district_Arb' =>            $update_seller_district_Arb,
+        'buyer_aName' =>                    $update_buyer_aName,
+        'buyer_street_Arb' =>               $update_buyer_street_Arb,
+        'buyer_POBoxAdditionalNum' =>       $update_buyer_POBoxAdditionalNum,
+        'buyer_apartmentNum' =>             $update_buyer_apartmentNum,
+        'buyer_city_Arb' =>                 $update_buyer_city_Arb,
+        'buyer_countrySubdivision_Arb' =>   $update_buyer_countrySubdivision_Arb,
+        'buyer_POBox' =>                    $update_buyer_POBox,
+        'buyer_district_Arb' =>             $update_buyer_district_Arb,
+        'buyer_secondBusinessID' =>         $update_buyer_buyerAdditionalIdNumber,
+        'buyer_VAT' =>                      $update_buyer_buyerVatNumber
+    );
+
+    $where = array('documentNo' => $doc_no);
+
+    $update_result = $wpdb->update('zatcaDocument', $update_data_document, $where);
+
+    if($update_result === false) {
+        // There was an error inserting data:
+        error_log('Update error: ' . $wpdb->last_error);
+        echo "Error Update data: " . $wpdb->last_error;
+    }
+
+
+    /* Validation On Vat Id - 
+    if “zatcaInvoiceTransactionCode_isExport” then VAT ID for the client must be empty:
+    */
+    if($exportsInvoice == true){
+
+        $buyerVatNumber = 0;
+
+    }
+
+    // original document number if returned bill
+    $originalDoc =  "";
+    // reason of return
+    $returnReason = "";
+    // check if billTypeNo is 23
+    if($billTypeNo == 23)
+    {
+        $originalDoc =  $zatcaRejectedInvoiceNo;
+        $returnReason = $reason;
+    }
+    // check if billTypeNo is 33
+    else if($billTypeNo == 33)
+    {
+        $originalDoc =  "";
+        $returnReason = "";
+    }
+
+    // Build the array Of Request:
+    $data = [
+        "invoiceType" => $invoiceType,
+        "invoiceTypeCode" => $invoiceTypeCode,
+        "id" => $id,
+        "issueDate" => $issueDate,
+        "issueTime" => $issueTime,
+        "icvIncrementalValue" => $icvIncrementalValue,
+        "previousHash" => $previousHash,
+        "seller" => [
+            "name" => $sellerName,
+            "additionalIdType" => "OTH",//$sellerAdditionalIdType,
+            "additionalIdNumber" => $sellerAdditionalIdNumber,
+            "vatNumber" => $sellerVatNumber,
+            "groupVatNumber" => "",
+            "address" => $sellerAddress
+        ],
+        "buyer" => [
+            "name" => $buyerName,
+            "address" => $buyerAddress,
+            "additionalIdType" =>"OTH", 
+            "additionalIdNumber" => $buyerAdditionalIdNumber,
+            "vatNumber" => $buyerVatNumber,
+            "groupVatNumber" => ""
+        ],
+        "lineItems" => $lineItems,
+        "totalLineNetAmount" => $totalLineNetAmount,
+        "totalAmountWithoutVat" => $totalAmountWithoutVat,
+        "totalVatAmount" => $totalVatAmount,
+        "totalAmountWithVat" => $totalAmountWithVat,
+        "totalDiscountAmount" => ["currencyCode" => "SAR", "amount" => 0],
+        "taxCategory" => $taxCategory,
+        "taxPercent" => $taxPercent,
+        "supplyDate" => $supplyDate,
+        "lastestSupplyDate" => $lastestSupplyDate,
+        "invoiceCurrencyCode" => $invoiceCurrencyCode,
+        "taxCurrencyCode" => $taxCurrencyCode,
+        "note" => [
+            "reason" => $returnReason,
+            "invoiceNo" => $originalDoc
+        ],
+        "taxExemptionReasonCode" => "",
+        "taxExemptionReason" => $zatca_TaxExemptionReason,
+        "invoiceNote" => "",
+        "prePaidAmount" => $prePaidAmount,
+        "invoiceTypeTransactionCode" => $invoiceTypeTransactionCode
+    ];
+
+    
+    // Encode the array to JSON
+    $jsonData = json_encode($data);
+
+    return $jsonData;
+}
 
 // Send Request to zatca - Clear Function:
 function send_request_to_zatca_report(){
@@ -4559,9 +4730,10 @@ function send_request_to_zatca_report(){
 
     $buyer_arabic_name = $requestArray['buyer']['name'];
 
-    $buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
+    //$buyerArabicName_validation = ($buyer_arabic_name == '' && ($VATCategoryCodeSubTypeNo == 13 || $VATCategoryCodeSubTypeNo == 14)) ? true : false;
+    $buyerArabicName_validation = ($buyer_arabic_name == '') ? true : false;
 
-    if($buyer_additionalNo_validation == false)
+    /*if($buyer_additionalNo_validation == false)
     { 
       // Validation on additionalNo - customer [ buyer ]:  
         $send_response = [
@@ -4583,7 +4755,7 @@ function send_request_to_zatca_report(){
             'status' => 'seller_second_business_id',
             'msg' => ''];
     }
-    else if($buyerArabicName_validation == true)
+    else*/ if($buyerArabicName_validation == true)
     {
         $send_response = [
             'status' => 'buyer_arabic_name',
@@ -4681,7 +4853,19 @@ function send_request_to_zatca_report(){
 
             if($statusCode == '200'){
 
-                
+                // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $doc_no"));
+
+                if($originalDocNo != NULL)
+                {
+                    // update zatca document fields with response Data:
+                    $zatcaDocument_original_update_data = [
+                    "zatcaAcceptedReissueInvoiceNo" => $doc_no];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+    
+                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
+                }
+
                 //  update zatca document xml fields with response Data:
                 $zatcaDocumentxml_update_response_data = [
     
@@ -4783,6 +4967,19 @@ function send_request_to_zatca_report(){
                 //$msg = 'Document Submitted Successfully, Zatca Status Code Is ' . $statusCode . ' .. Request Is Success' . $http_status_msg;
             
             }elseif($statusCode == '202'){
+
+                // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
+                $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $doc_no"));
+
+                if($originalDocNo != NULL)
+                {
+                    // update zatca document fields with response Data:
+                    $zatcaDocument_original_update_data = [
+                    "zatcaAcceptedReissueInvoiceNo" => $doc_no];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+    
+                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
+                }
 
                  // update zatca document xml fields with response Data:
                 $zatcaDocumentxml_update_response_data = [
@@ -5274,7 +5471,7 @@ function insert_zatcaDocumentUnit_copy($neworderId, $deviceNo, $newDocNo)
     }
 
     // function to send the new one to zatca and handle the response from zatca depend on zatcaSuccessResponse code
-    send_reissue_zatca($newDocNo);
+    //send_reissue_zatca($newDocNo);
 
 }
 
@@ -6303,6 +6500,15 @@ function send_reissue_request_to_zatca(){
 
     // function to insert new copy to woocommerce and new copy to zatcaDocument and new copy to zatcaDocumentUnit
     insert_woocommerce_copy($doc_no);
+
+    $send_response = [
+        'status' => 'zatcaIssueDone',
+        'msg' => __("Reissued Successfully", "zatca")
+    ];
+
+
+    wp_send_json($send_response);
+
 
 }
 
