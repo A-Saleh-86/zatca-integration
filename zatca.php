@@ -26,10 +26,10 @@ include 'option.php';
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
 // Include the file that contains the create_custom_table function
-//require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
 
 // Create Tables when Plugin run:
-//register_activation_hook( __FILE__, 'create_custom_tables' );
+register_activation_hook( __FILE__, 'create_custom_tables' );
 
 // Add [CSS, JS, Bootstrap ] to admin panel:
 add_action('admin_enqueue_scripts', 'load_assets');
