@@ -1934,7 +1934,7 @@ function insert_form_documents(){
                     'seller_secondBusinessID'               => $seller_second_bussiness_Id,
                     'buyer_secondBusinessIDType'            => $buyer_second_bussiness_Id_Type,
                     'buyer_secondBusinessID'                => $buyer_second_bussiness_Id,
-                    'VATCategoryCodeNo'                     => $form_array['insert-vat-cat-code'],
+                    'VATCategoryCodeNo'                     => $form_array['insert-doc-vat-cat-code'],
                     'VATCategoryCodeSubTypeNo'              => $form_array['vat-cat-code-sub-no'],
                     'zatca_TaxExemptionReason'              => $form_array['taxExemptionReason'],
                     'zatcaInvoiceTransactionCode_isNominal' => $form_array['isNominal'],
@@ -2196,7 +2196,7 @@ function insert_form_documents(){
         }
         
         wp_send_json($send_response);
-        //echo $msg;
+        //echo $form_array['insert-vat-cat-code'];
         
     }
 

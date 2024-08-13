@@ -416,7 +416,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <div class="col-md-4">
                 <label class="form-label"><?php echo _e('VAT Category Code:', 'zatca') ?></label>
                 <div class="form-group">
-                    <select class="form-select select2"  name="insert-vat-cat-code" id="vat-cat-code">
+                    <select class="form-select select2"  name="insert-doc-vat-cat-code" id="vat-cat-code">
                         <option value="">...</option>
                         <?php
                             global $wpdb;
