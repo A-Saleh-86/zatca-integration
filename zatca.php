@@ -1545,6 +1545,7 @@ function woo_document(){
     
     // get CountryNo from zatcaCustomers:
     $buyer_arCountry_Customer = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
     $buyer_enCountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
     
     // get buyer vat from zatcaCustomer
@@ -1574,7 +1575,7 @@ function woo_document(){
         'buyer_city_Arb_Customer' => $buyer_city_Arb_Customer,
         'buyer_city_Eng_Customer' => $buyer_city_Eng_Customer,
         'buyer_arCountry_Customer' => $buyer_arCountry_Customer,
-        'buyer_enCountry_Customer' => $buyer_enCountry_Customer,
+        'buyer_enCountry_Customer' => $buyer_enCountryNo_Customer,
         'buyer_Postal_Code' => $buyer_Postal_Code,
         'buyer_POBoxAdditionalNum' => $buyer_POBoxAdditionalNum,
         'buyer_VAT' => $buyer_VAT,
