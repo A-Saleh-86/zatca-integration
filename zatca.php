@@ -391,6 +391,8 @@ function localization() {
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
         'notification_warning_title' => __("Warning", "zatca"),
+        'error_word' => __("Error", "zatca"),
+        'document_word' => __("Document", "zatca"),
         ) 
     );
 
