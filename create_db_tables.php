@@ -678,13 +678,13 @@ function create_zatcaInfo_table() {
     // SQL to create the table
     $sql = "
         CREATE TABLE IF NOT EXISTS  $table_name (
-            VendorId int NOT NULL,
-            incrementerNo varchar(20) NOT NULL,
-            zatcaInfo1 varchar(255) NULL,
-            zatcaInfo2 varchar(255) NULL,
-            zatcaInfo3 varchar(255) NULL,
-            row_timestamp timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (VendorId, incrementerNo)
+            `VendorId` int(11) NOT NULL DEFAULT 0,
+            `incrementerNo` int(11) NOT NULL AUTO_INCREMENT,
+            `zatcaInfo1` varchar(255) NULL,
+            `zatcaInfo2` varchar(255) NULL,
+            `zatcaInfo3` varchar(255) NULL,
+            `row_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`incrementerNo`, `VendorId`) USING BTREE
         ) ENGINE=InnoDB $charset_collate;
     ";
 

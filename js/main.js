@@ -13,9 +13,17 @@ jQuery(document).ready(function($) {
         // Store the current element reference
         const currentElement = $(this);
 
+        // Global Normal Notification
+        window.popupDialog = Notification({
+            position: 'center',
+            duration: 5000,
+            isHidePrev: false,
+            isHideTitle: false,
+            maxOpened: 3,
+        });
     
         // Use the custom dialog
-        popup.dialog({
+        popupDialog.dialog({
             title: main.delete_title,
             message: main.delete_msg,
             callback: (result) => {

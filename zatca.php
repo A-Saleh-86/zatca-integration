@@ -387,6 +387,16 @@ function localization() {
         )
     );
 
+    // checkout.js localization:
+    wp_enqueue_script('checkout',  plugin_dir_url(__FILE__) . '/js/checkout-page.js', array(), false, true);
+    wp_localize_script( 'checkout', 'checkout', array( 
+        'client_name_not_empty' => __("Client Name Arabic Cant be Empty", "zatca"),
+        'client_name_must_arabic' => __("You Must Enter Client Name In Arabic", "zatca"),
+        'notification_error_title' => __("Error", "zatca"),
+        'notification_success_title' => __("Success", "zatca"),
+        )
+    );
+
 }
 
 
@@ -3949,7 +3959,7 @@ function checkbox_function() {
                     <label for="checkbox-control-0">
                         <input 
                             id="my_checkbox_field" 
-                            class="wc-block-components-checkbox__input" 
+                            class="wc-block-components-checkbox__input " 
                             type="checkbox" 
                             aria-invalid="false"
                         >
@@ -3974,7 +3984,7 @@ function checkbox_function() {
 // function to view the short code in checkout page [ checkout page ]:
 function add_custom_field_to_checkout_blocks() {
     ?>
-    <div class="woocommerce-form__row my-custom-checkbox-container m-2" >
+    <div class="woocommerce-form__row my-custom-checkbox-container py-3" >
         <?php echo do_shortcode('[checkbox]'); ?>
                 <div id="customForm" style="display: none;">
                 <?php include plugin_dir_path(__FILE__) . 'checkout-page.php';?>
@@ -3984,7 +3994,7 @@ function add_custom_field_to_checkout_blocks() {
 }
 
 
-// function to insert data from checkout page:
+// // function to insert data from checkout page:
 function edit_checkout_page_function(){
 
     if(isset($_REQUEST)){
@@ -4096,6 +4106,7 @@ function edit_checkout_page_function(){
     die();
 
 }
+
 
 // Function to check if string arabic or not:
 function is_arabic($string) {
