@@ -785,6 +785,32 @@ if (!empty($results)) {
             <!-- /  amountLeft field -->
 
 
+            <!--Retrive all aName from zatcaReturnReason table from database-->
+            <?php
+            global $wpdb;
+            $reasons = $wpdb->get_results( "SELECT * FROM zatcaReturnReason");
+            if($result->billTypeNo == 23){
+            ?>
+
+            <!--  returnReasonType field -->
+            <div class="col-md-6" id="returnReasonType">
+                <label class="form-label"><?php echo _e('Return Reason:', 'zatca') ?></label>
+                <div class="form-group">
+                    <select name="returnReasonType" id="return-reason-type" class="form-control">
+                        <option value=""><?php echo _e('Return Reason', 'zatca') ?></option>
+                        <?php
+                        foreach($reasons as $reason) {
+                        ?>
+                        <option value="<?= $reason->ID ?>" <?php if($reason->aName == $result->reason){ ?> selected <?php } ?>><?= $reason->aName ?></option>
+                        <?php } ?>
+                    </select>
+                    <input type="hidden" name="returnReason" id="returnReason" value="<?= $result->reason ?>">
+                </div>
+            </div>
+            <!-- /  returnReasonType field -->
+             <?php
+            }
+             ?>
 
             <!-- CheckBox [ isNominal ] -->
             <div class="col-md-12">
@@ -860,7 +886,10 @@ if (!empty($results)) {
             <div class="col-md-12">
                 <?php
                 // Prepare the query with a condition to get orders 
-                $results1 = $wpdb->get_results( $wpdb->prepare( "SELECT o.order_item_name, z.* FROM zatcaDocumentUnit z, wp_woocommerce_order_items o WHERE z.documentNo = %d and z.itemNo=o.order_item_id and o.order_item_type='line_item'", $docNo ) );
+                //get prefix table
+                $prefixTable = $wpdb->prefix;
+                $woocommerce_order_items = $prefixTable.'woocommerce_order_items';
+                $results1 = $wpdb->get_results( $wpdb->prepare( "SELECT o.order_item_name, z.* FROM zatcaDocumentUnit z, ".$woocommerce_order_items." o WHERE z.documentNo = %d and z.itemNo=o.order_item_id and o.order_item_type='line_item'", $docNo ) );
                 ?>
                 <div class="container">
                     <table id="example" class="table table-striped" width="100%">

@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
                 check_type: 'check_counter_gap'
             },  
             success: function(response) {  
-                console.log(response);
+                //console.log(response);
                 $('#response').html(response); // Display the result in the response div  
             },  
             error: function(xhr, status, error) {  

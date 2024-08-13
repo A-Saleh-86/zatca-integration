@@ -26,10 +26,10 @@ include 'option.php';
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
 // Include the file that contains the create_custom_table function
-//require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
 
 // Create Tables when Plugin run:
-//register_activation_hook( __FILE__, 'create_custom_tables' );
+register_activation_hook( __FILE__, 'create_custom_tables' );
 
 // Add [CSS, JS, Bootstrap ] to admin panel:
 add_action('admin_enqueue_scripts', 'load_assets');
@@ -2728,6 +2728,16 @@ function document_edit_form(){
             }
 
 
+            if(isset($form_array['returnReason']) && $form_array['returnReason'] != '')
+            {
+                $returnReason = $form_array['returnReasonType'];
+                $reason = $form_array['returnReason'];
+            }
+            else
+            {
+                $returnReason = 0;
+                $reason = NULL;
+            }
         // $table_name_document = 'zatcaDocument';
             
         $data = array(
@@ -2740,6 +2750,8 @@ function document_edit_form(){
             'amountPayed02'                         => $form_array['amountPayed02'],
             'amountPayed03'                         => $form_array['amountPayed03'],
             'amountCalculatedPayed'                 => $form_array['amountCalculatedPayed'],
+            'returnReasonType'                      => $returnReason,
+            'reason'                                => $reason,
             'subTotal'                              => $form_array['subTotal'],
             'subTotalDiscount'                      => $form_array['subTotalDiscount'],
             'taxRate1_Total'                        => $form_array['taxRate1_Total'],
