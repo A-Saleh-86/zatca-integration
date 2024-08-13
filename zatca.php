@@ -2728,6 +2728,16 @@ function document_edit_form(){
             }
 
 
+            if(isset($form_array['returnReason']) && $form_array['returnReason'] != '')
+            {
+                $returnReason = $form_array['returnReasonType'];
+                $reason = $form_array['returnReason'];
+            }
+            else
+            {
+                $returnReason = 0;
+                $reason = NULL;
+            }
         // $table_name_document = 'zatcaDocument';
             
         $data = array(
@@ -2740,6 +2750,8 @@ function document_edit_form(){
             'amountPayed02'                         => $form_array['amountPayed02'],
             'amountPayed03'                         => $form_array['amountPayed03'],
             'amountCalculatedPayed'                 => $form_array['amountCalculatedPayed'],
+            'returnReasonType'                      => $returnReason,
+            'reason'                                => $reason,
             'subTotal'                              => $form_array['subTotal'],
             'subTotalDiscount'                      => $form_array['subTotalDiscount'],
             'taxRate1_Total'                        => $form_array['taxRate1_Total'],

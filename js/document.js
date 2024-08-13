@@ -821,7 +821,7 @@ jQuery(document).ready(function($){
                 "doc_no_from_ajax": docNo
             },
             success: function(response) {
-
+                console.log(response);
                 if(response.msg.status == 'seller_second_business_id'){
 
                     // Error notification:
@@ -1060,7 +1060,7 @@ jQuery(document).ready(function($){
                     }
                         
                     setTimeout(() => {
-                        window.location.reload();
+                       // window.location.reload();
                     }, 3000);
                 }
             
