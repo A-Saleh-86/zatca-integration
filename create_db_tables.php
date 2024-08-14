@@ -501,7 +501,7 @@ function create_zatcaDocument_table() {
             `seller_secondBusinessID` varchar(18) DEFAULT NULL,
             `buyer_secondBusinessIDType` int(11) DEFAULT NULL,
             `buyer_secondBusinessID` varchar(18) DEFAULT NULL,
-            `VATCategoryCodeNo` int(11) NOT NULL,
+            `VATCategoryCodeNo` bigint(20) NOT NULL,
             `VATCategoryCodeSubTypeNo` int(11) DEFAULT NULL,
             `zatca_TaxExemptionReason` varchar(250) DEFAULT NULL,
             `zatcaInvoiceTransactionCode_isNominal` tinyint(1) DEFAULT NULL,
