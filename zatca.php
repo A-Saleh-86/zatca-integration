@@ -25,6 +25,9 @@ include 'option.php';
 // Get Walker Class For Bootstrap:
 include_once 'css/class-wp-bootstrap-navwalker.php';
 
+// Include the table query file:
+include_once(plugin_dir_path(__FILE__) . '/includes/table_query.php');
+
 // Include the file that contains the create_custom_table function
 require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
 
