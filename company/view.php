@@ -6,13 +6,6 @@
 
     <?php
     
-    // global $wpdb;
-
-    // Table Name:
-    // $table_name = 'zatcaCompany';
-
-    // Prepare the query with a condition on the VendorId column using the %d placeholder
-    // $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name ") );
     $results = get_all_data_from_table('zatcaCompany');
 
     // Check if there are results
@@ -57,8 +50,9 @@
                     <!-- /  Zataca Stage -->
 
                     <!--  Country  field -->
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Country :', 'zatca') ?></label>
+                        <div class="form-group">
                         <select class="form-select select2"  name="country">
                             <option value=""> ...</option>
                             <?php 
@@ -72,6 +66,7 @@
                             }
                             ?>
                         </select>
+                        </div>
                     </div>
                     <!-- /  Country  field -->
 
@@ -84,40 +79,44 @@
                     <!--  VATCategoryCode field -->
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('VAT Category Code:', 'zatca') ?></label>
-                        <select class="form-select select2"  name="vat-cat-code" id="vat-cat-code">
-                            <option value="">...</option>
-                            <?php
-                                global $wpdb;
+                        <div class="form-group">
+                            <select class="form-select select2"  name="vat-cat-code" id="vat-cat-code">
+                                <option value="">...</option>
+                                <?php
+                                    global $wpdb;
 
-                                // Fetch Data From Database:
-                                $categories = $wpdb->get_results( "SELECT * FROM met_vatcategorycode" );
-                                foreach($categories as $category) {?>
-                                    
-                                    <option value="<?php echo $category->VATCategoryCodeNo ?>" <?php if($result->VATCategoryCode == $category->VATCategoryCodeNo){ echo 'selected';} ?> ><?php echo $category->aName. ' - ' . $category->eName ?></option>
-                                    <?php
-                                }
-                            ?>
-                        </select>
+                                    // Fetch Data From Database:
+                                    $categories = $wpdb->get_results( "SELECT * FROM met_vatcategorycode" );
+                                    foreach($categories as $category) {?>
+                                        
+                                        <option value="<?php echo $category->VATCategoryCodeNo ?>" <?php if($result->VATCategoryCode == $category->VATCategoryCodeNo){ echo 'selected';} ?> ><?php echo $category->aName. ' - ' . $category->eName ?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                        </div>
                     </div>
                     <!-- /  VATCategoryCode field -->
 
                     <!--  VATCategoryCodeSubTypeNo field -->
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('VAT Category Code Sub Type No:', 'zatca') ?></label>
-                        <select class="form-select select2"  name="vat-cat-code-sub-no" id="vat-cat-code-sub">
-                            <option value="">...</option>
-                            <?php
-                                global $wpdb;
+                        <div class="form-group">
+                            <select class="form-select select2"  name="vat-cat-code-sub-no" id="vat-cat-code-sub">
+                                <option value="">...</option>
+                                <?php
+                                    global $wpdb;
 
-                                // Fetch Data From Database:
-                                $subCategories = $wpdb->get_results( "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = $result->VATCategoryCode" );
-                                foreach($subCategories as $subCat) {?>
-                                    
-                                    <option value="<?php echo $subCat->VATCategoryCodeSubTypeNo ?>" <?php if($result->VATCategoryCodeSubTypeNo == $subCat->VATCategoryCodeSubTypeNo){ echo 'selected';} ?> ><?php echo $subCat->aName. ' - ' . $subCat->eName ?></option>
-                                    <?php
-                                }
-                            ?>
-                        </select>
+                                    // Fetch Data From Database:
+                                    $subCategories = $wpdb->get_results( "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = $result->VATCategoryCode" );
+                                    foreach($subCategories as $subCat) {?>
+                                        
+                                        <option value="<?php echo $subCat->VATCategoryCodeSubTypeNo ?>" <?php if($result->VATCategoryCodeSubTypeNo == $subCat->VATCategoryCodeSubTypeNo){ echo 'selected';} ?> ><?php echo $subCat->aName. ' - ' . $subCat->eName ?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                        </div>
                     </div>
                     <!-- /  VATCategoryCodeSubTypeNo field -->
 
@@ -130,20 +129,22 @@
                     <!--  Second Business ID Type field -->
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Second Business ID Type:', 'zatca') ?></label>
-                        <select class="form-select select2"  name="second-business-id-type">
-                            <option value="">...</option>
-                            <?php
-                                global $wpdb;
+                        <div class="form-group">
+                            <select class="form-select select2"  name="second-business-id-type">
+                                <option value="">...</option>
+                                <?php
+                                    global $wpdb;
 
-                                // Fetch Data From Database:
-                                $sellers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE isSeller=1" );
-                                foreach($sellers as $seller) {?>
-                                    
-                                    <option value="<?php echo $seller->codeNumber ?>" <?php if($result->secondBusinessIDType == $seller->codeNumber){ echo 'selected';} ?> ><?php echo $seller->aName. ' - ' . $seller->eName ?></option>
-                                    <?php
-                                }
-                            ?>
-                        </select>
+                                    // Fetch Data From Database:
+                                    $sellers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE isSeller=1" );
+                                    foreach($sellers as $seller) {?>
+                                        
+                                        <option value="<?php echo $seller->codeNumber ?>" <?php if($result->secondBusinessIDType == $seller->codeNumber){ echo 'selected';} ?> ><?php echo $seller->aName. ' - ' . $seller->eName ?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                        </div>
                     </div>
                     <!-- /  Second Business ID Type field -->
 

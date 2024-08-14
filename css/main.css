@@ -185,6 +185,14 @@ body.wp-core-ui.colors-blue .my-plugin-button {
 /*End Device*/
 
 
+/*Start Company*/
+.select2
+{
+  width: 100%!important;
+}
+/*End Company*/
+
+
 /* SELECT Lib */
 
 .select2-container .select2-selection--single{
