@@ -24,7 +24,6 @@
                 <th class="text-center" style="font-size: 0.7rem;" ><?php echo _e('Device No', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Cryptographic Stamp ID', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Expiry Date', 'zatca') ?></th>
-                <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Token Data', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Device Status', 'zatca') ?></th>
                 <th class="text-center" style="font-size: 0.7rem;"><?php echo _e('Action', 'zatca') ?></th>
             </tr>
@@ -46,7 +45,6 @@
                         <td class="text-center"><?php echo $result->deviceNo ?></td>
                         <td class="text-center"><?php echo $result->deviceCSID ?></td>
                         <td class="text-center"><?php echo $result->CsID_ExpiryDate ?></td>
-                        <td class="text-center"><?php echo $result->tokenData ?></td>
                         <td class="text-center">
                             <?php 
                             echo (isset($result->deviceStatus) && $result->deviceStatus==0) ? _e('Active', 'zatca') : _e('Inactive', 'zatca'); 
@@ -70,7 +68,7 @@
                             <!-- Delete Btn -->
                             <button 
                                 type='button' 
-                                class='btn my-plugin-button me-1'
+                                class='btn-sm my-plugin-button me-1'
                                 id="delete_device"
                                 data-device-no='<?php echo $result->deviceNo ?>'
                                 data-bs-placement="top" 

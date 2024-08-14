@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-08-14T14:41:57+02:00\n"
+"POT-Creation-Date: 2024-08-14T14:34:58+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -538,7 +538,7 @@ msgstr "حذف جهاز "
 msgid "Edit Document"
 msgstr "تعديل بيانات الفاتوره"
 
-#: documents/edit-document.php:132 documents/view.php:258
+#: documents/edit-document.php:132 documents/view.php:271
 msgid "View Document"
 msgstr "عرض بيانات الفاتوره"
 
@@ -785,15 +785,6 @@ msgstr "اضافه فاتورة جديد"
 msgid "Send Sellected To "
 msgstr "ارسال المحدد الي "
 
-#: documents/view.php:29 option.php:11 option.php:12 option.php:93
-msgid "ZATCA"
-msgstr "هيئة الزكاة"
-
-#: documents/view.php:29
-
-msgid "Send Sellected To Zatca"
-msgstr "ارسال المحدد الي "
-
 #: documents/view.php:40
 msgid "Unsubmitted /Rejected Documents"
 msgstr "الفواتير المرفوضة / الغير مرسلة"
@@ -858,27 +849,31 @@ msgstr "فاتورة مرفوضة"
 msgid "Edit-Document"
 msgstr "تعديل بيانات الفاتورة"
 
-#: documents/view.php:217 documents/view.php:240
+#: documents/view.php:185
+msgid "View Request Data"
+msgstr "اظهار بيانات الطلب"
+
+#: documents/view.php:230 documents/view.php:253
 msgid "Send To Zatca"
 msgstr "ارسال الي هيئة الزكاة"
 
-#: documents/view.php:270
+#: documents/view.php:283
 msgid "Download XML"
 msgstr "تحميل المستند"
 
-#: documents/view.php:298
+#: documents/view.php:311
 msgid "Reissue"
 msgstr "اعاده ارسال"
 
-#: documents/view.php:321
+#: documents/view.php:334
 msgid "Return"
 msgstr "ارجاع"
 
-#: documents/view.php:342
+#: documents/view.php:355
 msgid "View Warning MSG"
 msgstr "اظهار رسالة الخطأ"
 
-#: documents/view.php:364
+#: documents/view.php:377
 msgid "Print Document"
 msgstr "طباعة الفاتوره"
 
@@ -929,6 +924,10 @@ msgstr "عمليه ناجحه"
 #: log/view.php:92
 msgid "Operation"
 msgstr "العمليه"
+
+#: option.php:11 option.php:12 option.php:93
+msgid "ZATCA"
+msgstr "هيئة الزكاة"
 
 #: option.php:69 option.php:70 users/view.php:7
 msgid "Users"
@@ -1369,9 +1368,6 @@ msgstr " عمل فاتورة ضريبيه"
 #: zatca.php:6526
 msgid "Reissued Successfully"
 msgstr "تم اعادة إنشاء الفاتورة بنجاح"
-
-#~ msgid "View Request Data"
-#~ msgstr "اظهار بيانات الطلب"
 
 #~ msgid "Confirm Data"
 #~ msgstr "تأكيد البيانات"

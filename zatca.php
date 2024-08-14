@@ -2856,6 +2856,7 @@ function update_zatca($doc_no){
     $update_seller_sellerAdditionalIdType='';
     $update_seller_sellerAdditionalIdNumber='';
     $update_seller_sellerVatNumber='';
+    $update_seller_sellerVatCategoryNo='';
     $update_seller_street_Arb='';
     $update_seller_POBoxAdditionalNum='';
     $update_seller_apartmentNum='';
@@ -2902,6 +2903,7 @@ function update_zatca($doc_no){
         $exportsInvoice = (isset($doc->zatcaInvoiceTransactionCode_isExports) && $doc->zatcaInvoiceTransactionCode_isExports==0) ? true : false;
         $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
         
+        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
     }
 
     
@@ -2919,13 +2921,14 @@ function update_zatca($doc_no){
     
         $seller_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype     WHERE codeNumber = $seller->secondBusinessIDType") );
         
-        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
+        
 
 
         $sellerName = $seller->companyName;
         $sellerAdditionalIdType = $seller_codeInfo;
         $sellerAdditionalIdNumber = $seller->secondBusinessID;
         $sellerVatNumber = $seller->VATID;
+        $sellerVatCategoryNo = $seller->VATCategoryCode;
         $sellerAddress = [
             "streetName" => $seller->street_Arb,
             "additionalNo" => $seller->POBoxAdditionalNum,
@@ -2942,6 +2945,7 @@ function update_zatca($doc_no){
         $update_seller_sellerAdditionalIdType=$sellerAdditionalIdType;
         $update_seller_sellerAdditionalIdNumber=$sellerAdditionalIdNumber;
         $update_seller_sellerVatNumber=$sellerVatNumber;
+        $update_seller_sellerVatCategoryNo=$sellerVatCategoryNo;
         $update_seller_street_Arb=$seller->street_Arb;
         $update_seller_POBoxAdditionalNum=$seller->POBoxAdditionalNum;
         $update_seller_apartmentNum=$seller->apartmentNum;
@@ -3105,7 +3109,7 @@ function update_zatca($doc_no){
         'seller_aName' =>                   $update_seller_sellerName,
         'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
         'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
-        'VATCategoryCodeNo' =>              $update_seller_sellerVatNumber,
+        'VATCategoryCodeNo' =>              $update_seller_sellerVatCategoryNo,
         'seller_street_Arb' =>              $update_seller_street_Arb,
         'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
         'seller_apartmentNum' =>            $update_seller_apartmentNum,
@@ -4348,6 +4352,7 @@ function update_zatca1($doc_no){
     $update_seller_sellerAdditionalIdType='';
     $update_seller_sellerAdditionalIdNumber='';
     $update_seller_sellerVatNumber='';
+    $update_seller_sellerVatCategoryNo='';
     $update_seller_street_Arb='';
     $update_seller_POBoxAdditionalNum='';
     $update_seller_apartmentNum='';
@@ -4392,7 +4397,7 @@ function update_zatca1($doc_no){
         $nominalInvoice = (isset($doc->zatcaInvoiceTransactionCode_isNominal) && $doc->zatcaInvoiceTransactionCode_isNominal==0) ? true : false;
         $exportsInvoice = (isset($doc->zatcaInvoiceTransactionCode_isExports) && $doc->zatcaInvoiceTransactionCode_isExports==0) ? true : false;
         $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
-        
+        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
     }
 
     
@@ -4410,13 +4415,13 @@ function update_zatca1($doc_no){
     
         $seller_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype     WHERE codeNumber = $seller->secondBusinessIDType") );
         
-        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
 
 
         $sellerName = $seller->companyName;
         $sellerAdditionalIdType = $seller_codeInfo;
         $sellerAdditionalIdNumber = $seller->secondBusinessID;
         $sellerVatNumber = $seller->VATID;
+        $sellerVatCategoryNo = $seller->VATCategoryCode;
         $sellerAddress = [
             "streetName" => $seller->street_Arb,
             "additionalNo" => $seller->POBoxAdditionalNum,
@@ -4433,6 +4438,7 @@ function update_zatca1($doc_no){
         $update_seller_sellerAdditionalIdType=$sellerAdditionalIdType;
         $update_seller_sellerAdditionalIdNumber=$sellerAdditionalIdNumber;
         $update_seller_sellerVatNumber=$sellerVatNumber;
+        $update_seller_sellerVatCategoryNo=$sellerVatCategoryNo;
         $update_seller_street_Arb=$seller->street_Arb;
         $update_seller_POBoxAdditionalNum=$seller->POBoxAdditionalNum;
         $update_seller_apartmentNum=$seller->apartmentNum;
@@ -4595,7 +4601,7 @@ function update_zatca1($doc_no){
         'seller_aName' =>                   $update_seller_sellerName,
         'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
         'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
-        'VATCategoryCodeNo' =>              $update_seller_sellerVatNumber,
+        'VATCategoryCodeNo' =>              $update_seller_sellerVatCategoryNo,
         'seller_street_Arb' =>              $update_seller_street_Arb,
         'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
         'seller_apartmentNum' =>            $update_seller_apartmentNum,
@@ -4739,6 +4745,7 @@ function send_request_to_zatca_report(){
     $seller_additionalIdNumber = $requestArray['seller']['additionalIdNumber'];
 
     $seller_secondBusinessId_companyStage_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber == null && $company_stage == 2) ? true : false;
+    $seller_secondBusinessId_validation = (isset($seller_additionalIdNumber ) && $seller_additionalIdNumber == null) ? true : false;
     
     $buyer_additionalNo = $requestArray['buyer']['address']['additionalNo'];
     $buyer_additionalNo_validation = (isset($buyer_additionalNo ) && $buyer_additionalNo !=null) ? true : false;
@@ -4778,6 +4785,12 @@ function send_request_to_zatca_report(){
         $send_response = [
             'status' => 'buyer_arabic_name',
             'msg' => $buyer_arabic_name];
+    }
+    else if($seller_secondBusinessId_validation == true)
+    {
+        $send_response = [
+            'status' => 'seller_second_business_id',
+            'msg' => ''];
     }
     else{
 
