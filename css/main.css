@@ -177,6 +177,21 @@ body.wp-core-ui.colors-blue .my-plugin-button {
 
 /* End Documents */
 
+/*Start Device*/
+.deviceNo_hidden
+{
+  display: none;
+}
+/*End Device*/
+
+
+/*Start Company*/
+.select2
+{
+  width: 100%!important;
+}
+/*End Company*/
+
 
 /* SELECT Lib */
 

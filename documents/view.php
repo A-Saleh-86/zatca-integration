@@ -26,7 +26,7 @@
         id="send-zatca-sellected" 
         data-bs-toggle="tooltip" 
         data-bs-placement="top" 
-        title="<?php echo _e('Send Sellected To Zatca', 'zatca') ?>"><?php echo _e('Send Sellected To Zatca', 'zatca') ?>
+        title="<?php echo _e('Send Sellected To ', 'zatca') . _e('ZATCA', 'zatca')?>"><?php echo _e('Send Sellected To ', 'zatca'). _e('ZATCA', 'zatca') ?>
         <span class="dashicons dashicons-cloud-upload"></span> 
         </a>
     </div>
@@ -172,20 +172,7 @@
                             </a>
                             <!-- / Edit Btn -->
 
-                            <!-- View Request Data Btn -->
-                            <button 
-                                type="button" 
-                                class="my-plugin-button btn-sm me-1" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#request" 
-                                data-bs-backdrop="false" 
-                                data-document-no="<?php echo $result->documentNo; ?>" 
-                                data-bs-toggle="tooltip" 
-                                data-bs-placement="top" 
-                                title="<?php echo _e('View Request Data', 'zatca') ?>">
-                                <span class="dashicons dashicons-welcome-view-site"></span>
-                            </button>
-                            <!-- / View Request Data Btn -->
+                            
 
                             <?php
                         }

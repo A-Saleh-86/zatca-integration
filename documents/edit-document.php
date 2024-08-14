@@ -139,190 +139,148 @@ if (!empty($results)) {
         
         <!--Start Seller and Buyer Tables-->
         <div class="row seller_buyer">
-            <!-- Seller Table-->
+            <!-- Buyer Table-->
             <div class="col-md-6">
                 <table class="table table-striped table-bordered text-center">
                     <tbody>
                         <tr>
-                            <th>Buyer</th>
-                            <th>المشترى</th>
+                            <th colspan="3">معلومات المشترى</th>
                         </tr>
                         <tr>
                             <th>Name</th>
+                            <td><?php echo $buyer_aName_Customer; ?></td>
                             <th>الاسم</th>
                         </tr>
-                        <tr>
-                            <td><?php echo $buyer_aName_Customer; ?></td>
-                            <td><?php echo $buyer_aName_Customer; ?></td>
-                        </tr>
+                        
                         <tr>
                             <th>Building No</th>
+                            <td><?php echo $buyer_apartmentNum_Customer; ?></td>
                             <th>رقم المبنى</th>
                         </tr>
-                        <tr>
-                            <td><?php echo $buyer_apartmentNum_Customer; ?></td>
-                            <td><?php echo $buyer_apartmentNum_Customer; ?></td>
-                        </tr>
+                        
                         <tr>
                             <th>Street Name</th>
-                            <th>اسم الشارع</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_street_Eng_Customer; ?></td>
                             <td><?php echo $buyer_street_Arb_Customer; ?></td>
-                        </tr>
-                        <tr>
-                            <th>District</th>
-                            <th>الحى</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_district_Eng_Customer; ?></td>
-                            <td><?php echo $buyer_district_Arb_Customer; ?></td>
-                        </tr>
-                        <tr>
-                            <th>City</th>
-                            <th>المدينة</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_city_Eng_Customer; ?></td>
-                            <td><?php echo $buyer_city_Arb_Customer; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Country</th>
-                            <th>الدولة</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_CountryNo_Customer; ?></td>
-                            <td><?php echo $buyer_CountryNo_Customer; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Postal Code</th>
-                            <th>الرمز البريدى</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_Postal_Code; ?></td>
-                            <td><?php echo $buyer_Postal_Code; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Additional No.</th>
-                            <th>الرقم الاضافى للعنوان</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_POBoxAdditionalNum; ?></td>
-                            <td><?php echo $buyer_POBoxAdditionalNum; ?></td>
-                        </tr>
-                        <tr>
-                            <th>VAT Number</th>
-                            <th>الرقم الضريبى</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_VAT; ?></td>
-                            <td><?php echo $buyer_VAT; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Other Seller ID</th>
-                            <th>معرف آخر</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $buyer_SecondBusinessID; ?></td>
-                            <td><?php echo $buyer_SecondBusinessID; ?></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Seller Table-->
-             <!-- Buyer Table-->
-            <div class="col-md-6">
-                <table class="table table-striped table-bordered text-center">
-                    <tbody>
-                        <tr>
-                            <th>Seller</th>
-                            <th>البائع</th>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>الاسم</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $seller_Name; ?></td>
-                            <td><?php echo $seller_Name; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Building No</th>
-                            <th>رقم المبنى</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $seller_apartmentNum_Company; ?></td>
-                            <td><?php echo $seller_apartmentNum_Company; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Street Name</th>
                             <th>اسم الشارع</th>
                         </tr>
-                        <tr>
-                            <td><?php echo $seller_street_Eng_Company; ?></td>
-                            <td><?php echo $seller_street_Arb_Company; ?></td>
-                        </tr>
+                        
                         <tr>
                             <th>District</th>
-                            <th>الحى</th>
+                            <td><?php echo $buyer_district_Arb_Customer; ?></td>
+                            <th>المقاطعة</th>
                         </tr>
-                        <tr>
-                            <td><?php echo $seller_district_Eng_Company; ?></td>
-                            <td><?php echo $seller_district_Arb_Company; ?></td>
-                        </tr>
+                        
                         <tr>
                             <th>City</th>
+                            <td><?php echo $buyer_city_Arb_Customer; ?></td>
                             <th>المدينة</th>
                         </tr>
-                        <tr>
-                            <td><?php echo $seller_city_Eng_Company; ?></td>
-                            <td><?php echo $seller_city_Arb_Company; ?></td>
-                        </tr>
+                        
                         <tr>
                             <th>Country</th>
+                            <td><?php echo $buyer_CountryNo_Customer; ?></td>
                             <th>الدولة</th>
                         </tr>
-                        <tr>
-                            <td><?php echo $seller_country_Eng_Company; ?></td>
-                            <td><?php echo $seller_country_Arb_Company; ?></td>
-                        </tr>
+                        
                         <tr>
                             <th>Postal Code</th>
+                            <td><?php echo $buyer_Postal_Code; ?></td>
                             <th>الرمز البريدى</th>
                         </tr>
+                        
                         <tr>
-                            <td><?php echo $seller_postalCode; ?></td>
-                            <td><?php echo $seller_postalCode; ?></td>
+                            <th>PO Box Add.No</th>
+                            <td><?php echo $buyer_POBoxAdditionalNum; ?></td>
+                            <th>رقم صندوق البريد الاضافى</th>
                         </tr>
-                        <tr>
-                            <th>Additional No.</th>
-                            <th>الرقم الاضافى للعنوان</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $seller_POBoxAdditionalNum_Company; ?></td>
-                            <td><?php echo $seller_POBoxAdditionalNum_Company; ?></td>
-                        </tr>
+                        
                         <tr>
                             <th>VAT Number</th>
+                            <td><?php echo $buyer_VAT; ?></td>
                             <th>الرقم الضريبى</th>
                         </tr>
+                        
                         <tr>
-                            <td><?php echo $seller_VAT_Company; ?></td>
-                            <td><?php echo $seller_VAT_Company; ?></td>
+                            <th>Second Business ID</th>
+                            <td><?php echo $buyer_SecondBusinessID; ?></td>
+                            <th>المعرف الثانى</th>
                         </tr>
-                        <tr>
-                            <th>Other Seller ID</th>
-                            <th>معرف آخر</th>
-                        </tr>
-                        <tr>
-                            <td><?php echo $seller_secondBusinessID; ?></td>
-                            <td><?php echo $seller_secondBusinessID; ?></td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
             <!-- Buyer Table-->
+             <!-- Seller Table-->
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered text-center">
+                    <tbody>
+                        <tr>
+                            <th colspan="3">معلومات البائع</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td><?php echo $seller_Name; ?></td>
+                            <th>الاسم</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>Building No</th>
+                            <td><?php echo $seller_apartmentNum_Company; ?></td>
+                            <th>رقم المبنى</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>Street Name</th>
+                            <td><?php echo $seller_street_Arb_Company; ?></td>
+                            <th>اسم الشارع</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>District</th>
+                            <td><?php echo $seller_district_Arb_Company; ?></td>
+                            <th>المقاطعة</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>City</th>
+                            <td><?php echo $seller_city_Arb_Company; ?></td>
+                            <th>المدينة</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>Country</th>
+                            <td><?php echo $seller_country_Arb_Company; ?></td>
+                            <th>الدولة</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>Postal Code</th>
+                            <td><?php echo $seller_postalCode; ?></td>
+                            <th>الرمز البريدى</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>PO Box Add.No</th>
+                            <td><?php echo $seller_POBoxAdditionalNum_Company; ?></td>
+                            <th>رقم صندوق البريد الاضافى</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>VAT Number</th>
+                            <td><?php echo $seller_VAT_Company; ?></td>
+                            <th>الرقم الضريبى</th>
+                        </tr>
+                        
+                        <tr>
+                            <th>Seecond Buseinss ID</th>
+                            <td><?php echo $seller_secondBusinessID; ?></td>
+                            <th>المعرف الثانى</th>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <!-- Seller Table-->
 
         </div>
         <!--End Seller and Buyer Tables-->
@@ -357,7 +315,7 @@ if (!empty($results)) {
                     // Construct the WooCommerce Orders URL  
                     $orders_url = $site_url . '/wp-admin/admin.php?page=wc-orders&action=edit&id=' . $result->invoiceNo;
                 ?>
-                <a href="<?php echo $orders_url; ?>" target="_blank"><label class="form-label" style="cursor:pointer"><?php echo _e('System Invoice No:', 'zatca') ?></label></a>
+                <a href="<?php echo $orders_url; ?>" target="_blank"><label class="form-label" style="cursor:pointer"><?php echo _e('System Invoice No:', 'zatca') ?> <span class="dashicons dashicons-external"></span></label></a>
                 <div class="input-group">
                     <input 
                         type="text"
