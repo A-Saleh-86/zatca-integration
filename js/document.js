@@ -822,7 +822,7 @@ jQuery(document).ready(function($){
             },
             success: function(response) {
                 console.log(response);
-                if(response.msg.status == 'seller_second_business_id'){
+                if(response.msg.status == 'insert_seller_additional_id'){
 
                     // Error notification:
                     popupValidation.error({
@@ -1060,7 +1060,7 @@ jQuery(document).ready(function($){
                     }
                         
                     setTimeout(() => {
-                       // window.location.reload();
+                        window.location.reload();
                     }, 3000);
                 }
             
