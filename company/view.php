@@ -6,13 +6,14 @@
 
     <?php
     
-    global $wpdb;
+    // global $wpdb;
 
     // Table Name:
-    $table_name = 'zatcaCompany';
+    // $table_name = 'zatcaCompany';
 
     // Prepare the query with a condition on the VendorId column using the %d placeholder
-    $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name ") );
+    // $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name ") );
+    $results = get_all_data_from_table('zatcaCompany');
 
     // Check if there are results
     if (!empty($results)) { // if data already inserted:
@@ -724,7 +725,7 @@
                     <input 
                         type="text" 
                         name="postal-code"
-                        id="postal_code"
+                        id="company_postal_code"
                         class="form-control"
                         placeholder="<?php echo _e('Postal Code:', 'zatca') ?>"
                     />
