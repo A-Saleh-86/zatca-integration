@@ -5194,9 +5194,10 @@ function send_request_to_zatca_report(){
 //function to insert new copy of woocommerce to database [Reissue]
 function insert_woocommerce_copy($docNo){
     global $wpdb;
+    $table_orders = $wpdb->prefix . 'wc_orders';
 
     // Get the last order ID in the table  
-    $last_order_id = $wpdb->get_var($wpdb->prepare("SELECT MAX(id) FROM wp_wc_orders"));
+    $last_order_id = $wpdb->get_var($wpdb->prepare("SELECT MAX(id) FROM $table_orders"));
 
     // get invoiceNo from zatcaDocument table that's mean original_order_id also
     $original_order_id = $wpdb->get_var($wpdb->prepare("SELECT invoiceNo FROM zatcaDocument WHERE documentNo = $docNo"));
@@ -5211,9 +5212,9 @@ function insert_woocommerce_copy($docNo){
     // Insert new order data 
     $wpdb->query(  
         $wpdb->prepare("  
-            INSERT INTO {$wpdb->prefix}wc_orders  
+            INSERT INTO $table_orders 
             SELECT $new_order_id, '$order_status' , currency, type, tax_amount, total_amount, customer_id, billing_email, date_created_gmt, date_updated_gmt, parent_order_id, payment_method, payment_method_title, transaction_id, ip_address, user_agent, customer_note  
-            FROM {$wpdb->prefix}wc_orders  
+            FROM $table_orders 
             WHERE id = %d;", $original_order_id)
     );
 
@@ -5230,8 +5231,9 @@ function insert_woocommerce_copy($docNo){
 
     ////////////////////////////////////////////////////////////////////////////
     //wp_woocommerce_order_items table
-    // Query to get the original order items based on the order ID  
-    $order_items_query = $wpdb->prepare("SELECT * FROM wp_woocommerce_order_items WHERE order_id = %d", $original_order_id);  
+    // Query to get the original order items based on the order ID 
+    $table_woocommerce_order_items = $wpdb->prefix . 'woocommerce_order_items'; 
+    $order_items_query = $wpdb->prepare("SELECT * FROM $table_woocommerce_order_items WHERE order_id = %d", $original_order_id);  
     $order_items = $wpdb->get_results($order_items_query, ARRAY_A);
 
     // Insert copies of the order items with new order IDs  
@@ -5246,20 +5248,20 @@ function insert_woocommerce_copy($docNo){
                 'order_item_name' => $order_item['order_item_name'],
                 'order_item_type' => $order_item['order_item_type']
                 ];
-                $wpdb->insert('wp_woocommerce_order_items', $new_order_item_data);
+                $wpdb->insert($table_woocommerce_order_items, $new_order_item_data);
         }
     }
 
     // wp_woocommerce_order_itemmeta table
     // Query to get the original order item meta based on the order item ID  
-
+    $table_woocommerce_order_itemmeta = $wpdb->prefix . 'woocommerce_order_itemmeta';
     $wpdb->query(  
         $wpdb->prepare("  
-            INSERT INTO wp_woocommerce_order_itemmeta (order_item_id, meta_key, meta_value)  
+            INSERT INTO $table_woocommerce_order_itemmeta (order_item_id, meta_key, meta_value)  
             SELECT new_item.order_item_id, meta.meta_key, meta.meta_value  
-            FROM wp_woocommerce_order_items new_item
-            JOIN wp_woocommerce_order_items old_item ON old_item.order_id = '$original_order_id'  
-            JOIN wp_woocommerce_order_itemmeta meta ON old_item.order_item_id = meta.order_item_id 
+            FROM $table_woocommerce_order_items new_item
+            JOIN $table_woocommerce_order_items old_item ON old_item.order_id = '$original_order_id'  
+            JOIN $table_woocommerce_order_itemmeta meta ON old_item.order_item_id = meta.order_item_id 
             WHERE new_item.order_id = %d;", $new_woocommerce_order_id));
     ///////////////////////////////////////////////////////////////////////////////
 
