@@ -326,7 +326,7 @@
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
                                 title="<?php echo _e('Return', 'zatca') ?>">
-                                <span class="dashicons dashicons-dismiss"></span>
+                                <span class="dashicons dashicons-undo"></span>
                             </a>
                             <!-- / Return-->
 
