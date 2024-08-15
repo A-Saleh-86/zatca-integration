@@ -703,7 +703,7 @@ msgstr "أصل الفاتورة المعاد ارسالها"
 
 #: documents/insert.php:22 documents/insert.php:602
 msgid "Insert New Document"
-msgstr "اضافه فاتورة جديد"
+msgstr "اضافه فاتورة جديده"
 
 #: documents/insert.php:88 documents/view.php:58
 msgid "System Invoice No"
@@ -963,9 +963,7 @@ msgid "Remind with Late B2C Invoices:"
 msgstr "التنبيه بفواتير B2C المتاخرة"
 
 #: users/edit-user.php:130 users/insert.php:116
-msgid ""
-"Remind with Late B2C Invoices before ZATCA grace period ending with ( number "
-"box ) hours:"
+msgid "Remind with Late B2C Invoices before ZATCA grace period ending with ( number box ) hours:"
 msgstr "ذكرنى بالفواتير المتاخرة (عدد) الساعات"
 
 #: users/edit-user.php:146 users/insert.php:130
@@ -1199,9 +1197,7 @@ msgid "You Muse Insert Buyer additional Number in zatca customer"
 msgstr "يجب ادخال رقم  المعرف الثاني للعميل"
 
 #: zatca.php:376
-msgid ""
-"No rows were affected. Possible reasons: No matching rows or the data is "
-"already up to date."
+msgid "No rows were affected. Possible reasons: No matching rows or the data is already up to date."
 msgstr "لا يوجد تحديث ربما كل شئ على مايرام"
 
 #: zatca.php:377
@@ -1209,17 +1205,12 @@ msgid "Please submit via reporing"
 msgstr "الرجاء الارسال باستخدام الB2C"
 
 #: zatca.php:378
-msgid ""
-"Unauthorized, Please check authentication certificate and secret and resubmit"
+msgid "Unauthorized, Please check authentication certificate and secret and resubmit"
 msgstr "غير مصرح به، يرجى التحقق من شهادة المصادقة والسرية وإعادة الإرسال"
 
 #: zatca.php:379
-msgid ""
-"Please resend with smaller payload(invoice), Decrease invoice details and "
-"resubmit"
-msgstr ""
-"يرجى إعادة الإرسال بحمولة أصغر (فاتورة)، وتقليل تفاصيل الفاتورة وإعادة "
-"الإرسال"
+msgid "Please resend with smaller payload(invoice), Decrease invoice details and resubmit"
+msgstr "يرجى إعادة الإرسال بحمولة أصغر (فاتورة)، وتقليل تفاصيل الفاتورة وإعادة الإرسال"
 
 #: zatca.php:380
 msgid "Please wait for 1 minute and resubmit"
@@ -1238,16 +1229,12 @@ msgid "Gateway Timeout, Please try again later"
 msgstr "انتهت المهلة يرجى المحاولة مرة أخرى لاحقًا"
 
 #: zatca.php:384
-msgid ""
-"Buyer arabic name is mandatory and the same as his name in his National ID"
-msgstr ""
-"يجب أن يكون اسم المشتري باللغة العربية وأن يكون مطابقًا لاسمه الموجود في "
-"البطاقة الوطنية"
+msgid "Buyer arabic name is mandatory and the same as his name in his National ID"
+msgstr "يجب أن يكون اسم المشتري باللغة العربية وأن يكون مطابقًا لاسمه الموجود في البطاقة الوطنية"
 
 #: zatca.php:385
 msgid "Second business type must be National ID, Please edit customer profile"
-msgstr ""
-"يجب أن يكون نوع التسجيل الثاني هو الهوية الوطنية، يرجى تعديل ملف العميل"
+msgstr "يجب أن يكون نوع التسجيل الثاني هو الهوية الوطنية، يرجى تعديل ملف العميل"
 
 #: zatca.php:386
 msgid "Buyer Second business ID must be filled, Please edit customer profile"
@@ -1259,18 +1246,14 @@ msgstr "يجب ملء رقم المعرف الثاني للشركة يرجى ت�
 
 #: zatca.php:388
 msgid "Company zatca stage must be V2, Please edit company profile"
-msgstr ""
-"يجب أن تكون مرحلة زاتكا الخاصة بالشركة مرحلة ثانية، يرجى تعديل ملف تعريف "
-"الشركة"
+msgstr "يجب أن تكون مرحلة زاتكا الخاصة بالشركة مرحلة ثانية، يرجى تعديل ملف تعريف الشركة"
 
 #: zatca.php:389
-msgid ""
-"Sorry, VAT ID for the client must be empty because the invoice is exports"
+msgid "Sorry, VAT ID for the client must be empty because the invoice is exports"
 msgstr "عذرا، يجب أن يكون الرقم الضريبي للعميل فارغًا لأن الفاتورة يتم تصديرها"
 
 #: zatca.php:390
-msgid ""
-"Sorry, VAT ID for the client must be filled because the invoice is not "
+msgid "Sorry, VAT ID for the client must be filled because the invoice is not "
 "exports"
 msgstr "عذرا، يجب ملء الرقم الضريبي للعميل لأن الفاتورة غير قابلة للتصدير"
 
