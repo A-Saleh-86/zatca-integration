@@ -2952,6 +2952,7 @@ function update_zatca($doc_no){
         $update_seller_city_Arb=$seller->city_Arb;
         $update_seller_countrySubdivision_Arb=$seller->countrySubdivision_Arb;
         $update_seller_POBox=$seller->POBox;
+        $update_seller_postalCode=$seller->postalCode;
         $update_seller_district_Arb=$seller->district_Arb;
 
     }
@@ -2980,7 +2981,7 @@ function update_zatca($doc_no){
             "buildingNumber" => $buyer->apartmentNum,
             "city" => $buyer->city_Arb,
             "state" => $buyer->countrySubdivision_Arb,
-            "zipCode" => $buyer->POBox,
+            "zipCode" => $buyer->postalCode,
             "district" => $buyer->district_Arb,
             "country" => "SA"
         ];
@@ -3116,6 +3117,7 @@ function update_zatca($doc_no){
         'seller_city_Arb' =>                $update_seller_city_Arb,
         'seller_countrySubdivision_Arb' =>  $update_seller_countrySubdivision_Arb,
         'seller_POBox' =>                   $update_seller_POBox,
+        'seller_PostalCode' =>              $update_seller_postalCode,
         'seller_district_Arb' =>            $update_seller_district_Arb,
         'buyer_aName' =>                    $update_buyer_aName,
         'buyer_street_Arb' =>               $update_buyer_street_Arb,
