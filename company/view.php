@@ -242,10 +242,11 @@
                         <label class="form-label"><?php echo _e('PO Box :', 'zatca') ?></label>
                         <input 
                             type="text" 
-                            name="po-box"
-                            id="po-company"
+                            name="postal-code"
+                            id="company_postal_code"
                             class="form-control"
-                            value="<?php echo $result->POBox ?>"
+                            value="<?php echo $result->postalCode ?>"
+                            
                         />
                     </div>
                     <!-- /  PO Box  field -->
@@ -255,12 +256,12 @@
                         <label class="form-label"><?php echo _e('Postal Code:', 'zatca') ?></label>
                         <input 
                             type="text" 
-                            name="postal-code"
-                            id="company_postal_code"
+                            name="po-box"
+                            id="po-company"
                             class="form-control"
-                            value="<?php echo $result->postalCode ?>"
-                            
+                            value="<?php echo $result->POBox ?>"
                         />
+                        
                     </div>
                     <!--  / Postal code field -->
 
