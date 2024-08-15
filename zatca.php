@@ -5345,7 +5345,7 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
             buyer_countrySubdivision_Arb, buyer_countrySubdivision_Eng, buyer_street_Arb, buyer_street_Eng,
             buyer_district_Arb, buyer_district_Eng, buyer_city_Arb, buyer_city_Eng, buyer_country_Arb, buyer_country_Eng,
             buyer_country_No, buyer_PostalCode, buyer_POBox, buyer_POBoxAdditionalNum, 0, NULL, NULL, 1, zatcaRejectedBuildingNo,
-            %d, zatcaAcceptedReissueBuildingNo, zatcaAcceptedReissueInvoiceNo, isZatcaReissued, row_timestamp
+            %d, zatcaAcceptedReissueBuildingNo, zatcaAcceptedReissueInvoiceNo, NULL, row_timestamp
             FROM zatcaDocument  
             WHERE documentNo = %d", $docNo, $docNo)
     );

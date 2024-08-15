@@ -174,7 +174,7 @@
 
                             
 
-                            <?php
+                        <?php
                         }
 
                         /*  Validation on document have zatcaSuccessResponse = 0 
@@ -192,7 +192,8 @@
 
                         $zatcaCompanySatge = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
                         FROM zatcaDocument zd, zatcaCompany zc 
-                        WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));    
+                        WHERE zd.vendorId = zc.VendorId AND zd.documentNo =  $result->documentNo"));   
+
                         // Check If zatcaSuccessResponse = 0 to show for all documents:
                         if ($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 0){
                             $zatcaCompanySatge = $wpdb->get_var($wpdb->prepare("SELECT zc.zatcaStage 
@@ -276,7 +277,13 @@
                         } 
 
                         // Reissue Btn for doc have zatca success response = 3:
-                        if($zatcaSuccessResponse != NULL && (int)$zatcaSuccessResponse === 3 && $zatcaRejectedInvoiceNo == NULL && $zatcaAcceptedReissueInvoiceNo == NULL && ($isZatcaReissued == 1 || $isZatcaReissued == NULL)){?>
+                        if(
+                        $zatcaSuccessResponse != NULL && 
+                        (int)$zatcaSuccessResponse === 3 && 
+                        //$zatcaRejectedInvoiceNo == NULL && 
+                        $zatcaAcceptedReissueInvoiceNo == NULL && 
+                        ($isZatcaReissued == 1 || $isZatcaReissued == NULL))
+                        {?>
                             
                             <!-- Reissue -->
                             <a 

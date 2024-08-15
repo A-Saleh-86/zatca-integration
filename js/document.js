@@ -91,7 +91,7 @@ function updateInput() {
         success: function(data) {
 
             // Get VATCategoryCodeSubTypeNo aName and Put In exemption Reason:
-            // exemptionReasonInput.value = data.vatCatName;
+             exemptionReasonInput.value = data.vatCatName;
         },
         error: function(xhr, status, error) {
             console.error('Error fetching data:', error);
@@ -138,7 +138,14 @@ function updateInput() {
         }
         // Update exemption-reason on vat-cat-code-sub change:
         $('#vat-cat-code-sub').on('change', function(event) {
-            updateInput();
+            //updateInput();
+            const selectedVatCatSub = this.value;
+            var selectedText = $('#vat-cat-code-sub option:selected').text();
+            if(selectedVatCatSub != 0)
+            {
+                // show Exemption Reason Div if vat-cat-code != 0
+                exemptionReasonInput.value = selectedText;
+            }
         });
 
         $('#vat-cat-code').on('change', function(event) {
