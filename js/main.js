@@ -101,6 +101,9 @@ jQuery(document).ready( function () {
     } else {
         $('#scroll_table').DataTable({
             scrollX: true,
+            language: {
+                url: main.dtLoc,
+            }
         });
     }
 
@@ -114,6 +117,9 @@ jQuery(document).ready( function () {
             select: {  
                 style: 'multi'  
             },
+            language: {
+                url: main.dtLoc,
+            }
         });
     } else {
         $('#example').DataTable({
@@ -121,6 +127,9 @@ jQuery(document).ready( function () {
             select: {  
                 style: 'multi'  
             },
+            language: {
+                url: main.dtLoc,
+            }
         });
     }
 

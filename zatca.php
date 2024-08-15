@@ -305,6 +305,7 @@ function localization() {
         'customer_inserted' => __('Customer Inserted Success', 'zatca'),
         'select_customer' => __('Please select a customer first', 'zatca'),
         'arabic_name' => __('Please Insert Customer Aarabic Name', 'zatca'),
+        'client_name_must_arabic' => __("You Must Enter Client Name In Arabic", "zatca"),
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
         'delete_msg' => __("Are You Sure?", "zatca"),
@@ -402,6 +403,7 @@ function localization() {
     // main.js localization:
     wp_enqueue_script('main-js',  plugin_dir_url(__FILE__) . '/js/main.js', array(), false, true);
     wp_localize_script( 'main-js', 'main', array( 
+        'dtLoc' => plugin_dir_url(__FILE__) . '/js/datatable-localization.json',
         'delete_msg' => __("Are You Sure?", "zatca"),
         'delete_title' => __("Delete", "zatca"),
         'locale' => get_locale()
