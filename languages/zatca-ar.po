@@ -1090,7 +1090,7 @@ msgstr "من فضلك اختر العميل أولا"
 
 #: zatca.php:307
 msgid "Please Insert Customer Aarabic Name"
-msgstr "من فضلك أدخل اسم العميل باللغة العربية"
+msgstr "من فضلك أدخل اسم العميل العربي"
 
 #: zatca.php:308 zatca.php:326 zatca.php:341 zatca.php:357 zatca.php:394
 #: zatca.php:397 zatca.php:416
@@ -1292,7 +1292,7 @@ msgstr "فاتورة رقم "
 
 #: zatca.php:414
 msgid "Client Name Arabic Cant be Empty"
-msgstr "يجب ادخال اسم العميل بالعربية"
+msgstr "يجب ادخال اسم العميل العربي"
 
 #: zatca.php:415
 msgid "You Must Enter Client Name In Arabic"

@@ -30,6 +30,11 @@ jQuery(document).ready(function($) {
     // Get Postal Code Input element:
     var postal_Code = document.getElementById("customer_postal_code");
 
+    // function to check if a string contains Arabic characters
+    function isArabic(string) {
+        var arabicPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+        return arabicPattern.test(string);
+    };
 
     // Insert New Customer Form:
     $("#insert_customer_form").submit(function(event){
@@ -46,6 +51,18 @@ jQuery(document).ready(function($) {
             });
 
             return;
+        }
+
+        // validation on client name ar must be Arabic:
+        if (!isArabic(clientNameArabicInput.value)) {
+
+            // Error notification:
+            popupValidation.error({
+            title: myCustomer.notification_error_title,
+            message: myCustomer.client_name_must_arabic
+            });
+
+            return false;
         }
 
         // Define the form data:
