@@ -403,6 +403,7 @@ function localization() {
     // main.js localization:
     wp_enqueue_script('main-js',  plugin_dir_url(__FILE__) . '/js/main.js', array(), false, true);
     wp_localize_script( 'main-js', 'main', array( 
+        'dtLoc' => plugin_dir_url(__FILE__) . '/js/datatable-localization.json',
         'delete_msg' => __("Are You Sure?", "zatca"),
         'delete_title' => __("Delete", "zatca"),
         'locale' => get_locale()
