@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-08-15T21:31:44+02:00\n"
+"POT-Creation-Date: 2024-08-16T18:53:39+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgstr "رقم المبنى"
 msgid "Postal Code"
 msgstr "الرمز البريدي"
 
-#: checkout-page.php:171 checkout-page.php:392 company/view.php:631
+#: checkout-page.php:171 checkout-page.php:392 company/view.php:620
 #: customers/insert.php:220 documents/doc-add-customer.php:224
 msgid "Second Business ID"
 msgstr "المعرف الثاني"
@@ -77,140 +77,140 @@ msgstr "نوع المعرف الثاني"
 msgid "Company"
 msgstr "الشركة"
 
-#: company/view.php:26 company/view.php:490
+#: company/view.php:26 company/view.php:485
 msgid "Zatca Stage:"
 msgstr "مرحلة الدمج مع هيئة الزكاة"
 
-#: company/view.php:29 company/view.php:495
+#: company/view.php:29 company/view.php:490
 msgid "ZATCA V1"
 msgstr "مرحله اولي"
 
-#: company/view.php:30 company/view.php:496
+#: company/view.php:30 company/view.php:491
 msgid "ZATCA V2"
 msgstr "مرحله ثانيه"
 
-#: company/view.php:31 company/view.php:494
+#: company/view.php:31 company/view.php:489
 msgid "No ZATCA"
 msgstr "لايوجد"
 
-#: company/view.php:43 company/view.php:508
+#: company/view.php:43 company/view.php:503
 msgid "Get Seller Data"
 msgstr "جلب بيانات البائع"
 
-#: company/view.php:54 company/view.php:519
+#: company/view.php:54 company/view.php:514
 msgid "Country :"
 msgstr "البلد"
 
-#: company/view.php:81 company/view.php:544 documents/edit-document.php:638
+#: company/view.php:82 company/view.php:538 documents/edit-document.php:638
 #: documents/insert.php:417
 msgid "VAT Category Code:"
 msgstr "فئة الضريبة الرئيسية"
 
-#: company/view.php:103 company/view.php:564
+#: company/view.php:102 company/view.php:558
 msgid "VAT Category Code Sub Type No:"
 msgstr "فئة الضريبة الفرعية"
 
-#: company/view.php:131 company/view.php:605 customers/edit-customer.php:253
+#: company/view.php:128 company/view.php:596 customers/edit-customer.php:253
 #: customers/insert.php:245 documents/doc-add-customer.php:249
 msgid "Second Business ID Type:"
 msgstr "نوع المعرف الثاني"
 
-#: company/view.php:154 company/view.php:625 customers/edit-customer.php:222
+#: company/view.php:149 company/view.php:614 customers/edit-customer.php:222
 #: customers/insert.php:213 documents/doc-add-customer.php:217
 msgid "Second Business ID :"
 msgstr "المعرف الثاني"
 
-#: company/view.php:173 company/view.php:644 customers/edit-customer.php:209
+#: company/view.php:168 company/view.php:633 customers/edit-customer.php:209
 #: customers/insert.php:200 documents/doc-add-customer.php:204
 msgid "VAT ID:"
 msgstr "الرقم الضريبي"
 
-#: company/view.php:191 company/view.php:662
+#: company/view.php:186 company/view.php:651
 msgid "Company name:"
 msgstr "الشركة"
 
-#: company/view.php:210 company/view.php:681 company/view.php:687
+#: company/view.php:205 company/view.php:670 company/view.php:676
 #: customers/edit-customer.php:298 customers/insert.php:288
 #: documents/doc-add-customer.php:292
 msgid "Apartment No :"
 msgstr "رقم المبنى"
 
-#: company/view.php:223 company/view.php:694 company/view.php:700
+#: company/view.php:218 company/view.php:683 company/view.php:689
 #: customers/edit-customer.php:311 customers/insert.php:301
 #: documents/doc-add-customer.php:305
 msgid "PO Box Additional Number :"
 msgstr "رقم صندوق بريد إضافي"
 
-#: company/view.php:242 company/view.php:713 company/view.php:719
+#: company/view.php:237 company/view.php:702 company/view.php:708
 #: customers/edit-customer.php:347 customers/insert.php:334
 #: documents/doc-add-customer.php:338
 msgid "PO Box :"
 msgstr "صندوق البريد"
 
-#: company/view.php:256 company/view.php:726 company/view.php:732
+#: company/view.php:251 company/view.php:715 company/view.php:721
 #: customers/edit-customer.php:331 customers/insert.php:319
 #: documents/doc-add-customer.php:323
 msgid "Postal Code:"
 msgstr "الرقم البريدي"
 
-#: company/view.php:278 company/view.php:746 company/view.php:752
+#: company/view.php:273 company/view.php:735 company/view.php:741
 msgid "Street Name - AR :"
 msgstr "الشارع بالعربية"
 
-#: company/view.php:291 company/view.php:759 company/view.php:765
+#: company/view.php:286 company/view.php:748 company/view.php:754
 msgid "Street Name - EN :"
 msgstr "الشارع بالانجليزية"
 
-#: company/view.php:310 company/view.php:778 company/view.php:784
+#: company/view.php:305 company/view.php:767 company/view.php:773
 msgid "District Name - AR :"
 msgstr "المقاطعة بالعربية"
 
-#: company/view.php:323 company/view.php:791 company/view.php:796
+#: company/view.php:318 company/view.php:780 company/view.php:785
 msgid "District Name - EN :"
 msgstr "المقاطعة بالانجليزي"
 
-#: company/view.php:341 company/view.php:809 company/view.php:815
+#: company/view.php:336 company/view.php:798 company/view.php:804
 msgid "City Name - AR :"
 msgstr "المدينة بالعربية"
 
-#: company/view.php:354 company/view.php:822 company/view.php:828
+#: company/view.php:349 company/view.php:811 company/view.php:817
 msgid "City Name - EN :"
 msgstr "المدينة بالانجليزي"
 
-#: company/view.php:373 company/view.php:841 company/view.php:846
+#: company/view.php:368 company/view.php:830 company/view.php:835
 msgid "Country Subdivision - AR :"
 msgstr "محافظة بالعربية"
 
-#: company/view.php:385 company/view.php:853 company/view.php:858
+#: company/view.php:380 company/view.php:842 company/view.php:847
 msgid "Country Subdivision - EN :"
 msgstr "محافظة بالانجليزية"
 
-#: company/view.php:421 company/view.php:885
+#: company/view.php:416 company/view.php:874
 msgid "Device :"
 msgstr "رقم الجهاز"
 
-#: company/view.php:441 company/view.php:904
+#: company/view.php:436 company/view.php:891
 msgid "ZATCA B2C Sending Interval :"
 msgstr "طريقة ارسال فواتير B2C  لهيئة الزكاة"
 
-#: company/view.php:452 company/view.php:916
+#: company/view.php:447 company/view.php:903
 msgid "ZATCA Invoices Type:"
 msgstr "نوع الفواتير المدعومة"
 
-#: company/view.php:456 company/view.php:921 customers/insert.php:236
+#: company/view.php:451 company/view.php:908 customers/insert.php:236
 #: documents/doc-add-customer.php:240
 msgid "Both"
 msgstr "كلاهما"
 
-#: company/view.php:473
+#: company/view.php:468
 msgid "Update Company Details"
 msgstr "تعديل بيانات الشركة"
 
-#: company/view.php:668
+#: company/view.php:657
 msgid "company Name"
 msgstr "اسم الشركة"
 
-#: company/view.php:935
+#: company/view.php:922
 msgid "Insert Company Details"
 msgstr "ادخال بيانات الشركة"
 
@@ -538,7 +538,7 @@ msgstr "حذف جهاز "
 msgid "Edit Document"
 msgstr "تعديل بيانات الفاتوره"
 
-#: documents/edit-document.php:132 documents/view.php:259
+#: documents/edit-document.php:132 documents/view.php:260
 msgid "View Document"
 msgstr "عرض بيانات الفاتوره"
 
@@ -849,31 +849,35 @@ msgstr "فاتورة مقبولة مع تحذيرات"
 msgid "Rejected Invoice"
 msgstr "فاتورة مرفوضة"
 
-#: documents/view.php:170
+#: documents/view.php:137
+msgid "Returned"
+msgstr "مرتجع"
+
+#: documents/view.php:171
 msgid "Edit-Document"
 msgstr "تعديل بيانات الفاتورة"
 
-#: documents/view.php:218 documents/view.php:241
+#: documents/view.php:219 documents/view.php:242
 msgid "Send To Zatca"
 msgstr "ارسال الي هيئة الزكاة"
 
-#: documents/view.php:271
+#: documents/view.php:272
 msgid "Download XML"
 msgstr "تحميل المستند"
 
-#: documents/view.php:305
+#: documents/view.php:307
 msgid "Reissue"
 msgstr "اعاده ارسال"
 
-#: documents/view.php:328
+#: documents/view.php:351
 msgid "Return"
 msgstr "ارجاع"
 
-#: documents/view.php:349
+#: documents/view.php:370
 msgid "View Warning MSG"
 msgstr "اظهار رسالة الخطأ"
 
-#: documents/view.php:371
+#: documents/view.php:392
 msgid "Print Document"
 msgstr "طباعة الفاتوره"
 
@@ -929,7 +933,7 @@ msgstr "العمليه"
 msgid "Users"
 msgstr "المستخدمين"
 
-#: option.php:79 option.php:80 zatca.php:4309
+#: option.php:79 option.php:80 zatca.php:4314
 msgid "Zacta Tampering Detector"
 msgstr "فحص خلل الفواتير"
 
@@ -1177,7 +1181,7 @@ msgstr "غير مسموح باضافة اكثر من جهاز واحد نشط"
 msgid "Document Created successifly"
 msgstr "تم ادخال الفاتورة بنجاح"
 
-#: zatca.php:372 zatca.php:779 zatca.php:1365 zatca.php:4081 zatca.php:4246
+#: zatca.php:372 zatca.php:780 zatca.php:1366 zatca.php:4086 zatca.php:4251
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
 
@@ -1303,68 +1307,68 @@ msgstr "رقم الفاتورة"
 msgid "Invoice Hash"
 msgstr " هاش الفاتورة "
 
-#: zatca.php:811
+#: zatca.php:812
 msgid "Failed to delete Customer."
 msgstr "فشل عملية الحذف"
 
-#: zatca.php:816
+#: zatca.php:817
 msgid "Customer deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1081
+#: zatca.php:1082
 msgid "Failed to delete device."
 msgstr "فشل حذف الجهاز"
 
-#: zatca.php:1091
+#: zatca.php:1092
 msgid "Device deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1102
+#: zatca.php:1103
 msgid ""
 "Failed to delete device because there are documents related to this device."
 msgstr "فشل حذف الجهاز بسبب وجود فواتير مرتبطة بهذا الجهاز"
 
-#: zatca.php:1139
+#: zatca.php:1140
 msgid "Failed to delete User"
 msgstr "فشل عملية الحذف"
 
-#: zatca.php:1144
+#: zatca.php:1145
 msgid "User deleted successfully"
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1293 zatca.php:4277
+#: zatca.php:1294 zatca.php:4282
 msgid "Data Inserted"
 msgstr "تم بنجاح"
 
-#: zatca.php:3553 zatca.php:5024 zatca.php:5836 zatca.php:6339 zatca.php:7084
-#: zatca.php:7559
+#: zatca.php:3558 zatca.php:5029 zatca.php:5841 zatca.php:6344 zatca.php:7098
+#: zatca.php:7586
 msgid "Document Submitted Successfully, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة بنجاح كود هيئة الزكاة هو "
 
-#: zatca.php:3553 zatca.php:5024 zatca.php:5836 zatca.php:6339 zatca.php:7084
-#: zatca.php:7559
+#: zatca.php:3558 zatca.php:5029 zatca.php:5841 zatca.php:6344 zatca.php:7098
+#: zatca.php:7586
 msgid ".. Request Is Success"
 msgstr "عمليه ناجحه"
 
-#: zatca.php:3674 zatca.php:5144 zatca.php:5959 zatca.php:6454 zatca.php:7190
-#: zatca.php:7665
+#: zatca.php:3679 zatca.php:5149 zatca.php:5964 zatca.php:6459 zatca.php:7212
+#: zatca.php:7701
 msgid "Document Submitted with Warning, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة لكن يوجد تنبيه كود هيئة الزكاة هو "
 
-#: zatca.php:3719 zatca.php:3726 zatca.php:5191 zatca.php:6018 zatca.php:6025
-#: zatca.php:6511 zatca.php:7249 zatca.php:7256 zatca.php:7724
+#: zatca.php:3724 zatca.php:3731 zatca.php:5196 zatca.php:6023 zatca.php:6030
+#: zatca.php:6516 zatca.php:7267 zatca.php:7274 zatca.php:7754
 msgid " Error: "
 msgstr "خطأ"
 
-#: zatca.php:4117
+#: zatca.php:4122
 msgid "You have unsubmitted documents please review them"
 msgstr "لديك فواتير غير مرسلة الرجاء مراجعتها"
 
-#: zatca.php:4153
+#: zatca.php:4158
 msgid "Tax Invoice"
 msgstr " عمل فاتورة ضريبيه"
 
-#: zatca.php:6568
+#: zatca.php:6573
 msgid "Reissued Successfully"
 msgstr "تم اعادة إنشاء الفاتورة بنجاح"
 

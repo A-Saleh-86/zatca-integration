@@ -901,57 +901,84 @@ if (!empty($results)) {
 
         <!--Start Invoice Details-->
         <div class="row">
-            <?php
-            global $wpdb;
-
-            // Fetch Data From Database [ met_vatcategorycode table ]:
-            $reissuanceInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaRejectedInvoiceNo='$result->documentNo' and isZatcaReissued=0" );
-            $originalInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaAcceptedReissueInvoiceNo='$result->documentNo'" );
-            foreach($reissuanceInvoices as $reissuance) {?>
-                
-                <div class="col-md-12">
+            <div class="col-md-6">
+                <?php
+                    global $wpdb;
+                    // Fetch Original of return document Data From Database:
+                    $returnedOriginalInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaRejectedInvoiceNo='$result->documentNo' and isZatcaRetuerned=0" );
+                    foreach($returnedOriginalInvoices as $return) {
+                ?>
                     <div class="card border-0 shadow-sm mb-3">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h5 class="card-title"><?php echo _e('Reissued Invoice', 'zatca') ?></h5>
+                                    <h5 class="card-title"><?php echo _e('Returned Invoice', 'zatca') ?></h5>
                                     <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?>
-                                        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$reissuance->documentNo.'')  ?>">
-                                            <span class="badge bg-primary"><?php echo $reissuance->documentNo ?></span>
+                                        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$return->documentNo.'')  ?>">
+                                            <span class="badge bg-primary"><?php echo $return->documentNo ?></span>
                                         </a>
                                     </p>
-                                    <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $reissuance->dateG ?></span></p>
+                                    <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $return->dateG ?></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php
-            }
-        
-            foreach($originalInvoices as $original) {?>
-                
-                <div class="col-md-12">
-                    <div class="card border-0 shadow-sm mb-3">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h5 class="card-title"><?php echo _e('Original of Reissued Invoice', 'zatca') ?></h5>
-                                    <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?> 
-                                        <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$original->documentNo.'') ?>">
-                                            <span class="badge bg-primary"><?php echo $original->documentNo ?></span>
-                                        </a>
-                                    </p>
-                                    <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $original->dateG ?></span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php
-            }
-            ?>
+                <?php
+                    }
+                ?>
+            </div>
+            <div class="col-md-6">
+                <?php
+                global $wpdb;
 
+                // Fetch Data From Database [ met_vatcategorycode table ]:
+                $reissuanceInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaRejectedInvoiceNo='$result->documentNo' and isZatcaReissued=0");
+                $originalInvoices = $wpdb->get_results( "SELECT * FROM zatcaDocument WHERE zatcaAcceptedReissueInvoiceNo='$result->documentNo'" );
+                foreach($reissuanceInvoices as $reissuance) {?>
+                    
+                    <div class="col-md-12">
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5 class="card-title"><?php echo _e('Reissued Invoice', 'zatca') ?></h5>
+                                        <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?>
+                                            <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$reissuance->documentNo.'')  ?>">
+                                                <span class="badge bg-primary"><?php echo $reissuance->documentNo ?></span>
+                                            </a>
+                                        </p>
+                                        <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $reissuance->dateG ?></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                }
+        
+                foreach($originalInvoices as $original) {?>
+                    
+                    <div class="col-md-12">
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5 class="card-title"><?php echo _e('Original of Reissued Invoice', 'zatca') ?></h5>
+                                        <p class="card-text"><?php echo _e('Invoice No:', 'zatca') ?> 
+                                            <a href="<?php echo admin_url('admin.php?page=zatca-documents&action=edit-document&doc-no='.$original->documentNo.'') ?>">
+                                                <span class="badge bg-primary"><?php echo $original->documentNo ?></span>
+                                            </a>
+                                        </p>
+                                        <p class="card-text"><?php echo _e('Invoice Date:', 'zatca') ?> <span class="badge bg-primary"><?php echo $original->dateG ?></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
         </div>
         <!--End Invoice Details-->
 

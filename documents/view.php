@@ -134,6 +134,7 @@
                             <?php if($zatcaStatus == 1){ echo __("Accepted Invoice", "zatca"); } ?>
                             <?php if($zatcaStatus == 2){ echo __("Accepted With Warning Invoice", "zatca"); } ?>
                             <?php if($zatcaStatus == 3){ echo __("Rejected Invoice", "zatca"); } ?>
+                            <?php if($result->billTypeNo == 23){ echo "[".__("Returned","zatca")."]"; } ?>
                         </td>
 
                         <td style="font-size: 0.8rem;"><?php echo $result->zatcaSuccessResponse ?></td>
@@ -282,7 +283,8 @@
                         (int)$zatcaSuccessResponse === 3 && 
                         //$zatcaRejectedInvoiceNo == NULL && 
                         $zatcaAcceptedReissueInvoiceNo == NULL && 
-                        ($isZatcaReissued == 1 || $isZatcaReissued == NULL))
+                        ($isZatcaReissued == 1 || $isZatcaReissued == NULL) &&
+                        ($result->isZatcaRetuerned == null || $result->isZatcaRetuerned == 2))
                         {?>
                             
                             <!-- Reissue -->
@@ -327,14 +329,7 @@
                         FROM zatcaDocument
                         WHERE zatcaRejectedInvoiceNo =  $result->documentNo AND zatcaSuccessResponse IN (1,2)"));
 
-                        if(
-                        ((int)$zatcaSuccessResponse === 3 && $result->isZatcaRetuerned == null 
-                        //&& $zatcaIsReturned == 1 
-                        //&& $result->documentNo == $zatcaReturnedDocument 
-                        //&& $isReturnedSuccess == null
-                        //
-                        )
-                        ){
+                        if(((int)$zatcaSuccessResponse === 3 && $result->isZatcaRetuerned == null)){
                         ?>
                             <!-- Return -->
                             <a 

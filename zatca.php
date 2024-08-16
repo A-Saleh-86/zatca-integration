@@ -1906,7 +1906,7 @@ function insert_form_documents(){
         if($wpdb->num_rows > 0){
             foreach($documents as $document){
             
-                $previuos_docNo = $document->documentNo - 1;
+                $previuos_docNo = $document->documentNo;
                 $previousInvoiceHash = $document->previousInvoiceHash;
 
             }
@@ -4324,8 +4324,6 @@ function invoice_audit_form_shortcode()
     ob_start();
     require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/invoice_audit_form.php');
     
-    // Database Operations Here>> check_gap.php
-    //require_once(plugin_dir_path(__FILE__) . 'Zacta_Tampering_Detector/check_gap.php');
     return ob_get_clean();
 }
 add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
@@ -5339,6 +5337,10 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
 
     $new_document_id = $last_document_id;
 
+    $previousDocument = $wpdb->get_var($wpdb->prepare("SELECT MAX(documentNo) from zatcaDocumentxml WHERE previousInvoiceHash IS NOT NULL and invoiceHash IS NOT NULL"));
+    $previousDocHash = $wpdb->get_var($wpdb->prepare("SELECT invoiceHash from zatcaDocumentxml 
+    WHERE previousInvoiceHash IS NOT NULL and invoiceHash IS NOT NULL and documentNo=$previousDocument"));
+
     $uuid = wp_generate_uuid4();
 
     // Get Device No from zatcaDevice:
@@ -5367,7 +5369,7 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
             gaztLatestDeliveryDate, zatcaInvoiceType, amountPayed01, amountPayed02, amountPayed03, amountPayed04,
             amountPayed05, amountCalculatedPayed, returnReasonType, subTotal, subTotalDiscount, taxRate1_Percentage,
             taxRate1_Total, subNetTotal, subNetTotalPlusTax, amountLeft, isAllItemsReturned, isZatcaRetuerned, reason,
-            previousDocumentNo, previousInvoiceHash, seller_secondBusinessIDType, seller_secondBusinessID, buyer_secondBusinessIDType,
+            $previousDocument, '$previousDocHash', seller_secondBusinessIDType, seller_secondBusinessID, buyer_secondBusinessIDType,
             buyer_secondBusinessID, VATCategoryCodeNo, VATCategoryCodeSubTypeNo, zatca_TaxExemptionReason, zatcaInvoiceTransactionCode_isNominal,
             zatcaInvoiceTransactionCode_isExports, zatcaInvoiceTransactionCode_isSummary, zatcaInvoiceTransactionCode_is3rdParty,
             zatcaInvoiceTransactionCode_isSelfBilled, '$uuid', seller_VAT, seller_aName, seller_eName, seller_apartmentNum,
@@ -6620,6 +6622,10 @@ function insert_zatcaDocument_returned($docNo, $invoice_no){
         $device_No = $deviceNo;
 
 
+        $previousDocument = $wpdb->get_var($wpdb->prepare("SELECT MAX(documentNo) from zatcaDocumentxml WHERE previousInvoiceHash IS NOT NULL and invoiceHash IS NOT NULL"));
+        $previousDocHash = $wpdb->get_var($wpdb->prepare("SELECT invoiceHash from zatcaDocumentxml 
+        WHERE previousInvoiceHash IS NOT NULL and invoiceHash IS NOT NULL and documentNo=$previousDocument"));
+
     // Insert new order data 
     $wpdb->query(  
         $wpdb->prepare("  
@@ -6628,7 +6634,7 @@ function insert_zatcaDocument_returned($docNo, $invoice_no){
             gaztLatestDeliveryDate, zatcaInvoiceType, amountPayed01, amountPayed02, amountPayed03, amountPayed04,
             amountPayed05, amountCalculatedPayed, returnReasonType, subTotal, subTotalDiscount, taxRate1_Percentage,
             taxRate1_Total, subNetTotal, subNetTotalPlusTax, amountLeft, isAllItemsReturned, 0, reason,
-            previousDocumentNo, previousInvoiceHash, seller_secondBusinessIDType, seller_secondBusinessID, buyer_secondBusinessIDType,
+            $previousDocument, '$previousDocHash', seller_secondBusinessIDType, seller_secondBusinessID, buyer_secondBusinessIDType,
             buyer_secondBusinessID, VATCategoryCodeNo, VATCategoryCodeSubTypeNo, zatca_TaxExemptionReason, zatcaInvoiceTransactionCode_isNominal,
             zatcaInvoiceTransactionCode_isExports, zatcaInvoiceTransactionCode_isSummary, zatcaInvoiceTransactionCode_is3rdParty,
             zatcaInvoiceTransactionCode_isSelfBilled, '$uuid', seller_VAT, seller_aName, seller_eName, seller_apartmentNum,
@@ -6643,11 +6649,13 @@ function insert_zatcaDocument_returned($docNo, $invoice_no){
             WHERE documentNo = %d", $docNo, $docNo)
     );
 
+    //insert new row into zatcaDocumentxml
+    $wpdb->query($wpdb->prepare("INSERT INTO zatcaDocumentxml (documentNo,deviceNo) VALUES (%d, %d)", $new_document_id, $device_No));
+    
     // function of insert new copy to zatcaDocumentUnit table
     insert_zatcaDocumentUnit_returned($invoice_no, $device_No, $new_document_id);
 
-    //insert new row into zatcaDocumentxml
-    $wpdb->query($wpdb->prepare("INSERT INTO zatcaDocumentxml (documentNo,deviceNo) VALUES (%d, %d)", $new_document_id, $device_No));
+    
 }
 
 //function to insert new copy of zatcaDocumentUnits to database [Return]

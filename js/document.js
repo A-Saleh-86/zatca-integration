@@ -1949,7 +1949,8 @@ jQuery(document).ready(function($){
     $(document).on('click', '#send-zatca-return', function(event) {
 
         const docNo = $(this).data('doc-no');
-        const invoiceType = $(this).data('data-invoice-typ');
+        const invoiceType = $(this).data('invoice-type');
+
         
         // B2B invoices
         if(invoiceType == 1){
@@ -1963,7 +1964,7 @@ jQuery(document).ready(function($){
                     "doc_no_from_ajax": docNo
                 },
                 success: function(response) {
-                
+                    //console.log(response);
                     if(response.msg.status == 'seller_second_business_id'){
 
                         // Error notification:
@@ -2209,7 +2210,8 @@ jQuery(document).ready(function($){
             });
             //end ajax
 
-        } else{ // B2C invoices or both
+        }
+        else{ // B2C invoices or both
 
             //start ajax
             $.ajax({
@@ -2221,7 +2223,7 @@ jQuery(document).ready(function($){
                 },
                 success: function(response) {
 
-                    // console.log(response);
+                    //console.log(response);
                     if(response.msg.status == 'buyer_arabic_name'){
 
                         // Error notification:
