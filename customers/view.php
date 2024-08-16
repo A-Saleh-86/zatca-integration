@@ -49,43 +49,43 @@
             global $wpdb;
 
             // Query to retrieve data
-            $resultes = $wpdb->get_results( "SELECT * FROM zatcaCustomer");
+            $customers = get_all_data('zatcaCustomer');
             
             // Check if there are results
-            if ($resultes) {
-                foreach ($resultes as $result) {
+            if ($customers) {
+                foreach ($customers as $customer) {
 
                     ?>
                     <tr>
-                        <td style="font-size: 0.8rem;"><?php echo $result->clientVendorNo ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->aName ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->eName ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->VATID ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->clientVendorNo ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->aName ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->eName ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->VATID ?></td>
                         <td style="font-size: 0.8rem;">
                             <?php 
-                                $buyers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE codeNumber =$result->secondBusinessIDType " );
+                                // get second business id name:
+                                $buyers = get_data_with_one_condition('zatcabusinessidtype', 'codeNumber', $customer->secondBusinessIDType);
                                 foreach($buyers as $buyer) {
                                     echo $buyer->aName;
                                 }
                             ?>
                         </td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->zatcaInvoiceType ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->street_Arb ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->district_Arb ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->city_Arb ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->secondBusinessID ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->apartmentNum ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->postalCode ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->POBoxAdditionalNum ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->street_Eng ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->district_Eng ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->city_Eng ?></td>
-                        <td style="font-size: 0.8rem;"><?php echo $result->countrySubdivision_Eng ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->zatcaInvoiceType ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->street_Arb ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->district_Arb ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->city_Arb ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->secondBusinessID ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->apartmentNum ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->postalCode ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->POBoxAdditionalNum ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->street_Eng ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->district_Eng ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->city_Eng ?></td>
+                        <td style="font-size: 0.8rem;"><?php echo $customer->countrySubdivision_Eng ?></td>
                         <td style="font-size: 0.8rem;">
                             <?php 
-                                // echo $result->country_No 
-                                $table_name = 'country';
-                                $countries = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE country_id = %d", $result->country_No));
+                                // get country name:
+                                $countries = get_data_with_one_condition('country', 'country_id', $customer->country_No);
                                 foreach($countries as $country) {
                                     echo $country->arabic_name;
                                 }
@@ -96,7 +96,7 @@
 
                             <!-- Edit Btn -->
                             <a 
-                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=edit-customer&clientno='.$result->clientVendorNo.'')  ?>" 
+                                href="<?php echo admin_url('admin.php?page=zatca-customers&action=edit-customer&clientno='.$customer->clientVendorNo.'')  ?>" 
                                 class="my-plugin-button btn-sm me-1"
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
@@ -110,7 +110,7 @@
                                 type='button' 
                                 class='btn my-plugin-button me-1'
                                 id="delete_customer"
-                                data-client-no='<?php echo $result->clientVendorNo ?>'
+                                data-client-no='<?php echo $customer->clientVendorNo ?>'
                                 data-bs-placement="top" 
                                 title="<?php echo _e('Delete Customer', 'zatca') ?>">
                                 <span class="dashicons dashicons-trash"></span>

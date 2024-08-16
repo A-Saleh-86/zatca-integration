@@ -420,7 +420,7 @@
                                 global $wpdb;
                                 
                                 // Fetch Data From Database:
-                                $devices = get_data_with_two_conditions_greaterThan('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate',  'NOW()');
+                                $devices = get_data_with_two_conditions_operators('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate',  'NOW()', '>');
                                 foreach($devices as $device) {?>
                                     <option  value="<?php echo $device->deviceNo ?>" <?php if($branch->deviceID == $device->deviceNo){echo 'selected';} ?>><?php echo $device->deviceCSID ?></option>
                                     <?php
@@ -876,7 +876,7 @@
                         <option value=""> ...</option>
                         <?php 
                         // Fetch Data From Database:
-                        $devices = get_data_with_two_conditions_greaterThan('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate', 'NOW()');
+                        $devices = get_data_with_two_conditions_operators('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate', 'NOW()', '>');
                         foreach($devices as $device) {?>
                             '<option  value="<?php echo $device->deviceNo ?>"><?php echo $device->deviceCSID ?></option>';
                             <?php

@@ -89,6 +89,7 @@
                                             $meta_value_customer = '%customer%';
                                             $meta_key_capabilities_escaped = $wpdb->_real_escape($meta_key_capabilities);
                                             $customers = $wpdb->get_results("SELECT * FROM $table_usermeta WHERE meta_key = '$meta_key_capabilities_escaped' AND meta_value LIKE '$meta_value_customer'");
+                                            // $customers = get_data_with_two_conditions_operators($table_usermeta, 'meta_key', $meta_key_capabilities_escaped, 'meta_value', $meta_value_customer, 'LIKE');
                                             
                                                 foreach ($customers as $customer) {
                                                     $billing_first_name = $customer->meta_value;
