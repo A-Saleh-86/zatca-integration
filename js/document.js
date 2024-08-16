@@ -2196,11 +2196,12 @@ jQuery(document).ready(function($){
                                 }
                             }
                         }
-                    }
 
-                    setTimeout(() => {
-                        window.location.reload();
-                    },3000);
+                        setTimeout(() => {
+                            window.location.reload();
+                        },3000);
+                    }
+                    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error: ', textStatus, errorThrown);
@@ -2425,12 +2426,13 @@ jQuery(document).ready(function($){
                                 }
                             }
                         }
+                        setTimeout(() => {
+                            window.location.reload();
+                        },3000);
                     }
                     
 
-                    setTimeout(() => {
-                        window.location.reload();
-                    },3000);
+                    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error: ', textStatus, errorThrown);

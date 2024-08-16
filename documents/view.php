@@ -312,8 +312,29 @@
 
                             <?php
                         } 
-                        if($zatcaSuccessResponse != NULL && 
-                        (int)$zatcaSuccessResponse === 3){
+                        // 
+                        $zatcaReturnedDocument = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo 
+                        FROM zatcaDocument
+                        WHERE zatcaRejectedInvoiceNo =  $result->documentNo"));
+                        $zatcaReturnedDocumentStatus = $wpdb->get_var($wpdb->prepare("SELECT zatcaSuccessResponse 
+                        FROM zatcaDocument
+                        WHERE zatcaRejectedInvoiceNo =  $result->documentNo"));
+                        $zatcaIsReturned = $wpdb->get_var($wpdb->prepare("SELECT isZatcaRetuerned 
+                        FROM zatcaDocument
+                        WHERE zatcaRejectedInvoiceNo =  $result->documentNo"));
+
+                        $isReturnedSuccess = $wpdb->get_var($wpdb->prepare("SELECT zatcaSuccessResponse 
+                        FROM zatcaDocument
+                        WHERE zatcaRejectedInvoiceNo =  $result->documentNo AND zatcaSuccessResponse IN (1,2)"));
+
+                        if(
+                        ((int)$zatcaSuccessResponse === 3 && $result->isZatcaRetuerned == null 
+                        //&& $zatcaIsReturned == 1 
+                        //&& $result->documentNo == $zatcaReturnedDocument 
+                        //&& $isReturnedSuccess == null
+                        //
+                        )
+                        ){
                         ?>
                             <!-- Return -->
                             <a 
