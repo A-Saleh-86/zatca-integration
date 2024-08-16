@@ -420,8 +420,7 @@
                                 global $wpdb;
                                 
                                 // Fetch Data From Database:
-                                $devices = $wpdb->get_results( "SELECT * FROM zatcaDevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
-                                // $devices = get_data_with_two_conditions('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate', 'NOW()');
+                                $devices = get_data_with_two_conditions_greaterThan('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate',  'NOW()');
                                 foreach($devices as $device) {?>
                                     <option  value="<?php echo $device->deviceNo ?>" <?php if($branch->deviceID == $device->deviceNo){echo 'selected';} ?>><?php echo $device->deviceCSID ?></option>
                                     <?php
@@ -516,10 +515,9 @@
                     <select class="form-select select2"  name="country">
                         <option value=""> ...</option>
                         <?php 
-                        global $wpdb;
                         
                         // Fetch Data From Database:
-                        $countries = $wpdb->get_results( "SELECT * FROM country" );
+                        $countries = get_all_data('country');
                         foreach($countries as $country) {?>
                             '<option  value="<?php echo $country->country_id ?>"><?php echo $country->arabic_name ?></option>';
                             <?php
@@ -544,7 +542,7 @@
                             global $wpdb;
 
                             // Fetch Data From Database:
-                            $categories = $wpdb->get_results( "SELECT * FROM met_vatcategorycode" );
+                            $categories = get_all_data('met_vatcategorycode');
                             foreach($categories as $category) {?>
                                 
                                 <option value="<?php echo $category->VATCategoryCodeNo ?>"><?php echo $category->aName. ' - ' . $category->eName ?></option>
@@ -561,7 +559,6 @@
                     <select class="form-select select2"  name="vat-cat-code-sub-no" id="vat-cat-code-sub">
                         <option value="">...</option>
                         <?php
-                        global $wpdb;
 
                         // Assuming $result is set somewhere before this code
                         // If $result is potentially not an object or could be null, handle it
@@ -570,10 +567,8 @@
                             $vatCatCode = $result->VATCategoryCode;
 
                             // Fetch Data From Database:
-                            $subCategories = $wpdb->get_results($wpdb->prepare(
-                                "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = %d",
-                                $vatCatCode
-                            ));
+                            $subCategories = get_data_with_one_condition('met_vatcategorycodesubtype', 'VATCategoryCodeNo', $vatCatCode);
+                            
 
                             foreach ($subCategories as $subCat) { ?>
                                 <option value="<?php echo esc_attr($subCat->VATCategoryCodeSubTypeNo); ?>">
@@ -602,10 +597,8 @@
                     <select class="form-select select2"  name="second-business-id-type">
                         <option value="">...</option>
                         <?php
-                            global $wpdb;
-
                             // Fetch Data From Database:
-                            $sellers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE isSeller=1" );
+                            $sellers = get_data_with_one_condition('zatcabusinessidtype', 'isSeller', 1);
                             foreach($sellers as $seller) {?>
                                 
                                 <option value="<?php echo $seller->codeNumber ?>"><?php echo $seller->aName. ' - ' . $seller->eName ?></option>
@@ -882,10 +875,8 @@
                     <select class="form-select select2"  name="device">
                         <option value=""> ...</option>
                         <?php 
-                        global $wpdb;
-                        
                         // Fetch Data From Database:
-                        $devices = $wpdb->get_results( "SELECT * FROM zatcaDevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
+                        $devices = get_data_with_two_conditions_greaterThan('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate', 'NOW()');
                         foreach($devices as $device) {?>
                             '<option  value="<?php echo $device->deviceNo ?>"><?php echo $device->deviceCSID ?></option>';
                             <?php
