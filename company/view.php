@@ -6,7 +6,7 @@
 
     <?php
     
-    $results = get_all_data_from_table('zatcaCompany');
+    $results = get_all_data('zatcaCompany');
 
     // Check if there are results
     if (!empty($results)) { // if data already inserted:
@@ -59,7 +59,8 @@
                             global $wpdb;
                             
                             // Fetch Data From Database:
-                            $countries = $wpdb->get_results( "SELECT * FROM country" );
+                            $countries = get_all_data('country');
+                            
                             foreach($countries as $country) {?>
                                 <option  value="<?php echo $country->country_id ?>" <?php if($result->countryNo == $country->country_id){echo 'selected';} ?>><?php echo $country->arabic_name ?></option>
                                 <?php
@@ -83,10 +84,8 @@
                             <select class="form-select select2"  name="vat-cat-code" id="vat-cat-code">
                                 <option value="">...</option>
                                 <?php
-                                    global $wpdb;
-
                                     // Fetch Data From Database:
-                                    $categories = $wpdb->get_results( "SELECT * FROM met_vatcategorycode" );
+                                    $categories = get_all_data('met_vatcategorycode');
                                     foreach($categories as $category) {?>
                                         
                                         <option value="<?php echo $category->VATCategoryCodeNo ?>" <?php if($result->VATCategoryCode == $category->VATCategoryCodeNo){ echo 'selected';} ?> ><?php echo $category->aName. ' - ' . $category->eName ?></option>
@@ -105,10 +104,8 @@
                             <select class="form-select select2"  name="vat-cat-code-sub-no" id="vat-cat-code-sub">
                                 <option value="">...</option>
                                 <?php
-                                    global $wpdb;
-
                                     // Fetch Data From Database:
-                                    $subCategories = $wpdb->get_results( "SELECT * FROM met_vatcategorycodesubtype WHERE VATCategoryCodeNo = $result->VATCategoryCode" );
+                                    $subCategories = get_data_with_one_condition('met_vatcategorycodesubtype', 'VATCategoryCodeNo', $result->VATCategoryCode);
                                     foreach($subCategories as $subCat) {?>
                                         
                                         <option value="<?php echo $subCat->VATCategoryCodeSubTypeNo ?>" <?php if($result->VATCategoryCodeSubTypeNo == $subCat->VATCategoryCodeSubTypeNo){ echo 'selected';} ?> ><?php echo $subCat->aName. ' - ' . $subCat->eName ?></option>
@@ -133,10 +130,8 @@
                             <select class="form-select select2"  name="second-business-id-type">
                                 <option value="">...</option>
                                 <?php
-                                    global $wpdb;
-
                                     // Fetch Data From Database:
-                                    $sellers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE isSeller=1" );
+                                    $sellers = get_data_with_one_condition('zatcabusinessidtype', 'isSeller', 1);
                                     foreach($sellers as $seller) {?>
                                         
                                         <option value="<?php echo $seller->codeNumber ?>" <?php if($result->secondBusinessIDType == $seller->codeNumber){ echo 'selected';} ?> ><?php echo $seller->aName. ' - ' . $seller->eName ?></option>
@@ -398,7 +393,7 @@
                 <!-- ######## zatcaBranch INPUTS ######## -->
                 
                 <?php 
-                $branches = $wpdb->get_results( "SELECT * FROM zatcaBranch" );
+                $branches = get_all_data('zatcaBranch');
                 foreach($branches as $branch){?>
 
                     <!--  Branch No field -->
@@ -425,6 +420,7 @@
                                 
                                 // Fetch Data From Database:
                                 $devices = $wpdb->get_results( "SELECT * FROM zatcaDevice WHERE deviceStatus = 0 AND CsID_ExpiryDate > NOW()" );
+                                // $devices = get_data_with_two_conditions('zatcaDevice', 'deviceStatus', 0, 'CsID_ExpiryDate', 'NOW()');
                                 foreach($devices as $device) {?>
                                     <option  value="<?php echo $device->deviceNo ?>" <?php if($branch->deviceID == $device->deviceNo){echo 'selected';} ?>><?php echo $device->deviceCSID ?></option>
                                     <?php
