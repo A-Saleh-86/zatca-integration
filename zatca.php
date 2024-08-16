@@ -388,7 +388,7 @@ function localization() {
         'seller_second_business_id' => __("Seller Second business ID must be filled, Please edit company profile", "zatca"),
         'company_stage_2' => __("Company zatca stage must be V2, Please edit company profile", "zatca"),
         'isexport0_buyervat' => __("Sorry, VAT ID for the client must be empty because the invoice is exports", "zatca"),
-        'isexport1_buyervat' => __("Sorry, VAT ID for the client must be filled because the invoice is not exports", "zatca"),
+        'isexport1_buyervat' => __("Sorry, VAT ID for the client must be filled", "zatca"),
         'sell_invoice' => __("Sell Invoice", "zatca"),
         'sell_return_invoice' => __("Return Sell Invoice", "zatca"),
         'choose_customer_td' => __("Please select a Order first", "zatca"),
@@ -719,6 +719,7 @@ function edit_customer_form(){
         $client_Name_Ar = $form_array['client-name-ar'];
         $client_Name_En = $form_array['client-name-en'];
         $vat_Id = $form_array['vat-id'];
+        if($vat_Id == ''){ $vat_Id = 0; }
         $second_Business_Id_Type = $form_array['second-business-id-type'];
         $second_Business_Id = $form_array['second-business-id'];
         $zatca_Invoice_Type = $form_array['zatca-invoice-type'];
@@ -1059,29 +1060,54 @@ function delete_device_form(){
         // AJax Data:
         $deviceNo = $_REQUEST['device-no'];
 
-       // Assuming your table is named 'wp_custom_table'
-        $table_name = 'zatcaDevice';
+        // check if deviceNo exist in zatcaDocument table or not
+        $device_No = $wpdb->get_var("SELECT deviceNo FROM zatcaDocument WHERE deviceNo = '$deviceNo'");
 
-        // Define the condition to identify the row(s) to delete
-        $where = array(
-            'deviceNo' => $deviceNo 
-        );
+        if ($device_No == '') 
+        {
+            // Assuming your table is named 'wp_custom_table'
+            $table_name = 'zatcaDevice';
 
+            // Define the condition to identify the row(s) to delete
+            $where = array('deviceNo' => $deviceNo);
 
-        // Execute the delete query
-        $deleted = $wpdb->delete( $table_name, $where );
+            // Execute the delete query
+            $deleted = $wpdb->delete( $table_name, $where );
 
-        if ( $deleted === false ) {
+            if ( $deleted === false ) 
+            {
+                // Deletion failed
+                $send_response = [
+                    'status' => 400,
+                    'msg' => __("Failed to delete device.","zatca")
+                ];
+                //echo __("Failed to delete device.","zatca");
 
-            // Deletion failed
-            echo __("Failed to delete device.","zatca");
-
-        } else {
-
-            // Deletion successful
-            echo __("Device deleted successfully.","zatca");
- 
+            } 
+            else 
+            {
+                // Deletion successful
+                $send_response = [
+                    'status' => 200,
+                    'msg' => __("Device deleted successfully.","zatca")
+                ];
+                //echo __("Device deleted successfully.","zatca");
+            }
         }
+        else
+        {
+            // echo error
+            // Deletion failed
+            $send_response = [
+                'status' => 404,
+                'msg' => __("Failed to delete device because there are documents related to this device.","zatca")
+            ];
+            //echo __("Failed to delete device because there are documents related to this device.","zatca");
+        }
+        
+        //AJax Data:
+        wp_send_json($send_response);
+        
     }
 
     die();
@@ -3147,11 +3173,11 @@ function update_zatca($doc_no){
     /* Validation On Vat Id - 
     if “zatcaInvoiceTransactionCode_isExport” then VAT ID for the client must be empty:
     */
-    if($exportsInvoice == true){
+    /*if($exportsInvoice == true){
 
         $buyerVatNumber = 0;
 
-    }
+    }*/
 
     // original document number if returned bill
     $originalDoc =  "";
@@ -3265,11 +3291,15 @@ function send_request_to_zatca_clear(){
 
     // Validate buyer vat number
     $buyer_vatNo = $requestArray['buyer']['vatNumber'];
+    if($buyer_vatNo == null || $buyer_vatNo==0)
+    {
+        $buyer_vatNo = 0;
+    }
     $invoicetransactioncode_isexports = $wpdb->get_var("SELECT zatcaInvoiceTransactionCode_isExports FROM zatcaDocument Where documentNo = '$doc_no'");
     
     $buyer_vatNo_validation1 = ($buyer_vatNo == null && ($invoicetransactioncode_isexports == null)) ? true : false;
     
-    $buyer_vatNo_validation0 = ($buyer_vatNo == 0) ? true : false;
+    $buyer_vatNo_validation0 = ($buyer_vatNo != 0 && ($invoicetransactioncode_isexports != null)) ? true : false;
     
     
     // validation on seller_additionalIdNumber & buyer_additionalNo:

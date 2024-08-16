@@ -152,16 +152,27 @@ jQuery(document).ready(function($) {
                         },
                         success: function(data){
             
-                            // success notification:
-                            popup.success({
-                                title: myDevice.notification_success_title,
-                                message: data
-                            });
-            
-                            setTimeout(function() {
-                                window.location.reload();
-                            }, 2000); 
+                            if(data.status == 200) 
+                            {
+                                // success notification:
+                                popup.success({
+                                    title: myDevice.notification_success_title,
+                                    message: data.msg
+                                });
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 2000); 
+                            }
+                            else
+                            {
+                                // success notification:
+                                popup.error({
+                                    title: myDevice.notification_error_title,
+                                    message: data.msg
+                                });
 
+                                return;
+                            }
                             
                         },
                         error: function(xhr, status, error) {

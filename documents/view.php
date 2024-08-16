@@ -308,6 +308,13 @@
                             <!-- / Reissue-->
                                 
 
+                            
+
+                            <?php
+                        } 
+                        if($zatcaSuccessResponse != NULL && 
+                        (int)$zatcaSuccessResponse === 3){
+                        ?>
                             <!-- Return -->
                             <a 
                                 href="#" 
@@ -329,10 +336,8 @@
                                 <span class="dashicons dashicons-undo"></span>
                             </a>
                             <!-- / Return-->
-
-                            <?php
-                        } 
-
+                        <?php
+                        }
                         // view warning Btn for doc have zatca success response = 2-3:
                         if((int)$zatcaSuccessResponse === 2 || (int)$zatcaSuccessResponse === 3){?>
 
