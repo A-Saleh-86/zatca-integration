@@ -332,6 +332,7 @@
                         //&& $zatcaIsReturned == 1 
                         //&& $result->documentNo == $zatcaReturnedDocument 
                         //&& $isReturnedSuccess == null
+                        //
                         )
                         ){
                         ?>
