@@ -7110,7 +7110,7 @@ function send_return_zatca($docNo)
                     $whereOriginal = array('documentNo' => $originalDocNo);
         
                     $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
-                    
+
 
                      // update zatca document xml fields with response Data:
                     $zatcaDocumentxml_update_response_data = [
@@ -7218,19 +7218,7 @@ function send_return_zatca($docNo)
     
                 if($http_status == '400'){
     
-                    /*// update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
-                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $docNo"));
-
-                    
-                    // update zatca document fields with response Data:
-                    $zatcaDocument_original_update_data = [
-                        "isZatcaRetuerned" => 1
-                    ];
-                    $whereOriginal = array('documentNo' => $originalDocNo);
-        
-                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
-                    ///////end////////
-                    */
+                    //
 
                     $zatcaDocument_New_update_data = [
                         "isZatcaRetuerned" => 1
@@ -7490,6 +7478,15 @@ function send_return_zatca($docNo)
                     // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
                     $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $docNo"));
 
+                    // update zatca document fields with response Data:
+                    $zatcaDocument_original_update_data = [
+                        "isZatcaRetuerned" => 2
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
+
+
 
                     //  update zatca document xml fields with response Data:
                     $zatcaDocumentxml_update_response_data = [
@@ -7593,6 +7590,15 @@ function send_return_zatca($docNo)
     
                     // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
                     $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $docNo"));
+
+                    // update zatca document fields with response Data:
+                    $zatcaDocument_original_update_data = [
+                        "isZatcaRetuerned" => 2
+                    ];
+                    $whereOriginal = array('documentNo' => $originalDocNo);
+        
+                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
+
 
 
                      // update zatca document xml fields with response Data:
@@ -7702,19 +7708,13 @@ function send_return_zatca($docNo)
     
                 if($http_status == '400'){
     
-                    // update original  doc set zatcaAcceptedReissueInvoiceNo = current docNo
-                    $originalDocNo = $wpdb->get_var($wpdb->prepare("SELECT zatcaRejectedInvoiceNo FROM zatcaDocument WHERE documentNo =  $docNo"));
-
-                    /*
-                    // update zatca document fields with response Data:
-                    $zatcaDocument_original_update_data = [
-                        "isZatcaReissued" => 1
+                    //
+                    $zatcaDocument_New_update_data = [
+                        "isZatcaRetuerned" => 1
                     ];
-                    $whereOriginal = array('documentNo' => $originalDocNo);
-        
-                    $zatcaDocument_original_update_result = $wpdb->update('zatcaDocument', $zatcaDocument_original_update_data, $whereOriginal);
-                    ///////end////////
-                    */
+                    $whereNew = array('documentNo' => $docNo);
+                    $zatcaDocument_New_update_result = $wpdb->update('zatcaDocument',
+                    $zatcaDocument_New_update_data, $whereNew);
 
 
                     // update zatca document fields with response Data:
