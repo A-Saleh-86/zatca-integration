@@ -102,7 +102,7 @@
                                                     $billing_email = get_user_meta($user_id, 'billing_email', true);
 
                                                         // check if this customer choose before or not:
-                                                    $checks = $wpdb->get_results("SELECT * FROM zatcaCustomer WHERE clientVendorNo = $customer->user_id");
+                                                    $checks = get_data_with_one_condition('zatcaCustomer', 'clientVendorNo', $customer->user_id);
                                                     if ($wpdb->num_rows > 0) {?>
                                                         <tr>
                                                             <!-- Disabled -->
@@ -247,10 +247,9 @@
                 <select class="form-select select2"  name="second-business-id-type">
                     <option value="">...</option>
                     <?php 
-                    global $wpdb;
                     
                     // Fetch Data From Database:
-                    $buyers = $wpdb->get_results( "SELECT * FROM zatcabusinessidtype WHERE isBuyer=1" );
+                    $buyers = get_data_with_one_condition('zatcabusinessidtype', 'isBuyer', 1);
                     foreach($buyers as $buyer) {
                         echo '<option  value="'.$buyer->codeNumber.'">'.$buyer->aName. ' - ' . $buyer->eName.'</option>';
                     }
@@ -265,10 +264,9 @@
                 <select class="form-select select2"  name="country">
                     <!-- <option value=""> ...</option> -->
                     <?php 
-                    global $wpdb;
                     
                     // Fetch Data From Database:
-                    $countries = $wpdb->get_results( "SELECT * FROM country" );
+                    $countries = get_all_data('country');
                     foreach($countries as $country) {
                         echo '<option  value="'.$country->country_id.'">'.$country->arabic_name.'</option>';
                     }
