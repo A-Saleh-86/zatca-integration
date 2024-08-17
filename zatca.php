@@ -5341,6 +5341,15 @@ function insert_zatcaDocument_copy($docNo, $newInvoiceNo){
     $previousDocHash = $wpdb->get_var($wpdb->prepare("SELECT invoiceHash from zatcaDocumentxml 
     WHERE previousInvoiceHash IS NOT NULL and invoiceHash IS NOT NULL and documentNo=$previousDocument"));
 
+    if($previousDocument == NULL)
+    {
+        $previousDocument = 0;
+    }
+    if($previousDocHash)
+    {
+        $previousDocHash = 'NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==';
+    }
+
     $uuid = wp_generate_uuid4();
 
     // Get Device No from zatcaDevice:
@@ -6626,6 +6635,15 @@ function insert_zatcaDocument_returned($docNo, $invoice_no){
         $previousDocHash = $wpdb->get_var($wpdb->prepare("SELECT invoiceHash from zatcaDocumentxml 
         WHERE previousInvoiceHash IS NOT NULL and invoiceHash IS NOT NULL and documentNo=$previousDocument"));
 
+        if($previousDocument == NULL)
+        {
+            $previousDocument = 0;
+        }
+        if($previousDocHash)
+        {
+            $previousDocHash = 'NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==';
+        }
+
     // Insert new order data 
     $wpdb->query(  
         $wpdb->prepare("  
@@ -6651,7 +6669,7 @@ function insert_zatcaDocument_returned($docNo, $invoice_no){
 
     //insert new row into zatcaDocumentxml
     $wpdb->query($wpdb->prepare("INSERT INTO zatcaDocumentxml (documentNo,deviceNo) VALUES (%d, %d)", $new_document_id, $device_No));
-    
+
     // function of insert new copy to zatcaDocumentUnit table
     insert_zatcaDocumentUnit_returned($invoice_no, $device_No, $new_document_id);
 
