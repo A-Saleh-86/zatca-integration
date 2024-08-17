@@ -365,6 +365,8 @@ function localization() {
     //zatcaDocument localization
     wp_enqueue_script('document-js',  plugin_dir_url(__FILE__) . '/js/document.js', array(), false, true);
     wp_localize_script( 'document-js', 'myDoc', array( 
+        'locale' => get_locale(),
+        'dtLoc' => plugin_dir_url(__FILE__) . '/js/datatable-localization.json',
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'adminUrl' => admin_url('admin.php?page=zatca-documents&action=view'),
         'customer' => admin_url('admin.php?page=zatca-documents&action=doc-add-customer'),

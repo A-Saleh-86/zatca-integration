@@ -665,7 +665,7 @@ $(document).ready(function($){
         $('#document-table').DataTable({
             responsive:true,
             language: {
-                url: main.dtLoc,
+                url: myDoc.dtLoc,
             },
             select: {  
                 style: 'multi'  

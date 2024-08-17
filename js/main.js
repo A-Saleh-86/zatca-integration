@@ -100,12 +100,11 @@ jQuery(document).ready( function () {
         });
     } else {
         $('#scroll_table').DataTable({
-            scrollX: true,
-            language: {
-                url: main.dtLoc,
-            }
+            scrollX: true
         });
     }
+
+
 
     // For All Table:
     if (currentLang === 'ar') {
@@ -116,9 +115,6 @@ jQuery(document).ready( function () {
             },
             select: {  
                 style: 'multi'  
-            },
-            language: {
-                url: main.dtLoc,
             }
         });
     } else {
@@ -126,9 +122,6 @@ jQuery(document).ready( function () {
             responsive:true,
             select: {  
                 style: 'multi'  
-            },
-            language: {
-                url: main.dtLoc,
             }
         });
     }
