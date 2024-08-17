@@ -7,27 +7,42 @@ jQuery(document).ready(function($) {
         var to_date = $('#to_date').val();  
         var buildingNo = $('#Branch').val();  
         
+        if (to_date < from_date) 
+        {
+            // Error notification:
+            popupValidation.error({
+                title: "Error",
+                message: "To date must be greater than or equal to From date"
+            });
+
+            return;
+        }
+        else 
+        {
+            // Validation passed, you can proceed with the rest of the code
+            $.ajax({  
+                type: 'POST',  
+                url: ajax_object.ajax_url,  
+                data: {  
+                    action: 'handle_form_tampering',  
+                    from_date: from_date,  
+                    to_date: to_date,  
+                    buildingNo: buildingNo,
+                    check_type: 'check_counter_gap'
+                },  
+                success: function(response) {  
+                    //console.log(response);
+                    $('#response').html(response); // Display the result in the response div  
+                },  
+                error: function(xhr, status, error) {  
+                    console.error(xhr); // Log errors in the console  
+                    $('#response').html('An error occurred.'); // Display an error message  
+                }  
+            });
+        }
         
 
-        $.ajax({  
-            type: 'POST',  
-            url: ajax_object.ajax_url,  
-            data: {  
-                action: 'handle_form_tampering',  
-                from_date: from_date,  
-                to_date: to_date,  
-                buildingNo: buildingNo,
-                check_type: 'check_counter_gap'
-            },  
-            success: function(response) {  
-                //console.log(response);
-                $('#response').html(response); // Display the result in the response div  
-            },  
-            error: function(xhr, status, error) {  
-                console.error(xhr); // Log errors in the console  
-                $('#response').html('An error occurred.'); // Display an error message  
-            }  
-        });  
+          
     });  
 
     //
@@ -38,26 +53,40 @@ jQuery(document).ready(function($) {
         var to_date = $('#to_date').val();  
         var buildingNo = $('#Branch').val();  
         
+        if (to_date < from_date) 
+        {
+            // Error notification:
+            popupValidation.error({
+                title: "Error",
+                message: "To date must be greater than or equal to From date"
+            });
+
+            return;
+        }
+        else
+        {
+            $.ajax({  
+                type: 'POST',  
+                url: ajax_object.ajax_url,  
+                data: {  
+                    action: 'handle_form_tampering',  
+                    from_date: from_date,  
+                    to_date: to_date,  
+                    buildingNo: buildingNo,
+                    check_type: 'check_hash_gap'
+                },  
+                success: function(response) {  
+                    $('#response').html(response); // Display the result in the response div  
+                },  
+                error: function(xhr, status, error) {  
+                    console.error(xhr); // Log errors in the console  
+                    $('#response').html('An error occurred.'); // Display an error message  
+                }  
+            });
+        }
         
 
-        $.ajax({  
-            type: 'POST',  
-            url: ajax_object.ajax_url,  
-            data: {  
-                action: 'handle_form_tampering',  
-                from_date: from_date,  
-                to_date: to_date,  
-                buildingNo: buildingNo,
-                check_type: 'check_hash_gap'
-            },  
-            success: function(response) {  
-                $('#response').html(response); // Display the result in the response div  
-            },  
-            error: function(xhr, status, error) {  
-                console.error(xhr); // Log errors in the console  
-                $('#response').html('An error occurred.'); // Display an error message  
-            }  
-        });  
+          
     });  
 
 

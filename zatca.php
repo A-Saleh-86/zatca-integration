@@ -448,7 +448,7 @@ function handle_form_tampering() {
             INNER JOIN zatcaDevice zd ON zd.deviceNo = z1.deviceNo
             INNER JOIN zatcaBranch zb ON z1.buildingNo = zb.buildingNo
             WHERE zb.buildingNo = %d
-            AND z1.dateG BETWEEN %s AND %s
+            AND CAST(z1.dateG AS DATE) BETWEEN %s AND %s
             ORDER BY z1.documentNo
         ", $buildingNo, $from_date, $to_date);
 
@@ -520,48 +520,57 @@ function handle_form_tampering() {
         $zatcaDocument_query = $wpdb->prepare("SELECT z.documentNo, z.deviceNo, z1.invoiceHash 
         FROM zatcaDocument z, zatcaDocumentxml z1 
         WHERE z.BuildingNo= %d 
-        AND z.dateG BETWEEN %s AND %s 
+        AND CAST(z.dateG AS DATE) BETWEEN %s AND %s 
         AND z.documentNo=z1.documentNo",
         $buildingNo, $from_date, $to_date);
 
         $zatcaDocument_records = $wpdb->get_results( $zatcaDocument_query, ARRAY_A );  
 
-        // Step 3: Create an associative array for zatcaDocument records for quick lookup  
-        $zatcaDocument_map = [];  
-        foreach ( $zatcaDocument_records as $document ) {  
-            $key = implode('|', [$document['invoiceHash'], $document['documentNo'], $document['deviceNo']]);  
-            $zatcaDocument_map[ $key ] = $document;  
-        }  
-
-        // Step 4: Check for existence of records from zacainfo in zatcaDocument  
-        foreach ( $zacainfo_records as $info ) {
-            
-            $key = implode('|', [decrypt_data($info['zatcaInfo1']), decrypt_data($info['zatcaInfo2']), decrypt_data($info['zatcaInfo3'])]);  
-            
-            // Check if the composite key exists in zatcaDocument  
-            if ( ! isset( $zatcaDocument_map[ $key ] ) ) {  
-                // Push missing record's values to the array  
-                $missing_records[] = [  
-                    'invoiceHash' => decrypt_data($info['zatcaInfo1']),  
-                    'documentNo' => decrypt_data($info['zatcaInfo2']),  
-                    'deviceNo' => decrypt_data($info['zatcaInfo3'])  
-                ];  
+        if ( empty($zatcaDocument_records) ) 
+        {
+            $missing_records = [];
+        }
+        else
+        {
+            // Step 3: Create an associative array for zatcaDocument records for quick lookup  
+            $zatcaDocument_map = [];  
+            foreach ( $zatcaDocument_records as $document ) {  
+                $key = implode('|', [$document['invoiceHash'], $document['documentNo'], $document['deviceNo']]);  
+                $zatcaDocument_map[ $key ] = $document;  
             }  
+
+            // Step 4: Check for existence of records from zacainfo in zatcaDocument  
+            foreach ( $zacainfo_records as $info ) {
+                
+                $key = implode('|', [decrypt_data($info['zatcaInfo1']), decrypt_data($info['zatcaInfo2']), decrypt_data($info['zatcaInfo3'])]);  
+                
+                // Check if the composite key exists in zatcaDocument  
+                if ( ! isset( $zatcaDocument_map[ $key ] ) ) {  
+                    // Push missing record's values to the array  
+                    $missing_records[] = [  
+                        'invoiceHash' => decrypt_data($info['zatcaInfo1']),  
+                        'documentNo' => decrypt_data($info['zatcaInfo2']),  
+                        'deviceNo' => decrypt_data($info['zatcaInfo3'])  
+                    ];  
+                }  
+            }
+
+            // Display the results in a grid table
+            echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
+            echo '<thead><tr><th class="text-center">'. __("Document No", "zatca") .'</th><th class="text-center">'. __("Device No", "zatca") .'</th><th class="text-center">'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody class="text-center">';
+
+            foreach ($missing_records as $document1) {
+                echo '<tr>';
+                echo '<td>' . $document1['documentNo'] . '</td>';
+                echo '<td>' . $document1['deviceNo'] . '</td>';
+                echo '<td>' . $document1['invoiceHash'] . '</td>';
+                echo '</tr>';
+            }
+
+            echo '</tbody></table></div>';
         }
 
-        // Display the results in a grid table
-        echo '<div class="container"><table id="example" class="table table-striped" width="100%">';
-        echo '<thead><tr><th class="text-center">'. __("Document No", "zatca") .'</th><th class="text-center">'. __("Device No", "zatca") .'</th><th class="text-center">'. __("Invoice Hash", "zatca") .'</th></tr></thead><tbody class="text-center">';
-
-        foreach ($missing_records as $document1) {
-            echo '<tr>';
-            echo '<td>' . $document1['documentNo'] . '</td>';
-            echo '<td>' . $document1['deviceNo'] . '</td>';
-            echo '<td>' . $document1['invoiceHash'] . '</td>';
-            echo '</tr>';
-        }
-
-        echo '</tbody></table></div>';
+        
     }
 
     wp_die(); // terminate immediately and return a proper response  
