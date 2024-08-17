@@ -87,12 +87,25 @@ a{
 table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before
 {
   left: 65px!important;
+  display: none!important; /* or visibility: hidden; */  
 }
 
 .action_btns
 {
   display: flex!important;
 }
+
+/* Prevent wrapping of header text */  
+table.dataTable thead th {  
+  overflow: hidden;            /* Hide overflow content */  
+  text-overflow: ellipsis;    /* Use ellipsis to indicate overflow */  
+  max-width: 100px;           /* Set a minimum width if necessary */  
+}  
+
+/* Optional: Add to ensure the table remains responsive */  
+table.dataTable {  
+  width: 100%;                /* Allow table to grow and fill container */  
+}  
 
 @media (max-width: 767.98px) {
     .dt-length, .dt-search {

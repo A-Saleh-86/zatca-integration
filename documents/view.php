@@ -48,6 +48,7 @@
         </tbody>
     </table>
     
+    
     <table id="document-table" class="table table-striped" width="100%">
 
         <thead>
@@ -141,7 +142,8 @@
                         <td style="font-size: 0.8rem;"><?php if($result->zatcaAcceptedReissueInvoiceNo == NULL){echo "NULL";} ?></td>
 
 
-                        <td style="font-size: 0.8rem;" class="action_btns">
+                        <td style="font-size: 0.8rem;height: 75px;
+    padding: 18px 5px;" class="action_btns">
                         <?php
                             // validation in zatcasuccessresponse - if 2  disable edit btn:
                             global $wpdb;
