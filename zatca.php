@@ -4,7 +4,7 @@
 *description:Zatca Integration
 *author:Appy Innovate
 *Author url:
-*version:8.1
+*version: 17 Aug
 *test domain:zatca
 *text domain:zatca
 *domain path:/languages
