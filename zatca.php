@@ -4,7 +4,7 @@
 *description:Zatca Integration
 *author:Appy Innovate
 *Author url:
-*version: 17 Aug
+*version:8.1
 *test domain:zatca
 *text domain:zatca
 *domain path:/languages
@@ -19,18 +19,6 @@ if(!defined('ABSPATH')){
 
 
 
-// Function to view the release date in admin bar:
-function my_custom_admin_bar_text() {
-  global $wp_admin_bar;
-  
-  $wp_admin_bar->add_menu( array(
-      'id'    => 'my-custom-release-date',
-      'title' => __("Zatca Release Date: 17 Aug 2024", "zatca"),
-      'href'  => false,
-  ));
-}
-
-
 // Include Option.php:
 include 'option.php';
 
@@ -42,9 +30,6 @@ include_once(plugin_dir_path(__FILE__) . '/includes/table_query.php');
 
 // Include the file that contains the create_custom_table function
 require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
-
-// Action for Release date in admin bar:
-add_action( 'admin_bar_menu', 'my_custom_admin_bar_text', 999 );
 
 // Create Tables when Plugin run:
 register_activation_hook( __FILE__, 'create_custom_tables' );
@@ -5269,9 +5254,11 @@ function send_request_to_zatca_report(){
 function insert_woocommerce_copy($docNo){
     global $wpdb;
     $table_orders = $wpdb->prefix . 'wc_orders';
+    $table_posts = $wpdb->prefix . 'posts';
+
 
     // Get the last order ID in the table  
-    $last_order_id = $wpdb->get_var($wpdb->prepare("SELECT MAX(id) FROM $table_orders"));
+    $last_order_id = $wpdb->get_var($wpdb->prepare("SELECT MAX(id) FROM $table_posts"));
 
     // get invoiceNo from zatcaDocument table that's mean original_order_id also
     $original_order_id = $wpdb->get_var($wpdb->prepare("SELECT invoiceNo FROM zatcaDocument WHERE documentNo = $docNo"));
@@ -5281,6 +5268,25 @@ function insert_woocommerce_copy($docNo){
     $post_type = 'shop_order_placehold';
 
     $order_status = 'wc-processing';
+
+    /////////////////////////////////////////////////////////////////////
+    // Insert new post data 
+    $wpdb->query(  
+        $wpdb->prepare("  
+            INSERT INTO $table_posts 
+            SELECT $new_order_id, post_author , post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, menu_order, post_type, post_mime_type,comment_count  
+            FROM $table_posts 
+            WHERE ID = %d;", $original_order_id)
+    );
+
+    // Copy post meta  
+    $wpdb->query(  
+        $wpdb->prepare("  
+            INSERT INTO {$wpdb->prefix}postmeta (post_id, meta_key, meta_value)  
+            SELECT %d, meta_key, meta_value  
+            FROM {$wpdb->prefix}postmeta  
+            WHERE post_id = %d;", $new_order_id, $original_order_id)  
+    );
 
     ////////////////////////////////////////////////////////////////////////
     // Insert new order data 
