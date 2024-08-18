@@ -19,6 +19,18 @@ if(!defined('ABSPATH')){
 
 
 
+// Function to view the release date in admin bar:
+function my_custom_admin_bar_text() {
+  global $wp_admin_bar;
+  
+  $wp_admin_bar->add_menu( array(
+      'id'    => 'my-custom-release-date',
+      'title' => __("Zatca Release Date: 17 Aug 2024", "zatca"),
+      'href'  => false,
+  ));
+}
+
+
 // Include Option.php:
 include 'option.php';
 
@@ -30,6 +42,9 @@ include_once(plugin_dir_path(__FILE__) . '/includes/table_query.php');
 
 // Include the file that contains the create_custom_table function
 require_once(plugin_dir_path(__FILE__) . 'create_db_tables.php');
+
+// Action for Release date in admin bar:
+add_action( 'admin_bar_menu', 'my_custom_admin_bar_text', 999 );
 
 // Create Tables when Plugin run:
 register_activation_hook( __FILE__, 'create_custom_tables' );
