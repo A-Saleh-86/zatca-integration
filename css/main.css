@@ -392,10 +392,16 @@ body[dir="rtl"] .form-check-input {
 
 /* Admin Bar Release Date */
 
-#wp-admin-bar-my-custom-release-date  .ab-empty-item{
-
-  color: red !important;
-  margin-right: 367px !important;
-  font-weight: bold;
+#wp-admin-bar-my-custom-release-date {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
 }
+
+#wp-admin-bar-my-custom-release-date .ab-empty-item {
+  color: red !important;
+  font-weight: bold;
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
 /* / Admin Bar Release Date */
