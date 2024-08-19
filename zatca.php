@@ -18,12 +18,28 @@ if(!defined('ABSPATH')){
 }
 
 
+// Function to view the release date in admin bar:
+function my_custom_admin_bar_text() {
+    global $wp_admin_bar;
+    
+    $wp_admin_bar->add_menu( array(
+        'id'    => 'my-custom-release-date',
+        'title' => __("Zatca Release Date: ", "zatca") . ' 17 Aug 2024',
+        'href'  => false,
+    ));
+}
+
+
+
 
 // Include Option.php:
 include 'option.php';
 
 // Get Walker Class For Bootstrap:
 include_once 'css/class-wp-bootstrap-navwalker.php';
+
+// Action for Release date in admin bar:
+add_action( 'admin_bar_menu', 'my_custom_admin_bar_text', 999 );
 
 // Include the table query file:
 include_once(plugin_dir_path(__FILE__) . '/includes/table_query.php');

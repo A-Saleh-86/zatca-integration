@@ -389,3 +389,13 @@ body[dir="rtl"] .form-check-input {
 {
   margin: 10px!important;
 }
+
+/* Admin Bar Release Date */
+
+#wp-admin-bar-my-custom-release-date  .ab-empty-item{
+
+  color: red !important;
+  margin-right: 367px !important;
+  font-weight: bold;
+}
+/* / Admin Bar Release Date */
