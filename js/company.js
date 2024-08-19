@@ -81,7 +81,7 @@ jQuery(document).ready(function($) {
                     cityArInput.value = '';
                     cityEnInput.value = '';
 
-                    // Check For address arabic or english:
+                    // Check For address if address 1 is arabic:
                     if(containsArabic(address_1)){
                         
                         if(containsArabic(address_2)){
@@ -95,7 +95,10 @@ jQuery(document).ready(function($) {
                             streetNameArInput.value = address_1;
                         }
 
-                    }else if(containsArabic(address_2)) {
+                    }
+
+                    // Check For address if address 2 is arabic:
+                    if(containsArabic(address_2)) {
 
                         if(containsArabic(address_1)){
 
@@ -108,12 +111,16 @@ jQuery(document).ready(function($) {
                             streetNameArInput.value = address_2;
                         }
 
-                    }else if(containsEnglish(address_1)) {
+                    } 
+                    
+                    // Check For address if address 1 is english:
+                    if(containsEnglish(address_1)) {
 
                         if(containsEnglish(address_2)){
 
                             // Insert New Value
                             streetNameEnInput.value = address_1 + ' - ' + address_2;
+                            // streetNameEnInput.value = address_1;
 
                         }else{
 
@@ -121,12 +128,16 @@ jQuery(document).ready(function($) {
                             streetNameEnInput.value = address_1;
                         }
 
-                    }else if(containsEnglish(address_2)) {
+                    } 
+
+                    // Check For address if address 2 is english:
+                    if(containsEnglish(address_2)) {
 
                         if(containsEnglish(address_1)){
 
                             // Insert New Value
                             streetNameEnInput.value = address_1 + ' - ' + address_2;
+                            // streetNameEnInput.value = address_2;
 
                         }else{
 
@@ -134,9 +145,6 @@ jQuery(document).ready(function($) {
                             streetNameEnInput.value = address_2;
                         }
 
-                    }else {
-
-                        console.log('Unable to determine the language of the address.');
                     }
 
                     // Check For city arabic or english:
@@ -145,12 +153,12 @@ jQuery(document).ready(function($) {
                         // Insert New Value
                         cityArInput.value = city;
 
-                    } else if (containsEnglish(city)) {
+                    }else if(containsEnglish(city)) {
 
                         // Insert New Value
                         cityEnInput.value = city;
 
-                    } else {
+                    }else{
 
                         console.log('Unable to determine the language of the city.');
                     }
