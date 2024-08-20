@@ -3083,30 +3083,32 @@ function update_zatca($doc_no){
                 "linePrice" => [
                     "currencyCode" => "SAR",
                     // "amount" => (int)number_format((float)$unit->price, 2, '.', '')  
-                    "amount" => round($unit->price,2) 
+                    "amount" => round($unit->price)
+                
                 ],
                 "lineQuantity" => $unit->quantity,
                 "lineNetAmount" => [
                     "currencyCode" => "SAR",
                     // "amount" =>  (int)number_format((float)$unit->netAmount, 2, '.', '')
-                    "amount" =>  round($unit->netAmount,2) 
+                    // "amount" =>  (int)number_format((float)round($unit->netAmount,3) , 2, '.', '')
+                    "amount" =>  round($unit->netAmount)
                 ],
                 "lineDiscountAmount" => [
                     "currencyCode" => "SAR",
                     // "amount" => (int)number_format((float)$unit->discount, 2, '.', '') 
-                    "amount" => round($unit->discount,2) 
+                    "amount" => round($unit->discount) 
                 ],
                 // "lineVatRate" => number_format((float)$unit->vatRate, 2, '.', '') , 
-                "lineVatRate" => round($unit->vatRate,2) ,
+                "lineVatRate" => round($unit->vatRate),
                 "lineVatAmount" => [
                     "currencyCode" => "SAR",
-                    // "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
-                    "amount" => round($unit->vatAmount,2) 
+                    "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
+                    // "amount" => round($unit->vatAmount) 
                 ],
                 "lineAmountWithVat" => [
                     "currencyCode" => "SAR",
-                    // "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
-                    "amount" => round($unit->amountWithVAT,2) 
+                    "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
+                    // "amount" => round($unit->amountWithVAT) 
                 ],
                 "taxScheme" => "VAT",
                 "taxSchemeId" => $taxSchemeId
@@ -3132,13 +3134,18 @@ function update_zatca($doc_no){
     // $totalAmountWithVat = number_format($totalAmountWithVat, 2, '.', '');
     // $totalDiscountAmount = number_format($totalDiscountAmount, 2, '.', '');
     // $taxPercent = number_format((float)$unit->vatRate, 2, '.', ''); 
+
+    $totalAmountWithoutVat = round($totalAmountWithoutVat);
+    $totalLineNetAmount = round($totalLineNetAmount);
+    $totalVatAmount = round($totalVatAmount);
+    $totalAmountWithVat = round($totalAmountWithVat);
+    $totalDiscountAmount = round($totalDiscountAmount);
+    $taxPercent = round($unit->vatRate); 
     
-    $totalAmountWithoutVat = round($totalAmountWithoutVat,2);
-    $totalLineNetAmount = round($totalLineNetAmount,2);
-    $totalVatAmount = round($totalVatAmount,2);
-    $totalAmountWithVat = round($totalAmountWithVat,2);
-    $totalDiscountAmount = round($totalDiscountAmount,2);
-    $taxPercent = round($unit->vatRate,2);
+
+
+
+  
 
 
     $totalAmountWithoutVat = ["currencyCode" => "SAR", "amount" => $totalAmountWithoutVat];
@@ -3815,6 +3822,7 @@ function send_request_to_zatca_clear(){
         'msg' => $send_response,
         'validationResults' => $validationResults,
         'responseArray' => $responseArray,
+        'requestArray' => $requestArray,
         'data' => $data
     ];
 
@@ -4592,7 +4600,7 @@ function update_zatca1($doc_no){
                 "description" => $unit->eName . ' - ' . $unit->aName, // Must be aName Only [ but didint insert aName],
                 "linePrice" => [
                     "currencyCode" => "SAR",
-                    "amount" => (int)number_format((float)$unit->price, 2, '.', '')  
+                    "amount" => (int)number_format((float)$unit->price, 2, '.', '')
                 ],
                 "lineQuantity" => $unit->quantity,
                 "lineNetAmount" => [

@@ -1075,7 +1075,7 @@ jQuery(document).ready(function($){
                         window.location.reload();
                     }, 3000);
                 }
-            
+
                 
             },
             error: function(jqXHR, textStatus, errorThrown) {
