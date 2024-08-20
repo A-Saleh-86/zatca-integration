@@ -323,52 +323,6 @@ function create_zatcabusinessidtype_table() {
     }
 }
 
-// Create zatcaBranch table & insert Data:
-function create_zatcaBranch_table() {
-
-    global $wpdb;
-    $table_name = 'zatcaBranch';
-    $charset_collate = $wpdb->get_charset_collate();
-
-    // SQL to create the table
-    $sql = "
-        CREATE TABLE IF NOT EXISTS  $table_name (
-            `VendorId` int(11) NOT NULL DEFAULT 0,
-            `buildingNo` int(11) NOT NULL DEFAULT 1,
-            `deviceID` varchar(250) DEFAULT NULL,
-            `zatcaStage` int(11) NOT NULL,
-            `zatcaInvoiceType` varchar(10) DEFAULT NULL,
-            `secondBusinessIDType` varchar(255) DEFAULT NULL,
-            `secondBusinessID` varchar(18) DEFAULT NULL,
-            `VATCategoryCodeNo` int(11) DEFAULT NULL,
-            `VATCategoryCodeSubTypeNo` int(11) DEFAULT NULL,
-            `apartmentNum` varchar(18) DEFAULT NULL,
-            `POBox` varchar(30) DEFAULT NULL,
-            `POBoxAdditionalNum` varchar(18) DEFAULT NULL,
-            `street_Arb` varchar(150) DEFAULT NULL,
-            `street_Eng` varchar(150) DEFAULT NULL,
-            `district_Arb` varchar(150) DEFAULT NULL,
-            `district_Eng` varchar(150) DEFAULT NULL,
-            `city_Arb` varchar(50) DEFAULT NULL,
-            `city_Eng` varchar(50) DEFAULT NULL,
-            `countrySubdivision_Arb` varchar(150) DEFAULT NULL,
-            `countrySubdivision_Eng` varchar(150) DEFAULT NULL,
-            `country_Arb` varchar(150) DEFAULT NULL,
-            `country_Eng` varchar(150) DEFAULT NULL,
-            `countryNo` varchar(10) DEFAULT NULL,
-            `postalCode` varchar(18) DEFAULT NULL,
-            `row_timestamp` timestamp NULL DEFAULT current_timestamp(),
-            `ZATCA_B2C_SendingIntervalType` int(11) DEFAULT NULL,
-            PRIMARY KEY (`buildingNo`,`VendorId`) USING BTREE
-        ) ENGINE=InnoDB $charset_collate;
-    ";
-
-    // Execute the query
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
-
-}
-
 // Create zatcaCompany table & insert Data:
 function create_zatcaCompany_table() {
 
@@ -405,6 +359,54 @@ function create_zatcaCompany_table() {
             `row_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
             `postalCode` int(11) DEFAULT NULL,
             PRIMARY KEY (`VendorId`,`companyNo`)
+        ) ENGINE=InnoDB $charset_collate;
+    ";
+
+    // Execute the query
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+
+}
+
+// Create zatcaBranch table & insert Data:
+function create_zatcaBranch_table() {
+
+    global $wpdb;
+    $table_name = 'zatcaBranch';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    // SQL to create the table
+    $sql = "
+        CREATE TABLE IF NOT EXISTS  $table_name (
+            `VendorId` int(11) NOT NULL DEFAULT 0,
+            `buildingNo` int(11) NOT NULL DEFAULT 1,
+            `deviceID` varchar(250) DEFAULT NULL,
+            `zatcaStage` int(11) NOT NULL,
+            `zatcaInvoiceType` varchar(10) DEFAULT NULL,
+            `secondBusinessIDType` varchar(255) DEFAULT NULL,
+            `secondBusinessID` varchar(18) DEFAULT NULL,
+            `VATCategoryCodeNo` int(11) DEFAULT NULL,
+            `VATCategoryCodeSubTypeNo` int(11) DEFAULT NULL,
+            `apartmentNum` varchar(18) DEFAULT NULL,
+            `POBox` varchar(30) DEFAULT NULL,
+            `POBoxAdditionalNum` varchar(18) DEFAULT NULL,
+            `street_Arb` varchar(150) DEFAULT NULL,
+            `street_Eng` varchar(150) DEFAULT NULL,
+            `district_Arb` varchar(150) DEFAULT NULL,
+            `district_Eng` varchar(150) DEFAULT NULL,
+            `city_Arb` varchar(50) DEFAULT NULL,
+            `city_Eng` varchar(50) DEFAULT NULL,
+            `countrySubdivision_Arb` varchar(150) DEFAULT NULL,
+            `countrySubdivision_Eng` varchar(150) DEFAULT NULL,
+            `country_Arb` varchar(150) DEFAULT NULL,
+            `country_Eng` varchar(150) DEFAULT NULL,
+            `countryNo` varchar(10) DEFAULT NULL,
+            `postalCode` varchar(18) DEFAULT NULL,
+            `row_timestamp` timestamp NULL DEFAULT current_timestamp(),
+            `ZATCA_B2C_SendingIntervalType` int(11) DEFAULT NULL,
+            PRIMARY KEY (`buildingNo`,`VendorId`) USING BTREE,
+            CONSTRAINT `fk_zatcaCompany_VendorId` FOREIGN KEY (`VendorId`)
+            REFERENCES zatcaCompany(`VendorId`) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB $charset_collate;
     ";
 
