@@ -4,12 +4,11 @@
 *description:Zatca Integration
 *author:Appy Innovate
 *Author url:
-*version:Date 17 Aug 2024
+*Version: Date - 17 Aug 2024
 *test domain:zatca
 *text domain:zatca
 *domain path:/languages
 */
-
 
 // Security Layer:
 if(!defined('ABSPATH')){
@@ -24,7 +23,7 @@ function my_custom_admin_bar_text() {
     
     $wp_admin_bar->add_menu( array(
         'id'    => 'my-custom-release-date',
-        'title' => __("Zatca Release Date: ", "zatca") . ' 17 Aug 2024',
+        'title' => __("Zatca Release Date: ", "zatca") . ': ' . wp_date( 'j F Y', strtotime( '17 Aug 2024' ) ),
         'href'  => false,
     ));
 }
@@ -706,6 +705,7 @@ function get_customer_data_from_woo(){
         $first_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_first_name' and user_id = $vals"));
         $last_name = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_last_name' and user_id = $vals"));
         $address = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_address_1' and user_id = $vals"));
+        $address_2 = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_address_2' and user_id = $vals"));
         $city = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_city' and user_id = $vals"));
         $postalCode = $wpdb->get_var($wpdb->prepare("select meta_value from $table_usermeta where meta_key = 'billing_postcode' and user_id = $vals"));
 
@@ -715,6 +715,7 @@ function get_customer_data_from_woo(){
             'first_name' => $first_name,
             'last_name'  => $last_name,
             'address'    => $address,
+            'address_2'    => $address_2,
             'city'       => $city,
             'postalCode' => $postalCode
         );
@@ -3078,25 +3079,31 @@ function update_zatca($doc_no){
                 "description" => $unit->eName . ' - ' . $unit->aName, // Must be aName Only [ but didint insert aName],
                 "linePrice" => [
                     "currencyCode" => "SAR",
-                    "amount" => (int)number_format((float)$unit->price, 2, '.', '')  
+                    // "amount" => (int)number_format((float)$unit->price, 2, '.', '')  
+                    "amount" => round($unit->price,2) 
                 ],
                 "lineQuantity" => $unit->quantity,
                 "lineNetAmount" => [
                     "currencyCode" => "SAR",
-                    "amount" =>  (int)number_format((float)$unit->netAmount, 2, '.', '')  
+                    // "amount" =>  (int)number_format((float)$unit->netAmount, 2, '.', '')
+                    "amount" =>  round($unit->netAmount,2) 
                 ],
                 "lineDiscountAmount" => [
                     "currencyCode" => "SAR",
-                    "amount" => (int)number_format((float)$unit->discount, 2, '.', '') 
+                    // "amount" => (int)number_format((float)$unit->discount, 2, '.', '') 
+                    "amount" => round($unit->discount,2) 
                 ],
-                "lineVatRate" => number_format((float)$unit->vatRate, 2, '.', '') , //$unit->vatRate,
+                // "lineVatRate" => number_format((float)$unit->vatRate, 2, '.', '') , 
+                "lineVatRate" => round($unit->vatRate,2) ,
                 "lineVatAmount" => [
                     "currencyCode" => "SAR",
-                    "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
+                    // "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
+                    "amount" => round($unit->vatAmount,2) 
                 ],
                 "lineAmountWithVat" => [
                     "currencyCode" => "SAR",
-                    "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
+                    // "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
+                    "amount" => round($unit->amountWithVAT,2) 
                 ],
                 "taxScheme" => "VAT",
                 "taxSchemeId" => $taxSchemeId
@@ -3116,12 +3123,19 @@ function update_zatca($doc_no){
 
     }
 
-    $totalAmountWithoutVat = number_format($totalAmountWithoutVat, 2, '.', '');
-    $totalLineNetAmount = number_format($totalLineNetAmount, 2, '.', '');
-    $totalVatAmount = number_format($totalVatAmount, 2, '.', '');
-    $totalAmountWithVat = number_format($totalAmountWithVat, 2, '.', '');
-    $totalDiscountAmount = number_format($totalDiscountAmount, 2, '.', '');
-    $taxPercent = number_format((float)$unit->vatRate, 2, '.', ''); //$unit->vatRate;
+    // $totalAmountWithoutVat = number_format($totalAmountWithoutVat, 2, '.', '');
+    // $totalLineNetAmount = number_format($totalLineNetAmount, 2, '.', '');
+    // $totalVatAmount = number_format($totalVatAmount, 2, '.', '');
+    // $totalAmountWithVat = number_format($totalAmountWithVat, 2, '.', '');
+    // $totalDiscountAmount = number_format($totalDiscountAmount, 2, '.', '');
+    // $taxPercent = number_format((float)$unit->vatRate, 2, '.', ''); 
+    
+    $totalAmountWithoutVat = round($totalAmountWithoutVat,2);
+    $totalLineNetAmount = round($totalLineNetAmount,2);
+    $totalVatAmount = round($totalVatAmount,2);
+    $totalAmountWithVat = round($totalAmountWithVat,2);
+    $totalDiscountAmount = round($totalDiscountAmount,2);
+    $taxPercent = round($unit->vatRate,2);
 
 
     $totalAmountWithoutVat = ["currencyCode" => "SAR", "amount" => $totalAmountWithoutVat];

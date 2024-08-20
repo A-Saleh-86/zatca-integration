@@ -163,6 +163,7 @@ jQuery(document).ready(function($) {
                     var first_name = data.first_name;
                     var last_name = data.last_name;
                     var address = data.address;
+                    var address_2 = data.address_2;
                     var city = data.city;
                     
                     
@@ -193,50 +194,100 @@ jQuery(document).ready(function($) {
                     clientNameArabicInput.value = '';
                     clientNameEnglishInput.value = '';
             
-                    // Check For address arabic or english:
-                    if (containsArabic(address)) {
-                        
-                        // Insert New Value
-                        addressArabicInput.value = address;
 
-                    } else if (containsEnglish(address)) {
+                    // Check For address if address 1 is arabic:
+                    if(containsArabic(address)){
+    
+                        if(containsArabic(address_2)){
 
-                        // Insert New Value
-                        addressEnglishInput.value = address;
+                            // Insert New Value
+                            addressArabicInput.value = address + ' - ' + address_2;
 
-                    } else {
+                        }else{
 
-                        console.log('Unable to determine the language of the address.');
+                            // Insert New Value
+                            addressArabicInput.value = address;
+                        }
+
                     }
 
+                    // Check For address if address 2 is arabic:
+                    if(containsArabic(address_2)) {
+
+                        if(containsArabic(address)){
+
+                            // Insert New Value
+                            addressArabicInput.value = address + ' - ' + address_2;
+
+                        }else{
+
+                            // Insert New Value
+                            addressArabicInput.value = address_2;
+                        }
+
+                    } 
+                    
+                    // Check For address if address 1 is english:
+                    if(containsEnglish(address)) {
+
+                        if(containsEnglish(address_2)){
+
+                            // Insert New Value
+                            addressEnglishInput.value = address + ' - ' + address_2;
+
+                        }else{
+
+                            // Insert New Value
+                            addressEnglishInput.value = address;
+                        }
+
+                    } 
+
+                    // Check For address if address 2 is english:
+                    if(containsEnglish(address_2)) {
+
+                        if(containsEnglish(address)){
+
+                            // Insert New Value
+                            addressEnglishInput.value = address + ' - ' + address_2;
+
+                        }else{
+
+                            // Insert New Value
+                            addressEnglishInput.value = address_2;
+                        }
+
+                    }
+                    
+
                     // Check For client name arabic or english:
-                    if (containsArabic(first_name) && containsArabic(last_name)  ) {
+                    if(containsArabic(first_name) && containsArabic(last_name)  ){
                         
                         // Insert New Value
                         clientNameArabicInput.value = first_name + ' ' + last_name;
 
-                    } else if (containsEnglish(first_name) && containsEnglish(last_name)) {
+                    }else if (containsEnglish(first_name) && containsEnglish(last_name)){
 
                         // Insert New Value
                         clientNameEnglishInput.value = first_name + ' ' + last_name;
 
-                    } else {
+                    }else{
 
                         console.log('Unable to determine the language of the client name.');
                     }
 
                     // Check For city arabic or english:
-                    if (containsArabic(city)) {
+                    if(containsArabic(city)){
 
                         // Insert New Value
                         cityArabicInput.value = city;
 
-                    } else if (containsEnglish(city)) {
+                    }else if(containsEnglish(city)){
 
                         // Insert New Value
                         cityEnglishInput.value = city;
 
-                    } else {
+                    }else{
 
                         console.log('Unable to determine the language of the city.');
                     }

@@ -691,7 +691,7 @@ msgstr "الاجمالى بعد الضريبة"
 
 #: documents/edit-document.php:921
 msgid "Original of Returned Invoice"
-msgstr "أصل الفاتورة المعاد ارسالها"
+msgstr "أصل الفاتورة المرتجعه "
 
 #: documents/edit-document.php:927 documents/edit-document.php:954
 #: documents/edit-document.php:976 documents/insert.php:207
