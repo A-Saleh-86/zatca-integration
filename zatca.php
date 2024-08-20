@@ -388,6 +388,7 @@ function localization() {
         'document_inserted' => __("Document Created successifly", "zatca"),
         'document_updated' => __("Data Updated", "zatca"),
         'document_device_expired' => __("Device CsID_ExpiryDate is Expired", "zatca"),
+        'zatca_company_empty' => __("Please Insert Company Details", "zatca"),
         'insert_seller_additional_id' => __("You Muse Insert Seller additional Id Number in zatca Company", "zatca"),
         'insert_buyer_poBox_additionalNo' => __("You Muse Insert Buyer po box additional number in zatca customer", "zatca"),
         'insert_buyer_additional_id' => __("You Muse Insert Buyer additional Number in zatca customer", "zatca"),
@@ -2070,6 +2071,8 @@ function insert_form_documents(){
         // Validation on CsID_ExpiryDate not expire:
         $device_ExpiryDate = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
         
+        // Validation on zatcaCompany if have data [ insert doc ] - if not [ stop ]:
+        $zatcaCompanyCheck =$wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaCompany") );
 
         if(empty($device_ExpiryDate)){ // If No Date Valid:
 
@@ -2077,6 +2080,12 @@ function insert_form_documents(){
                 'status' => 'expired'
             ];
             //$msg = __("Device CsID_ExpiryDate is Expired","zatca");
+
+        }else if(empty($zatcaCompanyCheck)){
+
+            $send_response = [
+                'status' => 'no_zatcaCompany_data'
+            ];
 
         }else{ // If Date Valid
 

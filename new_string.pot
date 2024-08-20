@@ -2,30 +2,30 @@
 # This file is distributed under the same license as the zatca plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: zatca Date 17 Aug 2024\n"
+"Project-Id-Version: zatca Date - 17 Aug 2024\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-08-19T21:14:27+02:00\n"
+"POT-Creation-Date: 2024-08-20T18:57:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: zatca\n"
 
 #. Plugin Name of the plugin
-#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+#: zatca.php
 msgid "zatca"
 msgstr ""
 
 #. Description of the plugin
-#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+#: zatca.php
 msgid "Zatca Integration"
 msgstr ""
 
 #. Author of the plugin
-#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+#: zatca.php
 msgid "Appy Innovate"
 msgstr ""
 
@@ -1122,7 +1122,7 @@ msgstr ""
 
 #: option.php:79
 #: option.php:80
-#: zatca.php:4343
+#: zatca.php:4375
 msgid "Zacta Tampering Detector"
 msgstr ""
 
@@ -1246,163 +1246,167 @@ msgstr ""
 msgid "Check Hash Gap"
 msgstr ""
 
-#: zatca.php:27
+#: zatca.php:26
 msgid "Zatca Release Date: "
 msgstr ""
 
-#: zatca.php:315
+#: zatca.php:314
 msgid "Postal Code Cant be Null"
 msgstr ""
 
-#: zatca.php:316
+#: zatca.php:315
 msgid "Postal Code Must be 5 Digits"
 msgstr ""
 
-#: zatca.php:317
+#: zatca.php:316
 msgid "Street Arabic Name Cant be Null"
 msgstr ""
 
-#: zatca.php:318
+#: zatca.php:317
 msgid "second business id Cant be Null"
 msgstr ""
 
-#: zatca.php:319
+#: zatca.php:318
 msgid "District Arabic Name Cant be Null"
 msgstr ""
 
-#: zatca.php:320
+#: zatca.php:319
 msgid "City Arabic Name Cant be Null"
 msgstr ""
 
-#: zatca.php:321
+#: zatca.php:320
 msgid "Customer Inserted Success"
 msgstr ""
 
-#: zatca.php:322
+#: zatca.php:321
 msgid "Please select a customer first"
 msgstr ""
 
-#: zatca.php:323
+#: zatca.php:322
 msgid "Please Insert Customer Aarabic Name"
 msgstr ""
 
-#: zatca.php:324
+#: zatca.php:323
 #: zatca.php:437
 msgid "You Must Enter Client Name In Arabic"
 msgstr ""
 
-#: zatca.php:325
-#: zatca.php:343
-#: zatca.php:358
-#: zatca.php:374
+#: zatca.php:324
+#: zatca.php:342
+#: zatca.php:357
+#: zatca.php:373
 #: zatca.php:413
 #: zatca.php:416
 #: zatca.php:438
 msgid "Error"
 msgstr ""
 
-#: zatca.php:326
-#: zatca.php:344
-#: zatca.php:359
-#: zatca.php:375
+#: zatca.php:325
+#: zatca.php:343
+#: zatca.php:358
+#: zatca.php:374
 #: zatca.php:414
 #: zatca.php:439
 msgid "Success"
 msgstr ""
 
-#: zatca.php:327
-#: zatca.php:361
-#: zatca.php:376
+#: zatca.php:326
+#: zatca.php:360
+#: zatca.php:375
 #: zatca.php:427
 msgid "Are You Sure?"
 msgstr ""
 
-#: zatca.php:328
-#: zatca.php:362
-#: zatca.php:377
+#: zatca.php:327
+#: zatca.php:361
+#: zatca.php:376
 #: zatca.php:428
 msgid "Delete"
 msgstr ""
 
-#: zatca.php:336
+#: zatca.php:335
 msgid "Second Business Id Must be 10 Digits"
 msgstr ""
 
-#: zatca.php:337
+#: zatca.php:336
 msgid "Please Insert City Arabic Name"
 msgstr ""
 
-#: zatca.php:338
+#: zatca.php:337
 msgid "Please Insert District Arabic Name"
 msgstr ""
 
-#: zatca.php:339
+#: zatca.php:338
 msgid "Please Insert Company Name"
 msgstr ""
 
-#: zatca.php:340
+#: zatca.php:339
 msgid "Please Insert Appartment No."
 msgstr ""
 
-#: zatca.php:341
+#: zatca.php:340
 msgid "Please Insert Po Box Additional No."
 msgstr ""
 
-#: zatca.php:342
+#: zatca.php:341
 msgid "Please Insert Street Arabic Name"
 msgstr ""
 
-#: zatca.php:353
+#: zatca.php:352
 msgid "Person No Cant be Null"
 msgstr ""
 
-#: zatca.php:354
+#: zatca.php:353
 msgid "Please insert reminder hours"
 msgstr ""
 
-#: zatca.php:355
+#: zatca.php:354
 msgid "Reminder hours must be between 1-23 Hours"
 msgstr ""
 
-#: zatca.php:356
+#: zatca.php:355
 msgid "User Already Exist"
 msgstr ""
 
-#: zatca.php:357
+#: zatca.php:356
 msgid "User Inserted Successfully"
 msgstr ""
 
-#: zatca.php:360
+#: zatca.php:359
 #: zatca.php:415
 msgid "Warning"
 msgstr ""
 
-#: zatca.php:371
+#: zatca.php:370
 msgid "New Device Inserted"
 msgstr ""
 
-#: zatca.php:372
+#: zatca.php:371
 msgid "Device Status Updated"
 msgstr ""
 
-#: zatca.php:373
+#: zatca.php:372
 msgid "Not allowed to add more one device active"
 msgstr ""
 
-#: zatca.php:389
+#: zatca.php:388
 msgid "Document Created successifly"
 msgstr ""
 
-#: zatca.php:390
-#: zatca.php:809
-#: zatca.php:1395
-#: zatca.php:4115
-#: zatca.php:4280
+#: zatca.php:389
+#: zatca.php:811
+#: zatca.php:1397
+#: zatca.php:4147
+#: zatca.php:4312
 msgid "Data Updated"
 msgstr ""
 
-#: zatca.php:391
+#: zatca.php:390
 msgid "Device CsID_ExpiryDate is Expired"
+msgstr ""
+
+#: zatca.php:391
+msgid "Please Insert Company Details"
 msgstr ""
 
 #: zatca.php:392
@@ -1517,86 +1521,86 @@ msgstr ""
 msgid "Invoice Hash"
 msgstr ""
 
-#: zatca.php:841
+#: zatca.php:843
 msgid "Failed to delete Customer."
 msgstr ""
 
-#: zatca.php:846
+#: zatca.php:848
 msgid "Customer deleted successfully."
 msgstr ""
 
-#: zatca.php:1111
+#: zatca.php:1113
 msgid "Failed to delete device."
 msgstr ""
 
-#: zatca.php:1121
+#: zatca.php:1123
 msgid "Device deleted successfully."
 msgstr ""
 
-#: zatca.php:1132
+#: zatca.php:1134
 msgid "Failed to delete device because there are documents related to this device."
 msgstr ""
 
-#: zatca.php:1169
+#: zatca.php:1171
 msgid "Failed to delete User"
 msgstr ""
 
-#: zatca.php:1174
+#: zatca.php:1176
 msgid "User deleted successfully"
 msgstr ""
 
-#: zatca.php:1323
-#: zatca.php:4311
+#: zatca.php:1325
+#: zatca.php:4343
 msgid "Data Inserted"
 msgstr ""
 
-#: zatca.php:3587
-#: zatca.php:5056
-#: zatca.php:5902
-#: zatca.php:6405
-#: zatca.php:7174
-#: zatca.php:7662
+#: zatca.php:3618
+#: zatca.php:5089
+#: zatca.php:5935
+#: zatca.php:6438
+#: zatca.php:7207
+#: zatca.php:7695
 msgid "Document Submitted Successfully, Zatca Status Code Is "
 msgstr ""
 
-#: zatca.php:3587
-#: zatca.php:5056
-#: zatca.php:5902
-#: zatca.php:6405
-#: zatca.php:7174
-#: zatca.php:7662
+#: zatca.php:3618
+#: zatca.php:5089
+#: zatca.php:5935
+#: zatca.php:6438
+#: zatca.php:7207
+#: zatca.php:7695
 msgid ".. Request Is Success"
 msgstr ""
 
-#: zatca.php:3708
-#: zatca.php:5176
-#: zatca.php:6025
-#: zatca.php:6520
-#: zatca.php:7288
-#: zatca.php:7777
+#: zatca.php:3739
+#: zatca.php:5209
+#: zatca.php:6058
+#: zatca.php:6553
+#: zatca.php:7321
+#: zatca.php:7810
 msgid "Document Submitted with Warning, Zatca Status Code Is "
 msgstr ""
 
-#: zatca.php:3753
-#: zatca.php:3760
-#: zatca.php:5223
-#: zatca.php:6084
-#: zatca.php:6091
-#: zatca.php:6577
-#: zatca.php:7343
-#: zatca.php:7350
-#: zatca.php:7830
+#: zatca.php:3784
+#: zatca.php:3791
+#: zatca.php:5256
+#: zatca.php:6117
+#: zatca.php:6124
+#: zatca.php:6610
+#: zatca.php:7376
+#: zatca.php:7383
+#: zatca.php:7863
 msgid " Error: "
 msgstr ""
 
-#: zatca.php:4151
+#: zatca.php:4183
 msgid "You have unsubmitted documents please review them"
 msgstr ""
 
-#: zatca.php:4187
+#: zatca.php:4219
 msgid "Tax Invoice"
 msgstr ""
 
-#: zatca.php:6634
+#: zatca.php:6667
 msgid "Reissued Successfully"
 msgstr ""

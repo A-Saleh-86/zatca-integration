@@ -80,7 +80,7 @@ const discountPercentageInput = document.getElementById('discount-percentage');
 // Function to update exemption-reason [ Insert Page]:
 function updateInput() {
 
-    var vatCatSubValue = vatCatCodeSubInput.value;
+    var vatCatSubValue = $('vat-cat-code-sub').val();
     $.ajax({
         url:myDoc.ajaxUrl,
         method: 'POST',
@@ -184,7 +184,7 @@ function updateInput() {
                     
                     // console.log(data);
                     
-                    vatCatCodeSubInput.innerHTML = data;
+                    $('vat-cat-code-sub').innerHTML = data;
                     
                     // Update exemption-reason:
                     updateInput();
@@ -570,6 +570,16 @@ jQuery(document).ready(function($) {
                     popupValidation.error({
                         title: myDoc.notification_error_title,
                         message: myDoc.document_device_expired
+                    });
+
+                    return;
+
+                }else if(data.status == 'no_zatcaCompany_data'){
+
+                    // Error notification:
+                    popupValidation.error({
+                        title: myDoc.notification_error_title,
+                        message: myDoc.zatca_company_empty
                     });
 
                     return;
