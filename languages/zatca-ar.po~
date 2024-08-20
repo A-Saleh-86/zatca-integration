@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-08-19T21:14:27+02:00\n"
+"POT-Creation-Date: 2024-08-19T20:40:18+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -510,7 +510,7 @@ msgstr "اضافه جهاز جديد"
 msgid "Devices"
 msgstr "الاجهزة"
 
-#: devices/view.php:24 zatca.php:578
+#: devices/view.php:24 zatca.php:577
 msgid "Device No"
 msgstr "رقم الجهاز"
 
@@ -938,7 +938,7 @@ msgstr "العمليه"
 msgid "Users"
 msgstr "المستخدمين"
 
-#: option.php:79 option.php:80 zatca.php:4343
+#: option.php:79 option.php:80 zatca.php:4342
 msgid "Zacta Tampering Detector"
 msgstr "فحص خلل الفواتير"
 
@@ -1100,25 +1100,25 @@ msgstr "من فضلك اختر العميل أولا"
 msgid "Please Insert Customer Aarabic Name"
 msgstr "من فضلك أدخل اسم العميل العربي"
 
-#: zatca.php:324 zatca.php:437
+#: zatca.php:324 zatca.php:436
 msgid "You Must Enter Client Name In Arabic"
 msgstr "يجب ادخال اسم العميل باللغه العربيه"
 
 #: zatca.php:325 zatca.php:343 zatca.php:358 zatca.php:374 zatca.php:413
-#: zatca.php:416 zatca.php:438
+#: zatca.php:416 zatca.php:437
 msgid "Error"
 msgstr "عمليه خاطئه"
 
 #: zatca.php:326 zatca.php:344 zatca.php:359 zatca.php:375 zatca.php:414
-#: zatca.php:439
+#: zatca.php:438
 msgid "Success"
 msgstr "عمليه ناجحه"
 
-#: zatca.php:327 zatca.php:361 zatca.php:376 zatca.php:427
+#: zatca.php:327 zatca.php:361 zatca.php:376 zatca.php:426
 msgid "Are You Sure?"
 msgstr "هل انت متاكد ؟"
 
-#: zatca.php:328 zatca.php:362 zatca.php:377 zatca.php:428
+#: zatca.php:328 zatca.php:362 zatca.php:377 zatca.php:427
 msgid "Delete"
 msgstr "حذف "
 
@@ -1190,7 +1190,7 @@ msgstr "غير مسموح باضافة اكثر من جهاز واحد نشط"
 msgid "Document Created successifly"
 msgstr "تم ادخال الفاتورة بنجاح"
 
-#: zatca.php:390 zatca.php:809 zatca.php:1395 zatca.php:4115 zatca.php:4280
+#: zatca.php:390 zatca.php:808 zatca.php:1394 zatca.php:4114 zatca.php:4279
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
 
@@ -1302,95 +1302,87 @@ msgid "Document"
 msgstr "فاتورة رقم "
 
 #: zatca.php:418
-msgid ""
-"The device signature or token data may not be correct , please check and try "
-"again!"
-msgstr ""
-"قد لا تكون بيانات توقيع الجهاز أو الرمز صحيحة، يرجى التحقق والمحاولة مرة "
-"أخرى!"
+msgid "The device signature or token data may not be correct , please check and try again!"
+msgstr "قد لا تكون بيانات توقيع الجهاز أو الرمز صحيحة، يرجى التحقق والمحاولة مرة أخرى!"
 
-#: zatca.php:419
-msgid "This invoice is already generated and sent before to zatca!"
-msgstr "تم إنشاء هذه الفاتورة بالفعل وإرسالها مسبقًا إلى هيئة الزكاة!"
-
-#: zatca.php:436
+#: zatca.php:435
 msgid "Client Name Arabic Cant be Empty"
 msgstr "يجب ادخال اسم العميل العربي"
 
-#: zatca.php:502
+#: zatca.php:501
 msgid "Missing Invoice Numbers"
 msgstr "مسلسل الفواتير المفقودة"
 
-#: zatca.php:578
+#: zatca.php:577
 msgid "Document No"
 msgstr "رقم الفاتورة"
 
-#: zatca.php:578
+#: zatca.php:577
 msgid "Invoice Hash"
 msgstr " هاش الفاتورة "
 
-#: zatca.php:841
+#: zatca.php:840
 msgid "Failed to delete Customer."
 msgstr "فشل عملية الحذف"
 
-#: zatca.php:846
+#: zatca.php:845
 msgid "Customer deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1111
+#: zatca.php:1110
 msgid "Failed to delete device."
 msgstr "فشل حذف الجهاز"
 
-#: zatca.php:1121
+#: zatca.php:1120
 msgid "Device deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1132
+#: zatca.php:1131
 msgid ""
 "Failed to delete device because there are documents related to this device."
 msgstr "فشل حذف الجهاز بسبب وجود فواتير مرتبطة بهذا الجهاز"
 
-#: zatca.php:1169
+#: zatca.php:1168
 msgid "Failed to delete User"
 msgstr "فشل عملية الحذف"
 
-#: zatca.php:1174
+#: zatca.php:1173
 msgid "User deleted successfully"
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1323 zatca.php:4311
+#: zatca.php:1322 zatca.php:4310
 msgid "Data Inserted"
 msgstr "تم بنجاح"
 
-#: zatca.php:3587 zatca.php:5056 zatca.php:5902 zatca.php:6405 zatca.php:7174
-#: zatca.php:7662
+#: zatca.php:3586 zatca.php:5055 zatca.php:5901 zatca.php:6404 zatca.php:7173
+#: zatca.php:7661
 msgid "Document Submitted Successfully, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة بنجاح كود هيئة الزكاة هو "
 
-#: zatca.php:3587 zatca.php:5056 zatca.php:5902 zatca.php:6405 zatca.php:7174
-#: zatca.php:7662
+#: zatca.php:3586 zatca.php:5055 zatca.php:5901 zatca.php:6404 zatca.php:7173
+#: zatca.php:7661
 msgid ".. Request Is Success"
 msgstr "عمليه ناجحه"
 
-#: zatca.php:3708 zatca.php:5176 zatca.php:6025 zatca.php:6520 zatca.php:7288
-#: zatca.php:7777
+#: zatca.php:3707 zatca.php:5175 zatca.php:6024 zatca.php:6519 zatca.php:7287
+#: zatca.php:7776
 msgid "Document Submitted with Warning, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة لكن يوجد تنبيه كود هيئة الزكاة هو "
 
-#: zatca.php:3753 zatca.php:3760 zatca.php:5223 zatca.php:6084 zatca.php:6091
-#: zatca.php:6577 zatca.php:7343 zatca.php:7350 zatca.php:7830
+#: zatca.php:3752 zatca.php:3759 zatca.php:5222 zatca.php:6083 zatca.php:6090
+#: zatca.php:6576 zatca.php:7342 zatca.php:7349 zatca.php:7829
 msgid " Error: "
 msgstr "خطأ"
 
-#: zatca.php:4151
+#: zatca.php:4150
 msgid "You have unsubmitted documents please review them"
 msgstr "لديك فواتير غير مرسلة الرجاء مراجعتها"
 
-#: zatca.php:4187
+#: zatca.php:4186
 msgid "Tax Invoice"
 msgstr " عمل فاتورة ضريبيه"
 
-#: zatca.php:6634
+#: zatca.php:6633
 msgid "Reissued Successfully"
 msgstr "تم اعادة إنشاء الفاتورة بنجاح"
 

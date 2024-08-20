@@ -415,6 +415,8 @@ function localization() {
         'notification_warning_title' => __("Warning", "zatca"),
         'error_word' => __("Error", "zatca"),
         'document_word' => __("Document", "zatca"),
+        'mayBeDeviceError' => __("The device signature or token data may not be correct , please check and try again!", "zatca"),
+        'generatedAlready' => __("This invoice is already generated and sent before to zatca!", "zatca"),
         ) 
     );
 
@@ -2959,6 +2961,7 @@ function update_zatca($doc_no){
         $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
         
         $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
+        $documentVatCategoryNo = $doc->VATCategoryCodeNo;
     }
 
     
@@ -3165,7 +3168,7 @@ function update_zatca($doc_no){
         'seller_aName' =>                   $update_seller_sellerName,
         'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
         'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
-        'VATCategoryCodeNo' =>              $update_seller_sellerVatCategoryNo,
+        'VATCategoryCodeNo' =>              $documentVatCategoryNo,
         'seller_street_Arb' =>              $update_seller_street_Arb,
         'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
         'seller_apartmentNum' =>            $update_seller_apartmentNum,
@@ -4457,6 +4460,7 @@ function update_zatca1($doc_no){
         $exportsInvoice = (isset($doc->zatcaInvoiceTransactionCode_isExports) && $doc->zatcaInvoiceTransactionCode_isExports==0) ? true : false;
         $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
         $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
+        $documentVatCategoryNo = $doc->VATCategoryCodeNo;
     }
 
     
@@ -4660,7 +4664,7 @@ function update_zatca1($doc_no){
         'seller_aName' =>                   $update_seller_sellerName,
         'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
         'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
-        'VATCategoryCodeNo' =>              $update_seller_sellerVatCategoryNo,
+        'VATCategoryCodeNo' =>              $documentVatCategoryNo,
         'seller_street_Arb' =>              $update_seller_street_Arb,
         'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
         'seller_apartmentNum' =>            $update_seller_apartmentNum,

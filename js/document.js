@@ -794,7 +794,7 @@ jQuery(document).ready(function($){
                 "doc_no_from_ajax": docNo
             },
             success: function(response) {
-                console.log(response);
+                //console.log(response);
                 if(response.msg.status == 'insert_seller_additional_id'){
 
                     // Error notification:
@@ -869,19 +869,58 @@ jQuery(document).ready(function($){
 
                             }else if(response.msg.status == 'http_status_msg'){
 
-                                // Error notification:
-                                popupValidation.error({
-                                    title: myDoc.notification_error_title,
-                                    message: response.msg.msg
-                                });
+                                if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                                {
+                                    // Error notification:
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: myDoc.mayBeDeviceError
+                                    });
+                                }
+                                else
+                                {
+                                    // Error notification:
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: response.msg.msg
+                                    });
+                                }
+                                
 
                             }
 
-                            // Error notification:
-                            popupValidation.error({
-                                title: myDoc.notification_error_title,
-                                message: myDoc.error_word + " " + response.responseArray['portalResults']
-                            });
+                            if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                            {
+                            }
+                            else
+                            {
+                                const searchTerm = "Invoice Already Generated";
+                                const str = response.responseArray['portalResults'];
+                                if(str.toLowerCase().includes(searchTerm.toLowerCase()))
+                                {
+                                    const numbers = str.match(/\d+/g) || []; // Matches all sequences of digits
+                                    const text = str.match(/[^\d]+/g) || []; // Matches all non-digit characters
+                                    // Convert numbers from strings to actual numbers  
+                                    const numberList = numbers.map(Number);
+                                    // Clean up text segments (trimming spaces, etc.)  
+                                    const cleanText = text.map(segment => segment.trim()).filter(Boolean);
+
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: numberList[0] + " - " + myDoc.generatedAlready
+                                    });
+
+                                }
+                                
+                                else
+                                {
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: myDoc.error_word + " " + response.responseArray['portalResults']
+                                    });
+                                }
+                            }
+                            
 
                         }else if(response.responseArray['zatcaStatusCode'] == 303){
 
@@ -1107,19 +1146,56 @@ jQuery(document).ready(function($){
 
                             }else if(response.msg.status == 'http_status_msg'){
 
-                                // Error notification:
-                                popupValidation.error({
-                                    title: myDoc.notification_error_title,
-                                    message: response.msg.msg
-                                });
+                                if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                                {
+                                    // Error notification:
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: myDoc.mayBeDeviceError
+                                    });
+                                }
+                                else
+                                {
+                                    // Error notification:
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: response.msg.msg
+                                    });
+                                }
 
                             }
 
-                            // Error notification:
-                            popupValidation.error({
-                                title: myDoc.notification_error_title,
-                                message: myDoc.error_word + " " + response.responseArray['portalResults']
-                            });
+                            if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                            {
+                            }
+                            else
+                            {
+                                const searchTerm = "Invoice Already Generated";
+                                const str = response.responseArray['portalResults'];
+                                if(str.toLowerCase().includes(searchTerm.toLowerCase()))
+                                {
+                                    const numbers = str.match(/\d+/g) || []; // Matches all sequences of digits
+                                    const text = str.match(/[^\d]+/g) || []; // Matches all non-digit characters
+                                    // Convert numbers from strings to actual numbers  
+                                    const numberList = numbers.map(Number);
+                                    // Clean up text segments (trimming spaces, etc.)  
+                                    const cleanText = text.map(segment => segment.trim()).filter(Boolean);
+
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: numberList[0] + " - " + myDoc.generatedAlready
+                                    });
+
+                                }
+                                
+                                else
+                                {
+                                    popupValidation.error({
+                                        title: myDoc.notification_error_title,
+                                        message: myDoc.error_word + " " + response.responseArray['portalResults']
+                                    });
+                                }
+                            }
 
                         }else if(response.responseArray['zatcaStatusCode'] == 303){
 
@@ -2039,19 +2115,56 @@ jQuery(document).ready(function($){
 
                                 }else if(response.msg.status == 'http_status_msg'){
 
-                                    // Error notification:
-                                    popupValidation.error({
-                                        title: myDoc.notification_error_title,
-                                        message: response.msg.msg
-                                    });
+                                    if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                                    {
+                                        // Error notification:
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: myDoc.mayBeDeviceError
+                                        });
+                                    }
+                                    else
+                                    {
+                                        // Error notification:
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: response.msg.msg
+                                        });
+                                    }
 
                                 }
 
-                                // Error notification:
-                                popupValidation.error({
-                                    title: myDoc.notification_error_title,
-                                    message: myDoc.error_word + " " + response.responseArray['portalResults']
-                                });
+                                if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                                {
+                                }
+                                else
+                                {
+                                    const searchTerm = "Invoice Already Generated";
+                                    const str = response.responseArray['portalResults'];
+                                    if(str.toLowerCase().includes(searchTerm.toLowerCase()))
+                                    {
+                                        const numbers = str.match(/\d+/g) || []; // Matches all sequences of digits
+                                        const text = str.match(/[^\d]+/g) || []; // Matches all non-digit characters
+                                        // Convert numbers from strings to actual numbers  
+                                        const numberList = numbers.map(Number);
+                                        // Clean up text segments (trimming spaces, etc.)  
+                                        const cleanText = text.map(segment => segment.trim()).filter(Boolean);
+    
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: numberList[0] + " - " + myDoc.generatedAlready
+                                        });
+    
+                                    }
+                                    
+                                    else
+                                    {
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: myDoc.error_word + " " + response.responseArray['portalResults']
+                                        });
+                                    }
+                                }
 
                             }else if(response.responseArray['zatcaStatusCode'] == 303){
 
@@ -2268,19 +2381,56 @@ jQuery(document).ready(function($){
 
                                 }else if(response.msg.status == 'http_status_msg'){
 
-                                    // Error notification:
-                                    popupValidation.error({
-                                        title: myDoc.notification_error_title,
-                                        message: response.msg.msg
-                                    });
+                                    if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                                    {
+                                        // Error notification:
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: myDoc.mayBeDeviceError
+                                        });
+                                    }
+                                    else
+                                    {
+                                        // Error notification:
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: response.msg.msg
+                                        });
+                                    }
 
                                 }
+                                if(response.responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+                                {
+                                }
+                                else
+                                {
+                                    const searchTerm = "Invoice Already Generated";
+                                    const str = response.responseArray['portalResults'];
+                                    if(str.toLowerCase().includes(searchTerm.toLowerCase()))
+                                    {
+                                        const numbers = str.match(/\d+/g) || []; // Matches all sequences of digits
+                                        const text = str.match(/[^\d]+/g) || []; // Matches all non-digit characters
+                                        // Convert numbers from strings to actual numbers  
+                                        const numberList = numbers.map(Number);
+                                        // Clean up text segments (trimming spaces, etc.)  
+                                        const cleanText = text.map(segment => segment.trim()).filter(Boolean);
+    
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: numberList[0] + " - " + myDoc.generatedAlready
+                                        });
+    
+                                    }
+                                    
+                                    else
+                                    {
+                                        popupValidation.error({
+                                            title: myDoc.notification_error_title,
+                                            message: myDoc.error_word + " " + response.responseArray['portalResults']
+                                        });
+                                    }
+                                }
 
-                                // Error notification:
-                                popupValidation.error({
-                                    title: myDoc.notification_error_title,
-                                    message: myDoc.error_word + " " + response.responseArray['portalResults']
-                                });
 
                             }else if(response.responseArray['zatcaStatusCode'] == 303){
 

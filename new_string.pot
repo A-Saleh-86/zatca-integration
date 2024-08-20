@@ -1,0 +1,1602 @@
+# Copyright (C) 2024 Appy Innovate
+# This file is distributed under the same license as the zatca plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: zatca Date 17 Aug 2024\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-08-19T21:14:27+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: zatca\n"
+
+#. Plugin Name of the plugin
+#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+msgid "zatca"
+msgstr ""
+
+#. Description of the plugin
+#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+msgid "Zatca Integration"
+msgstr ""
+
+#. Author of the plugin
+#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+msgid "Appy Innovate"
+msgstr ""
+
+#: checkout-page.php:38
+#: checkout-page.php:266
+#: customers/insert.php:173
+#: documents/doc-add-customer.php:176
+msgid "Client Name ( Arabic )"
+msgstr ""
+
+#: checkout-page.php:55
+#: checkout-page.php:282
+#: customers/insert.php:394
+#: documents/doc-add-customer.php:399
+msgid "District Name (Arabic)"
+msgstr ""
+
+#: checkout-page.php:77
+#: checkout-page.php:303
+msgid "Address Name (Arabic)"
+msgstr ""
+
+#: checkout-page.php:93
+#: checkout-page.php:318
+msgid "City Name (Arabic)"
+msgstr ""
+
+#: checkout-page.php:116
+#: checkout-page.php:339
+#: customers/insert.php:207
+#: customers/view.php:28
+#: documents/doc-add-customer.php:210
+msgid "VAT ID"
+msgstr ""
+
+#: checkout-page.php:132
+#: checkout-page.php:354
+#: customers/insert.php:293
+#: documents/doc-add-customer.php:298
+msgid "Apartment No"
+msgstr ""
+
+#: checkout-page.php:155
+#: checkout-page.php:377
+#: customers/insert.php:325
+#: customers/view.php:36
+#: documents/doc-add-customer.php:330
+msgid "Postal Code"
+msgstr ""
+
+#: checkout-page.php:171
+#: checkout-page.php:392
+#: company/view.php:620
+#: customers/insert.php:221
+#: documents/doc-add-customer.php:224
+msgid "Second Business ID"
+msgstr ""
+
+#: checkout-page.php:184
+#: checkout-page.php:405
+#: customers/view.php:29
+msgid "Second Business ID Type"
+msgstr ""
+
+#: company/view.php:4
+#: option.php:41
+#: option.php:42
+msgid "Company"
+msgstr ""
+
+#: company/view.php:26
+#: company/view.php:485
+msgid "Zatca Stage:"
+msgstr ""
+
+#: company/view.php:29
+#: company/view.php:490
+msgid "ZATCA V1"
+msgstr ""
+
+#: company/view.php:30
+#: company/view.php:491
+msgid "ZATCA V2"
+msgstr ""
+
+#: company/view.php:31
+#: company/view.php:489
+msgid "No ZATCA"
+msgstr ""
+
+#: company/view.php:43
+#: company/view.php:503
+msgid "Get Seller Data"
+msgstr ""
+
+#: company/view.php:54
+#: company/view.php:514
+msgid "Country :"
+msgstr ""
+
+#: company/view.php:82
+#: company/view.php:538
+#: documents/edit-document.php:638
+#: documents/insert.php:417
+msgid "VAT Category Code:"
+msgstr ""
+
+#: company/view.php:102
+#: company/view.php:558
+msgid "VAT Category Code Sub Type No:"
+msgstr ""
+
+#: company/view.php:128
+#: company/view.php:596
+#: customers/edit-customer.php:253
+#: customers/insert.php:246
+#: documents/doc-add-customer.php:249
+msgid "Second Business ID Type:"
+msgstr ""
+
+#: company/view.php:149
+#: company/view.php:614
+#: customers/edit-customer.php:222
+#: customers/insert.php:214
+#: documents/doc-add-customer.php:217
+msgid "Second Business ID :"
+msgstr ""
+
+#: company/view.php:168
+#: company/view.php:633
+#: customers/edit-customer.php:209
+#: customers/insert.php:201
+#: documents/doc-add-customer.php:204
+msgid "VAT ID:"
+msgstr ""
+
+#: company/view.php:186
+#: company/view.php:651
+msgid "Company name:"
+msgstr ""
+
+#: company/view.php:205
+#: company/view.php:670
+#: company/view.php:676
+#: customers/edit-customer.php:298
+#: customers/insert.php:287
+#: documents/doc-add-customer.php:292
+msgid "Apartment No :"
+msgstr ""
+
+#: company/view.php:218
+#: company/view.php:683
+#: company/view.php:689
+#: customers/edit-customer.php:311
+#: customers/insert.php:300
+#: documents/doc-add-customer.php:305
+msgid "PO Box Additional Number :"
+msgstr ""
+
+#: company/view.php:237
+#: company/view.php:702
+#: company/view.php:708
+#: customers/edit-customer.php:347
+#: customers/insert.php:333
+#: documents/doc-add-customer.php:338
+msgid "PO Box :"
+msgstr ""
+
+#: company/view.php:250
+#: company/view.php:715
+#: company/view.php:721
+#: customers/edit-customer.php:331
+#: customers/insert.php:318
+#: documents/doc-add-customer.php:323
+msgid "Postal Code:"
+msgstr ""
+
+#: company/view.php:273
+#: company/view.php:735
+#: company/view.php:741
+msgid "Street Name - AR :"
+msgstr ""
+
+#: company/view.php:286
+#: company/view.php:748
+#: company/view.php:754
+msgid "Street Name - EN :"
+msgstr ""
+
+#: company/view.php:305
+#: company/view.php:767
+#: company/view.php:773
+msgid "District Name - AR :"
+msgstr ""
+
+#: company/view.php:318
+#: company/view.php:780
+#: company/view.php:785
+msgid "District Name - EN :"
+msgstr ""
+
+#: company/view.php:336
+#: company/view.php:798
+#: company/view.php:804
+msgid "City Name - AR :"
+msgstr ""
+
+#: company/view.php:349
+#: company/view.php:811
+#: company/view.php:817
+msgid "City Name - EN :"
+msgstr ""
+
+#: company/view.php:368
+#: company/view.php:830
+#: company/view.php:835
+msgid "Country Subdivision - AR :"
+msgstr ""
+
+#: company/view.php:380
+#: company/view.php:842
+#: company/view.php:847
+msgid "Country Subdivision - EN :"
+msgstr ""
+
+#: company/view.php:416
+#: company/view.php:874
+msgid "Device :"
+msgstr ""
+
+#: company/view.php:436
+#: company/view.php:891
+msgid "ZATCA B2C Sending Interval :"
+msgstr ""
+
+#: company/view.php:447
+#: company/view.php:903
+msgid "ZATCA Invoices Type:"
+msgstr ""
+
+#: company/view.php:451
+#: company/view.php:908
+#: customers/insert.php:237
+#: documents/doc-add-customer.php:240
+msgid "Both"
+msgstr ""
+
+#: company/view.php:468
+msgid "Update Company Details"
+msgstr ""
+
+#: company/view.php:657
+msgid "company Name"
+msgstr ""
+
+#: company/view.php:922
+msgid "Insert Company Details"
+msgstr ""
+
+#: customers/edit-customer.php:28
+#: customers/insert.php:13
+#: devices/edit-device.php:28
+#: devices/insert.php:13
+#: documents/doc-add-customer.php:17
+#: documents/edit-document.php:121
+#: documents/insert.php:14
+#: users/edit-user.php:28
+#: users/insert.php:14
+msgid "Back"
+msgstr ""
+
+#: customers/edit-customer.php:36
+msgid "Edit Customer Details"
+msgstr ""
+
+#: customers/edit-customer.php:49
+msgid "Client / VendorNo:"
+msgstr ""
+
+#: customers/edit-customer.php:72
+#: customers/insert.php:57
+#: documents/doc-add-customer.php:61
+msgid "Copy data from the system to here"
+msgstr ""
+
+#: customers/edit-customer.php:82
+#: customers/insert.php:67
+#: customers/view.php:4
+#: documents/doc-add-customer.php:71
+#: option.php:32
+#: option.php:33
+msgid "Customers"
+msgstr ""
+
+#: customers/edit-customer.php:91
+#: customers/insert.php:76
+#: documents/doc-add-customer.php:80
+msgid "Name"
+msgstr ""
+
+#: customers/edit-customer.php:92
+#: customers/insert.php:77
+#: documents/doc-add-customer.php:81
+#: documents/edit-document.php:348
+#: documents/insert.php:123
+msgid "Email"
+msgstr ""
+
+#: customers/edit-customer.php:93
+#: customers/insert.php:78
+#: documents/doc-add-customer.php:82
+msgid "Phone"
+msgstr ""
+
+#: customers/edit-customer.php:94
+#: customers/insert.php:79
+#: documents/doc-add-customer.php:83
+msgid "Address"
+msgstr ""
+
+#: customers/edit-customer.php:156
+msgid "Search Customer Data"
+msgstr ""
+
+#: customers/edit-customer.php:177
+#: customers/insert.php:166
+#: documents/doc-add-customer.php:169
+msgid "Client Name ( Arabic ):"
+msgstr ""
+
+#: customers/edit-customer.php:190
+#: customers/insert.php:180
+#: documents/doc-add-customer.php:183
+msgid "Client Name( English ):"
+msgstr ""
+
+#: customers/edit-customer.php:242
+#: customers/insert.php:234
+#: documents/doc-add-customer.php:237
+msgid "ZATCA Invoices Type :"
+msgstr ""
+
+#: customers/edit-customer.php:272
+#: customers/insert.php:263
+#: documents/doc-add-customer.php:267
+msgid "Country Name:"
+msgstr ""
+
+#: customers/edit-customer.php:367
+#: customers/insert.php:354
+#: documents/doc-add-customer.php:359
+msgid "Street Name (Arabic):"
+msgstr ""
+
+#: customers/edit-customer.php:381
+#: customers/insert.php:368
+#: documents/doc-add-customer.php:373
+msgid "Street Name (English):"
+msgstr ""
+
+#: customers/edit-customer.php:401
+#: customers/insert.php:387
+#: documents/doc-add-customer.php:392
+msgid "District Name (Arabic):"
+msgstr ""
+
+#: customers/edit-customer.php:415
+#: customers/insert.php:401
+#: documents/doc-add-customer.php:406
+msgid "District Name (English):"
+msgstr ""
+
+#: customers/edit-customer.php:434
+#: customers/insert.php:420
+#: documents/doc-add-customer.php:425
+msgid "City Name(Arabic):"
+msgstr ""
+
+#: customers/edit-customer.php:448
+#: customers/insert.php:434
+#: documents/doc-add-customer.php:439
+msgid "City Name(English):"
+msgstr ""
+
+#: customers/edit-customer.php:468
+#: customers/insert.php:454
+#: documents/doc-add-customer.php:459
+msgid "Country Subdivision (Arabic):"
+msgstr ""
+
+#: customers/edit-customer.php:481
+#: customers/insert.php:467
+#: documents/doc-add-customer.php:472
+msgid "Country Subdivision (English):"
+msgstr ""
+
+#: customers/edit-customer.php:498
+msgid "Update Customer Details"
+msgstr ""
+
+#: customers/insert.php:21
+#: documents/doc-add-customer.php:25
+msgid "Add New Customer"
+msgstr ""
+
+#: customers/insert.php:34
+#: documents/doc-add-customer.php:38
+msgid "Client No.:"
+msgstr ""
+
+#: customers/insert.php:43
+#: documents/doc-add-customer.php:47
+msgid "Client No."
+msgstr ""
+
+#: customers/insert.php:145
+#: documents/doc-add-customer.php:148
+msgid "Search Customer data"
+msgstr ""
+
+#: customers/insert.php:187
+#: documents/doc-add-customer.php:190
+msgid "Client Name ( English )"
+msgstr ""
+
+#: customers/insert.php:306
+#: documents/doc-add-customer.php:311
+msgid "PO Box Additional Number"
+msgstr ""
+
+#: customers/insert.php:340
+#: documents/doc-add-customer.php:345
+msgid "PO Box"
+msgstr ""
+
+#: customers/insert.php:361
+#: documents/doc-add-customer.php:366
+msgid "Street Name (Arabic)"
+msgstr ""
+
+#: customers/insert.php:375
+#: documents/doc-add-customer.php:380
+msgid "Street Name (English)"
+msgstr ""
+
+#: customers/insert.php:407
+#: documents/doc-add-customer.php:412
+msgid "District Name (English)"
+msgstr ""
+
+#: customers/insert.php:427
+#: documents/doc-add-customer.php:432
+msgid "City Name(Arabic)"
+msgstr ""
+
+#: customers/insert.php:441
+#: documents/doc-add-customer.php:446
+msgid "City Name(English)"
+msgstr ""
+
+#: customers/insert.php:460
+#: documents/doc-add-customer.php:465
+msgid "Country Subdivision (Arabic)"
+msgstr ""
+
+#: customers/insert.php:473
+#: documents/doc-add-customer.php:478
+msgid "Country Subdivision (English)"
+msgstr ""
+
+#: customers/insert.php:484
+#: customers/view.php:14
+#: documents/doc-add-customer.php:489
+#: documents/edit-document.php:418
+#: documents/insert.php:191
+msgid "Insert New Customer"
+msgstr ""
+
+#: customers/view.php:25
+msgid "Customer No"
+msgstr ""
+
+#: customers/view.php:26
+msgid "Client Name(Ar)"
+msgstr ""
+
+#: customers/view.php:27
+msgid "Client Name(En)"
+msgstr ""
+
+#: customers/view.php:30
+msgid "ZATCA Invoices Type"
+msgstr ""
+
+#: customers/view.php:31
+msgid "Street Name(Ar)"
+msgstr ""
+
+#: customers/view.php:32
+msgid "Dist-AR"
+msgstr ""
+
+#: customers/view.php:33
+msgid "City-AR"
+msgstr ""
+
+#: customers/view.php:34
+msgid "Sec-Business-Id"
+msgstr ""
+
+#: customers/view.php:35
+msgid "Apart No"
+msgstr ""
+
+#: customers/view.php:37
+msgid "PO Box Additional Num"
+msgstr ""
+
+#: customers/view.php:38
+msgid "St Name - EN"
+msgstr ""
+
+#: customers/view.php:39
+msgid "Dist Name - EN"
+msgstr ""
+
+#: customers/view.php:40
+msgid "City Name - EN"
+msgstr ""
+
+#: customers/view.php:41
+msgid "Country Sub - EN"
+msgstr ""
+
+#: customers/view.php:42
+msgid "Country"
+msgstr ""
+
+#: customers/view.php:43
+#: devices/view.php:28
+#: documents/view.php:70
+msgid "Action"
+msgstr ""
+
+#: customers/view.php:103
+msgid "Edit Customer"
+msgstr ""
+
+#: customers/view.php:115
+msgid "Delete Customer"
+msgstr ""
+
+#: devices/edit-device.php:36
+#: devices/edit-device.php:158
+msgid "Edit Device Details"
+msgstr ""
+
+#: devices/edit-device.php:49
+msgid "Device No.:"
+msgstr ""
+
+#: devices/edit-device.php:68
+#: devices/insert.php:30
+msgid "Cryptographic Stamp ID:"
+msgstr ""
+
+#: devices/edit-device.php:87
+#: devices/insert.php:47
+msgid "Expiry Date:"
+msgstr ""
+
+#: devices/edit-device.php:106
+#: devices/insert.php:65
+msgid "Token Data:"
+msgstr ""
+
+#: devices/edit-device.php:126
+#: devices/insert.php:83
+msgid "Device Status :"
+msgstr ""
+
+#: devices/insert.php:21
+msgid "Add New Device"
+msgstr ""
+
+#: devices/insert.php:38
+#: devices/view.php:25
+msgid "Cryptographic Stamp ID"
+msgstr ""
+
+#: devices/insert.php:55
+#: devices/view.php:26
+msgid "Expiry Date"
+msgstr ""
+
+#: devices/insert.php:73
+msgid "Token Data"
+msgstr ""
+
+#: devices/insert.php:104
+#: devices/view.php:14
+msgid "Insert New Device"
+msgstr ""
+
+#: devices/view.php:4
+#: option.php:23
+#: option.php:24
+msgid "Devices"
+msgstr ""
+
+#: devices/view.php:24
+#: zatca.php:578
+msgid "Device No"
+msgstr ""
+
+#: devices/view.php:27
+msgid "Device Status"
+msgstr ""
+
+#: devices/view.php:50
+msgid "Active"
+msgstr ""
+
+#: devices/view.php:50
+msgid "Inactive"
+msgstr ""
+
+#: devices/view.php:62
+msgid "Edit Device"
+msgstr ""
+
+#: devices/view.php:75
+msgid "Delete Device"
+msgstr ""
+
+#: documents/edit-document.php:130
+#: documents/edit-document.php:893
+msgid "Edit Document"
+msgstr ""
+
+#: documents/edit-document.php:132
+#: documents/view.php:262
+msgid "View Document"
+msgstr ""
+
+#: documents/edit-document.php:295
+#: documents/edit-document.php:922
+#: documents/edit-document.php:949
+#: documents/edit-document.php:971
+#: documents/insert.php:62
+msgid "Invoice No:"
+msgstr ""
+
+#: documents/edit-document.php:318
+#: documents/insert.php:80
+msgid "System Invoice No:"
+msgstr ""
+
+#: documents/edit-document.php:338
+#: documents/insert.php:113
+msgid "Invoices"
+msgstr ""
+
+#: documents/edit-document.php:347
+#: documents/insert.php:122
+msgid "Order No"
+msgstr ""
+
+#: documents/edit-document.php:396
+#: documents/insert.php:169
+msgid "Customer Not Exist"
+msgstr ""
+
+#: documents/edit-document.php:402
+#: documents/insert.php:175
+msgid "This Customer Not Exist In Zatca Customers.Insert Now?"
+msgstr ""
+
+#: documents/edit-document.php:435
+#: documents/insert.php:224
+msgid "Delivery Date:"
+msgstr ""
+
+#: documents/edit-document.php:451
+#: documents/insert.php:239
+msgid "Max Delivery Date:"
+msgstr ""
+
+#: documents/edit-document.php:469
+#: documents/insert.php:254
+msgid "Payed (Cash):"
+msgstr ""
+
+#: documents/edit-document.php:486
+msgid "Payed (visa):"
+msgstr ""
+
+#: documents/edit-document.php:503
+#: documents/insert.php:288
+msgid "Payed (Bank):"
+msgstr ""
+
+#: documents/edit-document.php:522
+#: documents/insert.php:305
+msgid "Total Payed:"
+msgstr ""
+
+#: documents/edit-document.php:539
+#: documents/insert.php:322
+msgid "Invoice Total:"
+msgstr ""
+
+#: documents/edit-document.php:556
+msgid "Discount:"
+msgstr ""
+
+#: documents/edit-document.php:575
+#: documents/insert.php:356
+msgid "Tax Total:"
+msgstr ""
+
+#: documents/edit-document.php:592
+#: documents/insert.php:373
+msgid "Invoice Net:"
+msgstr ""
+
+#: documents/edit-document.php:609
+#: documents/insert.php:390
+msgid "Subnet Total plus tax:"
+msgstr ""
+
+#: documents/edit-document.php:664
+#: documents/insert.php:439
+msgid "VAT Category SubType Code:"
+msgstr ""
+
+#: documents/edit-document.php:694
+#: documents/insert.php:464
+msgid "Exemption Reason:"
+msgstr ""
+
+#: documents/edit-document.php:714
+#: documents/insert.php:483
+msgid "Invoices Type :"
+msgstr ""
+
+#: documents/edit-document.php:730
+#: documents/insert.php:497
+msgid "Left Amount:"
+msgstr ""
+
+#: documents/edit-document.php:755
+#: documents/insert.php:521
+msgid "Return Reason:"
+msgstr ""
+
+#: documents/edit-document.php:758
+#: documents/insert.php:524
+msgid "Return Reason"
+msgstr ""
+
+#: documents/edit-document.php:792
+#: documents/insert.php:545
+msgid "Is Nominal"
+msgstr ""
+
+#: documents/edit-document.php:811
+#: documents/insert.php:555
+msgid "Is Export"
+msgstr ""
+
+#: documents/edit-document.php:831
+#: documents/insert.php:565
+msgid "Is Summary"
+msgstr ""
+
+#: documents/edit-document.php:856
+#: documents/insert.php:581
+msgid "Item No"
+msgstr ""
+
+#: documents/edit-document.php:857
+#: documents/insert.php:582
+msgid "Name Ar"
+msgstr ""
+
+#: documents/edit-document.php:858
+#: documents/insert.php:583
+msgid "Name En"
+msgstr ""
+
+#: documents/edit-document.php:859
+#: documents/insert.php:584
+msgid "Price"
+msgstr ""
+
+#: documents/edit-document.php:860
+#: documents/insert.php:585
+msgid "Quantity"
+msgstr ""
+
+#: documents/edit-document.php:861
+#: documents/insert.php:586
+#: documents/view.php:63
+msgid "Discount"
+msgstr ""
+
+#: documents/edit-document.php:862
+#: documents/insert.php:587
+msgid "Tax Percentage"
+msgstr ""
+
+#: documents/edit-document.php:863
+#: documents/insert.php:588
+msgid "Tax Amount"
+msgstr ""
+
+#: documents/edit-document.php:864
+#: documents/insert.php:589
+msgid "Net Amount"
+msgstr ""
+
+#: documents/edit-document.php:865
+#: documents/insert.php:590
+msgid "Total Amount with Tax"
+msgstr ""
+
+#: documents/edit-document.php:921
+msgid "Original of Returned Invoice"
+msgstr ""
+
+#: documents/edit-document.php:927
+#: documents/edit-document.php:954
+#: documents/edit-document.php:976
+#: documents/insert.php:207
+msgid "Invoice Date:"
+msgstr ""
+
+#: documents/edit-document.php:948
+msgid "Reissued Invoice"
+msgstr ""
+
+#: documents/edit-document.php:970
+msgid "Original of Reissued Invoice"
+msgstr ""
+
+#: documents/insert.php:22
+#: documents/insert.php:603
+msgid "Insert New Document"
+msgstr ""
+
+#: documents/insert.php:88
+#: documents/view.php:59
+msgid "System Invoice No"
+msgstr ""
+
+#: documents/insert.php:101
+msgid "Search Invoices"
+msgstr ""
+
+#: documents/insert.php:231
+msgid "Delivery Date"
+msgstr ""
+
+#: documents/insert.php:246
+msgid "Max Delivery Date"
+msgstr ""
+
+#: documents/insert.php:262
+msgid "Payed (Cash)"
+msgstr ""
+
+#: documents/insert.php:271
+msgid "Payed (Visa):"
+msgstr ""
+
+#: documents/insert.php:279
+msgid "Payed (Visa)"
+msgstr ""
+
+#: documents/insert.php:296
+msgid "Payed (Bank)"
+msgstr ""
+
+#: documents/insert.php:313
+msgid "Total Payed"
+msgstr ""
+
+#: documents/insert.php:330
+msgid "Invoice Total"
+msgstr ""
+
+#: documents/insert.php:339
+msgid "Total Discount:"
+msgstr ""
+
+#: documents/insert.php:347
+msgid "Total Discount"
+msgstr ""
+
+#: documents/insert.php:364
+msgid "Tax Total"
+msgstr ""
+
+#: documents/insert.php:381
+#: documents/view.php:64
+msgid "Invoice Net"
+msgstr ""
+
+#: documents/insert.php:398
+#: documents/view.php:66
+msgid "Subnet Total plus tax"
+msgstr ""
+
+#: documents/insert.php:472
+msgid "Exemption Reason"
+msgstr ""
+
+#: documents/insert.php:505
+msgid "Left Amount"
+msgstr ""
+
+#: documents/view.php:6
+#: option.php:51
+#: option.php:52
+msgid "Documents"
+msgstr ""
+
+#: documents/view.php:15
+msgid "Add New Document"
+msgstr ""
+
+#: documents/view.php:29
+msgid "Send Sellected To "
+msgstr ""
+
+#: documents/view.php:29
+#: option.php:11
+#: option.php:12
+#: option.php:93
+msgid "ZATCA"
+msgstr ""
+
+#: documents/view.php:40
+msgid "Unsubmitted /Rejected Documents"
+msgstr ""
+
+#: documents/view.php:42
+msgid "Min Invoice Date"
+msgstr ""
+
+#: documents/view.php:44
+msgid "Max Invoice Date"
+msgstr ""
+
+#: documents/view.php:46
+msgid "Clear"
+msgstr ""
+
+#: documents/view.php:58
+msgid "Invoice No"
+msgstr ""
+
+#: documents/view.php:60
+msgid "Invoice Date"
+msgstr ""
+
+#: documents/view.php:61
+msgid "Invoice Type"
+msgstr ""
+
+#: documents/view.php:62
+msgid "Payed"
+msgstr ""
+
+#: documents/view.php:65
+msgid "Invoice Tax"
+msgstr ""
+
+#: documents/view.php:67
+msgid "Invoice Status"
+msgstr ""
+
+#: documents/view.php:68
+msgid "zatcaSuccessResponse"
+msgstr ""
+
+#: documents/view.php:69
+msgid "zatcaAcceptedReissueInvoiceNo"
+msgstr ""
+
+#: documents/view.php:135
+msgid "Accepted Invoice"
+msgstr ""
+
+#: documents/view.php:136
+msgid "Accepted With Warning Invoice"
+msgstr ""
+
+#: documents/view.php:137
+msgid "Rejected Invoice"
+msgstr ""
+
+#: documents/view.php:138
+msgid "Returned"
+msgstr ""
+
+#: documents/view.php:173
+msgid "Edit-Document"
+msgstr ""
+
+#: documents/view.php:221
+#: documents/view.php:244
+msgid "Send To Zatca"
+msgstr ""
+
+#: documents/view.php:274
+msgid "Download XML"
+msgstr ""
+
+#: documents/view.php:309
+msgid "Reissue"
+msgstr ""
+
+#: documents/view.php:353
+msgid "Return"
+msgstr ""
+
+#: documents/view.php:372
+msgid "View Warning MSG"
+msgstr ""
+
+#: documents/view.php:394
+msgid "Print Document"
+msgstr ""
+
+#: log/view.php:8
+#: option.php:60
+#: option.php:61
+msgid "Logs"
+msgstr ""
+
+#: log/view.php:19
+msgid "From-Date:"
+msgstr ""
+
+#: log/view.php:33
+msgid "To-Date"
+msgstr ""
+
+#: log/view.php:47
+#: log/view.php:88
+msgid "user name"
+msgstr ""
+
+#: log/view.php:70
+msgid "Failed"
+msgstr ""
+
+#: log/view.php:85
+#: users/view.php:28
+msgid "User No"
+msgstr ""
+
+#: log/view.php:86
+msgid "Log No"
+msgstr ""
+
+#: log/view.php:87
+msgid "Date Time"
+msgstr ""
+
+#: log/view.php:89
+msgid "MAC Address"
+msgstr ""
+
+#: log/view.php:90
+msgid "IP"
+msgstr ""
+
+#: log/view.php:91
+msgid "Is Success"
+msgstr ""
+
+#: log/view.php:92
+msgid "Operation"
+msgstr ""
+
+#: option.php:69
+#: option.php:70
+#: users/view.php:7
+msgid "Users"
+msgstr ""
+
+#: option.php:79
+#: option.php:80
+#: zatca.php:4343
+msgid "Zacta Tampering Detector"
+msgstr ""
+
+#: option.php:94
+msgid "Operations"
+msgstr ""
+
+#: users/edit-user.php:36
+msgid "Edit User Details"
+msgstr ""
+
+#: users/edit-user.php:55
+msgid "Nick Name:"
+msgstr ""
+
+#: users/edit-user.php:71
+msgid "Arabic name:"
+msgstr ""
+
+#: users/edit-user.php:89
+msgid "English Name :"
+msgstr ""
+
+#: users/edit-user.php:108
+#: users/insert.php:97
+msgid "Remind with Late B2C Invoices:"
+msgstr ""
+
+#: users/edit-user.php:130
+#: users/insert.php:116
+msgid "Remind with Late B2C Invoices before ZATCA grace period ending with ( number box ) hours:"
+msgstr ""
+
+#: users/edit-user.php:146
+#: users/insert.php:130
+msgid "Hours"
+msgstr ""
+
+#: users/edit-user.php:156
+msgid "Update User Details"
+msgstr ""
+
+#: users/insert.php:22
+msgid "Add New User"
+msgstr ""
+
+#: users/insert.php:32
+msgid "User No:"
+msgstr ""
+
+#: users/insert.php:60
+msgid "Arabic Name:"
+msgstr ""
+
+#: users/insert.php:69
+msgid "Arabic Name"
+msgstr ""
+
+#: users/insert.php:78
+msgid "English Name:"
+msgstr ""
+
+#: users/insert.php:87
+msgid "English Name"
+msgstr ""
+
+#: users/insert.php:127
+msgid "Remind Interval"
+msgstr ""
+
+#: users/insert.php:141
+#: users/view.php:18
+msgid "Insert New User"
+msgstr ""
+
+#: users/view.php:29
+msgid "Name Arabic"
+msgstr ""
+
+#: users/view.php:30
+msgid "Name English"
+msgstr ""
+
+#: users/view.php:31
+msgid "Remind with Late B2C Invoices"
+msgstr ""
+
+#: users/view.php:32
+msgid "Remind with B2C before ZATCA grace period"
+msgstr ""
+
+#: users/view.php:33
+msgid "Actions"
+msgstr ""
+
+#: users/view.php:68
+msgid "Edit User"
+msgstr ""
+
+#: users/view.php:92
+msgid "Delete User"
+msgstr ""
+
+#: Zacta_Tampering_Detector/invoice_audit_form.php:12
+msgid "From Date"
+msgstr ""
+
+#: Zacta_Tampering_Detector/invoice_audit_form.php:16
+msgid "To Date"
+msgstr ""
+
+#: Zacta_Tampering_Detector/invoice_audit_form.php:21
+msgid "Branch"
+msgstr ""
+
+#: Zacta_Tampering_Detector/invoice_audit_form.php:49
+msgid "Check Counter Gap"
+msgstr ""
+
+#: Zacta_Tampering_Detector/invoice_audit_form.php:50
+msgid "Check Hash Gap"
+msgstr ""
+
+#: zatca.php:27
+msgid "Zatca Release Date: "
+msgstr ""
+
+#: zatca.php:315
+msgid "Postal Code Cant be Null"
+msgstr ""
+
+#: zatca.php:316
+msgid "Postal Code Must be 5 Digits"
+msgstr ""
+
+#: zatca.php:317
+msgid "Street Arabic Name Cant be Null"
+msgstr ""
+
+#: zatca.php:318
+msgid "second business id Cant be Null"
+msgstr ""
+
+#: zatca.php:319
+msgid "District Arabic Name Cant be Null"
+msgstr ""
+
+#: zatca.php:320
+msgid "City Arabic Name Cant be Null"
+msgstr ""
+
+#: zatca.php:321
+msgid "Customer Inserted Success"
+msgstr ""
+
+#: zatca.php:322
+msgid "Please select a customer first"
+msgstr ""
+
+#: zatca.php:323
+msgid "Please Insert Customer Aarabic Name"
+msgstr ""
+
+#: zatca.php:324
+#: zatca.php:437
+msgid "You Must Enter Client Name In Arabic"
+msgstr ""
+
+#: zatca.php:325
+#: zatca.php:343
+#: zatca.php:358
+#: zatca.php:374
+#: zatca.php:413
+#: zatca.php:416
+#: zatca.php:438
+msgid "Error"
+msgstr ""
+
+#: zatca.php:326
+#: zatca.php:344
+#: zatca.php:359
+#: zatca.php:375
+#: zatca.php:414
+#: zatca.php:439
+msgid "Success"
+msgstr ""
+
+#: zatca.php:327
+#: zatca.php:361
+#: zatca.php:376
+#: zatca.php:427
+msgid "Are You Sure?"
+msgstr ""
+
+#: zatca.php:328
+#: zatca.php:362
+#: zatca.php:377
+#: zatca.php:428
+msgid "Delete"
+msgstr ""
+
+#: zatca.php:336
+msgid "Second Business Id Must be 10 Digits"
+msgstr ""
+
+#: zatca.php:337
+msgid "Please Insert City Arabic Name"
+msgstr ""
+
+#: zatca.php:338
+msgid "Please Insert District Arabic Name"
+msgstr ""
+
+#: zatca.php:339
+msgid "Please Insert Company Name"
+msgstr ""
+
+#: zatca.php:340
+msgid "Please Insert Appartment No."
+msgstr ""
+
+#: zatca.php:341
+msgid "Please Insert Po Box Additional No."
+msgstr ""
+
+#: zatca.php:342
+msgid "Please Insert Street Arabic Name"
+msgstr ""
+
+#: zatca.php:353
+msgid "Person No Cant be Null"
+msgstr ""
+
+#: zatca.php:354
+msgid "Please insert reminder hours"
+msgstr ""
+
+#: zatca.php:355
+msgid "Reminder hours must be between 1-23 Hours"
+msgstr ""
+
+#: zatca.php:356
+msgid "User Already Exist"
+msgstr ""
+
+#: zatca.php:357
+msgid "User Inserted Successfully"
+msgstr ""
+
+#: zatca.php:360
+#: zatca.php:415
+msgid "Warning"
+msgstr ""
+
+#: zatca.php:371
+msgid "New Device Inserted"
+msgstr ""
+
+#: zatca.php:372
+msgid "Device Status Updated"
+msgstr ""
+
+#: zatca.php:373
+msgid "Not allowed to add more one device active"
+msgstr ""
+
+#: zatca.php:389
+msgid "Document Created successifly"
+msgstr ""
+
+#: zatca.php:390
+#: zatca.php:809
+#: zatca.php:1395
+#: zatca.php:4115
+#: zatca.php:4280
+msgid "Data Updated"
+msgstr ""
+
+#: zatca.php:391
+msgid "Device CsID_ExpiryDate is Expired"
+msgstr ""
+
+#: zatca.php:392
+msgid "You Muse Insert Seller additional Id Number in zatca Company"
+msgstr ""
+
+#: zatca.php:393
+msgid "You Muse Insert Buyer po box additional number in zatca customer"
+msgstr ""
+
+#: zatca.php:394
+msgid "You Muse Insert Buyer additional Number in zatca customer"
+msgstr ""
+
+#: zatca.php:395
+msgid "No rows were affected. Possible reasons: No matching rows or the data is already up to date."
+msgstr ""
+
+#: zatca.php:396
+msgid "Please submit via reporing"
+msgstr ""
+
+#: zatca.php:397
+msgid "Unauthorized, Please check authentication certificate and secret and resubmit"
+msgstr ""
+
+#: zatca.php:398
+msgid "Please resend with smaller payload(invoice), Decrease invoice details and resubmit"
+msgstr ""
+
+#: zatca.php:399
+msgid "Please wait for 1 minute and resubmit"
+msgstr ""
+
+#: zatca.php:400
+msgid "Internal Server Error, Please try again later"
+msgstr ""
+
+#: zatca.php:401
+msgid "Service Unavailable, Please try again later"
+msgstr ""
+
+#: zatca.php:402
+msgid "Gateway Timeout, Please try again later"
+msgstr ""
+
+#: zatca.php:403
+msgid "Buyer arabic name is mandatory and the same as his name in his National ID"
+msgstr ""
+
+#: zatca.php:404
+msgid "Second business type must be National ID, Please edit customer profile"
+msgstr ""
+
+#: zatca.php:405
+msgid "Buyer Second business ID must be filled, Please edit customer profile"
+msgstr ""
+
+#: zatca.php:406
+msgid "Seller Second business ID must be filled, Please edit company profile"
+msgstr ""
+
+#: zatca.php:407
+msgid "Company zatca stage must be V2, Please edit company profile"
+msgstr ""
+
+#: zatca.php:408
+msgid "Sorry, VAT ID for the client must be empty because the invoice is exports"
+msgstr ""
+
+#: zatca.php:409
+msgid "Sorry, VAT ID for the client must be filled"
+msgstr ""
+
+#: zatca.php:410
+msgid "Sell Invoice"
+msgstr ""
+
+#: zatca.php:411
+msgid "Return Sell Invoice"
+msgstr ""
+
+#: zatca.php:412
+msgid "Please select a Order first"
+msgstr ""
+
+#: zatca.php:417
+msgid "Document"
+msgstr ""
+
+#: zatca.php:418
+msgid "The device signature or token data may not be correct , please check and try again!"
+msgstr ""
+
+#: zatca.php:419
+msgid "This invoice is already generated and sent before to zatca!"
+msgstr ""
+
+#: zatca.php:436
+msgid "Client Name Arabic Cant be Empty"
+msgstr ""
+
+#: zatca.php:502
+msgid "Missing Invoice Numbers"
+msgstr ""
+
+#: zatca.php:578
+msgid "Document No"
+msgstr ""
+
+#: zatca.php:578
+msgid "Invoice Hash"
+msgstr ""
+
+#: zatca.php:841
+msgid "Failed to delete Customer."
+msgstr ""
+
+#: zatca.php:846
+msgid "Customer deleted successfully."
+msgstr ""
+
+#: zatca.php:1111
+msgid "Failed to delete device."
+msgstr ""
+
+#: zatca.php:1121
+msgid "Device deleted successfully."
+msgstr ""
+
+#: zatca.php:1132
+msgid "Failed to delete device because there are documents related to this device."
+msgstr ""
+
+#: zatca.php:1169
+msgid "Failed to delete User"
+msgstr ""
+
+#: zatca.php:1174
+msgid "User deleted successfully"
+msgstr ""
+
+#: zatca.php:1323
+#: zatca.php:4311
+msgid "Data Inserted"
+msgstr ""
+
+#: zatca.php:3587
+#: zatca.php:5056
+#: zatca.php:5902
+#: zatca.php:6405
+#: zatca.php:7174
+#: zatca.php:7662
+msgid "Document Submitted Successfully, Zatca Status Code Is "
+msgstr ""
+
+#: zatca.php:3587
+#: zatca.php:5056
+#: zatca.php:5902
+#: zatca.php:6405
+#: zatca.php:7174
+#: zatca.php:7662
+msgid ".. Request Is Success"
+msgstr ""
+
+#: zatca.php:3708
+#: zatca.php:5176
+#: zatca.php:6025
+#: zatca.php:6520
+#: zatca.php:7288
+#: zatca.php:7777
+msgid "Document Submitted with Warning, Zatca Status Code Is "
+msgstr ""
+
+#: zatca.php:3753
+#: zatca.php:3760
+#: zatca.php:5223
+#: zatca.php:6084
+#: zatca.php:6091
+#: zatca.php:6577
+#: zatca.php:7343
+#: zatca.php:7350
+#: zatca.php:7830
+msgid " Error: "
+msgstr ""
+
+#: zatca.php:4151
+msgid "You have unsubmitted documents please review them"
+msgstr ""
+
+#: zatca.php:4187
+msgid "Tax Invoice"
+msgstr ""
+
+#: zatca.php:6634
+msgid "Reissued Successfully"
+msgstr ""
