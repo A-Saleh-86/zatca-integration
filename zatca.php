@@ -2339,6 +2339,9 @@ function insert_form_documents(){
                                 // vatAmount [ netAmount*vatRate ]:
                                 $doc_unit_vatAmount = ($doc_unit_netAmount * $doc_unit_vatRate) / 100;
                                 $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+
+
+                                
             
                                 // amountWithVat [ netAmount+vatAmount ]:
                                 $doc_unit_amountWithVat = $doc_unit_netAmount + $doc_unit_vatAmount;
