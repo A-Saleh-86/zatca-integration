@@ -1081,6 +1081,7 @@ jQuery(document).ready(function($){
                         }
                     }
                         
+                    //console.log(response);
                     setTimeout(() => {
                         window.location.reload();
                     }, 3000);

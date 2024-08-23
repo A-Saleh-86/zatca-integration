@@ -3547,15 +3547,15 @@ function send_request_to_zatca_clear(){
 
         if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
         {
-            // if($responseArray['portalResults'] = "Object reference not set to an instance of an object.")
-            // {
-            //     $errorMessage = "The device signature or token data may not be correct , please check and try again!";
-            // }
-            // else
-            // {
-            //     $errorMessage = $responseArray['portalResults'];
-            // }
-            $errorMessage = $responseArray['portalResults'];
+            if($responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+            {
+                $errorMessage = "The device signature or token data may not be correct , please check and try again!";
+            }
+            else
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
+            //$errorMessage = $responseArray['portalResults'];
         }
         
 
