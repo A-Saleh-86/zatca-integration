@@ -1460,6 +1460,15 @@ function document_data_ajax(){
 
 }
 
+function round_up_five_cents($number) {  
+    if ($number < 0) {
+        return floor($number * 20) / 20;
+    } else {
+        return ceil($number * 20) / 20;
+    }
+    //return ceil($number * 20) / 20;   
+}
+
 // AJax Edit in DB - devices:
 function woo_document(){
 
@@ -1744,26 +1753,49 @@ function woo_document(){
             $order_discount_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
     
             $order_discount = wc_get_order_item_meta($order_discount_id, 'discount_amount', true);
+            //get item price
+            $item_price = wc_get_order_item_meta($itemId->order_item_id, '_line_subtotal', true);
+            $totalPrice += $item_price;
+
+            // push $item_price to array_items with 'order_price' key
+            //array_push($array_items, ['order_price' => $item_price]);
+            //array_push($array_items, ['order_qty' => $item_qty]);
+
+            // push itemId-> order_item_id to array_items with key 'item'
+            array_push($array_items, ['item' => $itemId->order_item_id, 'order_price' => $item_price, 'order_qty' => $item_qty]);
+
             
-            $array_items[$itemId->order_item_id] = $item_qty;
+            //$array_items[$itemId->order_item_id] = $item_qty;
     
-            $total_order_qty +=  + $item_qty;
+            //$total_order_qty +=  + $item_qty;
         }
     
-        $array_items['order_discount'] = $order_discount;
-        $array_items['total_order_qty'] = $total_order_qty;
-    
-    
+        //$array_items['order_discount'] = $order_discount;
+        //$array_items['total_order_qty'] = $total_order_qty;
+
+        $discountPercentage = $order_discount / $totalPrice;
+        // round to 2 decimal
+        $discountPercentage = round($discountPercentage, 6);
+        //$discountPercentage = 0.263;
+        
+        
         //define percentage of each item:
     
         $updated_total_qty = [];
     
-        foreach ($array_items as $key => $value) 
+        foreach ($array_items as $key) 
         {
-            if (is_numeric($key)) 
-            {  // Check for integer keys
-                $updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
-            }
+            $item_discount = $key["order_price"] * $discountPercentage;
+            //push item and discount to updated_total_qty array
+            array_push($updated_total_qty, ['item' => $key['item'], 'discount' => $item_discount]);
+            // push another key to array
+           // array_push($updated_total_qty, ["discount" => $item_discount]);
+
+            //if (is_numeric($key)) 
+            // {  // Check for integer keys
+            //     //$updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
+            //     $updated_total_qty[$key] = $array_items["order_qty"] * $array_items["order_price"] * $discountPercentage;
+            // }
         }
     
         // Now $updated_total_qty will contain the updated quantities for items with numeric keys
@@ -1801,28 +1833,34 @@ function woo_document(){
         // Get the Function of define discount by line:
         $array_of_discounts = get_qty_percentage_for_item($orderId);
 
+        
+
         // Loop to get Each Item Discount:
-        foreach($array_of_discounts as $key => $value)
+        foreach($array_of_discounts as $key)
         {
     
-            if($key == $item->order_item_id)
+            //if($key['item'] == $item->order_item_id)
+            if($key['item'] == $item->order_item_id)
             {
 
-                $final_item_discount= number_format((float)$array_of_discounts[$key], 3, '.', '');
+                //$final_item_discount= number_format((float)$array_of_discounts[$key], 3, '.', '');
+                $final_item_discount= round($key['discount'], 2);
 
                 // netAmount [ ((price * quantity)-discount) ]:
-                $doc_unit_netAmount = $doc_unit_subtotal - number_format((float)$final_item_discount, 3, '.', '');
-                $final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
+                $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
+                $final_netAmount = round($doc_unit_netAmount, 2);
+                //$final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
 
                 // vatAmount [ netAmount*vatRate ]:
-                $doc_unit_vatAmount = $final_netAmount * $doc_unit_vatRate / 100;
+                $doc_unit_vatAmount = $final_netAmount * ($doc_unit_vatRate / 100);
                 // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
-                $final_vatAmount = (float)$doc_unit_vatAmount;
+                $final_vatAmount = round($doc_unit_vatAmount, 1);
                 
 
                 // amountWithVat [ netAmount+vatAmount ]:
-                $doc_unit_amountWithVat = $doc_unit_netAmount + $doc_unit_vatAmount;
-                $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 2, '.', '');
+                $doc_unit_amountWithVat = $final_netAmount + $final_vatAmount;
+                //$final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 2, '.', '');
+                $final_amountWithVat = round($doc_unit_amountWithVat, 2);
             
 
                 // Prepare zatcaDocumentUnit data  
@@ -2273,24 +2311,50 @@ function insert_form_documents(){
                     
                             $order_discount = wc_get_order_item_meta($order_discount_id, 'discount_amount', true);
                             
-                            $array_items[$itemId->order_item_id] = $item_qty;
+                            //get item price
+                            $item_price = wc_get_order_item_meta($itemId->order_item_id, '_line_subtotal', true);
+                            $totalPrice += $item_price;
+
+                            // push $item_price to array_items with 'order_price' key
+                            //array_push($array_items, ['order_price' => $item_price]);
+                            //array_push($array_items, ['order_qty' => $item_qty]);
+
+                            // push itemId-> order_item_id to array_items with key 'item'
+                            array_push($array_items, ['item' => $itemId->order_item_id, 'order_price' => $item_price, 'order_qty' => $item_qty]);
+
+                            
+                            //$array_items[$itemId->order_item_id] = $item_qty;
                     
-                            $total_order_qty +=  + $item_qty;
+                            //$total_order_qty +=  + $item_qty;
                     
                         }
                     
-                        $array_items['order_discount'] = $order_discount;
-                        $array_items['total_order_qty'] = $total_order_qty;
+                        //$array_items['order_discount'] = $order_discount;
+                        //$array_items['total_order_qty'] = $total_order_qty;
+
+                        $discountPercentage = $order_discount / $totalPrice;
+                        // round to 2 decimal
+                        $discountPercentage = round($discountPercentage, 6);
+                        //$discountPercentage = 0.263;
                     
                     
                         //define percentage of each item:
                     
                         $updated_total_qty = [];
                     
-                        foreach ($array_items as $key => $value) {
-                            if (is_numeric($key)) {  // Check for integer keys
-                                $updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
-                            }
+                        foreach ($array_items as $key) 
+                        {
+                            $item_discount = $key["order_price"] * $discountPercentage;
+                            //push item and discount to updated_total_qty array
+                            array_push($updated_total_qty, ['item' => $key['item'], 'discount' => $item_discount]);
+                            // push another key to array
+                        // array_push($updated_total_qty, ["discount" => $item_discount]);
+
+                            //if (is_numeric($key)) 
+                            // {  // Check for integer keys
+                            //     //$updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
+                            //     $updated_total_qty[$key] = $array_items["order_qty"] * $array_items["order_price"] * $discountPercentage;
+                            // }
                         }
                     
                         // Now $updated_total_qty will contain the updated quantities for items with numeric keys
@@ -2328,23 +2392,28 @@ function insert_form_documents(){
                         $array_of_discounts = get_qty_percentage_for_item($orderId);
     
                         // Loop to get Each Item Discount:
-                        foreach($array_of_discounts as $key => $value){
+                        foreach($array_of_discounts as $key){
     
-                            if($key == $item->order_item_id){
+                            if($key['item'] == $item->order_item_id){
     
-                                $final_item_discount= $array_of_discounts[$key];
+                                //$final_item_discount= number_format((float)$array_of_discounts[$key], 3, '.', '');
+                                $final_item_discount= round($key['discount'], 2);
+
 
                                 // netAmount [ ((price * quantity)-discount) ]:
-                                $doc_unit_netAmount = $doc_unit_subtotal - number_format((float)$final_item_discount, 3, '.', '');
-                                $final_netAmount = number_format((float)$doc_unit_netAmount, 3, '.', '');
+                                $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
+                                $final_netAmount = round($doc_unit_netAmount, 2);
+                                //$final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
 
                                 // vatAmount [ netAmount*vatRate ]:
-                                $doc_unit_vatAmount = ($doc_unit_netAmount * $doc_unit_vatRate) / 100;
-                                $final_vatAmount = number_format((float)$doc_unit_vatAmount, 3, '.', '');
+                                // vatAmount [ netAmount*vatRate ]:
+                                $doc_unit_vatAmount = $final_netAmount * $doc_unit_vatRate / 100;
+                                // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+                                $final_vatAmount = round($doc_unit_vatAmount, 1);
 
                                 // amountWithVat [ netAmount+vatAmount ]:
-                                $doc_unit_amountWithVat = $doc_unit_netAmount + $doc_unit_vatAmount;
-                                $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 3, '.', '');
+                                $doc_unit_amountWithVat = $final_netAmount + $final_vatAmount;
+                                $final_amountWithVat = round($doc_unit_amountWithVat, 2);
                             
     
                             // Insert Data To zatcaDocumentUnit:
@@ -2972,7 +3041,7 @@ function update_zatca($doc_no){
         $exportsInvoice = (isset($doc->zatcaInvoiceTransactionCode_isExports) && $doc->zatcaInvoiceTransactionCode_isExports==0) ? true : false;
         $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
         
-        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
+        //$taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
         $documentVatCategoryNo = $doc->VATCategoryCodeNo;
     }
 
@@ -2991,7 +3060,7 @@ function update_zatca($doc_no){
     
         $seller_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype     WHERE codeNumber = $seller->secondBusinessIDType") );
         
-        
+        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
 
 
         $sellerName = $seller->companyName;
@@ -3200,7 +3269,7 @@ function update_zatca($doc_no){
         'seller_aName' =>                   $update_seller_sellerName,
         'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
         'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
-        'VATCategoryCodeNo' =>              $documentVatCategoryNo,
+        'VATCategoryCodeNo' =>              $update_seller_sellerVatCategoryNo,//documentVatCategoryNo
         'seller_street_Arb' =>              $update_seller_street_Arb,
         'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
         'seller_apartmentNum' =>            $update_seller_apartmentNum,
@@ -3476,7 +3545,15 @@ function send_request_to_zatca_clear(){
 
         if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
         {
-            $errorMessage = $responseArray['portalResults'];
+            if($responseArray['portalResults'])
+            {
+                $errorMessage = "The device signature or token data may not be correct , please check and try again!";
+            }
+            else
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
+            
         }
         
 
@@ -4513,7 +4590,7 @@ function update_zatca1($doc_no){
         $nominalInvoice = (isset($doc->zatcaInvoiceTransactionCode_isNominal) && $doc->zatcaInvoiceTransactionCode_isNominal==0) ? true : false;
         $exportsInvoice = (isset($doc->zatcaInvoiceTransactionCode_isExports) && $doc->zatcaInvoiceTransactionCode_isExports==0) ? true : false;
         $summaryInvoice = (isset($doc->zatcaInvoiceTransactionCode_isSummary) && $doc->zatcaInvoiceTransactionCode_isSummary==0) ? true : false;
-        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
+        //$taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $doc->VATCategoryCodeNo"));
         $documentVatCategoryNo = $doc->VATCategoryCodeNo;
     }
 
@@ -4532,7 +4609,7 @@ function update_zatca1($doc_no){
     
         $seller_codeInfo = $wpdb->get_var( $wpdb->prepare( "SELECT codeInfo FROM zatcabusinessidtype     WHERE codeNumber = $seller->secondBusinessIDType") );
         
-
+        $taxSchemeId = $wpdb->get_var($wpdb->prepare("SELECT codeName FROM met_vatcategorycode WHERE VATCategoryCodeNo = $seller->VATCategoryCode"));
 
         $sellerName = $seller->companyName;
         $sellerAdditionalIdType = $seller_codeInfo;
@@ -4718,7 +4795,7 @@ function update_zatca1($doc_no){
         'seller_aName' =>                   $update_seller_sellerName,
         'seller_secondBusinessIDType' =>    $update_seller_sellerAdditionalIdType,
         'seller_secondBusinessID' =>        $update_seller_sellerAdditionalIdNumber,
-        'VATCategoryCodeNo' =>              $documentVatCategoryNo,
+        'VATCategoryCodeNo' =>              $update_seller_sellerVatCategoryNo,//documentVatCategoryNo
         'seller_street_Arb' =>              $update_seller_street_Arb,
         'seller_POBoxAdditionalNum' =>      $update_seller_POBoxAdditionalNum,
         'seller_apartmentNum' =>            $update_seller_apartmentNum,
@@ -4974,7 +5051,14 @@ function send_request_to_zatca_report(){
         $errorMessage = $responseArray['validationResults']['warningMessages'][0]['message'];
         if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
         {
-            $errorMessage = $responseArray['portalResults'];
+            if($responseArray['portalResults'])
+            {
+                $errorMessage = "The device signature or token data may not be correct , please check and try again!";
+            }
+            else
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
         }
 
         // Get the previous invoice hash for the document depend on newest date in zatcaResponseDate:

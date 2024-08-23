@@ -413,7 +413,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
         
             foreach ($results as $result) {?>
             <!--  VATCategoryCode field -->
-            <div class="col-md-4">
+            <div class="col-md-4 deviceNo_hidden">
                 <label class="form-label"><?php echo _e('VAT Category Code:', 'zatca') ?></label>
                 <div class="form-group">
                     <select class="form-select select2"  name="insert-doc-vat-cat-code" id="vat-cat-code">
@@ -435,7 +435,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
             <!-- /  VATCategoryCode field -->
 
             <!--  VATCategoryCodeSubTypeNo field -->
-            <div class="col-md-4">
+            <div class="col-md-4 deviceNo_hidden">
                 <label class="form-label"><?php echo _e('VAT Category SubType Code:', 'zatca') ?></label>
                 <div class="form-group">
                     <select class="form-select select2"  name="vat-cat-code-sub-no" id="vat-cat-code-sub">
