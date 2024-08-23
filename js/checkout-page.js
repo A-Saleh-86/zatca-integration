@@ -70,15 +70,25 @@ jQuery(document).ready(function($) {
   // Unbind any previous click events to prevent duplication
   placeOrderButton.off('click');
 
-  // Get the checkbox element
-  let checkbox2 = document.getElementById('my_checkbox_field');
+  // // Get the checkbox element
+   let checkbox2 = document.getElementById('my_checkbox_field');
+  //  if (checkbox2.checked) { alert("checked"); }
+  //  else{alert("unchecked");}
+  
 
   // Listen for the click event on the Place Order button
   placeOrderButton.on('click', function(event) {
     event.preventDefault(); 
 
-    if (checkbox2.checked) {
+    // Get the checkbox element
+  if (checkbox2.checked) { alert("checked inside"); }
+   else{alert("unchecked inside");}
+   
 
+    if (checkbox2.checked) {
+      localStorage.setItem("taxInvoice","checked");
+      localStorage.getItem("taxInvoice");
+      //localStorage.clear();
       // validation on client name ar not empty:
       if ($("#client_name_ar").val() == '') {
 
@@ -143,6 +153,7 @@ jQuery(document).ready(function($) {
         }
       });
     }else {
+      localStorage.setItem("taxInvoice","unchecked");
       // If the checkbox is not checked, proceed with the default place order action
       placeOrderButton.off('click');  // Unbind the event handler
       placeOrderButton.click();  // Trigger the default action
