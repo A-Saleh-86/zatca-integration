@@ -1740,6 +1740,7 @@ function woo_document(){
         // define items number & Number of Items & Item Qty & Total Qty Of Order:
         
         $total_order_qty = 0;
+        $totalPrice = 0;
     
         $array_items = [];
         
@@ -2298,6 +2299,7 @@ function insert_form_documents(){
                         // define items number & Number of Items & Item Qty & Total Qty Of Order:
                         
                         $total_order_qty = 0;
+                        $totalPrice = 0;
                     
                         $array_items = [];
                         
