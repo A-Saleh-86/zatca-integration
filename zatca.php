@@ -4491,6 +4491,28 @@ function invoice_audit_form_shortcode()
 }
 add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
 
+/////////////////////////////////////////////////////////////////////
+
+// Subscription screen
+// Tampering Detector Code
+function zatca_subscription_admin_page_content() {
+    echo '<div class="wrap container">';
+    echo '<h2 class="text-center">'. __( 'ZATCA ACTIVATION FORM', 'zatca' ) .'</h2>';
+    // Add your admin page content here
+    echo do_shortcode('[subscription_form]');
+    echo '</div>';
+}
+
+// Shortcode callback function to check gap form
+function subscription_form_shortcode()
+{
+    ob_start();
+    require_once(plugin_dir_path(__FILE__) . 'Subscription/subscription_form.php');
+    
+    return ob_get_clean();
+}
+add_shortcode('subscription_form', 'subscription_form_shortcode');
+
 
 
 ///////////////////////////////////////////////////////////////////

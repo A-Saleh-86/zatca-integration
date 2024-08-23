@@ -21,8 +21,11 @@ function generate_A4pdf()
         $docNo = $_GET['docno'];
         global $wpdb;
 
+        
         // get zatcaSuccessResponse code from zatcaDocument table using getVar
         $zatcaSuccessResponse = $wpdb->get_var("SELECT zatcaSuccessResponse FROM zatcaDocument WHERE documentNo = '$docNo'");
+
+        $zatcaQrCode = $wpdb->get_var("SELECT qrCode FROM zatcaDocumentxml WHERE documentNo = '$docNo'");
 
         $zatcaDocumentData = $wpdb->get_results(
             $wpdb->prepare("select * from zatcaDocument where documentNo = '$docNo'")
@@ -63,6 +66,7 @@ function generate_A4pdf()
             $seller_country_Arb = $doc->seller_country_Arb;
             $seller_country_Eng = $doc->seller_country_Eng;
             $seller_VAT = $doc->seller_VAT;
+            $seller_secondBusinessID = $doc->seller_secondBusinessID;
 
             // buyer information
             $buyer_aName = $doc->buyer_aName;
@@ -79,6 +83,7 @@ function generate_A4pdf()
             $buyer_country_Eng = $doc->buyer_country_Eng;
             $buyer_POBoxAdditionalNum = $doc->buyer_POBoxAdditionalNum;
             $buyer_VAT = $doc->buyer_VAT;
+            $buyer_secondBusinessID = $doc->buyer_secondBusinessID;
         }
 
         // Query to fetch the invoice numbers within the specified date range for the given branch
@@ -95,16 +100,19 @@ function generate_A4pdf()
         $vatAmount = 0;
         $price = 0;
         $amountWithVAT = 0;
+        $totalQuantity = 0;
         foreach ($results as $result) {
             $discount += $result->discount;
             $vatAmount += $result->vatAmount;
             $price += $result->price;
             $amountWithVAT += $result->amountWithVAT;
+            $totalQuantity += $result->quantity;
             }
             $discount = number_format($discount , 2, '.', '');
             $vatAmount = number_format($vatAmount , 2, '.', '');
             $price = number_format($price , 2, '.', '');
             $amountWithVAT = number_format($amountWithVAT , 2, '.', '');
+            $totalQuantity = number_format($totalQuantity , 2, '.', '');
 
         // Include the TCPDF class  
         if ( ! class_exists('TCPDF') ) {  
@@ -222,7 +230,7 @@ function generate_A4pdf()
         $pdf->SetXY($pdf->GetPageWidth() - 200, 75);
         $pdf->Cell(150,1, $dateG,0,1,'R');
 
-        $pdf->SetXY(90, 75);
+        $pdf->SetXY(80, 75);
         $pdf->Cell(0,1,'Invoice Issue Date:',0,1,'L');
 
         $pdf->SetXY(0, 85);
@@ -301,8 +309,8 @@ function generate_A4pdf()
         $pdf->Ln();
 
         $pdf->Cell($tableWidth * 0.25, 5, 'Other Seller ID', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123523000000', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123523000000', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.25, 5, $seller_secondBusinessID, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.25, 5, $seller_secondBusinessID, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.25, 5, 'معرف آخر', 1, 0, 'R');
         $pdf->Ln();
 
@@ -379,9 +387,9 @@ function generate_A4pdf()
         $pdf->Ln();
 
         $pdf->SetXY(105, 145.5);
-        $pdf->Cell($tableWidth * 0.25, 5, 'Other Seller ID', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123523000000', 1, 0, 'L');
-        $pdf->Cell($tableWidth * 0.25, 5, '123523000000', 1, 0, 'R');
+        $pdf->Cell($tableWidth * 0.25, 5, 'Other Buyer ID', 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.25, 5, $buyer_secondBusinessID, 1, 0, 'L');
+        $pdf->Cell($tableWidth * 0.25, 5, $buyer_secondBusinessID, 1, 0, 'R');
         $pdf->Cell($tableWidth * 0.25, 5, 'معرف آخر', 1, 0, 'R');
         $pdf->Ln();
         $pdf->Ln();
@@ -481,7 +489,7 @@ function generate_A4pdf()
 
         // Add text left and center and right in one cell
         $pdf->SetXY(15, $y+15); // set X Y coordinates
-        $pdf->Cell(0, 5, '1.00', 0, 1, 'LRC');
+        $pdf->Cell(0, 5, $totalQuantity, 0, 1, 'LRC');
 
         // Add text left and center and right in one cell
         $pdf->SetXY(35, $y+15); // set X Y coordinates
@@ -646,7 +654,7 @@ function generate_A4pdf()
 
 
         // Set the QR code content  
-        $qrcodeContent = 'https://www.example.com'; // Example QR code content 
+        $qrcodeContent = $zatcaQrCode; // Example QR code content 
 
         // Add the QR code to the PDF  
         $pdf->SetX(90);

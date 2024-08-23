@@ -17,6 +17,17 @@ function my_custom_menu() {
         25 // Position in the menu
     );
 
+    // Add sub-menu Subscription page
+    add_submenu_page(
+        'zatca', // Parent menu slug
+        __( 'Zatca Activation', 'zatca' ), // Page title
+        __( 'Zatca Activation', 'zatca' ), // Menu title
+        'manage_options', // Capability required to access menu
+        'zatca-subscription-admin-page', // Unique menu slug
+        'zatca_subscription_admin_page_content', // Callback function to display page content
+        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
+    );
+
     // Add sub-menu pages
     add_submenu_page(
         'zatca', // Parent menu slug
@@ -83,6 +94,8 @@ function my_custom_menu() {
         'invoice_audit_admin_page_content', // Callback function to display page content
         'dashicons-admin-generic', // Icon URL or WordPress dashicon class
     );
+
+    
 }
 
 // Callback functions to display content for each page
