@@ -102,9 +102,18 @@ function my_custom_menu() {
 function zatca_main_page() {?>
 
     <!-- Content for the main page -->
-    <div class="col-xl-12 mx-auto mt-3">
+    <!-- <div class="col-xl-12 mx-auto mt-3">
         <h3 class="mb-0 text-uppercase text-center"><?php echo _e('ZATCA', 'zatca') ?></h3>
         <h4 class="mb-0 text-center"><?php echo _e('Operations', 'zatca') ?></h4>
+    </div> -->
+    <div style="width:102%;position: absolute;
+    height: 95vh;
+    left: 0;">
+        <img src="<?php 
+        //set plugin path here
+        echo plugin_dir_url( __FILE__ );
+        ?>/zatcaLogo.png" alt="" style="width: 100%;
+    height: 100%;position: fixed;">
     </div>
 <?php
 }
