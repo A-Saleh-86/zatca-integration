@@ -2409,7 +2409,7 @@ function insert_form_documents(){
                                 // vatAmount [ netAmount*vatRate ]:
                                 $doc_unit_vatAmount = $final_netAmount * $doc_unit_vatRate / 100;
                                 // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
-                                $final_vatAmount = round($doc_unit_vatAmount, 1);
+                                $final_vatAmount = round($doc_unit_vatAmount, 2);
 
                                 // amountWithVat [ netAmount+vatAmount ]:
                                 $doc_unit_amountWithVat = $final_netAmount + $final_vatAmount;
@@ -3163,7 +3163,7 @@ function update_zatca($doc_no){
                 "linePrice" => [
                     "currencyCode" => "SAR",
                     // "amount" => (int)number_format((float)$unit->price, 2, '.', '')  
-                    "amount" => round($unit->price)
+                    "amount" => $unit->price
                 
                 ],
                 "lineQuantity" => $unit->quantity,
@@ -3171,23 +3171,23 @@ function update_zatca($doc_no){
                     "currencyCode" => "SAR",
                     // "amount" =>  (int)number_format((float)$unit->netAmount, 2, '.', '')
                     // "amount" =>  (int)number_format((float)round($unit->netAmount,3) , 2, '.', '')
-                    "amount" =>  round($unit->netAmount)
+                    "amount" =>  $unit->netAmount
                 ],
                 "lineDiscountAmount" => [
                     "currencyCode" => "SAR",
                     // "amount" => (int)number_format((float)$unit->discount, 2, '.', '') 
-                    "amount" => round($unit->discount) 
+                    "amount" => $unit->discount 
                 ],
                 // "lineVatRate" => number_format((float)$unit->vatRate, 2, '.', '') , 
-                "lineVatRate" => round($unit->vatRate),
+                "lineVatRate" => $unit->vatRate,
                 "lineVatAmount" => [
                     "currencyCode" => "SAR",
-                    "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
+                    "amount" => $unit->vatAmount 
                     // "amount" => round($unit->vatAmount) 
                 ],
                 "lineAmountWithVat" => [
                     "currencyCode" => "SAR",
-                    "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
+                    "amount" => $unit->amountWithVAT
                     // "amount" => round($unit->amountWithVAT) 
                 ],
                 "taxScheme" => "VAT",
@@ -3195,10 +3195,10 @@ function update_zatca($doc_no){
             
         ];
 
-        $netAmount = (float)$unit->netAmount;
-        $vatAmount = (float)$unit->vatAmount;
-        $amountWithVAT = (float)$unit->amountWithVAT;
-        $discount = (float)$unit->discount;
+        $netAmount = $unit->netAmount;
+        $vatAmount = $unit->vatAmount;
+        $amountWithVAT = $unit->amountWithVAT;
+        $discount = $unit->discount;
     
         $totalAmountWithoutVat += $netAmount;
         $totalLineNetAmount += $netAmount;
@@ -3215,12 +3215,12 @@ function update_zatca($doc_no){
     // $totalDiscountAmount = number_format($totalDiscountAmount, 2, '.', '');
     // $taxPercent = number_format((float)$unit->vatRate, 2, '.', ''); 
 
-    $totalAmountWithoutVat = round($totalAmountWithoutVat);
-    $totalLineNetAmount = round($totalLineNetAmount);
-    $totalVatAmount = round($totalVatAmount);
-    $totalAmountWithVat = round($totalAmountWithVat);
-    $totalDiscountAmount = round($totalDiscountAmount);
-    $taxPercent = round($unit->vatRate); 
+    $totalAmountWithoutVat = $totalAmountWithoutVat;
+    $totalLineNetAmount = $totalLineNetAmount;
+    $totalVatAmount = $totalVatAmount;
+    $totalAmountWithVat = $totalAmountWithVat;
+    $totalDiscountAmount = $totalDiscountAmount;
+    $taxPercent = $unit->vatRate; 
     
 
 
@@ -3553,7 +3553,7 @@ function send_request_to_zatca_clear(){
             {
                 $errorMessage = $responseArray['portalResults'];
             }
-            
+            //$errorMessage = $responseArray['portalResults'];
         }
         
 
@@ -4709,35 +4709,35 @@ function update_zatca1($doc_no){
                 "description" => $unit->eName . ' - ' . $unit->aName, // Must be aName Only [ but didint insert aName],
                 "linePrice" => [
                     "currencyCode" => "SAR",
-                    "amount" => (int)number_format((float)$unit->price, 2, '.', '')
+                    "amount" => $unit->price
                 ],
                 "lineQuantity" => $unit->quantity,
                 "lineNetAmount" => [
                     "currencyCode" => "SAR",
-                    "amount" =>  (int)number_format((float)$unit->netAmount, 2, '.', '')  
+                    "amount" =>  $unit->netAmount
                 ],
                 "lineDiscountAmount" => [
                     "currencyCode" => "SAR",
-                    "amount" => (int)number_format((float)$unit->discount, 2, '.', '') 
+                    "amount" => $unit->discount
                 ],
-                "lineVatRate" => number_format((float)$unit->vatRate, 2, '.', '') , //$unit->vatRate,
+                "lineVatRate" => $unit->vatRate , //$unit->vatRate,
                 "lineVatAmount" => [
                     "currencyCode" => "SAR",
-                    "amount" => number_format((float)$unit->vatAmount, 2, '.', '') 
+                    "amount" => $unit->vatAmount
                 ],
                 "lineAmountWithVat" => [
                     "currencyCode" => "SAR",
-                    "amount" => number_format((float)$unit->amountWithVAT, 2, '.', '') 
+                    "amount" => $unit->amountWithVAT
                 ],
                 "taxScheme" => "VAT",
                 "taxSchemeId" => $taxSchemeId
             
         ];
 
-        $netAmount = (float)$unit->netAmount;
-        $vatAmount = (float)$unit->vatAmount;
-        $amountWithVAT = (float)$unit->amountWithVAT;
-        $discount = (float)$unit->discount;
+        $netAmount = $unit->netAmount;
+        $vatAmount = $unit->vatAmount;
+        $amountWithVAT = $unit->amountWithVAT;
+        $discount = $unit->discount;
     
         $totalAmountWithoutVat += $netAmount;
         $totalLineNetAmount += $netAmount;
@@ -4747,12 +4747,12 @@ function update_zatca1($doc_no){
 
     }
 
-    $totalAmountWithoutVat = number_format($totalAmountWithoutVat, 2, '.', '');
-    $totalLineNetAmount = number_format($totalLineNetAmount, 2, '.', '');
-    $totalVatAmount = number_format($totalVatAmount, 2, '.', '');
-    $totalAmountWithVat = number_format($totalAmountWithVat, 2, '.', '');
-    $totalDiscountAmount = number_format($totalDiscountAmount, 2, '.', '');
-    $taxPercent = number_format((float)$unit->vatRate, 2, '.', ''); //$unit->vatRate;
+    $totalAmountWithoutVat = $totalAmountWithoutVat;
+    $totalLineNetAmount = $totalLineNetAmount;
+    $totalVatAmount = $totalVatAmount;
+    $totalAmountWithVat = $totalAmountWithVat;
+    $totalDiscountAmount = $totalDiscountAmount;
+    $taxPercent = $unit->vatRate; //$unit->vatRate;
 
 
     $totalAmountWithoutVat = ["currencyCode" => "SAR", "amount" => $totalAmountWithoutVat];
