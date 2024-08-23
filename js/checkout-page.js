@@ -135,12 +135,14 @@ jQuery(document).ready(function($) {
             title: 'Success',
             message: data
           });
+          
+
         },
         error: function(xhr, status, error) {
           console.error(xhr.responseText);
         }
       });
-    } else {
+    }else {
       // If the checkbox is not checked, proceed with the default place order action
       placeOrderButton.off('click');  // Unbind the event handler
       placeOrderButton.click();  // Trigger the default action

@@ -1808,15 +1808,17 @@ function woo_document(){
             if($key == $item->order_item_id)
             {
 
-                $final_item_discount= $array_of_discounts[$key];
+                $final_item_discount= number_format((float)$array_of_discounts[$key], 3, '.', '');
 
                 // netAmount [ ((price * quantity)-discount) ]:
-                $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
+                $doc_unit_netAmount = $doc_unit_subtotal - number_format((float)$final_item_discount, 3, '.', '');
                 $final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
 
                 // vatAmount [ netAmount*vatRate ]:
-                $doc_unit_vatAmount = ($doc_unit_netAmount * $doc_unit_vatRate) / 100;
-                $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+                $doc_unit_vatAmount = $final_netAmount * $doc_unit_vatRate / 100;
+                // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+                $final_vatAmount = (float)$doc_unit_vatAmount;
+                
 
                 // amountWithVat [ netAmount+vatAmount ]:
                 $doc_unit_amountWithVat = $doc_unit_netAmount + $doc_unit_vatAmount;
@@ -2333,19 +2335,16 @@ function insert_form_documents(){
                                 $final_item_discount= $array_of_discounts[$key];
 
                                 // netAmount [ ((price * quantity)-discount) ]:
-                                $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
-                                $final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
+                                $doc_unit_netAmount = $doc_unit_subtotal - number_format((float)$final_item_discount, 3, '.', '');
+                                $final_netAmount = number_format((float)$doc_unit_netAmount, 3, '.', '');
 
                                 // vatAmount [ netAmount*vatRate ]:
                                 $doc_unit_vatAmount = ($doc_unit_netAmount * $doc_unit_vatRate) / 100;
-                                $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+                                $final_vatAmount = number_format((float)$doc_unit_vatAmount, 3, '.', '');
 
-
-                                
-            
                                 // amountWithVat [ netAmount+vatAmount ]:
                                 $doc_unit_amountWithVat = $doc_unit_netAmount + $doc_unit_vatAmount;
-                                $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 2, '.', '');
+                                $final_amountWithVat = number_format((float)$doc_unit_amountWithVat, 3, '.', '');
                             
     
                             // Insert Data To zatcaDocumentUnit:
@@ -4313,6 +4312,8 @@ function edit_checkout_page_function(){
             } else {
     
                 echo __('Data Updated', 'zatca');
+                
+               
             }
             
         }else{
@@ -4348,7 +4349,7 @@ function edit_checkout_page_function(){
             }
 
         }
-  
+
     }
 
     die();
@@ -4365,6 +4366,25 @@ function is_arabic($string) {
     }
 }
 
+// Function to get order id after submit checkout page and insert to zatcaDocument - zatcaDocumentUnit - zatcaDocumentxml:
+// add_action( 'woocommerce_thankyou', 'insert_document_to_zatca_after_checkout_submit' );
+
+function insert_document_to_zatca_after_checkout_submit( $orderId ) {
+
+
+    ?>
+
+        <script>
+
+            alert('Order ID: <?php echo $orderId; ?>');
+
+
+        </script>
+
+        <?php
+
+
+}
 
 /****************************************************** */
 
