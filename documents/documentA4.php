@@ -187,8 +187,8 @@ function generate_A4pdf()
         $pdf->SetXY(15, 30);
         $pdf->Cell(0,10,'#4',0,1,'L');
 
-        $pdf->SetXY(15, 40);
-        $pdf->Cell(0,1,'1نص أسفل الرأس -انجليزي',0,1,'L');
+        /*$pdf->SetXY(15, 40);
+        $pdf->Cell(0,1,'1نص أسفل الرأس -انجليزي',0,1,'L');*/
 
         $pdf->SetXY(15, 50);
         $pdf->Cell(0,1,'المخزن: 1 - مباني المؤسسة1',0,1,'L');
@@ -206,8 +206,8 @@ function generate_A4pdf()
 
         $pdf->SetXY(0, 40);
         $pdf->Cell(0,1,$country_Eng,0,1,'R');
-        $pdf->SetXY(0, 45);
-        $pdf->Cell(0,1,'نص أسفل الرأس -عربي1',0,1,'R');
+        /*$pdf->SetXY(0, 45);
+        $pdf->Cell(0,1,'نص أسفل الرأس -عربي1',0,1,'R');*/
 
         $pdf->SetXY(0, 55);
         $pdf->Cell(0,1,'رقم الفاتورة:', 0, 1, 'R');
@@ -642,9 +642,19 @@ function generate_A4pdf()
             $halalas = intval($parts[1]);  
         
             $riyalsInWords = convertNumberToWords($riyals) . ' ريال';  
-            $halalasInWords = convertNumberToWords($halalas) . ' هللة';  
+            
+            if($halalas > 0)
+            {
+                $halalasInWords = convertNumberToWords($halalas) . ' هللة';  
+                return $riyalsInWords . ' و ' . $halalasInWords;
+            }
+            else
+            {
+                return $riyalsInWords;
+            }
+            /*$halalasInWords = convertNumberToWords($halalas) . ' هللة';  
         
-            return $riyalsInWords . ' و ' . $halalasInWords;  
+            return $riyalsInWords . ' و ' . $halalasInWords; */ 
         } 
 
         $arabic_price = formatPriceToArabic($amountWithVAT);
@@ -665,10 +675,12 @@ function generate_A4pdf()
         $pdf->Cell(0,1,'طرق الدفع: , نقد',0,1,'R');
         $pdf->SetXY(0, $y8+5);
         $pdf->Cell(0,1,'رقم بطاقة الاحوال: 12345',0,1,'R');
-        $pdf->SetXY(0, $y8+10);
+
+        /*$pdf->SetXY(0, $y8+10);
         $pdf->Cell(0,1,'نص أسفل البيانات -عربي',0,1,'R');
+
         $pdf->SetXY(0, $y8+15);
-        $pdf->Cell(0,1,'الشحن الى:11',0,1,'R');
+        $pdf->Cell(0,1,'الشحن الى:11',0,1,'R');*/
 
 
         function Footer($pdf) {

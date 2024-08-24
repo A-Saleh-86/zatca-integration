@@ -146,11 +146,11 @@ function generate_pdf() {
         $pdf->Cell(0, 10, 'الرقم الضريبي: '.$CompanyVATID, 0, 1, 'C');
 
         // Add text cell
-        $pdf->SetXY(10, 65); // set X Y coordinates
+        /*$pdf->SetXY(10, 65); // set X Y coordinates
         $pdf->Cell(0, 10, 'نص أسفل الرأس -عربي', 0, 1, 'C');
         // Add text cell
         $pdf->SetXY(10, 70); // set X Y coordinates
-        $pdf->Cell(0, 10, 'نص أسفل الرأس -انجليزي', 0, 1, 'C');
+        $pdf->Cell(0, 10, 'نص أسفل الرأس -انجليزي', 0, 1, 'C');*/
 
         // Add text cell
         $pdf->SetXY(10, 78); // set X Y coordinates
@@ -382,12 +382,12 @@ function generate_pdf() {
         $pdf->Cell(0, 10, 'https://www.AppyInnovate.com', 0, 1, 'C');
 
         // Add text left and center and right in one cell
-        $pdf->SetXY(50, $y8 + 20); // set X Y coordinates
-        $pdf->Cell(0, 10, 'طرق الدفع: , الرصيد الدائن', 0, 1, 'RLC');
+        /*$pdf->SetXY(50, $y8 + 20); // set X Y coordinates
+        $pdf->Cell(0, 10, 'طرق الدفع: , الرصيد الدائن', 0, 1, 'RLC');*/
 
         // Add text left and center and right in one cell
-        $pdf->SetXY(50, $y8 + 25); // set X Y coordinates
-        $pdf->Cell(0, 10, 'نص أسفل البيانات -عربي', 0, 1, 'RLC');
+        /*$pdf->SetXY(50, $y8 + 25); // set X Y coordinates
+        $pdf->Cell(0, 10, 'نص أسفل البيانات -عربي', 0, 1, 'RLC');*/
 
         $y9 = $pdf->GetY(); // get the current Y position
         $pdf->SetXY(10, $y9); // set X Y coordinates
