@@ -112,7 +112,7 @@ function zatca_main_page() {?>
         <img src="<?php 
         //set plugin path here
         echo plugin_dir_url( __FILE__ );
-        ?>/zatcaLogo.png" alt="" style="width: 100%;
+        ?>/zatcaLogo2.png" alt="" style="width: 100%;
     height: 100%;position: fixed;">
     </div>
 <?php

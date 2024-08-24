@@ -12,7 +12,8 @@
     </div>
     <div class="row m-3">
         <div class="form-group col-md-12 m-3" style="display: flex;justify-content: center;">
-            <button class="btn btn-sm btn-primary m-2" id="check_counter_gap"><?php echo _e('Activate Plugin Now', 'zatca') ?> </button>
+            <button class="btn btn-sm btn-primary m-2" id="sub_btn"><?php echo _e('Activate Plugin Now', 'zatca') ?> </button>
         </div>
     </div>
 </form>
+<div id="response"></div> <!-- This div will display the response -->
