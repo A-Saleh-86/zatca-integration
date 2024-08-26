@@ -11,6 +11,42 @@ function generate_pdf() {
         $docNo = $_GET['docno'];
         global $wpdb;
 
+        $zatcaQrCode = $wpdb->get_var("SELECT qrCode FROM zatcaDocumentxml WHERE documentNo = '$docNo'");
+
+        $zatcaCompanyData = $wpdb->get_results(
+            $wpdb->prepare("select * from zatcaCompany")
+        );
+
+        // company info
+        foreach ($zatcaCompanyData as $company)
+        {
+            $companyName = $company->companyName;
+            $CompanyVATID = $company->VATID;
+            $country_Eng = $company->country_Eng;
+        }
+
+        $zatcaDocumentData = $wpdb->get_results(
+            $wpdb->prepare("select * from zatcaDocument where documentNo = '$docNo'")
+        );
+
+        // seller and buyer data and header invoice data
+        foreach ($zatcaDocumentData as $doc)
+        {
+            // header invoice data
+            $dateG = $doc->dateG;
+            $amountCalculatedPayed = number_format($doc->amountCalculatedPayed , 2, '.', '');
+
+
+            // seller information
+            $seller_aName = $doc->seller_aName;
+            $seller_eName = $doc->seller_eName;
+
+            // buyer information
+            $buyer_aName = $doc->buyer_aName;
+            $buyer_eName = $doc->buyer_eName;
+            $buyer_VAT = $doc->buyer_VAT;
+        }
+
         // Query to fetch the invoice numbers within the specified date range for the given branch
         $query = $wpdb->prepare("
             select zu.*, i.order_item_name from zatcaDocumentUnit zu, wp_woocommerce_order_items i
@@ -25,12 +61,19 @@ function generate_pdf() {
         $vatAmount = 0;
         $price = 0;
         $amountWithVAT = 0;
+        $totalQuantity = 0;
         foreach ($results as $result) {
             $discount += $result->discount;
             $vatAmount += $result->vatAmount;
             $price += $result->price;
             $amountWithVAT += $result->amountWithVAT;
+            $totalQuantity += $result->quantity;
             }
+            $discount = number_format($discount , 2, '.', '');
+            $vatAmount = number_format($vatAmount , 2, '.', '');
+            $price = number_format($price , 2, '.', '');
+            $amountWithVAT = number_format($amountWithVAT , 2, '.', '');
+            $totalQuantity = number_format($totalQuantity , 2, '.', '');
 
         // Include the TCPDF class  
         if ( ! class_exists('TCPDF') ) {  
@@ -88,11 +131,11 @@ function generate_pdf() {
 
         // Add text cell
         $pdf->SetXY(10, 40); // set X Y coordinates
-        $pdf->Cell(0, 10, 'مؤسسة الراجحي', 0, 1, 'C'); // 0 = no border, 1 = new line, 'C'
+        $pdf->Cell(0, 10, "Company Name", 0, 1, 'C'); // 0 = no border, 1 = new line, 'C'
 
         // Add text cell
         $pdf->SetXY(10, 45); // set X Y coordinates
-        $pdf->Cell(0, 10, 'Al-Rajhi Est', 0, 1, 'C'); // 0 = no border, 1 = new line, 'C'
+        $pdf->Cell(0, 10, $companyName, 0, 1, 'C'); // 0 = no border, 1 = new line, 'C'
 
         // Add text cell
         $pdf->SetXY(10, 53); // set X Y coordinates
@@ -100,14 +143,14 @@ function generate_pdf() {
 
         // Add text cell
         $pdf->SetXY(10, 60); // set X Y coordinates
-        $pdf->Cell(0, 10, 'الرقم الضريبي: 31042489670000', 0, 1, 'C');
+        $pdf->Cell(0, 10, 'الرقم الضريبي: '.$CompanyVATID, 0, 1, 'C');
 
         // Add text cell
-        $pdf->SetXY(10, 65); // set X Y coordinates
+        /*$pdf->SetXY(10, 65); // set X Y coordinates
         $pdf->Cell(0, 10, 'نص أسفل الرأس -عربي', 0, 1, 'C');
         // Add text cell
         $pdf->SetXY(10, 70); // set X Y coordinates
-        $pdf->Cell(0, 10, 'نص أسفل الرأس -انجليزي', 0, 1, 'C');
+        $pdf->Cell(0, 10, 'نص أسفل الرأس -انجليزي', 0, 1, 'C');*/
 
         // Add text cell
         $pdf->SetXY(10, 78); // set X Y coordinates
@@ -144,7 +187,7 @@ function generate_pdf() {
 
         // Add text cell
         $pdf->SetXY(10, 110); // set X Y coordinates
-        $pdf->Cell(0, 10, '2023-05-14 23:33', 0, 1, 'C');
+        $pdf->Cell(0, 10, $dateG, 0, 1, 'C');
 
         // Add text left and center and right in one cell
         $pdf->SetXY(5, 117); // set X Y coordinates
@@ -156,7 +199,7 @@ function generate_pdf() {
 
          // Add text left and center and right in one cell
          $pdf->SetXY(48, 125); // set X Y coordinates
-         $pdf->Cell(0, 10, 'الاسم: محمد على كلاى', 0, 1, 'RLC');
+         $pdf->Cell(0, 10, 'الاسم: '.$buyer_aName, 0, 1, 'RLC');
 
          // Set font  
         $pdf->SetFont('aealarabiya', '', 8);
@@ -239,7 +282,7 @@ function generate_pdf() {
 
         // Add text left and center and right in one cell
         $pdf->SetXY(10, $y1 + 5); // set X Y coordinates
-        $pdf->Cell(0, 10, '1.00', 0, 1, 'LRC');
+        $pdf->Cell(0, 10, $totalQuantity, 0, 1, 'LRC');
 
         // Add text left and center and right in one cell
         $pdf->SetXY(20, $y1 + 5); // set X Y coordinates
@@ -313,7 +356,7 @@ function generate_pdf() {
 
         // Add text left and center and right in one cell
         $pdf->SetXY(10, $y6); // set X Y coordinates
-        $pdf->Cell(0, 10, 'Paid 0.00 المدفوع', 0, 1, 'C');
+        $pdf->Cell(0, 10, 'Paid '.$amountCalculatedPayed.' المدفوع', 0, 1, 'C');
 
         $y7 = $pdf->GetY(); // get the current Y position
 
@@ -323,7 +366,7 @@ function generate_pdf() {
 
         // Add text left and center and right in one cell
         $pdf->SetXY(10, $y7); // set X Y coordinates
-        $pdf->Cell(0, 10, 'Left 6.45 المتبقي', 0, 1, 'C');
+        $pdf->Cell(0, 10, 'Left 00.00 المتبقي', 0, 1, 'C');
 
         $y8 = $pdf->GetY(); // get the current Y position
         $pdf->Line(30, $y8, 75, $y8);
@@ -339,18 +382,18 @@ function generate_pdf() {
         $pdf->Cell(0, 10, 'https://www.AppyInnovate.com', 0, 1, 'C');
 
         // Add text left and center and right in one cell
-        $pdf->SetXY(50, $y8 + 20); // set X Y coordinates
-        $pdf->Cell(0, 10, 'طرق الدفع: , الرصيد الدائن', 0, 1, 'RLC');
+        /*$pdf->SetXY(50, $y8 + 20); // set X Y coordinates
+        $pdf->Cell(0, 10, 'طرق الدفع: , الرصيد الدائن', 0, 1, 'RLC');*/
 
         // Add text left and center and right in one cell
-        $pdf->SetXY(50, $y8 + 25); // set X Y coordinates
-        $pdf->Cell(0, 10, 'نص أسفل البيانات -عربي', 0, 1, 'RLC');
+        /*$pdf->SetXY(50, $y8 + 25); // set X Y coordinates
+        $pdf->Cell(0, 10, 'نص أسفل البيانات -عربي', 0, 1, 'RLC');*/
 
         $y9 = $pdf->GetY(); // get the current Y position
         $pdf->SetXY(10, $y9); // set X Y coordinates
 
         // Set the QR code content  
-        $qrcodeContent = 'https://www.example.com'; // Example QR code content 
+        $qrcodeContent = $zatcaQrCode; // Example QR code content 
 
         // Add the QR code to the PDF  
         $pdf->write2DBarcode($qrcodeContent, 'QRCODE,L', '', '', 60, 50, null, 'N');

@@ -17,6 +17,17 @@ function my_custom_menu() {
         25 // Position in the menu
     );
 
+    // Add sub-menu Subscription page
+    add_submenu_page(
+        'zatca', // Parent menu slug
+        __( 'Zatca Activation', 'zatca' ), // Page title
+        __( 'Zatca Activation', 'zatca' ), // Menu title
+        'manage_options', // Capability required to access menu
+        'zatca-subscription-admin-page', // Unique menu slug
+        'zatca_subscription_admin_page_content', // Callback function to display page content
+        'dashicons-admin-generic', // Icon URL or WordPress dashicon class
+    );
+
     // Add sub-menu pages
     add_submenu_page(
         'zatca', // Parent menu slug
@@ -83,15 +94,26 @@ function my_custom_menu() {
         'invoice_audit_admin_page_content', // Callback function to display page content
         'dashicons-admin-generic', // Icon URL or WordPress dashicon class
     );
+
+    
 }
 
 // Callback functions to display content for each page
 function zatca_main_page() {?>
 
     <!-- Content for the main page -->
-    <div class="col-xl-12 mx-auto mt-3">
+    <!-- <div class="col-xl-12 mx-auto mt-3">
         <h3 class="mb-0 text-uppercase text-center"><?php echo _e('ZATCA', 'zatca') ?></h3>
         <h4 class="mb-0 text-center"><?php echo _e('Operations', 'zatca') ?></h4>
+    </div> -->
+    <div style="width:102%;position: absolute;
+    height: 95vh;
+    left: 0;">
+        <img src="<?php 
+        //set plugin path here
+        echo plugin_dir_url( __FILE__ );
+        ?>/zatcaLogo2.png" alt="" style="width: 100%;
+    height: 100%;position: fixed;">
     </div>
 <?php
 }

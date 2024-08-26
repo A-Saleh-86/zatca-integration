@@ -158,6 +158,7 @@ add_shortcode('checkbox', 'checkbox_function');
 add_action('woocommerce_blocks_checkout_enqueue_data', 'add_custom_field_to_checkout_blocks');
     
 add_action('wp_ajax_handle_form_tampering', 'handle_form_tampering');
+add_action('wp_ajax_handle_form_subscription', 'handle_form_subscription');
 
 // Function to run Text Domain:
 function my_plugin_load_textdomain() {
@@ -262,6 +263,14 @@ function load_assets(){
 
     // Localize the script with new data  
     wp_localize_script('tampering-script', 'ajax_object', array(  
+        'ajax_url' => admin_url('admin-ajax.php')  
+    ));  
+
+    // Subscription script
+    wp_enqueue_script('subscribe-script', plugin_dir_url(__FILE__) . '/js/activation.js', array(), false, true);  
+
+    // Localize the script with new data  
+    wp_localize_script('subscribe-script', 'ajax_subscribe', array(  
         'ajax_url' => admin_url('admin-ajax.php')  
     ));  
     
@@ -442,7 +451,242 @@ function localization() {
 
 }
 
+////////////////////////// Start Subscription Code ///////////////////////////////////////
 
+function checkSubscriptionStatus($subscriptionId, $apiUrl, $apiKey, $apiSecret) {  
+    // Initialize a cURL session  
+    $ch = curl_init();  
+
+    // Set the URL  
+    curl_setopt($ch, CURLOPT_URL, "$apiUrl/subscriptions/$subscriptionId");  
+    
+    // Set the HTTP method to GET  
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");  
+    
+    // Set the headers including API Key and Secret  
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [  
+        "X-Killbill-ApiKey: $apiKey",  
+        "X-Killbill-ApiSecret: $apiSecret",  
+        "Content-Type: application/json",  
+    ]);  
+
+    // Return the response instead of printing it  
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
+
+    // Execute the request  
+    $response = curl_exec($ch);  
+
+    // Check for errors  
+    if (curl_errno($ch)) {  
+        echo 'Error:' . curl_error($ch);  
+    } else {  
+        // Decode the response  
+        $data = json_decode($response, true);  
+        
+        // Check the subscription status  
+        if (isset($data['status'])) {  
+            return $data['status']; // It may return statuses like "ACTIVE", "CANCELLED", etc.  
+        } else {  
+            return 'Subscription not found or an error occurred.';  
+        }  
+    }  
+
+    // Close the cURL session  
+    curl_close($ch);  
+} 
+
+function updateUsage($apiUrl, $apiKey, $apiSecret, $subscriptionId, $usageDetails) {  
+    // Initialize a cURL session  
+    $ch = curl_init();  
+
+    // Set the URL for reporting usage  
+    curl_setopt($ch, CURLOPT_URL, "$apiUrl/usage");  
+    
+    // Set the HTTP method to POST  
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");  
+    
+    // Set the headers including API Key and Secret  
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [  
+        "X-Killbill-ApiKey: $apiKey",  
+        "X-Killbill-ApiSecret: $apiSecret",  
+        "Content-Type: application/json",  
+    ]);  
+
+    // Set the request body  
+    $payload = json_encode([  
+        "subscriptionId" => $subscriptionId,  
+        "usage" => $usageDetails // This should be structured as per your needs  
+    ]);  
+    
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);  
+
+    // Return the response instead of printing it  
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
+
+    // Execute the request  
+    $response = curl_exec($ch);  
+
+    // Check for errors during the curl execution  
+    if (curl_errno($ch)) 
+    {  
+        echo 'Curl Error: ' . curl_error($ch);
+        $data = json_decode($response, true);
+    } 
+    else 
+    {  
+        // Decode the response  
+        $data = json_decode($response, true);  
+        
+        // Check for specific response status  
+        // if (isset($data['status'])) 
+        // {  
+        //     switch ($data['status']) 
+        //     {  
+        //         case 'SUCCESS':  
+        //             echo "Usage updated successfully: " . json_encode($data);  
+        //             break;  
+        //         case 'InvalidSubscriptionKey':  
+        //             echo "Error: Invalid subscription key provided. Please check your subscription ID.\n";  
+        //             break;  
+        //         case 'ServerIsDown':  
+        //             echo "Error: The server is currently down. Please try again later.\n";  
+        //             break;  
+        //         default:  
+        //             echo "Unexpected status received: " . $data['status'] . "\n";  
+        //             break;  
+        //     }  
+        // } 
+        // else 
+        // {  
+        //     echo "Failed to update usage: No status in response. Response: " . json_encode($data);  
+        // }  
+    }  
+
+    // Close the cURL session  
+    curl_close($ch);
+
+    return $data;
+}  
+
+function handle_form_subscription() 
+{
+    global $wpdb;
+
+    // get subscriptionId from form
+    $subscriptionId = $_POST['subscriptionId'];
+
+    // killbill portal auth info
+    $apiUrl = 'http://62.112.11.84:8080/';
+    $apiKey = 'e5b6729d-1226-4ec6-8c7d-f9d8e464c644';
+    $apiSecret = 'e5b6729d-1226-4ec6-8c7d-f9d8e464c644';
+    $username = 'admin';
+    $password = 'password';
+
+    // get IsNewSubscription from zatcaCompany table
+    $isNewSubscription = $wpdb->get_var("SELECT IsNewSubscription FROM zatcaCompany");
+
+    // if 0 means is new subscription
+    if ($isNewSubscription == 0) 
+    {
+        //$status = checkSubscriptionStatus($subscriptionId, $apiUrl, $apiKey, $apiSecret);
+        $status = 'ACTIVE';
+        if($status == "ACTIVE")
+        {
+            // set date like this DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date = $date->format('Y-m-d\TH:i:s\Z');
+
+            $subscribe_lastSyncDate = $date;
+            //update zatcaCompany IsNewSubscription = 1 & subscription_id
+            $wpdb->update("zatcaCompany", array(
+                "IsNewSubscription" => 1,
+                "subscription_id" => $subscriptionId,
+                "subscribe_lastSyncDate" => $subscribe_lastSyncDate
+            ));
+
+            $response = [
+                'success' => true,
+                'status' => 'ACTIVE',
+                'message' => 'Subscription activated successfully',
+            ];
+            
+        }
+        else
+        {
+            $response = [
+                'success' => false,
+                'status' => 'NOT ACTIVE',
+                'message' => 'Subscription not found or an error occurred.',
+            ];
+        }
+    }
+    // if not new subscription
+    else
+    {
+        $oldSyncDate = $wpdb->get_var("SELECT subscribe_lastSyncDate FROM zatcaCompany");
+        //get total of invoices from zatcaDocument
+        $totalInvoices = $wpdb->get_var("SELECT COUNT(*) FROM zatcaDocument");
+        if($totalInvoices > 0)
+        {
+            // set date like this DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+            $newdate = new DateTime();
+            $newdate->setTimezone(new DateTimeZone('UTC'));
+            $newdate = $date->format('Y-m-d\TH:i:s\Z');
+            $newSyncDate = $newdate;
+            // Define your usage details  
+            $usageDetails = [  
+                [  
+                    "SubscriptionId" => $subscriptionId,
+                    "totalInvoices" => $totalInvoices,  
+                    "timestamp" => $newSyncDate, 
+                ],  
+                // Add more usage records as needed  
+            ]; 
+            // Update usage  
+            $response = updateUsage($apiUrl, $apiKey, $apiSecret, $subscriptionId, $usageDetails);
+            switch ($response['status']) 
+            {  
+                case 'SUCCESS':  
+                    //update zatcaCompany IsNewSubscription = 1 & subscription_id
+                    $wpdb->update("zatcaCompany", array(
+                        "IsNewSubscription" => 1,
+                        "subscription_id" => $subscriptionId,
+                        "subscribe_lastSyncDate" => $subscribe_lastSyncDate
+                    ));
+                    //$state = checkSubscriptionStatus($subscriptionId, $apiUrl, $apiKey, $apiSecret);
+                    $state = 'ACTIVE';
+                    break;  
+                case 'InvalidSubscriptionKey':  
+                    $state = "NOTACTIVE";  
+                    break;  
+                case 'ServerIsDown':  
+                    $state = "ACTIVE"; 
+                    break;  
+                default:  
+                    $state = "ACTIVE"; 
+                    break;  
+            }
+
+            if($state != "ACTIVE")
+            {
+                //update company expiredSubscription =1 means the subscribe is expired
+                $wpdb->update("zatcaCompany", array(
+                    "IsNewSubscription" => 0));
+            }
+        }
+        else
+        {}
+    }
+
+    echo $status;
+
+    wp_die(); // terminate immediately and return a proper response  
+}
+////////////////////////// End Subscription Code ///////////////////////////////////////
+
+
+//////////////////////////////
 function handle_form_tampering() {  
     
     // Check if the form is submitted
@@ -3547,15 +3791,15 @@ function send_request_to_zatca_clear(){
 
         if($responseArray['zatcaStatusCode'] == 400 || $responseArray['zatcaStatusCode'] == null || $responseArray['zatcaStatusCode'] == 0)
         {
-            // if($responseArray['portalResults'] = "Object reference not set to an instance of an object.")
-            // {
-            //     $errorMessage = "The device signature or token data may not be correct , please check and try again!";
-            // }
-            // else
-            // {
-            //     $errorMessage = $responseArray['portalResults'];
-            // }
-            $errorMessage = $responseArray['portalResults'];
+            if($responseArray['portalResults'] == "Object reference not set to an instance of an object.")
+            {
+                $errorMessage = "The device signature or token data may not be correct , please check and try again!";
+            }
+            else
+            {
+                $errorMessage = $responseArray['portalResults'];
+            }
+            //$errorMessage = $responseArray['portalResults'];
         }
         
 
@@ -4860,6 +5104,27 @@ function invoice_audit_form_shortcode()
     return ob_get_clean();
 }
 add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
+
+/////////////////////////////////////////////////////////////////////
+
+// Subscription screen
+function zatca_subscription_admin_page_content() {
+    echo '<div class="wrap container">';
+    echo '<h2 class="text-center">'. __( 'ZATCA ACTIVATION FORM', 'zatca' ) .'</h2>';
+    // Add your admin page content here
+    echo do_shortcode('[subscription_form]');
+    echo '</div>';
+}
+
+// Shortcode callback function to check gap form
+function subscription_form_shortcode()
+{
+    ob_start();
+    require_once(plugin_dir_path(__FILE__) . 'Subscription/subscription_form.php');
+    
+    return ob_get_clean();
+}
+add_shortcode('subscription_form', 'subscription_form_shortcode');
 
 
 
