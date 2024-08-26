@@ -4738,7 +4738,6 @@ add_shortcode('invoice_audit_form', 'invoice_audit_form_shortcode');
 /////////////////////////////////////////////////////////////////////
 
 // Subscription screen
-// Tampering Detector Code
 function zatca_subscription_admin_page_content() {
     echo '<div class="wrap container">';
     echo '<h2 class="text-center">'. __( 'ZATCA ACTIVATION FORM', 'zatca' ) .'</h2>';
