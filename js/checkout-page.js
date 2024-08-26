@@ -66,98 +66,110 @@ jQuery(document).ready(function($) {
 
   // Select the WooCommerce Place Order button using its specific classes
   var placeOrderButton = $('.wc-block-components-checkout-place-order-button');
-
-  // Unbind any previous click events to prevent duplication
-  placeOrderButton.off('click');
-
-  // // Get the checkbox element
-   let checkbox2 = document.getElementById('my_checkbox_field');
-  //  if (checkbox2.checked) { alert("checked"); }
-  //  else{alert("unchecked");}
   
+  // Get the checkbox element
+  // let checkbox2 = document.getElementById('my_checkbox_field');
+  var checkboxStatus = false;
+  
+  // Unbind any previous click events to prevent duplication
+  $('.wc-block-components-checkout-place-order-button').off('click');
 
+  $('#my_checkbox_field').on('click', function() {
+
+    checkboxStatus = $(this).prop('checked');
+  
+  });
+
+  
   // Listen for the click event on the Place Order button
-  placeOrderButton.on('click', function(event) {
+  $('.wc-block-components-checkout-place-order-button').on('click', function(event) {
+    
     event.preventDefault(); 
+      // Get the checkbox status
+
+      // checkboxStatus = document.getElementById('my_checkbox_field').checked;
+      // Get the checkbox status from the global variable or data attribute
 
     // Get the checkbox element
-  if (checkbox2.checked) { alert("checked inside"); }
-   else{alert("unchecked inside");}
-   
+    // let checkbox2 = document.getElementById('my_checkbox_field');
 
-    if (checkbox2.checked) {
-      localStorage.setItem("taxInvoice","checked");
-      localStorage.getItem("taxInvoice");
-      //localStorage.clear();
-      // validation on client name ar not empty:
-      if ($("#client_name_ar").val() == '') {
+    
+      if (checkboxStatus) {
 
-        // Error notification:
-        popupValidation.error({
-          title: checkout.notification_error_title,
-          message: checkout.client_name_not_empty
-        });
+        // localStorage.setItem("taxInvoice","checked");
+        // var checkboxStatus = localStorage.getItem("taxInvoice");
+        //localStorage.clear();
+        
+        // validation on client name ar not empty:
+        if ($("#client_name_ar").val() == '') {
 
-        return false;
-      }
-
-      // validation on client name ar must be Arabic:
-      if (!isArabic($("#client_name_ar").val())) {
-
-        // Error notification:
-        popupValidation.error({
-          title: checkout.notification_error_title,
-          message: checkout.client_name_must_arabic
-        });
-
-        return false;
-      }
-
-      // Collect form data from the custom form
-      var formData = {
-        clientId: $("[name='client-id']").val(),
-        operationType: $("[name='operation-type']").val(),
-        clientNameAr: $("#client_name_ar").val(),
-        clientNameEn: $("#client_name_en").val(),
-        districtNameAr: $("#dist_ar").val(),
-        vatId: $("#vat-id").val(),
-        apartmentNo: $("#apartment-no").val(),
-        secondBusinessIdType: $("#second-business-id-type").val(),
-        secondBusinessId: $("#second-business-id").val(),
-        addressNameArabic: $("#address_ar").val(),
-        addressNameEnglish: $("#address_en").val(),
-        cityNameArabic: $("#city_ar").val(),
-        cityNameEnglish: $("#city_en").val(),
-        postalCode: $("#postal_code").val()
-      };
-
-      // Send the custom form data via AJAX
-      $.ajax({
-        url: checkoutPage.ajaxUrl,
-        method: "POST",
-        data: {
-          "action": "edit_checkout_page",
-          "edit_form_data_ajax": JSON.stringify(formData)
-        },
-        success: function(data) {
-          // Success notification or further actions
-          popup.success({
-            title: 'Success',
-            message: data
+          // Error notification:
+          popupValidation.error({
+            title: checkout.notification_error_title,
+            message: checkout.client_name_not_empty
           });
-          
 
-        },
-        error: function(xhr, status, error) {
-          console.error(xhr.responseText);
+          return false;
         }
-      });
-    }else {
-      localStorage.setItem("taxInvoice","unchecked");
-      // If the checkbox is not checked, proceed with the default place order action
-      placeOrderButton.off('click');  // Unbind the event handler
-      placeOrderButton.click();  // Trigger the default action
-    }
+
+        // validation on client name ar must be Arabic:
+        if (!isArabic($("#client_name_ar").val())) {
+
+          // Error notification:
+          popupValidation.error({
+            title: checkout.notification_error_title,
+            message: checkout.client_name_must_arabic
+          });
+
+          return false;
+        }
+
+        // Collect form data from the custom form
+        var formData = {
+          clientId: $("[name='client-id']").val(),
+          operationType: $("[name='operation-type']").val(),
+          clientNameAr: $("#client_name_ar").val(),
+          clientNameEn: $("#client_name_en").val(),
+          districtNameAr: $("#dist_ar").val(),
+          vatId: $("#vat-id").val(),
+          apartmentNo: $("#apartment-no").val(),
+          secondBusinessIdType: $("#second-business-id-type").val(),
+          secondBusinessId: $("#second-business-id").val(),
+          addressNameArabic: $("#address_ar").val(),
+          addressNameEnglish: $("#address_en").val(),
+          cityNameArabic: $("#city_ar").val(),
+          cityNameEnglish: $("#city_en").val(),
+          postalCode: $("#postal_code").val(),
+          status:checkboxStatus
+        };
+
+        // Send the custom form data via AJAX
+        $.ajax({
+          url: checkoutPage.ajaxUrl,
+          method: "POST",
+          data: {
+            "action": "edit_checkout_page",
+            "edit_form_data_ajax": JSON.stringify(formData)
+          },
+          success: function(data) {
+            // Success notification or further actions
+            popup.success({
+              title: 'Success',
+              message: data
+            });
+            
+
+          },
+          error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+          }
+        });
+      }else {
+        // localStorage.setItem("taxInvoice","unchecked");
+        // If the checkbox is not checked, proceed with the default place order action
+        $(this).off('click');  // Unbind the event handler
+        $(this).click();  // Trigger the default action
+      }
   });
 
 });

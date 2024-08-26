@@ -1487,10 +1487,10 @@ function woo_document(){
     // Get order status from wc_orders:
     $order_status = $wpdb->get_var($wpdb->prepare("select status from $table_orders WHERE id = $orderId "));
 
-    // Get Payed from wc_orders For address:
+    // Get Payed from wc_orders :
     $payed = $wpdb->get_var($wpdb->prepare("select total_amount from $table_orders WHERE id = $orderId "));
     
-    // Get Payed from wc_orders For address:
+    // Get totalTax from wc_orders :
     $totalTax = $wpdb->get_var($wpdb->prepare("select tax_amount from $table_orders WHERE id = $orderId "));
 
     // Get order-item_id from woocommerce_order_items:
@@ -4319,8 +4319,9 @@ function add_custom_field_to_checkout_blocks() {
     <?php
 }
 
+session_start();
 
-// // function to insert data from checkout page:
+// function to insert data from checkout page:
 function edit_checkout_page_function(){
 
     if(isset($_REQUEST)){
@@ -4333,6 +4334,12 @@ function edit_checkout_page_function(){
         // Parse Data:
         // parse_str($vals, $form_array);
         $form_array = json_decode(stripslashes($vals), true);
+
+        // Get Checkbox Status:
+        $checkbox_status = $form_array['status'];
+
+        // Create New Session and put the checkbox status:
+        $_SESSION['checkbox_status'] = $checkbox_status;
 
         // variables Come from Form:
         $operationType = $form_array['operationType'];
@@ -4445,23 +4452,386 @@ function is_arabic($string) {
     }
 }
 
+function unset_checkbox_status_session() {
+
+    if (isset($_SESSION['checkbox_status'])) {
+
+        unset($_SESSION['checkbox_status']);
+
+    }
+
+}
+
 // Function to get order id after submit checkout page and insert to zatcaDocument - zatcaDocumentUnit - zatcaDocumentxml:
-// add_action( 'woocommerce_thankyou', 'insert_document_to_zatca_after_checkout_submit' );
+add_action( 'woocommerce_thankyou', 'insert_document_to_zatca_after_checkout_submit' );
 
 function insert_document_to_zatca_after_checkout_submit( $orderId ) {
 
+    global $wpdb;
 
-    ?>
+    // Table Name:
+    $table_name_device = 'zatcaDevice';
+
+    // Prepare the query with a condition on CsID_ExpiryDate not expire:
+    $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
+    foreach($results as $device){
+
+        if($wpdb->num_rows > 0){ // If Date Valid:
+
+            $deviceNo = $device->deviceNo;
+
+        }else{ // If No Date Valid
+
+            $send_response = [
+                'status' => 'expired'
+            ];
+            // $msg = "You Must Insert Valid CsID_ExpiryDate";
+
+        }
+    }
+
+
+    // Prefix Of woo-order-item
+    $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
+     
+    // Prifix of wp_wc_orders:
+    $table_orders = $wpdb->prefix . 'wc_orders';
+
+    // Get Order Id for Specific Item_Id [ line_item ]:
+    $item_id_line_item = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
+   
+   
+    // Check For Document no in zatcaDocument [Previouse Doc No]:
+    $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocument") );
+
+    $previuos_docNo = 0;
+    $previousInvoiceHash = '';
+    
+    // Ceheck for previous document No if have doc no will choose it - 1 & previousInvoiceHash will be the value in database:
+    if($wpdb->num_rows > 0){
+        foreach($documents as $document){
+        
+            $previuos_docNo = $document->documentNo;
+            $previousInvoiceHash = $document->previousInvoiceHash;
+
+        }
+    }else{ // if not previuous doc no will be 0 - and previousInvoiceHash will be default:
+        
+        $previuos_docNo=0;
+        $previousInvoiceHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
+    }
+
+    // Get seconde bussiness id type from zatcaCompany [ seller ]:
+    $seller_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCompany"));
+        
+    // Get seconde bussiness id from zatcaCompany [ seller ]:
+    $seller_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCompany"));
+    
+    // get customer id from order table:
+    $order_Customer_Id = $wpdb->get_var($wpdb->prepare("select customer_id from $table_orders WHERE id = $orderId"));
+        
+    // get buyer_secondBusinessIDType from zatcaCustomers:
+    $buyer_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+    
+    // get buyer_secondBusinessID from zatcaCustomers:
+    $buyer_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+    // Get Seller Vat from zatcaCompany [ seller ]:
+    $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCompany"));
+        
+    // Get Seller apartment from zatcaCompany [ seller ]:
+    $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCompany"));
+        
+    // Get Seller POBoxAdditionalNum from zatcaCompany [ seller ]:
+    $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCompany"));
+        
+    // Get Seller POBox from zatcaCompany [ seller ]:
+    $seller_POBox_Company = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCompany"));
+        
+    // Get Seller postal code from zatcaCompany:
+    $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCompany"));
+        
+    // Get Seller street_Arb from zatcaCompany [ seller ]:
+    $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCompany"));
+        
+    // Get Seller street_Eng from zatcaCompany [ seller ]:
+    $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCompany"));
+        
+    // Get Seller district_Arb from zatcaCompany [ seller ]:
+    $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCompany"));
+        
+    // Get Seller district_Eng from zatcaCompany [ seller ]:
+    $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCompany"));
+        
+    // Get Seller city_Arb from zatcaCompany [ seller ]:
+    $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCompany"));
+        
+    // Get Seller city_Eng from zatcaCompany [ seller ]:
+    $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCompany"));
+        
+    // Get Seller country_Arb from zatcaCompany [ seller ]:
+    $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCompany"));
+        
+    // Get Seller country_Eng from zatcaCompany [ seller ]:
+    $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCompany"));
+        
+    // Get Seller CountryNo from zatcaCompany [ seller ]:
+    $seller_CountryNo_Company = $wpdb->get_var($wpdb->prepare("select countryNo from zatcaCompany "));
+
+    // get aName from zatcaCustomers:
+    $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+            
+    // get eName from zatcaCustomers:
+    $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get apartmentNum from zatcaCustomers:
+    $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get POBoxAdditionalNum from zatcaCustomers:
+    $buyer_POBoxAdditionalNum_Customer = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get PostalCode from zatcaCustomers:
+    $buyer_PoCode = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get PostalCode from zatcaCustomers:
+    $buyer_PostalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get street_Arb from zatcaCustomers:
+    $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get street_Eng from zatcaCustomers:
+    $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get district_Arb from zatcaCustomers:
+    $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get district_Eng from zatcaCustomers:
+    $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get city_Arb from zatcaCustomers:
+    $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get city_Arb from zatcaCustomers:
+    $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // get CountryNo from zatcaCustomers:
+    $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // Get Buyer Vat Id:
+    $buyer_VAT = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+    // Get Order Id for Specific Item_Id [ coupon ]:
+    $item_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+
+    // Get Payed from wc_orders For address:
+    $payed = $wpdb->get_var($wpdb->prepare("select total_amount from $table_orders WHERE id = $orderId "));
+    
+    // Get totalTax from wc_orders :
+    $totalTax = $wpdb->get_var($wpdb->prepare("select tax_amount from $table_orders WHERE id = $orderId "));
+    
+
+    // Get Discount from woo_order_itemmeta:
+    $discount = wc_get_order_item_meta( $item_id, 'discount_amount', true );
+    
+    // Get Sub Total from woo_order_itemmeta:
+    $sub_total = wc_get_order_item_meta( $item_id_line_item, '_line_subtotal', true );
+    
+    // Get Sub Net Total from woo_order_itemmeta:
+    $sub_net_total = $sub_total - $discount;
+   
+    $invoiceType = $wpdb->get_var($wpdb->prepare("select zatcaInvoiceType from zatcaCustomer where clientVendorNo = $order_Customer_Id"));
+
+    // zatcaCompany Vat Cat Code:
+    $companyVatCatCode = $wpdb->get_var($wpdb->prepare("select VATCategoryCode from zatcaCompany"));
+    
+    // zatcaCompany Vat Cat Code sub type:
+    $companyVatCatCodeType = $wpdb->get_var($wpdb->prepare("select VATCategoryCodeSubTypeNo from zatcaCompany"));
+
+    // Variables of data:
+    $device_No = $deviceNo;
+    $uuid = wp_generate_uuid4();
+    $delivery_Date = date('Y-m-d');
+    $latest_Delivery_Date = date('Y-m-d');
+
+    // Validation on CsID_ExpiryDate not expire:
+    $device_ExpiryDate = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
+    
+    // Validation on zatcaCompany if have data [ insert doc ] - if not [ stop ]:
+    $zatcaCompanyCheck =$wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaCompany") );
+
+
+    if(empty($device_ExpiryDate)){ // If No Date Valid:
+
+        return;
+
+    }else if(empty($zatcaCompanyCheck)){ // if zatcaCompany Empty:
+
+        return;
+
+    }else{ // if all data Valid:
+
+        $deviceNo = $wpdb->get_var($wpdb->prepare(
+            "SELECT deviceNo
+            FROM $table_name_device
+            WHERE deviceStatus = 0")
+            );
+        $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcaDocument WHERE deviceNo = $deviceNo");
+        $docNo = $wpdb->get_var($query);
+        $docNo = $docNo + 1;
+
+        $branchNo = $wpdb->get_var($wpdb->prepare("SELECT buildingNo FROM zatcaBranch"));
+
+            // #################################
+            // Insert Data into zatcaDocument:##
+            // #################################
+            
+            $insert_doc = $wpdb->insert(
+                'zatcaDocument',
+                [
+                    'documentNo'                            => $docNo,
+                    'deviceNo'                              => $deviceNo,
+                    'invoiceNo'                             => $orderId,
+                    'buildingNo'                            => $branchNo,
+                    'billTypeNo'                            => 33,
+                    'deliveryDate'                          => $delivery_Date,
+                    'gaztLatestDeliveryDate'                => $latest_Delivery_Date,
+                    'zatcaInvoiceType'                      => $invoiceType,
+                    'amountPayed01'                         => $payed,
+                    'amountCalculatedPayed'                 => $payed,
+                    'subTotal'                              => $sub_total,
+                    'taxRate1_Total'                        => $totalTax,
+                    'subTotalDiscount'                      => $discount,
+                    'subNetTotal'                           => $sub_net_total,
+                    'subNetTotalPlusTax'                    => $payed,
+                    'previousDocumentNo'                    => $previuos_docNo,
+                    'previousInvoiceHash'                   => $previousInvoiceHash,
+                    'seller_secondBusinessIDType'           => $seller_second_bussiness_Id_Type,
+                    'seller_secondBusinessID'               => $seller_second_bussiness_Id,
+                    'buyer_secondBusinessIDType'            => $buyer_second_bussiness_Id_Type,
+                    'buyer_secondBusinessID'                => $buyer_second_bussiness_Id,
+                    'VATCategoryCodeNo'                     => $companyVatCatCode,
+                    'VATCategoryCodeSubTypeNo'              => $companyVatCatCodeType,
+                    'UUID'                                  => $uuid,
+                    'seller_VAT'                            => $seller_VAT_Company,
+                    'seller_apartmentNum'                   => $seller_apartmentNum_Company,
+                    'seller_street_Arb'                     => $seller_street_Arb_Company,
+                    'seller_street_Eng'                     => $seller_street_Eng_Company,
+                    'seller_district_Arb'                   => $seller_district_Arb_Company,
+                    'seller_district_Eng'                   => $seller_district_Eng_Company,
+                    'seller_city_Arb'                       => $seller_city_Arb_Company,
+                    'seller_city_Eng'                       => $seller_city_Eng_Company,
+                    'seller_country_Arb'                    => $seller_country_Arb_Company,
+                    'seller_country_Eng'                    => $seller_country_Eng_Company,
+                    'seller_country_No'                     => $seller_CountryNo_Company,
+                    'seller_POBox'                          => $seller_POBox_Company,
+                    'seller_PostalCode'                     => $seller_postalCode,
+                    'seller_POBoxAdditionalNum'             => $seller_POBoxAdditionalNum_Company,
+                    'buyer_VAT'                             => $buyer_VAT,
+                    'buyer_aName'                           => $buyer_aName_Customer,
+                    'buyer_eName'                           => $buyer_eName_Customer,
+                    'buyer_apartmentNum'                    => $buyer_apartmentNum_Customer,
+                    'buyer_street_Arb'                      => $buyer_street_Arb_Customer,
+                    'buyer_street_Eng'                      => $buyer_street_Eng_Customer,
+                    'buyer_district_Arb'                    => $buyer_district_Arb_Customer,
+                    'buyer_district_Eng'                    => $buyer_district_Eng_Customer,
+                    'buyer_city_Arb'                        => $buyer_city_Arb_Customer,
+                    'buyer_city_Eng'                        => $buyer_city_Eng_Customer,
+                    'buyer_country_No'                      => $buyer_CountryNo_Customer,
+                    'buyer_POBox'                           => $buyer_PoCode,
+                    'buyer_PostalCode'                      => $buyer_PostalCode,
+                    'buyer_POBoxAdditionalNum'              => $buyer_POBoxAdditionalNum_Customer,
+                    'zatcaSuccessResponse'                  => 0
+                ]
+            );
+    }
+
+   $array_of_test = [
+    'orderId'=> $orderId,
+    'item_id_line_item' => $item_id_line_item,
+    'previuos_docNo' => $previuos_docNo,
+    'seller_second_bussiness_Id_Type'=> $seller_second_bussiness_Id_Type,
+    'seller_second_bussiness_Id' => $seller_second_bussiness_Id,
+    'order_Customer_Id' => $order_Customer_Id,
+    'buyer_second_bussiness_Id_Type'=> $buyer_second_bussiness_Id_Type,
+    'buyer_second_bussiness_Id'=> $buyer_second_bussiness_Id,
+    'seller_VAT_Company'=> $seller_VAT_Company,
+    'seller_apartmentNum_Company' => $seller_apartmentNum_Company,
+    'seller_POBoxAdditionalNum_Company'=> $seller_POBoxAdditionalNum_Company,
+    'seller_POBox_Company'=> $seller_POBox_Company,
+    'seller_postalCode'=>$seller_postalCode,
+    'seller_street_Arb_Company'=>$seller_street_Arb_Company,
+    'seller_street_Eng_Company'=>$seller_street_Eng_Company,
+    'seller_district_Arb_Company'=>$seller_district_Arb_Company,
+    'seller_district_Eng_Company'=>$seller_district_Eng_Company,
+    'seller_city_Arb_Company'=>$seller_city_Arb_Company,
+    'seller_city_Eng_Company'=>$seller_city_Eng_Company,
+    'seller_country_Arb_Company'=>$seller_country_Arb_Company,
+    'seller_country_Eng_Company'=>$seller_country_Eng_Company,
+    'seller_CountryNo_Company'=>$seller_CountryNo_Company,
+    'buyer_aName_Customer'=>$buyer_aName_Customer,
+    'buyer_eName_Customer'=>$buyer_eName_Customer,
+    'buyer_apartmentNum_Customer'=>$buyer_apartmentNum_Customer,
+    'buyer_POBoxAdditionalNum_Customer'=>$buyer_POBoxAdditionalNum_Customer,
+    'buyer_PoCode'=>$buyer_PoCode,
+    'buyer_PostalCode'=>$buyer_PostalCode,
+    'buyer_street_Arb_Customer'=>$buyer_street_Arb_Customer,
+    'buyer_street_Eng_Customer'=>$buyer_street_Eng_Customer,
+    'buyer_district_Arb_Customer'=>$buyer_district_Arb_Customer,
+    'buyer_district_Eng_Customer'=>$buyer_district_Eng_Customer,
+    'buyer_city_Arb_Customer'=>$buyer_city_Arb_Customer,
+    'buyer_city_Eng_Customer'=>$buyer_city_Eng_Customer,
+    'buyer_CountryNo_Customer'=>$buyer_CountryNo_Customer,
+    'buyer_VAT'=>$buyer_VAT,
+    'item_id'=>$item_id,
+    'payed'=>$payed,
+    'totalTax'=>$totalTax,
+    'sub_net_total'=>$sub_net_total,
+    'discount'=>$discount,
+    'sub_total'=>$sub_total,
+    'invoiceType'=>$invoiceType,
+    'companyVatCatCode'=>$companyVatCatCode,
+    'companyVatCatCodeType'=>$companyVatCatCodeType,
+    'delivery_Date'=>$delivery_Date,
+    'latest_Delivery_Date'=>$latest_Delivery_Date,
+    'docNo'=>$docNo
+   ]
+   ?>
+
+    <script>
+        const arrayOfTest = <?php echo json_encode($array_of_test); ?>;
+        // alert('Order ID: <?php //echo $orderId; ?>');
+        console.table(arrayOfTest)
+
+
+    </script>
+
+        <?php
+    /*
+    if (isset($_SESSION['checkbox_status'])) {
+
+        ?>
 
         <script>
 
-            alert('Order ID: <?php echo $orderId; ?>');
+            alert('Session Is Set');
+        </script>
+        <?php
+        
+    }else{
+
+        ?>
+
+        <script>
+
+            alert('Session Not Set');
 
 
         </script>
 
-        <?php
-
+    <?php
+    }
+    */
+    unset_checkbox_status_session();
 
 }
 
