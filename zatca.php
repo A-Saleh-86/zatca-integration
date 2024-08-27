@@ -4868,7 +4868,6 @@ function insert_document_to_zatca_after_checkout_submit( $orderId ) {
     // Get totalTax from wc_orders :
     $totalTax = $wpdb->get_var($wpdb->prepare("select tax_amount from $table_orders WHERE id = $orderId "));
     
-
     // Get Discount from woo_order_itemmeta:
     $discount = wc_get_order_item_meta( $item_id, 'discount_amount', true );
     
@@ -4888,6 +4887,7 @@ function insert_document_to_zatca_after_checkout_submit( $orderId ) {
     }else{
         $invoiceType = 0;
     }
+    
     // zatcaCompany Vat Cat Code:
     $companyVatCatCode = $wpdb->get_var($wpdb->prepare("select VATCategoryCode from zatcaCompany"));
     
