@@ -599,9 +599,9 @@ function create_zatcaDocumentUnit_table() {
             `quantity` float DEFAULT NULL,
             `discount` float DEFAULT NULL,
             `vatRate` int(11) DEFAULT NULL,
-            `vatAmount` float DEFAULT NULL,
-            `netAmount` float DEFAULT NULL,
-            `amountWithVAT` float DEFAULT NULL,
+            `vatAmount` DECIMAL(10,2) DEFAULT NULL,
+            `netAmount` DECIMAL(10,2) DEFAULT NULL,
+            `amountWithVAT` DECIMAL(10,2) DEFAULT NULL,
             PRIMARY KEY (`id`),
             FOREIGN KEY (documentNo) REFERENCES zatcaDocument(documentNo) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB $charset_collate;

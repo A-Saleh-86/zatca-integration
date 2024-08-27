@@ -4166,9 +4166,6 @@ function send_request_to_zatca_clear(){
     die();
 }
 
-
-
-
 // function to get response and conver invoice to xml and create xml file: 
 function get_xml_from_response() {
 
