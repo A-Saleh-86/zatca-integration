@@ -358,6 +358,9 @@ function create_zatcaCompany_table() {
             `countryNo` varchar(50) DEFAULT NULL,
             `row_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
             `postalCode` int(11) DEFAULT NULL,
+            `IsNewSubscription` int(11) NOT NULL DEFAULT 0,
+            `subscription_id` varchar(255) DEFAULT NULL,
+            `subscribe_lastSyncDate` varchar(100) DEFAULT NULL,
             PRIMARY KEY (`VendorId`,`companyNo`)
         ) ENGINE=InnoDB $charset_collate;
     ";
