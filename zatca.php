@@ -568,122 +568,125 @@ function updateUsage($apiUrl, $apiKey, $apiSecret, $subscriptionId, $usageDetail
     return $data;
 }  
 
-// function handle_form_subscription() 
-// {
-//     global $wpdb;
+function handle_form_subscription() 
+{
+    global $wpdb;
 
-//     // get subscriptionId from form
-//     $subscriptionId = $_POST['subscriptionId'];
+    // get subscriptionId from form
+    $subscriptionId = $_POST['subscriptionId'];
 
-//     // killbill portal auth info
-//     $apiUrl = 'http://62.112.11.84:8080/';
-//     $apiKey = 'e5b6729d-1226-4ec6-8c7d-f9d8e464c644';
-//     $apiSecret = 'e5b6729d-1226-4ec6-8c7d-f9d8e464c644';
-//     $username = 'admin';
-//     $password = 'password';
+    // killbill portal auth info
+    $apiUrl = 'http://62.112.11.84:8080/';
+    $apiKey = 'e5b6729d-1226-4ec6-8c7d-f9d8e464c644';
+    $apiSecret = 'e5b6729d-1226-4ec6-8c7d-f9d8e464c644';
+    $username = 'admin';
+    $password = 'password';
 
-//     // get IsNewSubscription from zatcaCompany table
-//     $isNewSubscription = $wpdb->get_var("SELECT IsNewSubscription FROM zatcaCompany");
+    // get IsNewSubscription from zatcaCompany table
+    $isNewSubscription = $wpdb->get_var("SELECT IsNewSubscription FROM zatcaCompany");
+    $subscribe_lastSyncDate = '';
+    $newSyncDate = '';
+    $totalInvoices = 0;
 
-//     // if 0 means is new subscription
-//     if ($isNewSubscription == 0) 
-//     {
-//         //$status = checkSubscriptionStatus($subscriptionId, $apiUrl, $apiKey, $apiSecret);
-//         $status = 'ACTIVE';
-//         if($status == "ACTIVE")
-//         {
-//             // set date like this DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
-//             $date = new DateTime();
-//             $date->setTimezone(new DateTimeZone('UTC'));
-//             $date = $date->format('Y-m-d\TH:i:s\Z');
+    // if 0 means is new subscription
+    if ($isNewSubscription == 0) 
+    {
+        //$status = checkSubscriptionStatus($subscriptionId, $apiUrl, $apiKey, $apiSecret);
+        $status = 'ACTIVE';
+        if($status == "ACTIVE")
+        {
+            // set date like this DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date = $date->format('Y-m-d\TH:i:s\Z');
 
-//             $subscribe_lastSyncDate = $date;
-//             //update zatcaCompany IsNewSubscription = 1 & subscription_id
-//             $wpdb->update("zatcaCompany", array(
-//                 "IsNewSubscription" => 1,
-//                 "subscription_id" => $subscriptionId,
-//                 "subscribe_lastSyncDate" => $subscribe_lastSyncDate
-//             ));
+            $subscribe_lastSyncDate = $date;
+            //update zatcaCompany IsNewSubscription = 1 & subscription_id
+            $wpdb->update("zatcaCompany", array(
+                "IsNewSubscription" => 1,
+                "subscription_id" => $subscriptionId,
+                "subscribe_lastSyncDate" => $subscribe_lastSyncDate
+            ));
 
-//             $response = [
-//                 'success' => true,
-//                 'status' => 'ACTIVE',
-//                 'message' => 'Subscription activated successfully',
-//             ];
+            $response = [
+                'success' => true,
+                'status' => 'ACTIVE',
+                'message' => 'Subscription activated successfully',
+            ];
             
-//         }
-//         else
-//         {
-//             $response = [
-//                 'success' => false,
-//                 'status' => 'NOT ACTIVE',
-//                 'message' => 'Subscription not found or an error occurred.',
-//             ];
-//         }
-//     }
-//     // if not new subscription
-//     else
-//     {
+        }
+        else
+        {
+            $response = [
+                'success' => false,
+                'status' => 'NOT ACTIVE',
+                'message' => 'Subscription not found or an error occurred.',
+            ];
+        }
+    }
+    // if not new subscription
+    else
+    {
         
-//         $oldSyncDate = $wpdb->get_var("SELECT subscribe_lastSyncDate FROM zatcaCompany");
-//         //get total of invoices from zatcaDocument
-//         $totalInvoices = $wpdb->get_var("SELECT COUNT(*) FROM zatcaDocument");
-//         if($totalInvoices > 0)
-//         {
-//             // set date like this DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
-//             $newdate = new DateTime();
-//             $newdate->setTimezone(new DateTimeZone('UTC'));
-//             $newdate = $newdate->format('Y-m-d\TH:i:s\Z');
-//             $newSyncDate = $newdate;
-//             // Define your usage details  
-//             $usageDetails = [  
-//                 [  
-//                     "SubscriptionId" => $subscriptionId,
-//                     "totalInvoices" => $totalInvoices,  
-//                     "timestamp" => $newSyncDate, 
-//                 ],  
-//                 // Add more usage records as needed  
-//             ]; 
-//             // Update usage  
-//             $response = updateUsage($apiUrl, $apiKey, $apiSecret, $subscriptionId, $usageDetails);
-//             switch ($response['status']) 
-//             {  
-//                 case 'SUCCESS':  
-//                     //update zatcaCompany IsNewSubscription = 1 & subscription_id
-//                     $wpdb->update("zatcaCompany", array(
-//                         "IsNewSubscription" => 1,
-//                         "subscription_id" => $subscriptionId,
-//                         "subscribe_lastSyncDate" => $subscribe_lastSyncDate
-//                     ));
-//                     //$state = checkSubscriptionStatus($subscriptionId, $apiUrl, $apiKey, $apiSecret);
-//                     $state = 'ACTIVE';
-//                     break;  
-//                 case 'InvalidSubscriptionKey':  
-//                     $state = "NOTACTIVE";  
-//                     break;  
-//                 case 'ServerIsDown':  
-//                     $state = "ACTIVE"; 
-//                     break;  
-//                 default:  
-//                     $state = "ACTIVE"; 
-//                     break;  
-//             }
+        $oldSyncDate = $wpdb->get_var("SELECT subscribe_lastSyncDate FROM zatcaCompany");
+        //get total of invoices from zatcaDocument
+        $totalInvoices = $wpdb->get_var("SELECT COUNT(*) FROM zatcaDocument");
+        if($totalInvoices > 0)
+        {
+            // set date like this DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+            $newdate = new DateTime();
+            $newdate->setTimezone(new DateTimeZone('UTC'));
+            $newdate = $newdate->format('Y-m-d\TH:i:s\Z');
+            $newSyncDate = $newdate;
+            // Define your usage details  
+            $usageDetails = [  
+                [  
+                    "SubscriptionId" => $subscriptionId,
+                    "totalInvoices" => $totalInvoices,  
+                    "timestamp" => $newSyncDate, 
+                ],  
+                // Add more usage records as needed  
+            ]; 
+            // Update usage  
+            $response = updateUsage($apiUrl, $apiKey, $apiSecret, $subscriptionId, $usageDetails);
+            switch ($response['status']) 
+            {  
+                case 'SUCCESS':  
+                    //update zatcaCompany IsNewSubscription = 1 & subscription_id
+                    $wpdb->update("zatcaCompany", array(
+                        "IsNewSubscription" => 1,
+                        "subscription_id" => $subscriptionId,
+                        "subscribe_lastSyncDate" => $subscribe_lastSyncDate
+                    ));
+                    //$state = checkSubscriptionStatus($subscriptionId, $apiUrl, $apiKey, $apiSecret);
+                    $state = 'ACTIVE';
+                    break;  
+                case 'InvalidSubscriptionKey':  
+                    $state = "NOTACTIVE";  
+                    break;  
+                case 'ServerIsDown':  
+                    $state = "ACTIVE"; 
+                    break;  
+                default:  
+                    $state = "ACTIVE"; 
+                    break;  
+            }
 
-//             if($state != "ACTIVE")
-//             {
-//                 //update company expiredSubscription =1 means the subscribe is expired
-//                 $wpdb->update("zatcaCompany", array(
-//                     "IsNewSubscription" => 0));
-//             }
-//         }
-//         else
-//         {}
-//     }
+            if($state != "ACTIVE")
+            {
+                //update company expiredSubscription =1 means the subscribe is expired
+                $wpdb->update("zatcaCompany", array(
+                    "IsNewSubscription" => 0));
+            }
+        }
+        else
+        {}
+    }
 
-//     echo $status;
+    echo $status;
 
-//     wp_die(); // terminate immediately and return a proper response  
-// }
+    wp_die(); // terminate immediately and return a proper response  
+}
 ////////////////////////// End Subscription Code ///////////////////////////////////////
 
 
@@ -2003,26 +2006,15 @@ function woo_document(){
             $item_price = wc_get_order_item_meta($itemId->order_item_id, '_line_subtotal', true);
             $totalPrice += $item_price;
 
-            // push $item_price to array_items with 'order_price' key
-            //array_push($array_items, ['order_price' => $item_price]);
-            //array_push($array_items, ['order_qty' => $item_qty]);
-
             // push itemId-> order_item_id to array_items with key 'item'
             array_push($array_items, ['item' => $itemId->order_item_id, 'order_price' => $item_price, 'order_qty' => $item_qty]);
-
             
-            //$array_items[$itemId->order_item_id] = $item_qty;
-    
-            //$total_order_qty +=  + $item_qty;
         }
     
-        //$array_items['order_discount'] = $order_discount;
-        //$array_items['total_order_qty'] = $total_order_qty;
 
         $discountPercentage = $order_discount / $totalPrice;
         // round to 2 decimal
         // $discountPercentage = round($discountPercentage, 6);
-        //$discountPercentage = 0.263;
         
         
         //define percentage of each item:
@@ -2034,14 +2026,7 @@ function woo_document(){
             $item_discount = $key["order_price"] * $discountPercentage;
             //push item and discount to updated_total_qty array
             array_push($updated_total_qty, ['item' => $key['item'], 'discount' => $item_discount]);
-            // push another key to array
-           // array_push($updated_total_qty, ["discount" => $item_discount]);
-
-            //if (is_numeric($key)) 
-            // {  // Check for integer keys
-            //     //$updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
-            //     $updated_total_qty[$key] = $array_items["order_qty"] * $array_items["order_price"] * $discountPercentage;
-            // }
+            
         }
     
         // Now $updated_total_qty will contain the updated quantities for items with numeric keys
@@ -2100,7 +2085,7 @@ function woo_document(){
                 // vatAmount [ netAmount*vatRate ]:
                 $doc_unit_vatAmount = $final_netAmount * ($doc_unit_vatRate / 100);
                 // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
-                $final_vatAmount = round($doc_unit_vatAmount, 1);
+                $final_vatAmount = round($doc_unit_vatAmount, 2);
                 
 
                 // amountWithVat [ netAmount+vatAmount ]:
@@ -2562,28 +2547,15 @@ function insert_form_documents(){
                             $item_price = wc_get_order_item_meta($itemId->order_item_id, '_line_subtotal', true);
                             $totalPrice += $item_price;
 
-                            // push $item_price to array_items with 'order_price' key
-                            //array_push($array_items, ['order_price' => $item_price]);
-                            //array_push($array_items, ['order_qty' => $item_qty]);
-
                             // push itemId-> order_item_id to array_items with key 'item'
                             array_push($array_items, ['item' => $itemId->order_item_id, 'order_price' => $item_price, 'order_qty' => $item_qty]);
-
                             
-                            //$array_items[$itemId->order_item_id] = $item_qty;
-                    
-                            //$total_order_qty +=  + $item_qty;
-                    
                         }
                     
-                        //$array_items['order_discount'] = $order_discount;
-                        //$array_items['total_order_qty'] = $total_order_qty;
 
                         $discountPercentage = $order_discount / $totalPrice;
                         // round to 2 decimal
-                        $discountPercentage = round($discountPercentage, 6);
-                        //$discountPercentage = 0.263;
-                    
+                        //$discountPercentage = round($discountPercentage, 6);
                     
                         //define percentage of each item:
                     
@@ -2594,14 +2566,6 @@ function insert_form_documents(){
                             $item_discount = $key["order_price"] * $discountPercentage;
                             //push item and discount to updated_total_qty array
                             array_push($updated_total_qty, ['item' => $key['item'], 'discount' => $item_discount]);
-                            // push another key to array
-                        // array_push($updated_total_qty, ["discount" => $item_discount]);
-
-                            //if (is_numeric($key)) 
-                            // {  // Check for integer keys
-                            //     //$updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
-                            //     $updated_total_qty[$key] = $array_items["order_qty"] * $array_items["order_price"] * $discountPercentage;
-                            // }
                         }
                     
                         // Now $updated_total_qty will contain the updated quantities for items with numeric keys
@@ -2643,20 +2607,16 @@ function insert_form_documents(){
     
                             if($key['item'] == $item->order_item_id){
     
-                                //$final_item_discount= number_format((float)$array_of_discounts[$key], 3, '.', '');
-                                $final_item_discount= round($key['discount'], 2);
-
+                                $final_item_discount= round($key['discount'], 6);
 
                                 // netAmount [ ((price * quantity)-discount) ]:
                                 $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
                                 $final_netAmount = round($doc_unit_netAmount, 2);
-                                //$final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
 
                                 // vatAmount [ netAmount*vatRate ]:
-                                // vatAmount [ netAmount*vatRate ]:
-                                $doc_unit_vatAmount = $final_netAmount * $doc_unit_vatRate / 100;
-                                // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+                                $doc_unit_vatAmount = $final_netAmount * ($doc_unit_vatRate / 100);
                                 $final_vatAmount = round($doc_unit_vatAmount, 2);
+                                
 
                                 // amountWithVat [ netAmount+vatAmount ]:
                                 $doc_unit_amountWithVat = $final_netAmount + $final_vatAmount;
