@@ -358,6 +358,9 @@ function create_zatcaCompany_table() {
             `countryNo` varchar(50) DEFAULT NULL,
             `row_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
             `postalCode` int(11) DEFAULT NULL,
+            `IsNewSubscription` int(11) NOT NULL DEFAULT 0,
+            `subscription_id` varchar(255) DEFAULT NULL,
+            `subscribe_lastSyncDate` varchar(100) DEFAULT NULL,
             PRIMARY KEY (`VendorId`,`companyNo`)
         ) ENGINE=InnoDB $charset_collate;
     ";
@@ -596,9 +599,9 @@ function create_zatcaDocumentUnit_table() {
             `quantity` float DEFAULT NULL,
             `discount` float DEFAULT NULL,
             `vatRate` int(11) DEFAULT NULL,
-            `vatAmount` float DEFAULT NULL,
-            `netAmount` float DEFAULT NULL,
-            `amountWithVAT` float DEFAULT NULL,
+            `vatAmount` DECIMAL(10,2) DEFAULT NULL,
+            `netAmount` DECIMAL(10,2) DEFAULT NULL,
+            `amountWithVAT` DECIMAL(10,2) DEFAULT NULL,
             PRIMARY KEY (`id`),
             FOREIGN KEY (documentNo) REFERENCES zatcaDocument(documentNo) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB $charset_collate;

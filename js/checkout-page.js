@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     moveCheckbox();
   }
 
-  const checkboxselected = document.querySelector('#my_checkbox_field');
+  let checkboxselected = document.querySelector('#my_checkbox_field');
   
   if (checkboxselected && formElement) {
 
@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
               targetElement.appendChild(formElement);
             }
             formElement.style.display = 'block'; // Show the form
+            
         } else {
             formElement.style.display = 'none'; // Hide the form
         }
@@ -69,20 +70,22 @@ jQuery(document).ready(function($) {
   
   // Get the checkbox element
   // let checkbox2 = document.getElementById('my_checkbox_field');
-  var checkboxStatus = false;
+  let checkboxStatus = false;
   
   // Unbind any previous click events to prevent duplication
   $('.wc-block-components-checkout-place-order-button').off('click');
 
-  $('#my_checkbox_field').on('click', function() {
+  $('#my_checkbox_field').on('change', function() {
 
     checkboxStatus = $(this).prop('checked');
-  
+
+    console.log('Checkbox status outside:', checkboxStatus);
+
   });
 
   
   // Listen for the click event on the Place Order button
-  $('.wc-block-components-checkout-place-order-button').on('click', function(event) {
+  placeOrderButton.on('click ', function(event) {
     
     event.preventDefault(); 
       // Get the checkbox status
@@ -92,7 +95,7 @@ jQuery(document).ready(function($) {
 
     // Get the checkbox element
     // let checkbox2 = document.getElementById('my_checkbox_field');
-
+    console.log('Checkbox status inside:', checkboxStatus);
     
       if (checkboxStatus) {
 
@@ -167,12 +170,17 @@ jQuery(document).ready(function($) {
       }else {
         // localStorage.setItem("taxInvoice","unchecked");
         // If the checkbox is not checked, proceed with the default place order action
-        $(this).off('click');  // Unbind the event handler
-        $(this).click();  // Trigger the default action
+        placeOrderButton.off('click');  // Unbind the event handler
+        placeOrderButton.click();  // Trigger the default action
       }
   });
 
 });
+
+jQuery(document).ready(function($){
+
+
+})
 
 
 jQuery(document).ready(function($) {
