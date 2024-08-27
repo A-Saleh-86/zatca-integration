@@ -2064,7 +2064,7 @@ function woo_document(){
         // Get the Function of define discount by line:
         $array_of_discounts = get_qty_percentage_for_item($orderId);
 
-        
+        //
 
         // Loop to get Each Item Discount:
         foreach($array_of_discounts as $key)
