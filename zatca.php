@@ -3705,7 +3705,16 @@ function send_request_to_zatca_clear(){
             ),
         ));
 
+        $start_time = microtime(true);
+
         $response = curl_exec($curl);
+
+        $end_time = microtime(true);
+
+
+        // Calculate the time difference
+
+        $response_time = $end_time - $start_time;
 
         if ($response === false) {
             $error = curl_error($curl);
@@ -4118,7 +4127,8 @@ function send_request_to_zatca_clear(){
         'validationResults' => $validationResults,
         'responseArray' => $responseArray,
         'requestArray' => $requestArray,
-        'data' => $data
+        'data' => $data,
+        'response_time' => $response_time
     ];
 
     wp_send_json($send_response1);
