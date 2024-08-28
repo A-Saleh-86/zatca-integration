@@ -4,7 +4,7 @@
 *description:Zatca Integration
 *author:Appy Innovate
 *Author url:
-*Version: Date - 17 Aug 2024
+*Version: Date - 28 Aug 2024
 *test domain:zatca
 *text domain:zatca
 *domain path:/languages
@@ -23,7 +23,7 @@ function my_custom_admin_bar_text() {
     
     $wp_admin_bar->add_menu( array(
         'id'    => 'my-custom-release-date',
-        'title' => __("Zatca Release Date: ", "zatca") . ': ' . wp_date( 'j F Y', strtotime( '17 Aug 2024' ) ),
+        'title' => __("Zatca Release Date: ", "zatca") . ': ' . wp_date( 'j F Y', strtotime( '28 Aug 2024' ) ),
         'href'  => false,
     ));
 }
