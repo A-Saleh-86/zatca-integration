@@ -4847,7 +4847,7 @@ function insert_document_to_zatca_after_checkout_submit( $orderId ) {
     }else{
         $invoiceType = 0;
     }
-    
+
     // zatcaCompany Vat Cat Code:
     $companyVatCatCode = $wpdb->get_var($wpdb->prepare("select VATCategoryCode from zatcaCompany"));
     
@@ -5250,7 +5250,7 @@ function insert_document_to_zatca_after_checkout_submit( $orderId ) {
     </script>
 
         <?php
-    /*
+    
     if (isset($_SESSION['checkbox_status'])) {
 
         ?>
@@ -5274,7 +5274,7 @@ function insert_document_to_zatca_after_checkout_submit( $orderId ) {
 
     <?php
     }
-    */
+    
     unset_checkbox_status_session();
 
 }

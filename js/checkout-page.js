@@ -87,6 +87,7 @@ jQuery(document).ready(function($) {
   // Listen for the click event on the Place Order button
   placeOrderButton.on('click ', function(event) {
     
+    
     event.preventDefault(); 
       // Get the checkbox status
 
@@ -177,10 +178,6 @@ jQuery(document).ready(function($) {
 
 });
 
-jQuery(document).ready(function($){
-
-
-})
 
 
 jQuery(document).ready(function($) {
