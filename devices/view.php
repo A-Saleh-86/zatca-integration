@@ -16,7 +16,6 @@
         </a>
     </div>
     <!-- / Add Btn -->
-<h1>Test Clone</h1>
 
     <table id="example" class="table table-striped" width="100%">
         <thead>
