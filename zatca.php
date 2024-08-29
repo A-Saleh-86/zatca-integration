@@ -4679,596 +4679,587 @@ add_action( 'woocommerce_thankyou', 'insert_document_to_zatca_after_checkout_sub
 
 function insert_document_to_zatca_after_checkout_submit( $orderId ) {
 
-    global $wpdb;
+    if (isset($_SESSION['checkbox_status'])) {
+        global $wpdb;
 
-    // Table Name:
-    $table_name_device = 'zatcaDevice';
+        // Table Name:
+        $table_name_device = 'zatcaDevice';
 
-    // Prepare the query with a condition on CsID_ExpiryDate not expire:
-    $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
-    foreach($results as $device){
+        // Prepare the query with a condition on CsID_ExpiryDate not expire:
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
+        foreach($results as $device){
 
-        if($wpdb->num_rows > 0){ // If Date Valid:
+            if($wpdb->num_rows > 0){ // If Date Valid:
 
-            $deviceNo = $device->deviceNo;
+                $deviceNo = $device->deviceNo;
 
-        }else{ // If No Date Valid
+            }else{ // If No Date Valid
 
-            return;
+                return;
 
+            }
         }
-    }
 
 
-    // Prefix Of woo-order-item
-    $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
-     
-    // Prifix of wp_wc_orders:
-    $table_orders = $wpdb->prefix . 'wc_orders';
+        // Prefix Of woo-order-item
+        $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
+        
+        // Prifix of wp_wc_orders:
+        $table_orders = $wpdb->prefix . 'wc_orders';
 
-    // Get Order Id for Specific Item_Id [ line_item ]:
-    $item_id_line_item = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
-   
-   
-    // Check For Document no in zatcaDocument [Previouse Doc No]:
-    $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocument") );
-
-    $previuos_docNo = 0;
-    $previousInvoiceHash = '';
+        // Get Order Id for Specific Item_Id [ line_item ]:
+        $item_id_line_item = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
     
-    // Ceheck for previous document No if have doc no will choose it - 1 & previousInvoiceHash will be the value in database:
-    if($wpdb->num_rows > 0){
-        foreach($documents as $document){
-        
-            $previuos_docNo = $document->documentNo;
-            $previousInvoiceHash = $document->previousInvoiceHash;
-
-        }
-    }else{ // if not previuous doc no will be 0 - and previousInvoiceHash will be default:
-        
-        $previuos_docNo=0;
-        $previousInvoiceHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
-    }
-
-    // Get seconde bussiness id type from zatcaCompany [ seller ]:
-    $seller_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCompany"));
-        
-    // Get seconde bussiness id from zatcaCompany [ seller ]:
-    $seller_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCompany"));
     
-    // get customer id from order table:
-    $order_Customer_Id = $wpdb->get_var($wpdb->prepare("select customer_id from $table_orders WHERE id = $orderId"));
-        
-    // get buyer_secondBusinessIDType from zatcaCustomers:
-    $buyer_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-    
-    // get buyer_secondBusinessID from zatcaCustomers:
-    $buyer_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-        
-    // Get Seller Vat from zatcaCompany [ seller ]:
-    $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCompany"));
-        
-    // Get Seller apartment from zatcaCompany [ seller ]:
-    $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCompany"));
-        
-    // Get Seller POBoxAdditionalNum from zatcaCompany [ seller ]:
-    $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCompany"));
-        
-    // Get Seller POBox from zatcaCompany [ seller ]:
-    $seller_POBox_Company = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCompany"));
-        
-    // Get Seller postal code from zatcaCompany:
-    $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCompany"));
-        
-    // Get Seller street_Arb from zatcaCompany [ seller ]:
-    $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCompany"));
-        
-    // Get Seller street_Eng from zatcaCompany [ seller ]:
-    $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCompany"));
-        
-    // Get Seller district_Arb from zatcaCompany [ seller ]:
-    $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCompany"));
-        
-    // Get Seller district_Eng from zatcaCompany [ seller ]:
-    $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCompany"));
-        
-    // Get Seller city_Arb from zatcaCompany [ seller ]:
-    $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCompany"));
-        
-    // Get Seller city_Eng from zatcaCompany [ seller ]:
-    $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCompany"));
-        
-    // Get Seller country_Arb from zatcaCompany [ seller ]:
-    $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCompany"));
-        
-    // Get Seller country_Eng from zatcaCompany [ seller ]:
-    $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCompany"));
-        
-    // Get Seller CountryNo from zatcaCompany [ seller ]:
-    $seller_CountryNo_Company = $wpdb->get_var($wpdb->prepare("select countryNo from zatcaCompany "));
+        // Check For Document no in zatcaDocument [Previouse Doc No]:
+        $documents = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaDocument") );
 
-    // get aName from zatcaCustomers:
-    $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        $previuos_docNo = 0;
+        $previousInvoiceHash = '';
+        
+        // Ceheck for previous document No if have doc no will choose it - 1 & previousInvoiceHash will be the value in database:
+        if($wpdb->num_rows > 0){
+            foreach($documents as $document){
             
-    // get eName from zatcaCustomers:
-    $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+                $previuos_docNo = $document->documentNo;
+                $previousInvoiceHash = $document->previousInvoiceHash;
 
-    // get apartmentNum from zatcaCustomers:
-    $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+            }
+        }else{ // if not previuous doc no will be 0 - and previousInvoiceHash will be default:
+            
+            $previuos_docNo=0;
+            $previousInvoiceHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
+        }
 
-    // get POBoxAdditionalNum from zatcaCustomers:
-    $buyer_POBoxAdditionalNum_Customer = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get PostalCode from zatcaCustomers:
-    $buyer_PoCode = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get PostalCode from zatcaCustomers:
-    $buyer_PostalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get street_Arb from zatcaCustomers:
-    $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get street_Eng from zatcaCustomers:
-    $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get district_Arb from zatcaCustomers:
-    $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get district_Eng from zatcaCustomers:
-    $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get city_Arb from zatcaCustomers:
-    $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get city_Arb from zatcaCustomers:
-    $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // get CountryNo from zatcaCustomers:
-    $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // Get Buyer Vat Id:
-    $buyer_VAT = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
-
-    // Get Order Id for Specific Item_Id [ coupon ]:
-    $item_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
-
-    // Get Payed from wc_orders For address:
-    $payed = $wpdb->get_var($wpdb->prepare("select total_amount from $table_orders WHERE id = $orderId "));
-    
-    // Get totalTax from wc_orders :
-    $totalTax = $wpdb->get_var($wpdb->prepare("select tax_amount from $table_orders WHERE id = $orderId "));
-    
-    // Get Discount from woo_order_itemmeta:
-    $discount = wc_get_order_item_meta( $item_id, 'discount_amount', true );
-    
-    // Get Sub Total from woo_order_itemmeta:
-    $sub_total = wc_get_order_item_meta( $item_id_line_item, '_line_subtotal', true );
-    
-    // Get Sub Net Total from woo_order_itemmeta:
-    $sub_net_total = $sub_total - $discount;
-   
-    $invoiceType = $wpdb->get_var($wpdb->prepare("select zatcaInvoiceType from zatcaCustomer where clientVendorNo = $order_Customer_Id"));
-
-    if($invoiceType == 'B2B'){
-
-        $invoiceType = 1;
-    }else if ($invoiceType == 'B2C'){
-        $invoiceType = 0;
-    }else{
-        $invoiceType = 0;
-    }
-
-    // zatcaCompany Vat Cat Code:
-    $companyVatCatCode = $wpdb->get_var($wpdb->prepare("select VATCategoryCode from zatcaCompany"));
-    
-    // zatcaCompany Vat Cat Code sub type:
-    $companyVatCatCodeType = $wpdb->get_var($wpdb->prepare("select VATCategoryCodeSubTypeNo from zatcaCompany"));
-
-    // Variables of data:
-    $device_No = $deviceNo;
-    $uuid = wp_generate_uuid4();
-    $delivery_Date = date('Y-m-d');
-    $latest_Delivery_Date = date('Y-m-d');
-
-    // Validation on CsID_ExpiryDate not expire:
-    $device_ExpiryDate = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
-    
-    // Validation on zatcaCompany if have data [ insert doc ] - if not [ stop ]:
-    $zatcaCompanyCheck =$wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaCompany") );
-
-
-    if(empty($device_ExpiryDate)){ // If No Date Valid:
-
-        return;
-
-    }else if(empty($zatcaCompanyCheck)){ // if zatcaCompany Empty:
-
-        return;
-
-    }else{ // if all data Valid:
-
-        $deviceNo = $wpdb->get_var($wpdb->prepare(
-            "SELECT deviceNo
-            FROM $table_name_device
-            WHERE deviceStatus = 0")
-            );
-        $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcaDocument WHERE deviceNo = $deviceNo");
-        $docNo = $wpdb->get_var($query);
-        $docNo = $docNo + 1;
-
-        $branchNo = $wpdb->get_var($wpdb->prepare("SELECT buildingNo FROM zatcaBranch"));
-
-        // #################################
-        // Insert Data into zatcaDocument:##
-        // #################################
+        // Get seconde bussiness id type from zatcaCompany [ seller ]:
+        $seller_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCompany"));
+            
+        // Get seconde bussiness id from zatcaCompany [ seller ]:
+        $seller_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCompany"));
         
-        $insert_doc = $wpdb->insert(
-            'zatcaDocument',
-            [
-                'documentNo'                            => $docNo,
-                'deviceNo'                              => $deviceNo,
-                'invoiceNo'                             => $orderId,
-                'buildingNo'                            => $branchNo,
-                'billTypeNo'                            => 33,
-                'deliveryDate'                          => $delivery_Date,
-                'gaztLatestDeliveryDate'                => $latest_Delivery_Date,
-                'zatcaInvoiceType'                      => $invoiceType,
-                'amountPayed01'                         => $payed,
-                'amountCalculatedPayed'                 => $payed,
-                'subTotal'                              => $sub_total,
-                'taxRate1_Total'                        => $totalTax,
-                'subTotalDiscount'                      => $discount,
-                'subNetTotal'                           => $sub_net_total,
-                'subNetTotalPlusTax'                    => $payed,
-                'previousDocumentNo'                    => $previuos_docNo,
-                'previousInvoiceHash'                   => $previousInvoiceHash,
-                'seller_secondBusinessIDType'           => $seller_second_bussiness_Id_Type,
-                'seller_secondBusinessID'               => $seller_second_bussiness_Id,
-                'buyer_secondBusinessIDType'            => $buyer_second_bussiness_Id_Type,
-                'buyer_secondBusinessID'                => $buyer_second_bussiness_Id,
-                'VATCategoryCodeNo'                     => $companyVatCatCode,
-                'VATCategoryCodeSubTypeNo'              => $companyVatCatCodeType,
-                'UUID'                                  => $uuid,
-                'seller_VAT'                            => $seller_VAT_Company,
-                'seller_apartmentNum'                   => $seller_apartmentNum_Company,
-                'seller_street_Arb'                     => $seller_street_Arb_Company,
-                'seller_street_Eng'                     => $seller_street_Eng_Company,
-                'seller_district_Arb'                   => $seller_district_Arb_Company,
-                'seller_district_Eng'                   => $seller_district_Eng_Company,
-                'seller_city_Arb'                       => $seller_city_Arb_Company,
-                'seller_city_Eng'                       => $seller_city_Eng_Company,
-                'seller_country_Arb'                    => $seller_country_Arb_Company,
-                'seller_country_Eng'                    => $seller_country_Eng_Company,
-                'seller_country_No'                     => $seller_CountryNo_Company,
-                'seller_POBox'                          => $seller_POBox_Company,
-                'seller_PostalCode'                     => $seller_postalCode,
-                'seller_POBoxAdditionalNum'             => $seller_POBoxAdditionalNum_Company,
-                'buyer_VAT'                             => $buyer_VAT,
-                'buyer_aName'                           => $buyer_aName_Customer,
-                'buyer_eName'                           => $buyer_eName_Customer,
-                'buyer_apartmentNum'                    => $buyer_apartmentNum_Customer,
-                'buyer_street_Arb'                      => $buyer_street_Arb_Customer,
-                'buyer_street_Eng'                      => $buyer_street_Eng_Customer,
-                'buyer_district_Arb'                    => $buyer_district_Arb_Customer,
-                'buyer_district_Eng'                    => $buyer_district_Eng_Customer,
-                'buyer_city_Arb'                        => $buyer_city_Arb_Customer,
-                'buyer_city_Eng'                        => $buyer_city_Eng_Customer,
-                'buyer_country_No'                      => $buyer_CountryNo_Customer,
-                'buyer_POBox'                           => $buyer_PoCode,
-                'buyer_PostalCode'                      => $buyer_PostalCode,
-                'buyer_POBoxAdditionalNum'              => $buyer_POBoxAdditionalNum_Customer,
-                'zatcaSuccessResponse'                  => 0
-            ]
-        );
+        // get customer id from order table:
+        $order_Customer_Id = $wpdb->get_var($wpdb->prepare("select customer_id from $table_orders WHERE id = $orderId"));
+            
+        // get buyer_secondBusinessIDType from zatcaCustomers:
+        $buyer_second_bussiness_Id_Type = $wpdb->get_var($wpdb->prepare("select secondBusinessIDType from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+        
+        // get buyer_secondBusinessID from zatcaCustomers:
+        $buyer_second_bussiness_Id = $wpdb->get_var($wpdb->prepare("select secondBusinessID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+            
+        // Get Seller Vat from zatcaCompany [ seller ]:
+        $seller_VAT_Company = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCompany"));
+            
+        // Get Seller apartment from zatcaCompany [ seller ]:
+        $seller_apartmentNum_Company = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCompany"));
+            
+        // Get Seller POBoxAdditionalNum from zatcaCompany [ seller ]:
+        $seller_POBoxAdditionalNum_Company = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCompany"));
+            
+        // Get Seller POBox from zatcaCompany [ seller ]:
+        $seller_POBox_Company = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCompany"));
+            
+        // Get Seller postal code from zatcaCompany:
+        $seller_postalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCompany"));
+            
+        // Get Seller street_Arb from zatcaCompany [ seller ]:
+        $seller_street_Arb_Company = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCompany"));
+            
+        // Get Seller street_Eng from zatcaCompany [ seller ]:
+        $seller_street_Eng_Company = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCompany"));
+            
+        // Get Seller district_Arb from zatcaCompany [ seller ]:
+        $seller_district_Arb_Company = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCompany"));
+            
+        // Get Seller district_Eng from zatcaCompany [ seller ]:
+        $seller_district_Eng_Company = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCompany"));
+            
+        // Get Seller city_Arb from zatcaCompany [ seller ]:
+        $seller_city_Arb_Company = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCompany"));
+            
+        // Get Seller city_Eng from zatcaCompany [ seller ]:
+        $seller_city_Eng_Company = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCompany"));
+            
+        // Get Seller country_Arb from zatcaCompany [ seller ]:
+        $seller_country_Arb_Company = $wpdb->get_var($wpdb->prepare("select country_Arb from zatcaCompany"));
+            
+        // Get Seller country_Eng from zatcaCompany [ seller ]:
+        $seller_country_Eng_Company = $wpdb->get_var($wpdb->prepare("select country_Eng from zatcaCompany"));
+            
+        // Get Seller CountryNo from zatcaCompany [ seller ]:
+        $seller_CountryNo_Company = $wpdb->get_var($wpdb->prepare("select countryNo from zatcaCompany "));
 
-        if ($insert_doc === false) {
+        // get aName from zatcaCustomers:
+        $buyer_aName_Customer = $wpdb->get_var($wpdb->prepare("select aName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+                
+        // get eName from zatcaCustomers:
+        $buyer_eName_Customer = $wpdb->get_var($wpdb->prepare("select eName from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get apartmentNum from zatcaCustomers:
+        $buyer_apartmentNum_Customer = $wpdb->get_var($wpdb->prepare("select apartmentNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get POBoxAdditionalNum from zatcaCustomers:
+        $buyer_POBoxAdditionalNum_Customer = $wpdb->get_var($wpdb->prepare("select POBoxAdditionalNum from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get PostalCode from zatcaCustomers:
+        $buyer_PoCode = $wpdb->get_var($wpdb->prepare("select POBox from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get PostalCode from zatcaCustomers:
+        $buyer_PostalCode = $wpdb->get_var($wpdb->prepare("select postalCode from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get street_Arb from zatcaCustomers:
+        $buyer_street_Arb_Customer = $wpdb->get_var($wpdb->prepare("select street_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get street_Eng from zatcaCustomers:
+        $buyer_street_Eng_Customer = $wpdb->get_var($wpdb->prepare("select street_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get district_Arb from zatcaCustomers:
+        $buyer_district_Arb_Customer = $wpdb->get_var($wpdb->prepare("select district_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get district_Eng from zatcaCustomers:
+        $buyer_district_Eng_Customer = $wpdb->get_var($wpdb->prepare("select district_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Arb_Customer = $wpdb->get_var($wpdb->prepare("select city_Arb from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get city_Arb from zatcaCustomers:
+        $buyer_city_Eng_Customer = $wpdb->get_var($wpdb->prepare("select city_Eng from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // get CountryNo from zatcaCustomers:
+        $buyer_CountryNo_Customer = $wpdb->get_var($wpdb->prepare("select country_No from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // Get Buyer Vat Id:
+        $buyer_VAT = $wpdb->get_var($wpdb->prepare("select VATID from zatcaCustomer WHERE clientVendorNo = $order_Customer_Id"));
+
+        // Get Order Id for Specific Item_Id [ coupon ]:
+        $item_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+
+        // Get Payed from wc_orders For address:
+        $payed = $wpdb->get_var($wpdb->prepare("select total_amount from $table_orders WHERE id = $orderId "));
+        
+        // Get totalTax from wc_orders :
+        $totalTax = $wpdb->get_var($wpdb->prepare("select tax_amount from $table_orders WHERE id = $orderId "));
+        
+        // Get Discount from woo_order_itemmeta:
+        $discount = wc_get_order_item_meta( $item_id, 'discount_amount', true );
+        
+        // Get Sub Total from woo_order_itemmeta:
+        $sub_total = wc_get_order_item_meta( $item_id_line_item, '_line_subtotal', true );
+        
+        // Get Sub Net Total from woo_order_itemmeta:
+        $sub_net_total = $sub_total - $discount;
+    
+        $invoiceType = $wpdb->get_var($wpdb->prepare("select zatcaInvoiceType from zatcaCustomer where clientVendorNo = $order_Customer_Id"));
+
+        if($invoiceType == 'B2B'){
+
+            $invoiceType = 1;
+        }else if ($invoiceType == 'B2C'){
+            $invoiceType = 0;
+        }else{
+            $invoiceType = 0;
+        }
+
+        // zatcaCompany Vat Cat Code:
+        $companyVatCatCode = $wpdb->get_var($wpdb->prepare("select VATCategoryCode from zatcaCompany"));
+        
+        // zatcaCompany Vat Cat Code sub type:
+        $companyVatCatCodeType = $wpdb->get_var($wpdb->prepare("select VATCategoryCodeSubTypeNo from zatcaCompany"));
+
+        // Variables of data:
+        $device_No = $deviceNo;
+        $uuid = wp_generate_uuid4();
+        $delivery_Date = date('Y-m-d');
+        $latest_Delivery_Date = date('Y-m-d');
+
+        // Validation on CsID_ExpiryDate not expire:
+        $device_ExpiryDate = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name_device WHERE CsID_ExpiryDate > NOW() AND deviceStatus=0") );
+        
+        // Validation on zatcaCompany if have data [ insert doc ] - if not [ stop ]:
+        $zatcaCompanyCheck =$wpdb->get_results( $wpdb->prepare( "SELECT * FROM zatcaCompany") );
+
+
+        if(empty($device_ExpiryDate)){ // If No Date Valid:
 
             return;
 
-        }else{
-    
-                // Get Last DocNo Inserted:
-                $last_doc_no = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaDocument"));
+        }else if(empty($zatcaCompanyCheck)){ // if zatcaCompany Empty:
+
+            return;
+
+        }else{ // if all data Valid:
+
+            $deviceNo = $wpdb->get_var($wpdb->prepare(
+                "SELECT deviceNo
+                FROM $table_name_device
+                WHERE deviceStatus = 0")
+                );
+            $query = $wpdb->prepare("SELECT IFNULL(MAX(documentNo), 0) FROM zatcaDocument WHERE deviceNo = $deviceNo");
+            $docNo = $wpdb->get_var($query);
+            $docNo = $docNo + 1;
+
+            $branchNo = $wpdb->get_var($wpdb->prepare("SELECT buildingNo FROM zatcaBranch"));
+
+            // #################################
+            // Insert Data into zatcaDocument:##
+            // #################################
+            
+            $insert_doc = $wpdb->insert(
+                'zatcaDocument',
+                [
+                    'documentNo'                            => $docNo,
+                    'deviceNo'                              => $deviceNo,
+                    'invoiceNo'                             => $orderId,
+                    'buildingNo'                            => $branchNo,
+                    'billTypeNo'                            => 33,
+                    'deliveryDate'                          => $delivery_Date,
+                    'gaztLatestDeliveryDate'                => $latest_Delivery_Date,
+                    'zatcaInvoiceType'                      => $invoiceType,
+                    'amountPayed01'                         => $payed,
+                    'amountCalculatedPayed'                 => $payed,
+                    'subTotal'                              => $sub_total,
+                    'taxRate1_Total'                        => $totalTax,
+                    'subTotalDiscount'                      => $discount,
+                    'subNetTotal'                           => $sub_net_total,
+                    'subNetTotalPlusTax'                    => $payed,
+                    'previousDocumentNo'                    => $previuos_docNo,
+                    'previousInvoiceHash'                   => $previousInvoiceHash,
+                    'seller_secondBusinessIDType'           => $seller_second_bussiness_Id_Type,
+                    'seller_secondBusinessID'               => $seller_second_bussiness_Id,
+                    'buyer_secondBusinessIDType'            => $buyer_second_bussiness_Id_Type,
+                    'buyer_secondBusinessID'                => $buyer_second_bussiness_Id,
+                    'VATCategoryCodeNo'                     => $companyVatCatCode,
+                    'VATCategoryCodeSubTypeNo'              => $companyVatCatCodeType,
+                    'UUID'                                  => $uuid,
+                    'seller_VAT'                            => $seller_VAT_Company,
+                    'seller_apartmentNum'                   => $seller_apartmentNum_Company,
+                    'seller_street_Arb'                     => $seller_street_Arb_Company,
+                    'seller_street_Eng'                     => $seller_street_Eng_Company,
+                    'seller_district_Arb'                   => $seller_district_Arb_Company,
+                    'seller_district_Eng'                   => $seller_district_Eng_Company,
+                    'seller_city_Arb'                       => $seller_city_Arb_Company,
+                    'seller_city_Eng'                       => $seller_city_Eng_Company,
+                    'seller_country_Arb'                    => $seller_country_Arb_Company,
+                    'seller_country_Eng'                    => $seller_country_Eng_Company,
+                    'seller_country_No'                     => $seller_CountryNo_Company,
+                    'seller_POBox'                          => $seller_POBox_Company,
+                    'seller_PostalCode'                     => $seller_postalCode,
+                    'seller_POBoxAdditionalNum'             => $seller_POBoxAdditionalNum_Company,
+                    'buyer_VAT'                             => $buyer_VAT,
+                    'buyer_aName'                           => $buyer_aName_Customer,
+                    'buyer_eName'                           => $buyer_eName_Customer,
+                    'buyer_apartmentNum'                    => $buyer_apartmentNum_Customer,
+                    'buyer_street_Arb'                      => $buyer_street_Arb_Customer,
+                    'buyer_street_Eng'                      => $buyer_street_Eng_Customer,
+                    'buyer_district_Arb'                    => $buyer_district_Arb_Customer,
+                    'buyer_district_Eng'                    => $buyer_district_Eng_Customer,
+                    'buyer_city_Arb'                        => $buyer_city_Arb_Customer,
+                    'buyer_city_Eng'                        => $buyer_city_Eng_Customer,
+                    'buyer_country_No'                      => $buyer_CountryNo_Customer,
+                    'buyer_POBox'                           => $buyer_PoCode,
+                    'buyer_PostalCode'                      => $buyer_PostalCode,
+                    'buyer_POBoxAdditionalNum'              => $buyer_POBoxAdditionalNum_Customer,
+                    'zatcaSuccessResponse'                  => 0
+                ]
+            );
+
+            if ($insert_doc === false) {
+
+                return;
+
+            }else{
         
-                if($last_doc_no === false) {
-    
-                    return;
+                    // Get Last DocNo Inserted:
+                    $last_doc_no = $wpdb->get_results($wpdb->prepare("SELECT * FROM zatcaDocument"));
+            
+                    if($last_doc_no === false) {
+        
+                        return;
 
-                }else {
-    
-                    // Get last DocNo in zatcaDocumentno:
-                    $last_doc=0;
-    
-                    foreach($last_doc_no as $doc){
-    
-                        $last_doc = $doc->documentNo;
-                        
-                    }
-                    
-                    
-                    /* ####################################
-                    ## Insert Data into zatcaDocumentxml:##
-                    */ ####################################
-    
-                        $data_doc_xml = $wpdb->insert(
-                            'zatcaDocumentxml',
-                            [
-                                'documentNo'  => $docNo,
-                                'deviceNo'    => $device_No
-                            ]
-                        );
-    
-                        // Validation of inserting zatcaDocumentxml:
-                        if ($data_doc_xml === false) {
-    
-                            // Check For Error:
-                            error_log('documentxml Error: ' . $wpdb->last_error);
-                            $send_response = [
-                                'status' => 'error',
-                                'msg' => 'Error Inserting DocNo: ' . $wpdb->last_error,
-                            ];
-                            //echo "Error Inserting DocNo: " . $wpdb->last_error;
-                        }
-    
-    
-                    // ################################
-                    // Add Data to zatcaDocumentUnit:##
-                    // ################################
-    
-                    // get item id for item [ line_item ]:
-                    $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
-                    
-                    // get item id for tax [ tax ]:
-                    $doc_unit_item_id_rate_percentage = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'tax'"));
-                
-                    // get item id for discount [ tax ]:
-                    $doc_unit_item_id_coupon = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
-                    
-    
-                    // Funtion to handle order discount:
-                    function get_qty_percentage_for_item($orderId){
-    
-                        global $wpdb;
-                        // Prefix Of woo-order-item
-                        $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
-                    
-                        
-                        // define items number & Number of Items & Item Qty & Total Qty Of Order:
-                        
-                        $total_order_qty = 0;
-                        $totalPrice = 0;
-                    
-                        $array_items = [];
-                        
-                        $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
-                        
-                        foreach($doc_unit_item_id as $itemId){
-                    
-                            $item_qty = wc_get_order_item_meta( $itemId->order_item_id , '_qty', true );
-                    
-                            $order_discount_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
-                    
-                            $order_discount = wc_get_order_item_meta($order_discount_id, 'discount_amount', true);
+                    }else {
+        
+                        // Get last DocNo in zatcaDocumentno:
+                        $last_doc=0;
+        
+                        foreach($last_doc_no as $doc){
+        
+                            $last_doc = $doc->documentNo;
                             
-                            //get item price
-                            $item_price = wc_get_order_item_meta($itemId->order_item_id, '_line_subtotal', true);
-                            $totalPrice += $item_price;
-
-                            // push $item_price to array_items with 'order_price' key
-                            //array_push($array_items, ['order_price' => $item_price]);
-                            //array_push($array_items, ['order_qty' => $item_qty]);
-
-                            // push itemId-> order_item_id to array_items with key 'item'
-                            array_push($array_items, ['item' => $itemId->order_item_id, 'order_price' => $item_price, 'order_qty' => $item_qty]);
-
-                            
-                            //$array_items[$itemId->order_item_id] = $item_qty;
-                    
-                            //$total_order_qty +=  + $item_qty;
-                    
                         }
-                    
-                        //$array_items['order_discount'] = $order_discount;
-                        //$array_items['total_order_qty'] = $total_order_qty;
-
-                        $discountPercentage = $order_discount / $totalPrice;
-                        // round to 2 decimal
-                        $discountPercentage = round($discountPercentage, 6);
-                        //$discountPercentage = 0.263;
-                    
-                    
-                        //define percentage of each item:
-                    
-                        $updated_total_qty = [];
-                    
-                        foreach ($array_items as $key) 
-                        {
-                            $item_discount = $key["order_price"] * $discountPercentage;
-                            //push item and discount to updated_total_qty array
-                            array_push($updated_total_qty, ['item' => $key['item'], 'discount' => $item_discount]);
-                            // push another key to array
-                        // array_push($updated_total_qty, ["discount" => $item_discount]);
-
-                            //if (is_numeric($key)) 
-                            // {  // Check for integer keys
-                            //     //$updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
-                            //     $updated_total_qty[$key] = $array_items["order_qty"] * $array_items["order_price"] * $discountPercentage;
-                            // }
-                        }
-                    
-                        // Now $updated_total_qty will contain the updated quantities for items with numeric keys
-                        return $updated_total_qty;
                         
-                    }
-    
-                    foreach($doc_unit_item_id as $item){
-    
                         
-                        // Item Qty:
-                        $doc_unit_item_qty = wc_get_order_item_meta( $item->order_item_id , '_qty', true );
-                        
-                        // Product_id:
-                        $doc_unit_product_id =wc_get_order_item_meta($item->order_item_id, '_product_id', true);
-                        
-                        // Tax Percentage:
-                        $doc_unit_vatRate =wc_get_order_item_meta($doc_unit_item_id_rate_percentage, 'rate_percent', true);
-    
-                        // Item name:
-                        $doc_unit_sku = get_post_meta($doc_unit_product_id, '_sku', true);
-                        
-                        // Item Price:
-                        $doc_unit_price = get_post_meta($doc_unit_product_id, '_price', true);
-                        $final_price = number_format((float)$doc_unit_price, 6, '.', '');
-    
-                        // Discount:
-                        $doc_unit_discount = wc_get_order_item_meta($doc_unit_item_id_coupon, 'discount_amount', true);
-    
-                        // Subttotal [ price * quantity ]:
-                        $doc_unit_subtotal = $doc_unit_price * $doc_unit_item_qty;
-    
-
-                        // Get the Function of define discount by line:
-                        $array_of_discounts = get_qty_percentage_for_item($orderId);
-    
-                        // Loop to get Each Item Discount:
-                        foreach($array_of_discounts as $key){
-    
-                            if($key['item'] == $item->order_item_id){
-    
-                                //$final_item_discount= number_format((float)$array_of_discounts[$key], 3, '.', '');
-                                $final_item_discount= round($key['discount'], 2);
-
-
-                                // netAmount [ ((price * quantity)-discount) ]:
-                                $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
-                                $final_netAmount = round($doc_unit_netAmount, 2);
-                                //$final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
-
-                                // vatAmount [ netAmount*vatRate ]:
-                                // vatAmount [ netAmount*vatRate ]:
-                                $doc_unit_vatAmount = $final_netAmount * $doc_unit_vatRate / 100;
-                                // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
-                                $final_vatAmount = round($doc_unit_vatAmount, 2);
-
-                                // amountWithVat [ netAmount+vatAmount ]:
-                                $doc_unit_amountWithVat = $final_netAmount + $final_vatAmount;
-                                $final_amountWithVat = round($doc_unit_amountWithVat, 2);
-                            
-    
-                            // Insert Data To zatcaDocumentUnit:
-                            $insert_doc_unit = $wpdb->insert(
-                                'zatcaDocumentUnit',
+                        /* ####################################
+                        ## Insert Data into zatcaDocumentxml:##
+                        */ ####################################
+        
+                            $data_doc_xml = $wpdb->insert(
+                                'zatcaDocumentxml',
                                 [
-                                    'deviceNo'      => $device_No,
-                                    'documentNo'    => $docNo,
-                                    'itemNo'        => $item->order_item_id,
-                                    'eName'         => $doc_unit_sku,
-                                    'price'         => $final_price,
-                                    'quantity'      => $doc_unit_item_qty,
-                                    'discount'      => $final_item_discount,
-                                    'vatRate'       => $doc_unit_vatRate,
-                                    'vatAmount'     => $final_vatAmount,
-                                    'netAmount'     => $final_netAmount,
-                                    'amountWithVAT' => $final_amountWithVat
+                                    'documentNo'  => $docNo,
+                                    'deviceNo'    => $device_No
                                 ]
                             );
-                        }
-                        }
+        
+                            // Validation of inserting zatcaDocumentxml:
+                            if ($data_doc_xml === false) {
+        
+                                // Check For Error:
+                                error_log('documentxml Error: ' . $wpdb->last_error);
+                                $send_response = [
+                                    'status' => 'error',
+                                    'msg' => 'Error Inserting DocNo: ' . $wpdb->last_error,
+                                ];
+                                //echo "Error Inserting DocNo: " . $wpdb->last_error;
+                            }
+        
+        
+                        // ################################
+                        // Add Data to zatcaDocumentUnit:##
+                        // ################################
+        
+                        // get item id for item [ line_item ]:
+                        $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
                         
-                        // Validation of zatcaDocumentUnit:
-                        if ($insert_doc_unit === false) {
-    
-                            // Check For Error:
-                            error_log('documentunit Error: ' . $wpdb->last_error);
-                            $send_response = [
-                                'status' => 'error',
-                                'msg' => 'Error Inserting doc unit: ' . $wpdb->last_error,
-                            ];
-                            //echo "Error Inserting docunit: " . $wpdb->last_error;
+                        // get item id for tax [ tax ]:
+                        $doc_unit_item_id_rate_percentage = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'tax'"));
+                    
+                        // get item id for discount [ tax ]:
+                        $doc_unit_item_id_coupon = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+                        
+        
+                        // Funtion to handle order discount:
+                        function get_qty_percentage_for_item($orderId){
+        
+                            global $wpdb;
+                            // Prefix Of woo-order-item
+                            $table_orders_items = $wpdb->prefix . 'woocommerce_order_items';
+                        
+                            
+                            // define items number & Number of Items & Item Qty & Total Qty Of Order:
+                            
+                            $total_order_qty = 0;
+                            $totalPrice = 0;
+                        
+                            $array_items = [];
+                            
+                            $doc_unit_item_id = $wpdb->get_results($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'line_item'"));
+                            
+                            foreach($doc_unit_item_id as $itemId){
+                        
+                                $item_qty = wc_get_order_item_meta( $itemId->order_item_id , '_qty', true );
+                        
+                                $order_discount_id = $wpdb->get_var($wpdb->prepare("select order_item_id from $table_orders_items WHERE order_id = $orderId AND order_item_type = 'coupon'"));
+                        
+                                $order_discount = wc_get_order_item_meta($order_discount_id, 'discount_amount', true);
+                                
+                                //get item price
+                                $item_price = wc_get_order_item_meta($itemId->order_item_id, '_line_subtotal', true);
+                                $totalPrice += $item_price;
+
+                                // push $item_price to array_items with 'order_price' key
+                                //array_push($array_items, ['order_price' => $item_price]);
+                                //array_push($array_items, ['order_qty' => $item_qty]);
+
+                                // push itemId-> order_item_id to array_items with key 'item'
+                                array_push($array_items, ['item' => $itemId->order_item_id, 'order_price' => $item_price, 'order_qty' => $item_qty]);
+
+                                
+                                //$array_items[$itemId->order_item_id] = $item_qty;
+                        
+                                //$total_order_qty +=  + $item_qty;
+                        
+                            }
+                        
+                            //$array_items['order_discount'] = $order_discount;
+                            //$array_items['total_order_qty'] = $total_order_qty;
+
+                            $discountPercentage = $order_discount / $totalPrice;
+                            // round to 2 decimal
+                            $discountPercentage = round($discountPercentage, 6);
+                            //$discountPercentage = 0.263;
+                        
+                        
+                            //define percentage of each item:
+                        
+                            $updated_total_qty = [];
+                        
+                            foreach ($array_items as $key) 
+                            {
+                                $item_discount = $key["order_price"] * $discountPercentage;
+                                //push item and discount to updated_total_qty array
+                                array_push($updated_total_qty, ['item' => $key['item'], 'discount' => $item_discount]);
+                                // push another key to array
+                            // array_push($updated_total_qty, ["discount" => $item_discount]);
+
+                                //if (is_numeric($key)) 
+                                // {  // Check for integer keys
+                                //     //$updated_total_qty[$key] = $value / $array_items["total_order_qty"] * $array_items["order_discount"];
+                                //     $updated_total_qty[$key] = $array_items["order_qty"] * $array_items["order_price"] * $discountPercentage;
+                                // }
+                            }
+                        
+                            // Now $updated_total_qty will contain the updated quantities for items with numeric keys
+                            return $updated_total_qty;
+                            
                         }
-    
+        
+                        foreach($doc_unit_item_id as $item){
+        
+                            
+                            // Item Qty:
+                            $doc_unit_item_qty = wc_get_order_item_meta( $item->order_item_id , '_qty', true );
+                            
+                            // Product_id:
+                            $doc_unit_product_id =wc_get_order_item_meta($item->order_item_id, '_product_id', true);
+                            
+                            // Tax Percentage:
+                            $doc_unit_vatRate =wc_get_order_item_meta($doc_unit_item_id_rate_percentage, 'rate_percent', true);
+        
+                            // Item name:
+                            $doc_unit_sku = get_post_meta($doc_unit_product_id, '_sku', true);
+                            
+                            // Item Price:
+                            $doc_unit_price = get_post_meta($doc_unit_product_id, '_price', true);
+                            $final_price = number_format((float)$doc_unit_price, 6, '.', '');
+        
+                            // Discount:
+                            $doc_unit_discount = wc_get_order_item_meta($doc_unit_item_id_coupon, 'discount_amount', true);
+        
+                            // Subttotal [ price * quantity ]:
+                            $doc_unit_subtotal = $doc_unit_price * $doc_unit_item_qty;
+        
+
+                            // Get the Function of define discount by line:
+                            $array_of_discounts = get_qty_percentage_for_item($orderId);
+        
+                            // Loop to get Each Item Discount:
+                            foreach($array_of_discounts as $key){
+        
+                                if($key['item'] == $item->order_item_id){
+        
+                                    //$final_item_discount= number_format((float)$array_of_discounts[$key], 3, '.', '');
+                                    $final_item_discount= round($key['discount'], 2);
+
+
+                                    // netAmount [ ((price * quantity)-discount) ]:
+                                    $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
+                                    $final_netAmount = round($doc_unit_netAmount, 2);
+                                    //$final_netAmount = number_format((float)$doc_unit_netAmount, 2, '.', '');
+
+                                    // vatAmount [ netAmount*vatRate ]:
+                                    // vatAmount [ netAmount*vatRate ]:
+                                    $doc_unit_vatAmount = $final_netAmount * $doc_unit_vatRate / 100;
+                                    // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
+                                    $final_vatAmount = round($doc_unit_vatAmount, 2);
+
+                                    // amountWithVat [ netAmount+vatAmount ]:
+                                    $doc_unit_amountWithVat = $final_netAmount + $final_vatAmount;
+                                    $final_amountWithVat = round($doc_unit_amountWithVat, 2);
+                                
+        
+                                // Insert Data To zatcaDocumentUnit:
+                                $insert_doc_unit = $wpdb->insert(
+                                    'zatcaDocumentUnit',
+                                    [
+                                        'deviceNo'      => $device_No,
+                                        'documentNo'    => $docNo,
+                                        'itemNo'        => $item->order_item_id,
+                                        'eName'         => $doc_unit_sku,
+                                        'price'         => $final_price,
+                                        'quantity'      => $doc_unit_item_qty,
+                                        'discount'      => $final_item_discount,
+                                        'vatRate'       => $doc_unit_vatRate,
+                                        'vatAmount'     => $final_vatAmount,
+                                        'netAmount'     => $final_netAmount,
+                                        'amountWithVAT' => $final_amountWithVat
+                                    ]
+                                );
+                            }
+                            }
+                            
+                            // Validation of zatcaDocumentUnit:
+                            if ($insert_doc_unit === false) {
+        
+                                // Check For Error:
+                                error_log('documentunit Error: ' . $wpdb->last_error);
+                                $send_response = [
+                                    'status' => 'error',
+                                    'msg' => 'Error Inserting doc unit: ' . $wpdb->last_error,
+                                ];
+                                //echo "Error Inserting docunit: " . $wpdb->last_error;
+                            }
+        
+                        }
+
+                        // Log the invoice insertion
+                        $user_login = wp_get_current_user()->user_login;
+                        $user_id = wp_get_current_user()->ID;
+                        log_invoice_insertion($user_login, $user_id);
+        
                     }
-
-                    // Log the invoice insertion
-                    $user_login = wp_get_current_user()->user_login;
-                    $user_id = wp_get_current_user()->ID;
-                    log_invoice_insertion($user_login, $user_id);
-    
                 }
-            }
-    }
+        }
 
-   $array_of_test = [
-    'orderId'=> $orderId,
-    'item_id_line_item' => $item_id_line_item,
-    'previuos_docNo' => $previuos_docNo,
-    'seller_second_bussiness_Id_Type'=> $seller_second_bussiness_Id_Type,
-    'seller_second_bussiness_Id' => $seller_second_bussiness_Id,
-    'order_Customer_Id' => $order_Customer_Id,
-    'buyer_second_bussiness_Id_Type'=> $buyer_second_bussiness_Id_Type,
-    'buyer_second_bussiness_Id'=> $buyer_second_bussiness_Id,
-    'seller_VAT_Company'=> $seller_VAT_Company,
-    'seller_apartmentNum_Company' => $seller_apartmentNum_Company,
-    'seller_POBoxAdditionalNum_Company'=> $seller_POBoxAdditionalNum_Company,
-    'seller_POBox_Company'=> $seller_POBox_Company,
-    'seller_postalCode'=>$seller_postalCode,
-    'seller_street_Arb_Company'=>$seller_street_Arb_Company,
-    'seller_street_Eng_Company'=>$seller_street_Eng_Company,
-    'seller_district_Arb_Company'=>$seller_district_Arb_Company,
-    'seller_district_Eng_Company'=>$seller_district_Eng_Company,
-    'seller_city_Arb_Company'=>$seller_city_Arb_Company,
-    'seller_city_Eng_Company'=>$seller_city_Eng_Company,
-    'seller_country_Arb_Company'=>$seller_country_Arb_Company,
-    'seller_country_Eng_Company'=>$seller_country_Eng_Company,
-    'seller_CountryNo_Company'=>$seller_CountryNo_Company,
-    'buyer_aName_Customer'=>$buyer_aName_Customer,
-    'buyer_eName_Customer'=>$buyer_eName_Customer,
-    'buyer_apartmentNum_Customer'=>$buyer_apartmentNum_Customer,
-    'buyer_POBoxAdditionalNum_Customer'=>$buyer_POBoxAdditionalNum_Customer,
-    'buyer_PoCode'=>$buyer_PoCode,
-    'buyer_PostalCode'=>$buyer_PostalCode,
-    'buyer_street_Arb_Customer'=>$buyer_street_Arb_Customer,
-    'buyer_street_Eng_Customer'=>$buyer_street_Eng_Customer,
-    'buyer_district_Arb_Customer'=>$buyer_district_Arb_Customer,
-    'buyer_district_Eng_Customer'=>$buyer_district_Eng_Customer,
-    'buyer_city_Arb_Customer'=>$buyer_city_Arb_Customer,
-    'buyer_city_Eng_Customer'=>$buyer_city_Eng_Customer,
-    'buyer_CountryNo_Customer'=>$buyer_CountryNo_Customer,
-    'buyer_VAT'=>$buyer_VAT,
-    'item_id'=>$item_id,
-    'payed'=>$payed,
-    'totalTax'=>$totalTax,
-    'sub_net_total'=>$sub_net_total,
-    'discount'=>$discount,
-    'sub_total'=>$sub_total,
-    'invoiceType'=>$invoiceType,
-    'companyVatCatCode'=>$companyVatCatCode,
-    'companyVatCatCodeType'=>$companyVatCatCodeType,
-    'delivery_Date'=>$delivery_Date,
-    'latest_Delivery_Date'=>$latest_Delivery_Date,
-    'docNo'=>$docNo
-   ]
-   ?>
-
-    <script>
-
-        const arrayOfTest = <?php echo json_encode($array_of_test); ?>;
-        // alert('Order ID: <?php //echo $orderId; ?>');
-        console.table(arrayOfTest)
-
-
-    </script>
-
-        <?php
-    
-    if (isset($_SESSION['checkbox_status'])) {
-
+        $array_of_test = [
+            'orderId'=> $orderId,
+            'item_id_line_item' => $item_id_line_item,
+            'previuos_docNo' => $previuos_docNo,
+            'seller_second_bussiness_Id_Type'=> $seller_second_bussiness_Id_Type,
+            'seller_second_bussiness_Id' => $seller_second_bussiness_Id,
+            'order_Customer_Id' => $order_Customer_Id,
+            'buyer_second_bussiness_Id_Type'=> $buyer_second_bussiness_Id_Type,
+            'buyer_second_bussiness_Id'=> $buyer_second_bussiness_Id,
+            'seller_VAT_Company'=> $seller_VAT_Company,
+            'seller_apartmentNum_Company' => $seller_apartmentNum_Company,
+            'seller_POBoxAdditionalNum_Company'=> $seller_POBoxAdditionalNum_Company,
+            'seller_POBox_Company'=> $seller_POBox_Company,
+            'seller_postalCode'=>$seller_postalCode,
+            'seller_street_Arb_Company'=>$seller_street_Arb_Company,
+            'seller_street_Eng_Company'=>$seller_street_Eng_Company,
+            'seller_district_Arb_Company'=>$seller_district_Arb_Company,
+            'seller_district_Eng_Company'=>$seller_district_Eng_Company,
+            'seller_city_Arb_Company'=>$seller_city_Arb_Company,
+            'seller_city_Eng_Company'=>$seller_city_Eng_Company,
+            'seller_country_Arb_Company'=>$seller_country_Arb_Company,
+            'seller_country_Eng_Company'=>$seller_country_Eng_Company,
+            'seller_CountryNo_Company'=>$seller_CountryNo_Company,
+            'buyer_aName_Customer'=>$buyer_aName_Customer,
+            'buyer_eName_Customer'=>$buyer_eName_Customer,
+            'buyer_apartmentNum_Customer'=>$buyer_apartmentNum_Customer,
+            'buyer_POBoxAdditionalNum_Customer'=>$buyer_POBoxAdditionalNum_Customer,
+            'buyer_PoCode'=>$buyer_PoCode,
+            'buyer_PostalCode'=>$buyer_PostalCode,
+            'buyer_street_Arb_Customer'=>$buyer_street_Arb_Customer,
+            'buyer_street_Eng_Customer'=>$buyer_street_Eng_Customer,
+            'buyer_district_Arb_Customer'=>$buyer_district_Arb_Customer,
+            'buyer_district_Eng_Customer'=>$buyer_district_Eng_Customer,
+            'buyer_city_Arb_Customer'=>$buyer_city_Arb_Customer,
+            'buyer_city_Eng_Customer'=>$buyer_city_Eng_Customer,
+            'buyer_CountryNo_Customer'=>$buyer_CountryNo_Customer,
+            'buyer_VAT'=>$buyer_VAT,
+            'item_id'=>$item_id,
+            'payed'=>$payed,
+            'totalTax'=>$totalTax,
+            'sub_net_total'=>$sub_net_total,
+            'discount'=>$discount,
+            'sub_total'=>$sub_total,
+            'invoiceType'=>$invoiceType,
+            'companyVatCatCode'=>$companyVatCatCode,
+            'companyVatCatCodeType'=>$companyVatCatCodeType,
+            'delivery_Date'=>$delivery_Date,
+            'latest_Delivery_Date'=>$latest_Delivery_Date,
+            'docNo'=>$docNo
+        ]
         ?>
 
         <script>
 
+            const arrayOfTest = <?php echo json_encode($array_of_test); ?>;
+            // alert('Order ID: <?php //echo $orderId; ?>');
+            console.table(arrayOfTest)
             alert('Session Is Set');
+
         </script>
+
         <?php
         
     }else{
@@ -5282,7 +5273,7 @@ function insert_document_to_zatca_after_checkout_submit( $orderId ) {
 
         </script>
 
-    <?php
+        <?php
     }
     
     unset_checkbox_status_session();
