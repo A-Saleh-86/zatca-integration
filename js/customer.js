@@ -157,7 +157,7 @@ jQuery(document).ready(function($) {
         }
 
         // validation on Street name AR must be Arabic:
-        if(!charachter_lang_validation(addressArabicInput, myCustomer.strret_ar_must_arabic, 'ar')) {
+        if(!charachter_lang_validation(addressArabicInput, myCustomer.street_ar_must_arabic, 'ar')) {
 
             return;
         }
@@ -721,7 +721,7 @@ jQuery(document).ready(function($) {
 
             }
         }
-        
+
         var formData = $(this).serialize();
 
 

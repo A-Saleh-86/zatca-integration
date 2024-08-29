@@ -379,10 +379,10 @@
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Country Subdivision - EN :', 'zatca') ?></label>
                         <input 
-                        type="text" 
-                        name="country-sub-name-en" 
-                        class="form-control"
-                        value="<?php echo $result->countrySubdivision_Eng ?>"
+                            type="text" 
+                            name="country-sub-name-en" 
+                            class="form-control"
+                            value="<?php echo $result->countrySubdivision_Eng ?>"
                         />
                     </div>
                     <!-- /  Country Subdivision - EN  field -->
@@ -404,7 +404,6 @@
                         id="branch_id"
                         class="form-control"
                         value="<?php echo $branch->buildingNo ?>"
-                        disabled
                     />
                     <!-- /  Branch No field -->
 
@@ -779,7 +778,8 @@
                 <div class="col-md-6">
                     <label class="form-label"><?php echo _e('District Name - EN :', 'zatca') ?></label>
                     <input 
-                        type="text" 
+                        type="text"
+                        id="district_name_en"
                         name="district-name-en" 
                         class="form-control"
                         placeholder="<?php echo _e('District Name - EN :', 'zatca') ?>"
@@ -829,7 +829,8 @@
                 <div class="col-md-6">
                     <label class="form-label"><?php echo _e('Country Subdivision - AR :', 'zatca') ?></label>
                     <input 
-                        type="text" 
+                        type="text"
+                        id="sub_div_ar"
                         name="country-sub-name-ar" 
                         class="form-control"
                         placeholder="<?php echo _e('Country Subdivision - AR :', 'zatca') ?>"
@@ -841,10 +842,11 @@
                 <div class="col-md-6">
                     <label class="form-label"><?php echo _e('Country Subdivision - EN :', 'zatca') ?></label>
                     <input 
-                    type="text" 
-                    name="country-sub-name-en" 
-                    class="form-control"
-                    placeholder="<?php echo _e('Country Subdivision - EN :', 'zatca') ?>"
+                        type="text"
+                        id="sub_div_en"
+                        name="country-sub-name-en" 
+                        class="form-control"
+                        placeholder="<?php echo _e('Country Subdivision - EN :', 'zatca') ?>"
                     />
                 </div>
                 <!-- /  Country Subdivision - EN  field -->
@@ -862,7 +864,6 @@
                 id="branch_id"
                 class="form-control"
                 value="1"
-                disabled
             />
             <!-- /  Branch No field -->
 
