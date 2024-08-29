@@ -36,6 +36,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Cryptographic Stamp ID', 'zatca') ?>"
+                        required
                     />
                 </div>
             </div>
@@ -71,6 +72,7 @@ include_once dirname(dirname(__FILE__)) . '/zatca.php';
                         class="form-control" 
                         autocomplete="off"
                         placeholder="<?php echo _e('Token Data', 'zatca') ?>"
+                        required
                     />
                 </div>
             </div>

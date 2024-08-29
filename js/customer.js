@@ -9,32 +9,105 @@ jQuery(document).ready(function($) {
     // Get the clientVendorNo input element
     const clientVendorNoInput = document.getElementById('client-no');
 
-    // Get the client-name-ar input element to populate with fetched data
+    // client name ar input:
     const clientNameArabicInput = document.getElementById('client_name_ar');
 
-    // Get the client-name-ar input element to populate with fetched data
+    // client-name-en input:
     const clientNameEnglishInput = document.getElementById('customer_client_name_en');
 
-    // Get the address input element to populate with fetched data
+    // Arabic Street input:
     const addressArabicInput = document.getElementById('address-ar');
 
-    // Get the address input element to populate with fetched data
+    // English Street input:
     const addressEnglishInput = document.getElementById('address-en');
 
-    // Get the Arabic city input element to populate with fetched data
+    // Arabic city input:
     const cityArabicInput = document.getElementById('city-ar');
 
-    // Get the English city input element to populate with fetched data
+    //English city input:
     const cityEnglishInput = document.getElementById('city-en');
+    
+    // Arabic District input:
+    const distArabicInput = document.getElementById('dist_ar');
+    
+    // English District input:
+    const distEnglishInput = document.getElementById('dist-en');
+    
+    // Arabic Sub Division input:
+    const subDivArabicInput = document.getElementById('sub_div_ar');
+    
+    // English Sub Division input:
+    const subDivEnglishInput = document.getElementById('sub_div_en');
 
-    // Get Postal Code Input element:
+    // Postal Code Input:
     var postal_Code = document.getElementById("customer_postal_code");
+    
+    // po box Input:
+    var poBoxInput = document.getElementById("po-insert-customer");
+    
+    // Vat Id Input:
+    var vatIdInput = document.getElementById("customer_vat_id");
+   
+    // Second Business Id Input:
+    var secondBusIdInput = document.getElementById("second_bus_id");
+    
+    // Appartment Input:
+    var appartmentInput = document.getElementById("customer_appart_no");
+    
+    // PO Additional No Input:
+    var poAddNoInput = document.getElementById("po_add_no");
 
-    // function to check if a string contains Arabic characters
+    // function to check if a string Arabic or not:
     function isArabic(string) {
         var arabicPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
         return arabicPattern.test(string);
     };
+
+    // Check if number or not:
+    function isNumber(field) {
+    
+        var nonNumericPattern = /[^0-9]/;
+    
+       return !nonNumericPattern.test(field.value);
+    }
+
+    // Function to get error if Field must arabic and it have English:
+    function charachter_lang_validation(field, msg, lang){
+
+        if(field.value != ''){
+
+            if(lang == 'ar'){
+
+                if (!isArabic(field.value)) {
+        
+                    // Error notification:
+                    popupValidation.error({
+                    title: myCustomer.notification_error_title,
+                    message: msg
+                    });
+        
+                    return false;
+                }
+
+            }else{
+
+                if (isArabic(field.value)) {
+        
+                    // Error notification:
+                    popupValidation.error({
+                    title: myCustomer.notification_error_title,
+                    message: msg
+                    });
+        
+                    return false;
+                }
+
+            }
+
+        }
+        return true;
+    }
+
 
     // Insert New Customer Form:
     $("#insert_customer_form").submit(function(event){
@@ -42,7 +115,7 @@ jQuery(document).ready(function($) {
         event.preventDefault();
 
         // validation on aName [ Cant be null]:
-        if (clientNameArabicInput.value == '' ) {
+        if(clientNameArabicInput.value == '' ) {
 
             // Error notification:
             popupValidation.error({
@@ -54,7 +127,7 @@ jQuery(document).ready(function($) {
         }
 
         // validation on client name ar must be Arabic:
-        if (!isArabic(clientNameArabicInput.value)) {
+        if(!isArabic(clientNameArabicInput.value)) {
 
             // Error notification:
             popupValidation.error({
@@ -63,6 +136,153 @@ jQuery(document).ready(function($) {
             });
 
             return false;
+        }
+
+        // validation on client name en must be English:
+        if(!charachter_lang_validation(clientNameEnglishInput, myCustomer.client_name_english_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on Street name AR must be Arabic:
+        if(!charachter_lang_validation(addressArabicInput, myCustomer.strret_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on Street name EN must be English:
+        if(!charachter_lang_validation(addressEnglishInput, myCustomer.street_en_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on City name AR must be Arabic:
+        if(!charachter_lang_validation(cityArabicInput, myCustomer.city_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on City name EN must be English:
+        if(!charachter_lang_validation(cityEnglishInput, myCustomer.city_en_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on District name AR must be Arabic:
+        if(!charachter_lang_validation(distArabicInput, myCustomer.dist_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on District name EN must be English:
+        if(!charachter_lang_validation(distEnglishInput, myCustomer.dist_en_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on Sub Division name AR must be Arabic:
+        if(!charachter_lang_validation(subDivArabicInput, myCustomer.sub_div_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on Sub Division name EN must be English:
+        if(!charachter_lang_validation(subDivEnglishInput, myCustomer.sub_div_en_must_arabic, 'en')) {
+
+            return;
+        }
+
+        // Check If vat id not number:
+        if(!isNumber(vatIdInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.vat_id_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If appartment not number:
+        if(!isNumber(appartmentInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.appartment_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If po additional no not number:
+        if(!isNumber(poAddNoInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.poAdd_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If po box no not number:
+        if(!isNumber(poBoxInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.poBox_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If Second Bus id not number:
+        if(!isNumber(secondBusIdInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.second_bus_id_number
+            });
+
+            return;
+
+        }
+
+        // Check If postal code not number || Not 5 digits:
+        if(postal_Code.value !== ''){
+
+            if(!isNumber(postal_Code)){
+                
+                 // Error notification:
+                 popupValidation.error({
+                    title: myCustomer.notification_error_title,
+                    message: myCustomer.postal_code_must_number
+                });
+    
+                return;
+    
+            }
+
+            if(postal_Code.value.length !== 5){
+
+                // Error notification:
+                popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.postal_code_must_5_digits
+            });
+
+            return;
+
+            }
         }
 
         // Define the form data:
