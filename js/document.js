@@ -805,8 +805,8 @@ jQuery(document).ready(function($){
             },
             success: function(response) {
 
-                alert('response_time ' + response.response_time);
-                //console.log(response);
+                // alert('response_time ' + response.response_time);
+                // console.log(response);
                 if(response.msg.status == 'insert_seller_additional_id'){
 
                     // Error notification:
