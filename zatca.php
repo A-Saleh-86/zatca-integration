@@ -2085,7 +2085,7 @@ function woo_document(){
                 // vatAmount [ netAmount*vatRate ]:
                 $doc_unit_vatAmount = $final_netAmount * ($doc_unit_vatRate / 100);
                 // $final_vatAmount = number_format((float)$doc_unit_vatAmount, 2, '.', '');
-                $final_vatAmount = round($doc_unit_vatAmount, 2);
+                $final_vatAmount = round($doc_unit_vatAmount, 1);
                 
 
                 // amountWithVat [ netAmount+vatAmount ]:
@@ -2607,7 +2607,7 @@ function insert_form_documents(){
     
                             if($key['item'] == $item->order_item_id){
     
-                                $final_item_discount= round($key['discount'], 6);
+                                $final_item_discount= round($key['discount'], 2);
 
                                 // netAmount [ ((price * quantity)-discount) ]:
                                 $doc_unit_netAmount = $doc_unit_subtotal - $final_item_discount;
@@ -2615,7 +2615,7 @@ function insert_form_documents(){
 
                                 // vatAmount [ netAmount*vatRate ]:
                                 $doc_unit_vatAmount = $final_netAmount * ($doc_unit_vatRate / 100);
-                                $final_vatAmount = round($doc_unit_vatAmount, 2);
+                                $final_vatAmount = round($doc_unit_vatAmount, 3);
                                 
 
                                 // amountWithVat [ netAmount+vatAmount ]:
