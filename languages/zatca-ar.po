@@ -7,27 +7,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zatca\n"
-"POT-Creation-Date: 2024-08-24T20:14:14+02:00\n"
+"POT-Creation-Date: 2024-08-29T11:45:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
 #. Plugin Name of the plugin
-#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+#: zatca.php
 msgid "zatca"
 msgstr "هيئه الزكاة"
 
 #. Description of the plugin
-#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+#: zatca.php
 msgid "Zatca Integration"
 msgstr "التكامل مع هيئه الزكاة"
 
 #. Author of the plugin
-#: C:\xampp\htdocs\zatca1\wp-content\plugins\zatca\zatca.php
+#: zatca.php
 msgid "Appy Innovate"
 msgstr "روائع الابتكار"
 
@@ -36,7 +36,7 @@ msgstr "روائع الابتكار"
 msgid "Client Name ( Arabic )"
 msgstr "اسم العميل بالعربية"
 
-#: checkout-page.php:55 checkout-page.php:282 customers/insert.php:394
+#: checkout-page.php:55 checkout-page.php:282 customers/insert.php:397
 #: documents/doc-add-customer.php:399
 msgid "District Name (Arabic)"
 msgstr "المقاطعة بالعربية"
@@ -49,23 +49,23 @@ msgstr " الشارع بالعربية"
 msgid "City Name (Arabic)"
 msgstr "المدينه بالعربيه"
 
-#: checkout-page.php:116 checkout-page.php:339 customers/insert.php:207
+#: checkout-page.php:116 checkout-page.php:339 customers/insert.php:208
 #: customers/view.php:28 documents/doc-add-customer.php:210
 msgid "VAT ID"
 msgstr "الرقم الضريبي"
 
-#: checkout-page.php:132 checkout-page.php:354 customers/insert.php:293
+#: checkout-page.php:132 checkout-page.php:354 customers/insert.php:295
 #: documents/doc-add-customer.php:298
 msgid "Apartment No"
 msgstr "رقم المبنى"
 
-#: checkout-page.php:155 checkout-page.php:377 customers/insert.php:325
+#: checkout-page.php:155 checkout-page.php:377 customers/insert.php:328
 #: customers/view.php:36 documents/doc-add-customer.php:330
 msgid "Postal Code"
 msgstr "الرمز البريدي"
 
 #: checkout-page.php:171 checkout-page.php:392 company/view.php:620
-#: customers/insert.php:221 documents/doc-add-customer.php:224
+#: customers/insert.php:222 documents/doc-add-customer.php:224
 msgid "Second Business ID"
 msgstr "المعرف الثاني"
 
@@ -111,12 +111,12 @@ msgid "VAT Category Code Sub Type No:"
 msgstr "فئة الضريبة الفرعية"
 
 #: company/view.php:128 company/view.php:596 customers/edit-customer.php:253
-#: customers/insert.php:246 documents/doc-add-customer.php:249
+#: customers/insert.php:247 documents/doc-add-customer.php:249
 msgid "Second Business ID Type:"
 msgstr "نوع المعرف الثاني"
 
 #: company/view.php:149 company/view.php:614 customers/edit-customer.php:222
-#: customers/insert.php:214 documents/doc-add-customer.php:217
+#: customers/insert.php:215 documents/doc-add-customer.php:217
 msgid "Second Business ID :"
 msgstr "المعرف الثاني"
 
@@ -130,25 +130,25 @@ msgid "Company name:"
 msgstr "الشركة"
 
 #: company/view.php:205 company/view.php:670 company/view.php:676
-#: customers/edit-customer.php:298 customers/insert.php:287
+#: customers/edit-customer.php:298 customers/insert.php:288
 #: documents/doc-add-customer.php:292
 msgid "Apartment No :"
 msgstr "رقم المبنى"
 
 #: company/view.php:218 company/view.php:683 company/view.php:689
-#: customers/edit-customer.php:311 customers/insert.php:300
+#: customers/edit-customer.php:311 customers/insert.php:302
 #: documents/doc-add-customer.php:305
 msgid "PO Box Additional Number :"
 msgstr "رقم صندوق بريد إضافي"
 
 #: company/view.php:237 company/view.php:702 company/view.php:708
-#: customers/edit-customer.php:347 customers/insert.php:333
+#: customers/edit-customer.php:347 customers/insert.php:336
 #: documents/doc-add-customer.php:338
 msgid "PO Box :"
 msgstr "صندوق البريد"
 
 #: company/view.php:250 company/view.php:715 company/view.php:721
-#: customers/edit-customer.php:331 customers/insert.php:318
+#: customers/edit-customer.php:331 customers/insert.php:321
 #: documents/doc-add-customer.php:323
 msgid "Postal Code:"
 msgstr "الرقم البريدي"
@@ -197,7 +197,7 @@ msgstr "طريقة ارسال فواتير B2C  لهيئة الزكاة"
 msgid "ZATCA Invoices Type:"
 msgstr "نوع الفواتير المدعومة"
 
-#: company/view.php:451 company/view.php:908 customers/insert.php:237
+#: company/view.php:451 company/view.php:908 customers/insert.php:238
 #: documents/doc-add-customer.php:240
 msgid "Both"
 msgstr "كلاهما"
@@ -274,52 +274,52 @@ msgstr "اسم العميل بالعربية"
 msgid "Client Name( English ):"
 msgstr "اسم العميل بالانجليزية"
 
-#: customers/edit-customer.php:242 customers/insert.php:234
+#: customers/edit-customer.php:242 customers/insert.php:235
 #: documents/doc-add-customer.php:237
 msgid "ZATCA Invoices Type :"
 msgstr "نوع الفواتير المدعومة"
 
-#: customers/edit-customer.php:272 customers/insert.php:263
+#: customers/edit-customer.php:272 customers/insert.php:264
 #: documents/doc-add-customer.php:267
 msgid "Country Name:"
 msgstr "البلد"
 
-#: customers/edit-customer.php:367 customers/insert.php:354
+#: customers/edit-customer.php:367 customers/insert.php:357
 #: documents/doc-add-customer.php:359
 msgid "Street Name (Arabic):"
 msgstr "الشارع بالعربية"
 
-#: customers/edit-customer.php:381 customers/insert.php:368
+#: customers/edit-customer.php:381 customers/insert.php:371
 #: documents/doc-add-customer.php:373
 msgid "Street Name (English):"
 msgstr "الشارع بالانجليزي"
 
-#: customers/edit-customer.php:401 customers/insert.php:387
+#: customers/edit-customer.php:401 customers/insert.php:390
 #: documents/doc-add-customer.php:392
 msgid "District Name (Arabic):"
 msgstr "المقاطعة بالعربية"
 
-#: customers/edit-customer.php:415 customers/insert.php:401
+#: customers/edit-customer.php:415 customers/insert.php:404
 #: documents/doc-add-customer.php:406
 msgid "District Name (English):"
 msgstr "المقاطعة بالانجليزي"
 
-#: customers/edit-customer.php:434 customers/insert.php:420
+#: customers/edit-customer.php:434 customers/insert.php:424
 #: documents/doc-add-customer.php:425
 msgid "City Name(Arabic):"
 msgstr " المدينه بالعربيه"
 
-#: customers/edit-customer.php:448 customers/insert.php:434
+#: customers/edit-customer.php:448 customers/insert.php:438
 #: documents/doc-add-customer.php:439
 msgid "City Name(English):"
 msgstr " المدينه بالانجليزيه"
 
-#: customers/edit-customer.php:468 customers/insert.php:454
+#: customers/edit-customer.php:468 customers/insert.php:458
 #: documents/doc-add-customer.php:459
 msgid "Country Subdivision (Arabic):"
 msgstr " المحافظة بالعربية"
 
-#: customers/edit-customer.php:481 customers/insert.php:467
+#: customers/edit-customer.php:481 customers/insert.php:472
 #: documents/doc-add-customer.php:472
 msgid "Country Subdivision (English):"
 msgstr " المحافظة بالانجليزية"
@@ -348,43 +348,43 @@ msgstr "البحث في بيانات العميل"
 msgid "Client Name ( English )"
 msgstr "اسم العميل بالانجليزية"
 
-#: customers/insert.php:306 documents/doc-add-customer.php:311
+#: customers/insert.php:309 documents/doc-add-customer.php:311
 msgid "PO Box Additional Number"
 msgstr "رقم صندوق بريد إضافي"
 
-#: customers/insert.php:340 documents/doc-add-customer.php:345
+#: customers/insert.php:343 documents/doc-add-customer.php:345
 msgid "PO Box"
 msgstr "صندوق البريد"
 
-#: customers/insert.php:361 documents/doc-add-customer.php:366
+#: customers/insert.php:364 documents/doc-add-customer.php:366
 msgid "Street Name (Arabic)"
 msgstr " الشارع بالعربية"
 
-#: customers/insert.php:375 documents/doc-add-customer.php:380
+#: customers/insert.php:378 documents/doc-add-customer.php:380
 msgid "Street Name (English)"
 msgstr " الشارع بالانجليزيه"
 
-#: customers/insert.php:407 documents/doc-add-customer.php:412
+#: customers/insert.php:411 documents/doc-add-customer.php:412
 msgid "District Name (English)"
 msgstr "المقاطعة بالانجليزيه"
 
-#: customers/insert.php:427 documents/doc-add-customer.php:432
+#: customers/insert.php:431 documents/doc-add-customer.php:432
 msgid "City Name(Arabic)"
 msgstr "المدينه بالعربيه"
 
-#: customers/insert.php:441 documents/doc-add-customer.php:446
+#: customers/insert.php:445 documents/doc-add-customer.php:446
 msgid "City Name(English)"
 msgstr "المدينه بالانجليزيه"
 
-#: customers/insert.php:460 documents/doc-add-customer.php:465
+#: customers/insert.php:465 documents/doc-add-customer.php:465
 msgid "Country Subdivision (Arabic)"
 msgstr "المحافظة بالعربية"
 
-#: customers/insert.php:473 documents/doc-add-customer.php:478
+#: customers/insert.php:479 documents/doc-add-customer.php:478
 msgid "Country Subdivision (English)"
 msgstr "المحافظة بالانجليزية"
 
-#: customers/insert.php:484 customers/view.php:14
+#: customers/insert.php:490 customers/view.php:14
 #: documents/doc-add-customer.php:489 documents/edit-document.php:418
 #: documents/insert.php:191
 msgid "Insert New Customer"
@@ -450,7 +450,7 @@ msgstr "محافظة بالانجليزية"
 msgid "Country"
 msgstr "البلد"
 
-#: customers/view.php:43 devices/view.php:28 documents/view.php:70
+#: customers/view.php:43 devices/view.php:27 documents/view.php:70
 msgid "Action"
 msgstr "الاعدادات"
 
@@ -470,19 +470,19 @@ msgstr "تعديل بيانات الجهاز"
 msgid "Device No.:"
 msgstr "رقم الجهاز"
 
-#: devices/edit-device.php:68 devices/insert.php:30
+#: devices/edit-device.php:67 devices/insert.php:30
 msgid "Cryptographic Stamp ID:"
 msgstr "التوقيع الالكتروني"
 
-#: devices/edit-device.php:87 devices/insert.php:47
+#: devices/edit-device.php:87 devices/insert.php:48
 msgid "Expiry Date:"
 msgstr "تاريخ الانتهاء"
 
-#: devices/edit-device.php:106 devices/insert.php:65
+#: devices/edit-device.php:107 devices/insert.php:66
 msgid "Token Data:"
 msgstr "كلمة السر"
 
-#: devices/edit-device.php:126 devices/insert.php:83
+#: devices/edit-device.php:128 devices/insert.php:85
 msgid "Device Status :"
 msgstr "حاله الجهاز"
 
@@ -490,19 +490,19 @@ msgstr "حاله الجهاز"
 msgid "Add New Device"
 msgstr "اضافه جهاز جديد"
 
-#: devices/insert.php:38 devices/view.php:25
+#: devices/insert.php:38 devices/view.php:24
 msgid "Cryptographic Stamp ID"
 msgstr "التوقيع الالكتروني"
 
-#: devices/insert.php:55 devices/view.php:26
+#: devices/insert.php:56 devices/view.php:25
 msgid "Expiry Date"
 msgstr "تاريخ الانتهاء"
 
-#: devices/insert.php:73
+#: devices/insert.php:74
 msgid "Token Data"
 msgstr "كلمة السر"
 
-#: devices/insert.php:104 devices/view.php:14
+#: devices/insert.php:106 devices/view.php:14
 msgid "Insert New Device"
 msgstr "اضافه جهاز جديد"
 
@@ -510,27 +510,27 @@ msgstr "اضافه جهاز جديد"
 msgid "Devices"
 msgstr "الاجهزة"
 
-#: devices/view.php:24 zatca.php:822
+#: devices/view.php:23 zatca.php:842
 msgid "Device No"
 msgstr "رقم الجهاز"
 
-#: devices/view.php:27
+#: devices/view.php:26
 msgid "Device Status"
 msgstr "حاله الجهاز"
 
-#: devices/view.php:50
+#: devices/view.php:49
 msgid "Active"
 msgstr "نشط"
 
-#: devices/view.php:50
+#: devices/view.php:49
 msgid "Inactive"
 msgstr "غير نشط"
 
-#: devices/view.php:62
+#: devices/view.php:61
 msgid "Edit Device"
 msgstr "تعديل بيانات الجهاز"
 
-#: devices/view.php:75
+#: devices/view.php:74
 msgid "Delete Device"
 msgstr "حذف جهاز "
 
@@ -942,7 +942,7 @@ msgstr "تفعيل هيئه الزكاة"
 msgid "Users"
 msgstr "المستخدمين"
 
-#: option.php:90 option.php:91 zatca.php:4721
+#: option.php:90 option.php:91 zatca.php:5308
 msgid "Zacta Tampering Detector"
 msgstr "فحص خلل الفواتير"
 
@@ -1084,7 +1084,7 @@ msgstr "تاريخ اصدار نسخه هيئة الزكاة"
 msgid "Postal Code Cant be Null"
 msgstr "يجب ادخال رقم صندوق البريد"
 
-#: zatca.php:324
+#: zatca.php:324 zatca.php:348
 msgid "Postal Code Must be 5 Digits"
 msgstr "الرقم البريدى يجب ان يكون 5 ارقام"
 
@@ -1116,304 +1116,350 @@ msgstr "من فضلك اختر العميل أولا"
 msgid "Please Insert Customer Aarabic Name"
 msgstr "من فضلك أدخل اسم العميل العربي"
 
-#: zatca.php:332 zatca.php:446
+#: zatca.php:332 zatca.php:462
 msgid "You Must Enter Client Name In Arabic"
 msgstr "يجب ادخال اسم العميل باللغه العربيه"
 
-#: zatca.php:333 zatca.php:351 zatca.php:366 zatca.php:382 zatca.php:422
-#: zatca.php:425 zatca.php:447
+#: zatca.php:333
+msgid "You Must Enter Client Name English In English"
+msgstr "يجب ادخال اسم العميل الانجليزي باللغه الانجليزيه"
+
+#: zatca.php:334
+msgid "You Must Enter Street Name Arabic In Arabic"
+msgstr "يجب ادخال اسم الشارع العربي باللغه العربيه"
+
+#: zatca.php:335
+msgid "You Must Enter Street Name English In English"
+msgstr "يجب ادخال اسم الشارع الانجليزي باللغه الانجليزيه"
+
+#: zatca.php:336
+msgid "You Must Enter City Name Arabic In Arabic"
+msgstr "يجب ادخال اسم المدينه العربي باللغه العربيه"
+
+#: zatca.php:337
+msgid "You Must Enter City Name English In English"
+msgstr "يجب ادخال اسم المدينه الانجليزي باللغه الانجليزيه"
+
+#: zatca.php:338
+msgid "You Must Enter Arabic District In Arabic"
+msgstr "يجب ادخال اسم المقاطعه العربي باللغه العربيه"
+
+#: zatca.php:339
+msgid "You Must Enter English District In English"
+msgstr "يجب ادخال اسم المقاطعه العربي باللغه العربيه"
+
+#: zatca.php:340
+msgid "You Must Enter Arabic Subdivision In Arabic "
+msgstr "يجب ادخال اسم المحافظه العربي باللغه العربيه"
+
+#: zatca.php:341
+msgid "You Must Enter English Subdivision In English "
+msgstr " يجب ادخال اسم المحافظة الانجليزي باللغه الانجليزيه"
+
+#: zatca.php:342
+msgid "Vat Id Must be Numbers"
+msgstr "الرقم الضريبي يجب ان يكون ارقام فقط"
+
+#: zatca.php:343
+msgid "Second Business Id Must be Numbers"
+msgstr "المعرف الثانى يجب ان يكون ارقام فقط"
+
+#: zatca.php:344
+msgid "Appartment Number Must be Numbers"
+msgstr "رقم العقار يجب ان يكون ارقام"
+
+#: zatca.php:345
+msgid "PO Additional Number Must be Numbers"
+msgstr "رقم صندوق بريد إضافي يجب ان يكون ارقام"
+
+#: zatca.php:346
+msgid "PO Box Number Must be Numbers"
+msgstr "رقم صندوق البريد يجب ان يكون ارقام فقط"
+
+#: zatca.php:347
+msgid "Postal Code Must be Numbers"
+msgstr " الرقم البريدى يجب ان يكون ارقام فقط"
+
+#: zatca.php:349 zatca.php:367 zatca.php:382 zatca.php:398 zatca.php:438
+#: zatca.php:441 zatca.php:463
 msgid "Error"
 msgstr "عمليه خاطئه"
 
-#: zatca.php:334 zatca.php:352 zatca.php:367 zatca.php:383 zatca.php:423
-#: zatca.php:448
+#: zatca.php:350 zatca.php:368 zatca.php:383 zatca.php:399 zatca.php:439
+#: zatca.php:464
 msgid "Success"
 msgstr "عمليه ناجحه"
 
-#: zatca.php:335 zatca.php:369 zatca.php:384 zatca.php:436
+#: zatca.php:351 zatca.php:385 zatca.php:400 zatca.php:452
 msgid "Are You Sure?"
 msgstr "هل انت متاكد ؟"
 
-#: zatca.php:336 zatca.php:370 zatca.php:385 zatca.php:437
+#: zatca.php:352 zatca.php:386 zatca.php:401 zatca.php:453
 msgid "Delete"
 msgstr "حذف "
 
-#: zatca.php:344
+#: zatca.php:360
 msgid "Second Business Id Must be 10 Digits"
 msgstr "المعرف الثانى يجب ان يكون 10 أرقام"
 
-#: zatca.php:345
+#: zatca.php:361
 msgid "Please Insert City Arabic Name"
 msgstr "يجب أدخل اسم المدينة باللغة العربية"
 
-#: zatca.php:346
+#: zatca.php:362
 msgid "Please Insert District Arabic Name"
 msgstr " يجب ادخل اسم المقاطعة باللغة العربية"
 
-#: zatca.php:347
+#: zatca.php:363
 msgid "Please Insert Company Name"
 msgstr " يجب ادخل اسم الشركة"
 
-#: zatca.php:348
+#: zatca.php:364
 msgid "Please Insert Appartment No."
 msgstr " يجب ادخل رقم المبنى"
 
-#: zatca.php:349
+#: zatca.php:365
 msgid "Please Insert Po Box Additional No."
 msgstr " يجب ادخل صندوق بريد إضافي"
 
-#: zatca.php:350
+#: zatca.php:366
 msgid "Please Insert Street Arabic Name"
 msgstr " يجب ادخل اسم الشارع باللغة العربية"
 
-#: zatca.php:361
+#: zatca.php:377
 msgid "Person No Cant be Null"
 msgstr "يجب ادخال رقم العميل"
 
-#: zatca.php:362
+#: zatca.php:378
 msgid "Please insert reminder hours"
 msgstr "من فضلك ادخل ساعات التنبيه"
 
-#: zatca.php:363
+#: zatca.php:379
 msgid "Reminder hours must be between 1-23 Hours"
 msgstr "ساعات التنبيه يجب ان تكون بين 1 و 23 ساعة"
 
-#: zatca.php:364
+#: zatca.php:380
 msgid "User Already Exist"
 msgstr "المستخدم موجود بالفعل"
 
-#: zatca.php:365
+#: zatca.php:381
 msgid "User Inserted Successfully"
 msgstr "تم اضافة المستخدم بنجاح"
 
-#: zatca.php:368 zatca.php:424
+#: zatca.php:384 zatca.php:440
 msgid "Warning"
 msgstr "رساله تحذيريه"
 
-#: zatca.php:379
+#: zatca.php:395
 msgid "New Device Inserted"
 msgstr "تم اضافة جهاز جديد"
 
-#: zatca.php:380
+#: zatca.php:396
 msgid "Device Status Updated"
 msgstr "تم تعديل حالة الجهاز"
 
-#: zatca.php:381
+#: zatca.php:397
 msgid "Not allowed to add more one device active"
 msgstr "غير مسموح باضافة اكثر من جهاز واحد نشط"
 
-#: zatca.php:397
+#: zatca.php:413
 msgid "Document Created successifly"
 msgstr "تم ادخال الفاتورة بنجاح"
 
-#: zatca.php:398 zatca.php:1055 zatca.php:1641 zatca.php:4472 zatca.php:4637
+#: zatca.php:414 zatca.php:1075 zatca.php:1661 zatca.php:4456 zatca.php:4628
 msgid "Data Updated"
 msgstr "تم التعديل بنجاح"
 
-#: zatca.php:399
+#: zatca.php:415
 msgid "Device CsID_ExpiryDate is Expired"
 msgstr "تاريخ صلاحية الجهاز انتهت"
 
-#: zatca.php:400
+#: zatca.php:416
 msgid "Please Insert Company Details"
 msgstr "من فضلك قم بادخال بيانات الشركة"
 
-#: zatca.php:401
+#: zatca.php:417
 msgid "You Muse Insert Seller additional Id Number in zatca Company"
 msgstr "يجب ادخال رقم  المعرف الثاني للشركة"
 
-#: zatca.php:402
+#: zatca.php:418
 msgid "You Muse Insert Buyer po box additional number in zatca customer"
 msgstr "يجب ادخال رقم صندوق بريد اضافى للعميل"
 
-#: zatca.php:403
+#: zatca.php:419
 msgid "You Muse Insert Buyer additional Number in zatca customer"
 msgstr "يجب ادخال رقم  المعرف الثاني للعميل"
 
-#: zatca.php:404
+#: zatca.php:420
 msgid ""
 "No rows were affected. Possible reasons: No matching rows or the data is "
 "already up to date."
 msgstr "لا يوجد تحديث ربما كل شئ على مايرام"
 
-#: zatca.php:405
+#: zatca.php:421
 msgid "Please submit via reporing"
 msgstr "الرجاء الارسال باستخدام الB2C"
 
-#: zatca.php:406
-msgid ""
-"Unauthorized, Please check authentication certificate and secret and resubmit"
+#: zatca.php:422
+msgid "Unauthorized, Please check authentication certificate and secret and resubmit"
 msgstr "غير مصرح به، يرجى التحقق من شهادة المصادقة والسرية وإعادة الإرسال"
 
-#: zatca.php:407
-msgid ""
-"Please resend with smaller payload(invoice), Decrease invoice details and "
+#: zatca.php:423
+msgid "Please resend with smaller payload(invoice), Decrease invoice details and "
 "resubmit"
-msgstr ""
-"يرجى إعادة الإرسال بحمولة أصغر (فاتورة)، وتقليل تفاصيل الفاتورة وإعادة "
-"الإرسال"
+msgstr "يرجى إعادة الإرسال بحمولة أصغر (فاتورة)، وتقليل تفاصيل الفاتورة وإعادة الإرسال"
 
-#: zatca.php:408
+#: zatca.php:424
 msgid "Please wait for 1 minute and resubmit"
 msgstr "الرجاء الانتظار لمدة دقيقة واحدة ثم إعادة الإرسال"
 
-#: zatca.php:409
+#: zatca.php:425
 msgid "Internal Server Error, Please try again later"
 msgstr "خطأ داخلي في الخادم، يرجى المحاولة مرة أخرى لاحقًا"
 
-#: zatca.php:410
+#: zatca.php:426
 msgid "Service Unavailable, Please try again later"
 msgstr "الخدمة غير متاحة، يرجى المحاولة مرة أخرى لاحقًا"
 
-#: zatca.php:411
+#: zatca.php:427
 msgid "Gateway Timeout, Please try again later"
 msgstr "انتهت المهلة يرجى المحاولة مرة أخرى لاحقًا"
 
-#: zatca.php:412
-msgid ""
-"Buyer arabic name is mandatory and the same as his name in his National ID"
-msgstr ""
-"يجب أن يكون اسم المشتري باللغة العربية وأن يكون مطابقًا لاسمه الموجود في "
-"البطاقة الوطنية"
+#: zatca.php:428
+msgid "Buyer arabic name is mandatory and the same as his name in his National ID"
+msgstr "يجب أن يكون اسم المشتري باللغة العربية وأن يكون مطابقًا لاسمه الموجود في البطاقة الوطنية"
 
-#: zatca.php:413
+#: zatca.php:429
 msgid "Second business type must be National ID, Please edit customer profile"
-msgstr ""
-"يجب أن يكون نوع التسجيل الثاني هو الهوية الوطنية، يرجى تعديل ملف العميل"
+msgstr "يجب أن يكون نوع التسجيل الثاني هو الهوية الوطنية، يرجى تعديل ملف العميل"
 
-#: zatca.php:414
+#: zatca.php:430
 msgid "Buyer Second business ID must be filled, Please edit customer profile"
 msgstr "يجب ملء رقم المعرف الثاني للمشتري، يرجى تعديل ملف تعريف العميل"
 
-#: zatca.php:415
+#: zatca.php:431
 msgid "Seller Second business ID must be filled, Please edit company profile"
 msgstr "يجب ملء رقم المعرف الثاني للشركة يرجى تعديل ملف تعريف الشركة"
 
-#: zatca.php:416
+#: zatca.php:432
 msgid "Company zatca stage must be V2, Please edit company profile"
-msgstr ""
-"يجب أن تكون مرحلة زاتكا الخاصة بالشركة مرحلة ثانية، يرجى تعديل ملف تعريف "
-"الشركة"
+msgstr "يجب أن تكون مرحلة زاتكا الخاصة بالشركة مرحلة ثانية، يرجى تعديل ملف تعريف الشركة"
 
-#: zatca.php:417
+#: zatca.php:433
 msgid ""
 "Sorry, VAT ID for the client must be empty because the invoice is exports"
 msgstr "عذرا، يجب أن يكون الرقم الضريبي للعميل فارغًا لأن الفاتورة يتم تصديرها"
 
-#: zatca.php:418
+#: zatca.php:434
 msgid "Sorry, VAT ID for the client must be filled"
 msgstr "عذرا، يجب ملء الرقم الضريبي للعميل"
 
-#: zatca.php:419
+#: zatca.php:435
 msgid "Sell Invoice"
 msgstr "فاتورة مبيعات"
 
-#: zatca.php:420
+#: zatca.php:436
 msgid "Return Sell Invoice"
 msgstr "إرجاع فاتورة مبيعات"
 
-#: zatca.php:421
+#: zatca.php:437
 msgid "Please select a Order first"
 msgstr "من فضلك اختر فاتورة من النظام أولا"
 
-#: zatca.php:426
+#: zatca.php:442
 msgid "Document"
 msgstr "فاتورة رقم "
 
-#: zatca.php:427
-msgid ""
-"The device signature or token data may not be correct , please check and try "
-"again!"
-msgstr ""
-"قد لا تكون بيانات توقيع الجهاز أو الرمز صحيحة، يرجى التحقق والمحاولة مرة "
-"أخرى!"
+#: zatca.php:443
+msgid "The device signature or token data may not be correct , please check and try again!"
+msgstr "قد لا تكون بيانات توقيع الجهاز أو الرمز صحيحة، يرجى التحقق والمحاولة مرة أخرى!"
 
-#: zatca.php:428
+#: zatca.php:444
 msgid "This invoice is already generated and sent before to zatca!"
 msgstr "تم إنشاء هذه الفاتورة بالفعل وإرسالها مسبقًا إلى هيئة الزكاة!"
 
-#: zatca.php:445
+#: zatca.php:461
 msgid "Client Name Arabic Cant be Empty"
 msgstr "يجب ادخال اسم العميل العربي"
 
-#: zatca.php:746
+#: zatca.php:766
 msgid "Missing Invoice Numbers"
 msgstr "مسلسل الفواتير المفقودة"
 
-#: zatca.php:822
+#: zatca.php:842
 msgid "Document No"
 msgstr "رقم الفاتورة"
 
-#: zatca.php:822
+#: zatca.php:842
 msgid "Invoice Hash"
 msgstr " هاش الفاتورة "
 
-#: zatca.php:1087
+#: zatca.php:1107
 msgid "Failed to delete Customer."
 msgstr "فشل عملية الحذف"
 
-#: zatca.php:1092
+#: zatca.php:1112
 msgid "Customer deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1357
+#: zatca.php:1377
 msgid "Failed to delete device."
 msgstr "فشل حذف الجهاز"
 
-#: zatca.php:1367
+#: zatca.php:1387
 msgid "Device deleted successfully."
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1378
+#: zatca.php:1398
 msgid ""
 "Failed to delete device because there are documents related to this device."
 msgstr "فشل حذف الجهاز بسبب وجود فواتير مرتبطة بهذا الجهاز"
 
-#: zatca.php:1415
+#: zatca.php:1435
 msgid "Failed to delete User"
 msgstr "فشل عملية الحذف"
 
-#: zatca.php:1420
+#: zatca.php:1440
 msgid "User deleted successfully"
 msgstr "تم الحذف بنجاح"
 
-#: zatca.php:1569 zatca.php:4670
+#: zatca.php:1589 zatca.php:4661
 msgid "Data Inserted"
 msgstr "تم بنجاح"
 
-#: zatca.php:3943 zatca.php:5464 zatca.php:6310 zatca.php:6813 zatca.php:7582
-#: zatca.php:8070
+#: zatca.php:3929 zatca.php:6050 zatca.php:6896 zatca.php:7399 zatca.php:8168
+#: zatca.php:8656
 msgid "Document Submitted Successfully, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة بنجاح كود هيئة الزكاة هو "
 
-#: zatca.php:3943 zatca.php:5464 zatca.php:6310 zatca.php:6813 zatca.php:7582
-#: zatca.php:8070
+#: zatca.php:3929 zatca.php:6050 zatca.php:6896 zatca.php:7399 zatca.php:8168
+#: zatca.php:8656
 msgid ".. Request Is Success"
 msgstr "عمليه ناجحه"
 
-#: zatca.php:4064 zatca.php:5584 zatca.php:6433 zatca.php:6928 zatca.php:7696
-#: zatca.php:8185
+#: zatca.php:4050 zatca.php:6170 zatca.php:7019 zatca.php:7514 zatca.php:8282
+#: zatca.php:8771
 msgid "Document Submitted with Warning, Zatca Status Code Is "
 msgstr "تم ارسال الفاتورة لكن يوجد تنبيه كود هيئة الزكاة هو "
 
-#: zatca.php:4109 zatca.php:4116 zatca.php:5631 zatca.php:6492 zatca.php:6499
-#: zatca.php:6985 zatca.php:7751 zatca.php:7758 zatca.php:8238
+#: zatca.php:4095 zatca.php:4102 zatca.php:6217 zatca.php:7078 zatca.php:7085
+#: zatca.php:7571 zatca.php:8337 zatca.php:8344 zatca.php:8824
 msgid " Error: "
 msgstr "خطأ"
 
-#: zatca.php:4508
+#: zatca.php:4492
 msgid "You have unsubmitted documents please review them"
 msgstr "لديك فواتير غير مرسلة الرجاء مراجعتها"
 
-#: zatca.php:4544
+#: zatca.php:4528
 msgid "Tax Invoice"
 msgstr " عمل فاتورة ضريبيه"
 
-#: zatca.php:4744
+#: zatca.php:5330
 msgid "ZATCA ACTIVATION FORM"
 msgstr "شاشة تفعيل هيئة الزكاة"
 
-#: zatca.php:7042
+#: zatca.php:7628
 msgid "Reissued Successfully"
 msgstr "تم اعادة إنشاء الفاتورة بنجاح"
 

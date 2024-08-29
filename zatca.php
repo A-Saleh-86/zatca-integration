@@ -244,11 +244,11 @@ function load_assets(){
     
 
     
+    wp_enqueue_script('jquery');
     wp_enqueue_script( 'elect2', plugin_dir_url(__FILE__) . '/js/select.js', array('datatables-js') );
     wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . '/js/datatables.min.js', array(), false, true);
     wp_enqueue_script('moment-js', plugin_dir_url(__FILE__) . '/js/moment.js', array(), false, true);
     wp_enqueue_script('datatable-datetime-js', plugin_dir_url(__FILE__) . '/js/datatable-datetime.js', array(), false, true);
-    wp_enqueue_script('jquery');
     wp_enqueue_script('bootstap-js', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array(), false, true);
     wp_enqueue_script('fontawsome-js', plugin_dir_url(__FILE__) . '/js/fontawesome.min.js', array(), false, true);
     wp_enqueue_script('main-js',  plugin_dir_url(__FILE__) . '/js/main.js', array(), false, true);
@@ -330,6 +330,22 @@ function localization() {
         'select_customer' => __('Please select a customer first', 'zatca'),
         'arabic_name' => __('Please Insert Customer Aarabic Name', 'zatca'),
         'client_name_must_arabic' => __("You Must Enter Client Name In Arabic", "zatca"),
+        'client_name_english_must_english' => __("You Must Enter Client Name English In English", "zatca"),
+        'strret_ar_must_arabic' => __("You Must Enter Street Name Arabic In Arabic", "zatca"),
+        'street_en_must_english' => __("You Must Enter Street Name English In English", "zatca"),
+        'city_ar_must_arabic' => __("You Must Enter City Name Arabic In Arabic", "zatca"),
+        'city_en_must_english' => __("You Must Enter City Name English In English", "zatca"),
+        'dist_ar_must_arabic' => __("You Must Enter Arabic District In Arabic", "zatca"),
+        'dist_en_must_english' => __("You Must Enter English District In English", "zatca"),
+        'sub_div_ar_must_arabic' => __("You Must Enter Arabic Subdivision In Arabic ", "zatca"),
+        'sub_div_en_must_arabic' => __("You Must Enter English Subdivision In English ", "zatca"),
+        'vat_id_must_number' => __("Vat Id Must be Numbers", "zatca"),
+        'second_bus_id_number' => __("Second Business Id Must be Numbers", "zatca"),
+        'appartment_must_number' => __("Appartment Number Must be Numbers", "zatca"),
+        'poAdd_must_number' => __("PO Additional Number Must be Numbers", "zatca"),
+        'poBox_must_number' => __("PO Box Number Must be Numbers", "zatca"),
+        'postal_code_must_number' => __("Postal Code Must be Numbers", "zatca"),
+        'postal_code_must_5_digits' => __("Postal Code Must be 5 Digits", "zatca"),
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
         'delete_msg' => __("Are You Sure?", "zatca"),

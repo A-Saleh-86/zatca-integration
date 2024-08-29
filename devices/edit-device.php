@@ -54,7 +54,6 @@ if (!empty($results)) {
                                 name="device-no" 
                                 class="form-control"
                                 value="<?php echo $result->deviceNo ?>"
-                                
                             />
                         </div>
                     </div>
@@ -74,6 +73,7 @@ if (!empty($results)) {
                                         class="form-control" 
                                         autocomplete="off"
                                         value="<?php echo $result->deviceCSID ?>"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -93,6 +93,7 @@ if (!empty($results)) {
                                         class="form-control" 
                                         autocomplete="off"
                                         value="<?php echo $result->CsID_ExpiryDate ?>"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -112,6 +113,7 @@ if (!empty($results)) {
                                         class="form-control" 
                                         autocomplete="off"
                                         value="<?php echo $result->tokenData ?>"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -145,8 +147,6 @@ if (!empty($results)) {
                     <!-- / Device Status field -->
 
                 </div>
-                
-                
                 
 
                 <!-- Submit Btn -->
