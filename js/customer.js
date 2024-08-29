@@ -114,6 +114,18 @@ jQuery(document).ready(function($) {
         
         event.preventDefault();
 
+        // Validation on client no [ Cant null ]:
+        if(clientVendorNoInput.value == ''){
+
+            // Error notification:
+            popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.client_no_must_choose
+            });
+
+            return;
+        }
+
         // validation on aName [ Cant be null]:
         if(clientNameArabicInput.value == '' ) {
 
@@ -526,21 +538,192 @@ jQuery(document).ready(function($) {
     $("#edit_customer_form").submit(function(event){
 
         event.preventDefault();
-        
-        var formData = $(this).serialize();
 
+        // Validation on client no [ Cant null ]:
+        if(clientVendorNoInput.value == ''){
 
-        // validation on aName :
-        if (clientNameArabicInput.value == '' ) {
+            // Error notification:
+            popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.client_no_must_choose
+            });
+
+            return;
+        }
+
+        // validation on aName [ Cant be null]:
+        if(clientNameArabicInput.value == '' ) {
 
             // Error notification:
             popupValidation.error({
                 title: myCustomer.notification_error_title,
                 message: myCustomer.arabic_name
             });
-            
+
             return;
         }
+
+        // validation on client name ar must be Arabic:
+        if(!isArabic(clientNameArabicInput.value)) {
+
+            // Error notification:
+            popupValidation.error({
+            title: myCustomer.notification_error_title,
+            message: myCustomer.client_name_must_arabic
+            });
+
+            return false;
+        }
+
+        // validation on client name en must be English:
+        if(!charachter_lang_validation(clientNameEnglishInput, myCustomer.client_name_english_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on Street name AR must be Arabic:
+        if(!charachter_lang_validation(addressArabicInput, myCustomer.strret_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on Street name EN must be English:
+        if(!charachter_lang_validation(addressEnglishInput, myCustomer.street_en_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on City name AR must be Arabic:
+        if(!charachter_lang_validation(cityArabicInput, myCustomer.city_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on City name EN must be English:
+        if(!charachter_lang_validation(cityEnglishInput, myCustomer.city_en_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on District name AR must be Arabic:
+        if(!charachter_lang_validation(distArabicInput, myCustomer.dist_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on District name EN must be English:
+        if(!charachter_lang_validation(distEnglishInput, myCustomer.dist_en_must_english, 'en')) {
+
+            return;
+        }
+
+        // validation on Sub Division name AR must be Arabic:
+        if(!charachter_lang_validation(subDivArabicInput, myCustomer.sub_div_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on Sub Division name EN must be English:
+        if(!charachter_lang_validation(subDivEnglishInput, myCustomer.sub_div_en_must_arabic, 'en')) {
+
+            return;
+        }
+
+        // Check If vat id not number:
+        if(!isNumber(vatIdInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.vat_id_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If appartment not number:
+        if(!isNumber(appartmentInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.appartment_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If po additional no not number:
+        if(!isNumber(poAddNoInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.poAdd_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If po box no not number:
+        if(!isNumber(poBoxInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.poBox_must_number
+            });
+
+            return;
+
+        }
+
+        // Check If Second Bus id not number:
+        if(!isNumber(secondBusIdInput)){
+            
+             // Error notification:
+             popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.second_bus_id_number
+            });
+
+            return;
+
+        }
+
+        // Check If postal code not number || Not 5 digits:
+        if(postal_Code.value !== ''){
+
+            if(!isNumber(postal_Code)){
+                
+                 // Error notification:
+                 popupValidation.error({
+                    title: myCustomer.notification_error_title,
+                    message: myCustomer.postal_code_must_number
+                });
+    
+                return;
+    
+            }
+
+            if(postal_Code.value.length !== 5){
+
+                // Error notification:
+                popupValidation.error({
+                title: myCustomer.notification_error_title,
+                message: myCustomer.postal_code_must_5_digits
+            });
+
+            return;
+
+            }
+        }
+        
+        var formData = $(this).serialize();
+
 
         $.ajax({
             url: myCustomer.ajaxUrl,

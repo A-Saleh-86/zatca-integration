@@ -160,6 +160,20 @@ add_action('woocommerce_blocks_checkout_enqueue_data', 'add_custom_field_to_chec
 add_action('wp_ajax_handle_form_tampering', 'handle_form_tampering');
 add_action('wp_ajax_handle_form_subscription', 'handle_form_subscription');
 
+function serve_datatable_localization_json() {
+
+    $json_file = plugin_dir_path(__FILE__) . '/js/datatable-localization.json';
+
+    $json_data = file_get_contents($json_file);
+
+    wp_send_json($json_data);
+
+}
+
+add_action('wp_ajax_nopriv_datatable_localization', 'serve_datatable_localization_json');
+
+add_action('wp_ajax_datatable_localization', 'serve_datatable_localization_json');
+
 // Function to run Text Domain:
 function my_plugin_load_textdomain() {
     load_plugin_textdomain( 'zatca', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -244,11 +258,11 @@ function load_assets(){
     
 
     
-    wp_enqueue_script('jquery');
     wp_enqueue_script( 'elect2', plugin_dir_url(__FILE__) . '/js/select.js', array('datatables-js') );
     wp_enqueue_script('datatables-js', plugin_dir_url(__FILE__) . '/js/datatables.min.js', array(), false, true);
     wp_enqueue_script('moment-js', plugin_dir_url(__FILE__) . '/js/moment.js', array(), false, true);
     wp_enqueue_script('datatable-datetime-js', plugin_dir_url(__FILE__) . '/js/datatable-datetime.js', array(), false, true);
+    wp_enqueue_script('jquery');
     wp_enqueue_script('bootstap-js', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array(), false, true);
     wp_enqueue_script('fontawsome-js', plugin_dir_url(__FILE__) . '/js/fontawesome.min.js', array(), false, true);
     wp_enqueue_script('main-js',  plugin_dir_url(__FILE__) . '/js/main.js', array(), false, true);
@@ -346,6 +360,7 @@ function localization() {
         'poBox_must_number' => __("PO Box Number Must be Numbers", "zatca"),
         'postal_code_must_number' => __("Postal Code Must be Numbers", "zatca"),
         'postal_code_must_5_digits' => __("Postal Code Must be 5 Digits", "zatca"),
+        'client_no_must_choose' => __("You Must Choose From System Users", "zatca"),
         'notification_error_title' => __("Error", "zatca"),
         'notification_success_title' => __("Success", "zatca"),
         'delete_msg' => __("Are You Sure?", "zatca"),

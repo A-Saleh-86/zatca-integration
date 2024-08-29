@@ -208,8 +208,9 @@ if (!empty($results)) {
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('VAT ID:', 'zatca') ?></label>
                         <input 
-                            type="text" 
-                            name="vat-id" 
+                            type="text"
+                            id="customer_vat_id"
+                            name="vat-id"
                             class="form-control" 
                             autocomplete="off"
                             value="<?php echo $result->VATID ?>"
@@ -297,7 +298,8 @@ if (!empty($results)) {
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Apartment No :', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="customer_appart_no"
                             name="apartment-no" 
                             class="form-control" 
                             autocomplete="off"
@@ -310,7 +312,8 @@ if (!empty($results)) {
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('PO Box Additional Number :', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="po_add_no"
                             name="po-box-additional-no" 
                             class="form-control" 
                             autocomplete="off"
@@ -414,7 +417,8 @@ if (!empty($results)) {
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('District Name (English):', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="dist-en"
                             name="district-name-en" 
                             class="form-control" 
                             autocomplete="off"
@@ -467,7 +471,8 @@ if (!empty($results)) {
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Country Subdivision (Arabic):', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="sub_div_ar"
                             name="country-sub-name-ar" 
                             class="form-control" 
                             autocomplete="off"
@@ -480,7 +485,8 @@ if (!empty($results)) {
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Country Subdivision (English):', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="sub_div_en"
                             name="country-sub-name-en" 
                             class="form-control" 
                             autocomplete="off"
