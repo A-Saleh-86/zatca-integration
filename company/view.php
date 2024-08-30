@@ -160,7 +160,7 @@
                 </div>
                 <!-- / Second Business ID No. & Type -->
 
-                <!-- VAT ID & aName -->
+                <!-- VAT ID & Company Name -->
                 <div class="row mb-3">
 
                     <!--  VAT ID field -->
@@ -195,7 +195,7 @@
                     <!-- /  companyName field -->
 
                 </div>
-                <!-- / VAT ID & aName -->
+                <!-- / VAT ID & Company Name -->
 
                 <!-- Apartment No &  PO Box Additional Number-->
                 <div class="row mb-3">
@@ -317,7 +317,8 @@
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('District Name - EN :', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="district_name_en"
                             name="district-name-en" 
                             class="form-control"
                             value="<?php echo $result->district_Eng ?>"
@@ -348,11 +349,11 @@
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('City Name - EN :', 'zatca') ?></label>
                         <input 
-                        type="text" 
-                        name="city-name-en"
-                        id="company_city_en"
-                        class="form-control"
-                        value="<?php echo $result->city_Eng ?>"
+                            type="text" 
+                            name="city-name-en"
+                            id="company_city_en"
+                            class="form-control"
+                            value="<?php echo $result->city_Eng ?>"
                         />
                     </div>
                     <!-- /  City Name - EN  field -->
@@ -367,7 +368,8 @@
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Country Subdivision - AR :', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="sub_div_ar"
                             name="country-sub-name-ar" 
                             class="form-control"
                             value="<?php echo $result->countrySubdivision_Arb ?>"
@@ -379,7 +381,8 @@
                     <div class="col-md-6">
                         <label class="form-label"><?php echo _e('Country Subdivision - EN :', 'zatca') ?></label>
                         <input 
-                            type="text" 
+                            type="text"
+                            id="sub_div_en"
                             name="country-sub-name-en" 
                             class="form-control"
                             value="<?php echo $result->countrySubdivision_Eng ?>"

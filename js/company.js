@@ -421,44 +421,92 @@ jQuery(document).ready(function($) {
 
         var formData = $(this).serialize();
 
-        // validation on city arabic name input:
-        if (cityArInput.value == null || cityAr.value === '' ) {
+        // validation on city arabic name input [ Cant be Null ]:
+        if (cityArInput.value == '' ) {
 
             // Error notification:
             popupValidation.error({
                 title: myCompany.notification_error_title,
-                message: myCompany.city_ar
+                message: myCompany.city_ar_null
             });
+
+            return;
+        }
+
+        // validation on city name AR must be Arabic:
+        if(!charachter_lang_validation(cityArInput, myCompany.city_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on city name EN must be English:
+        if(!charachter_lang_validation(cityEnInput, myCompany.city_en_must_english, 'en')) {
 
             return;
         }
 
         // validation on street arabic name input:
-        if (streetNameArInput.value == null || streetNameArInput.value === '' ) {
+        if (streetNameArInput.value == '' ) {
 
             // Error notification:
             popupValidation.error({
                 title: myCompany.notification_error_title,
-                message: myCompany.street_ar
+                message: myCompany.street_ar_null
             });
+
+            return;
+        }
+
+        // validation on city name AR must be Arabic:
+        if(!charachter_lang_validation(streetNameArInput, myCompany.street_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on street name EN must be English:
+        if(!charachter_lang_validation(streetNameEnInput, myCompany.street_en_must_english, 'en')) {
 
             return;
         }
 
         // validation on district arabic name input:
-        if (districtNameArInput.value == null || districtNameArInput.value === '' ) {
+        if (districtNameArInput.value == '' ) {
 
             // Error notification:
             popupValidation.error({
                 title: myCompany.notification_error_title,
-                message: myCompany.dist_ar
+                message: myCompany.dist_ar_null
             });
 
             return;
         }
 
+        // validation on district name AR must be Arabic:
+        if(!charachter_lang_validation(districtNameArInput, myCompany.dist_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on district name EN must be English:
+        if(!charachter_lang_validation(districtNameEnInput, myCompany.dist_en_must_english, 'en')) {
+            
+            return;
+        }
+
+        // validation on subdivision name AR must be Arabic:
+        if(!charachter_lang_validation(subDivArInput, myCompany.subDiv_ar_must_arabic, 'ar')) {
+
+            return;
+        }
+
+        // validation on subdivison name EN must be English:
+        if(!charachter_lang_validation(subDivEnInput, myCompany.subDiv_en_must_english, 'en')) {
+
+            return;
+        }
+
         // validation on company name input:
-        if (companyNameInput.value == null || companyNameInput.value === '' ) {
+        if (companyNameInput.value == '' ) {
 
             // Error notification:
             popupValidation.error({
@@ -469,28 +517,67 @@ jQuery(document).ready(function($) {
             return;
         }
 
-        // validation on appartment No input:
-        if (appartmentNoInput.value == null || appartmentNoInput.value === '' ) {
+        // Check If second business id not number:
+        if(!isNumber(secBusIdInput)){
 
             // Error notification:
             popupValidation.error({
                 title: myCompany.notification_error_title,
-                message: myCompany.appartment_no
+                message: myCompany.sec_bus_must_number
+            });
+
+            return;
+
+        }
+
+        // validation on appartment No input [ cant be null ]:
+        if (appartmentNoInput.value == '' ) {
+
+            // Error notification:
+            popupValidation.error({
+                title: myCompany.notification_error_title,
+                message: myCompany.appartment_no_null
             });
 
             return;
         }
 
-        // validation on additional No input:
-        if (additionalNoInput.value == null || additionalNoInput.value === '' ) {
+        // Check If appartment no not number:
+        if(!isNumber(appartmentNoInput)){
 
             // Error notification:
             popupValidation.error({
                 title: myCompany.notification_error_title,
-                message: myCompany.po_box_additional
+                message: myCompany.appart_must_number
             });
 
             return;
+
+        }
+
+        // validation on additional No input:
+        if (additionalNoInput.value == '' ) {
+
+            // Error notification:
+            popupValidation.error({
+                title: myCompany.notification_error_title,
+                message: myCompany.po_box_additional_null
+            });
+
+            return;
+        }
+
+        // Check If PO additional no not number:
+        if(!isNumber(additionalNoInput)){
+
+            // Error notification:
+            popupValidation.error({
+                title: myCompany.notification_error_title,
+                message: myCompany.po_additional_no_must_number
+            });
+
+            return;
+
         }
 
 
